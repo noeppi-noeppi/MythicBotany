@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "mythicbotany:alfsteel_helmet_smithing"
+    ]
+  },
+  "criteria": {
+    "alfsteel_helmet_criteria": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "botania:terra_helm"
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "mythicbotany:alfsteel_helmet_smithing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "alfsteel_helmet_criteria",
+      "has_the_recipe"
+    ]
+  ]
+}

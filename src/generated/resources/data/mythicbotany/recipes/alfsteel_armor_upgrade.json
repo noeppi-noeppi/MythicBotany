@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "mythicbotany:alfsteel_armor_upgrade",
+  "ingredients": [
+    {
+      "item": "mythicbotany:alfsteel_ingot"
+    },
+    {
+      "item": "mythicbotany:alfsteel_ingot"
+    },
+    {
+      "tag": "forge:dusts/mana"
+    }
+  ],
+  "result": {
+    "item": "mythicbotany:alfsteel_armor_upgrade"
+  }
+}

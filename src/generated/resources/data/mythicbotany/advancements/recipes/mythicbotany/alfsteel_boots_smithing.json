@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "mythicbotany:alfsteel_boots_smithing"
+    ]
+  },
+  "criteria": {
+    "alfsteel_boots_criteria": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "botania:terra_boots"
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "mythicbotany:alfsteel_boots_smithing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "alfsteel_boots_criteria",
+      "has_the_recipe"
+    ]
+  ]
+}

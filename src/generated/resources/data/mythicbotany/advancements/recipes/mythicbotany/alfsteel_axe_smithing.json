@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "mythicbotany:alfsteel_axe_smithing"
+    ]
+  },
+  "criteria": {
+    "alfsteel_axe_criteria": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "botania:terra_axe"
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "mythicbotany:alfsteel_axe_smithing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "alfsteel_axe_criteria",
+      "has_the_recipe"
+    ]
+  ]
+}

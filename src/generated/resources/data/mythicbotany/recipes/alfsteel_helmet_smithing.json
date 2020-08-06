@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "botania:terrasteel_helmet"
+  },
+  "addition": {
+    "item": "mythicbotany:alfsteel_armor_upgrade"
+  },
+  "result": {
+    "item": "mythicbotany:alfsteel_helmet"
+  }
+}

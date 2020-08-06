@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "botania:terra_pick"
+  },
+  "addition": {
+    "item": "mythicbotany:alfsteel_ingot"
+  },
+  "result": {
+    "item": "mythicbotany:alfsteel_pick"
+  }
+}

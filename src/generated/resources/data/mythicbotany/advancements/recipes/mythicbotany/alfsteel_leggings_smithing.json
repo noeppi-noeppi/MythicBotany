@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "mythicbotany:alfsteel_leggings_smithing"
+    ]
+  },
+  "criteria": {
+    "alfsteel_leggings_criteria": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "botania:terra_legs"
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "mythicbotany:alfsteel_leggings_smithing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "alfsteel_leggings_criteria",
+      "has_the_recipe"
+    ]
+  ]
+}

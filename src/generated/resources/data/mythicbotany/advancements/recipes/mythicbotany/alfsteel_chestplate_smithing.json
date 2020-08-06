@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "mythicbotany:alfsteel_chestplate_smithing"
+    ]
+  },
+  "criteria": {
+    "alfsteel_chestplate_criteria": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "botania:terra_chest"
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "mythicbotany:alfsteel_chestplate_smithing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "alfsteel_chestplate_criteria",
+      "has_the_recipe"
+    ]
+  ]
+}

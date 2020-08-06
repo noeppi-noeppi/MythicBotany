@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "mythicbotany:modified_gaia_pylon_with_alfsteel",
+  "pattern": [
+    " d ",
+    "epe",
+    " d "
+  ],
+  "key": {
+    "d": {
+      "item": "botania:pixie_dust"
+    },
+    "e": {
+      "tag": "forge:ingots/elementium"
+    },
+    "p": {
+      "item": "mythicbotany:alfsteel_pylon"
+    }
+  },
+  "result": {
+    "item": "botania:gaia_pylon"
+  }
+}
