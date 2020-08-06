@@ -1,0 +1,42 @@
+modLoader="javafml"
+loaderVersion="[32,)"
+license="APACHE-2.0"
+issueTrackerURL="http://placeholder.invalid"
+
+[[mods]]
+modId="mythicbotany"
+version="${file.jarVersion}"
+displayName="MythicBotany"
+displayURL="http://placeholder.invalid"
+authors="noeppi_noeppi"
+description='''
+Dive deeper into the world of botania.
+'''
+
+[[dependencies.mythicbotany]]
+    modId="forge"
+    mandatory=true
+    versionRange="[32,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.examplemod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.1]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.examplemod]]
+    modId="botania"
+    mandatory=true
+    versionRange="[1.16-299,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.examplemod]]
+    modId="jei"
+    mandatory=false
+    versionRange="[1.16.1-7.0.0.6,)"
+    ordering="NONE"
+    side="CLIENT"

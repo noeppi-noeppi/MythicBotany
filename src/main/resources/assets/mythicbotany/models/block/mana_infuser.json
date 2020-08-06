@@ -1,0 +1,8 @@
+{
+  "parent": "botania:block/shapes/three_high_bottom_top",
+  "textures": {
+    "bottom": "botania:block/elementium_block",
+    "top": "mythicbotany:block/mana_infuser_top",
+    "side": "botania:block/elementium_block"
+  }
+}

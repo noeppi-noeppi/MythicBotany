@@ -1,0 +1,27 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "mythicbotany:item/alfsteel_pick"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "mythicbotany:active": 1.0
+      },
+      "model": "mythicbotany:item/alfsteel_pick_active"
+    },
+    {
+      "predicate": {
+        "mythicbotany:tipped": 1.0
+      },
+      "model": "mythicbotany:item/alfsteel_pick_tipped"
+    },
+    {
+      "predicate": {
+        "mythicbotany:tipped": 1.0,
+        "mythicbotany:active": 1.0
+      },
+      "model": "mythicbotany:item/alfsteel_pick_tipped_active"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "mythicbotany:item/alfsteel_pick",
+    "layer1": "mythicbotany:item/alfsteel_pick_active"
+  }
+}

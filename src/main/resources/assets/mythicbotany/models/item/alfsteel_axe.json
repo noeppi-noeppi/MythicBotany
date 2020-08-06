@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "mythicbotany:item/alfsteel_axe"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "mythicbotany:active": 1.0
+      },
+      "model": "mythicbotany:item/alfsteel_axe_active"
+    }
+  ]
+}
