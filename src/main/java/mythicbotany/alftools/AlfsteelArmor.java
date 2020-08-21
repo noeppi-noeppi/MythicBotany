@@ -135,12 +135,12 @@ public class AlfsteelArmor extends ItemTerrasteelArmor implements PylonRepairabl
     }
 
     @Override
-    public int getRepairManaPerTick(ItemStack stack) {
-        return AlfsteelSword.MANA_PER_DURABILITY;
+    public boolean canRepairPylon(ItemStack stack) {
+        return stack.getDamage() > 0;
     }
 
     @Override
-    public int getRepairAmountPerTick() {
-        return 5;
+    public int getRepairManaPerTick(ItemStack stack) {
+        return AlfsteelSword.MANA_PER_DURABILITY;
     }
 }

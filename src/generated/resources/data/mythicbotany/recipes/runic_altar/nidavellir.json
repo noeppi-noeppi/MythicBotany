@@ -1,0 +1,24 @@
+{
+  "type": "botania:runic_altar",
+  "output": {
+    "item": "mythicbotany:nidavellir_rune"
+  },
+  "mana": 16000,
+  "ingredients": [
+    {
+      "tag": "forge:ingots/brick"
+    },
+    {
+      "tag": "botania:runes/earth"
+    },
+    {
+      "tag": "botania:runes/winter"
+    },
+    {
+      "tag": "botania:runes/sloth"
+    },
+    {
+      "item": "minecraft:iron_block"
+    }
+  ]
+}

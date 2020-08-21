@@ -9,15 +9,14 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.Constants;
-import vazkii.botania.api.internal.IManaBurst;
-import vazkii.botania.api.mana.IManaCollector;
+import vazkii.botania.api.mana.IManaReceiver;
 import vazkii.botania.api.mana.spark.ISparkAttachable;
 import vazkii.botania.api.mana.spark.ISparkEntity;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public abstract class TileEntityMana extends TileEntityBase implements ISparkAttachable, IManaCollector {
+public abstract class TileEntityMana extends TileEntityBase implements ISparkAttachable, IManaReceiver {
 
     public final int maxMana;
     private final boolean bursts;
@@ -33,21 +32,6 @@ public abstract class TileEntityMana extends TileEntityBase implements ISparkAtt
     }
 
     protected abstract boolean canReceive();
-
-    @Override
-    public void onClientDisplayTick() {
-
-    }
-
-    @Override
-    public float getManaYieldMultiplier(IManaBurst iManaBurst) {
-        return 1;
-    }
-
-    @Override
-    public int getMaxMana() {
-        return maxMana;
-    }
 
     @Override
     public boolean canAttachSpark(ItemStack itemStack) {

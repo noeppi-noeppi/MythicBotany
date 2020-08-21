@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "mythicbotany:hellebore_floating",
+  "ingredients": [
+    {
+      "tag": "botania:floating_flowers"
+    },
+    {
+      "item": "mythicbotany:hellebore"
+    }
+  ],
+  "result": {
+    "item": "mythicbotany:hellebore_floating"
+  }
+}

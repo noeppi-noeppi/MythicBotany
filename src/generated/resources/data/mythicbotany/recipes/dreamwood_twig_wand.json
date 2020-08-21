@@ -1,0 +1,20 @@
+{
+  "type": "mythicbotany:dreamwood_twig_wand",
+  "group": "mythicbotany:dreamwood_twig_wand",
+  "pattern": [
+    " pt",
+    " tp",
+    "t  "
+  ],
+  "key": {
+    "p": {
+      "tag": "botania:petals"
+    },
+    "t": {
+      "item": "botania:dreamwood_twig"
+    }
+  },
+  "result": {
+    "item": "mythicbotany:dreamwood_twig_wand"
+  }
+}

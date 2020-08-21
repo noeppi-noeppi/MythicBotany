@@ -34,14 +34,14 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
     private int mana;
     private boolean active;
     @Nullable
-    private InfuserRecipe recipe;
+    private transient InfuserRecipe recipe;
     @Nullable
     private ItemStack output;
 
     // The following are just there for the client
-    private int maxMana;
-    private int fromColor = -1;
-    private int toColor = -1;
+    private transient int maxMana;
+    private transient int fromColor = -1;
+    private transient int toColor = -1;
 
     public TileManaInfuser(TileEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);

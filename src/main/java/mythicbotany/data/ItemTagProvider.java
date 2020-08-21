@@ -8,8 +8,17 @@
  */
 package mythicbotany.data;
 
+import mythicbotany.MythicBotany;
+import mythicbotany.functionalflora.base.BlockFloatingFunctionalFlower;
+import mythicbotany.functionalflora.base.BlockFunctionalFlower;
+import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.util.registry.Registry;
+import vazkii.botania.common.item.material.ItemRune;
+import vazkii.botania.common.lib.ModTags;
 
 import javax.annotation.Nonnull;
 
@@ -26,7 +35,40 @@ public class ItemTagProvider extends ItemTagsProvider {
 
 	@Override
 	protected void registerTags() {
-		//this.func_240521_a_(BlockTags.RAILS, ItemTags.RAILS);
+
+		//noinspection deprecation
+		Registry.ITEM.stream()
+				.filter(i -> MythicBotany.MODID.equals(Registry.ITEM.getKey(i).getNamespace()))
+				.filter(i -> !(i instanceof BlockItem))
+				.forEach(this::addDefaultItemTag);
+
+		//noinspection deprecation
+		Registry.ITEM.stream()
+				.filter(i -> MythicBotany.MODID.equals(Registry.ITEM.getKey(i).getNamespace()))
+				.filter(i -> i instanceof BlockItem)
+				.map(i -> ((BlockItem) i).getBlock())
+				.forEach(this::addDefaultBlockItemTag);
+
 		//this.func_240522_a_(ModTags.Items.SHEARS).func_240534_a_(ModItems.elementiumShears, ModItems.manasteelShears);
+	}
+
+	public void addDefaultItemTag(Item item) {
+		if (item instanceof ItemRune) {
+			this.func_240522_a_(ModTags.Items.RUNES).func_240534_a_(item);
+		}
+	}
+
+	public void addDefaultBlockItemTag(Block block) {
+		if (block instanceof BlockFunctionalFlower<?>) {
+			this.func_240522_a_(ModTags.Items.SPECIAL_FLOWERS).func_240534_a_(block.asItem());
+			if (((BlockFunctionalFlower<?>) block).isGenerating) {
+				this.func_240522_a_(ModTags.Items.GENERATING_SPECIAL_FLOWERS).func_240534_a_(block.asItem());
+			} else {
+				this.func_240522_a_(ModTags.Items.FUNCTIONAL_SPECIAL_FLOWERS).func_240534_a_(block.asItem());
+			}
+		} else if (block instanceof BlockFloatingFunctionalFlower<?>) {
+			this.func_240522_a_(ModTags.Items.FLOATING_FLOWERS).func_240534_a_(block.asItem());
+			this.func_240522_a_(ModTags.Items.SPECIAL_FLOATING_FLOWERS).func_240534_a_(block.asItem());
+		}
 	}
 }

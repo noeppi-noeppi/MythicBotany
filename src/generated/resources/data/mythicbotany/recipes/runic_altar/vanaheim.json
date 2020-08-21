@@ -1,0 +1,24 @@
+{
+  "type": "botania:runic_altar",
+  "output": {
+    "item": "mythicbotany:vanaheim_rune"
+  },
+  "mana": 16000,
+  "ingredients": [
+    {
+      "item": "minecraft:netherite_ingot"
+    },
+    {
+      "tag": "botania:runes/earth"
+    },
+    {
+      "tag": "botania:runes/spring"
+    },
+    {
+      "tag": "botania:runes/pride"
+    },
+    {
+      "item": "botania:alfheim_portal"
+    }
+  ]
+}

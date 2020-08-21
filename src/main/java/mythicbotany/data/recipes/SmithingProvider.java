@@ -2,7 +2,6 @@ package mythicbotany.data.recipes;
 
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
-import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
@@ -38,5 +37,7 @@ public class SmithingProvider extends RecipeProvider {
 		SmithingRecipeBuilder.func_240502_a_(Ingredient.fromItems(vazkii.botania.common.item.ModItems.terrasteelChest), alfsteel2, ModItems.alfsteelChest).func_240503_a_("alfsteel_chestplate_criteria", RecipeUnlockedTrigger.func_235675_a_(new ResourceLocation("botania", "terra_chest"))).func_240505_a_(consumer, new ResourceLocation(MythicBotany.MODID, "alfsteel_chestplate_smithing"));
 		SmithingRecipeBuilder.func_240502_a_(Ingredient.fromItems(vazkii.botania.common.item.ModItems.terrasteelLegs), alfsteel2, ModItems.alfsteelLegs).func_240503_a_("alfsteel_leggings_criteria", RecipeUnlockedTrigger.func_235675_a_(new ResourceLocation("botania", "terra_legs"))).func_240505_a_(consumer, new ResourceLocation(MythicBotany.MODID, "alfsteel_leggings_smithing"));
 		SmithingRecipeBuilder.func_240502_a_(Ingredient.fromItems(vazkii.botania.common.item.ModItems.terrasteelBoots), alfsteel2, ModItems.alfsteelBoots).func_240503_a_("alfsteel_boots_criteria", RecipeUnlockedTrigger.func_235675_a_(new ResourceLocation("botania", "terra_boots"))).func_240505_a_(consumer, new ResourceLocation(MythicBotany.MODID, "alfsteel_boots_smithing"));
-	}
+		SmithingRecipeBuilder.func_240502_a_(Ingredient.fromItems(vazkii.botania.common.item.ModItems.manaRingGreater), alfsteel, ModItems.greatestManaRing).func_240503_a_("alfsteel_mana_ring_criteria", RecipeUnlockedTrigger.func_235675_a_(new ResourceLocation("botania", "mana_ring_greater"))).func_240505_a_(consumer, new ResourceLocation(MythicBotany.MODID, "alfsteel_mana_ring_smithing"));
+		SmithingRecipeBuilder.func_240502_a_(Ingredient.fromItems(vazkii.botania.common.item.ModItems.auraRingGreater), alfsteel, ModItems.greatestAuraRing).func_240503_a_("alfsteel_aura_ring_criteria", RecipeUnlockedTrigger.func_235675_a_(new ResourceLocation("botania", "aura_ring_greater"))).func_240505_a_(consumer, new ResourceLocation(MythicBotany.MODID, "alfsteel_aura_ring_smithing"));
+    }
 }

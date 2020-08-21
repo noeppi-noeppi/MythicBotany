@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -32,6 +33,8 @@ public class BlockTE<T extends TileEntityBase> extends BlockBase {
         try {
             this.teCtor = teClass.getConstructor(TileEntityType.class);
         } catch (ReflectiveOperationException e) {
+            if (e.getCause() != null)
+                e.getCause().printStackTrace();
             throw new RuntimeException("Could not get constructor for tile entity " + teClass + ".", e);
         }
         //noinspection ConstantConditions
@@ -39,6 +42,8 @@ public class BlockTE<T extends TileEntityBase> extends BlockBase {
             try {
                 return teCtor.newInstance(getTileType());
             } catch (ReflectiveOperationException e) {
+                if (e.getCause() != null)
+                    e.getCause().printStackTrace();
                 throw new RuntimeException("Could not create TileEntity of type " + teClass + ".", e);
             }
         }, ImmutableSet.of(this), null);

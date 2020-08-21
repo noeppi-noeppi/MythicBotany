@@ -4,14 +4,14 @@
   "pattern": [
     " n ",
     "npn",
-    " i "
+    " g "
   ],
   "key": {
     "n": {
       "item": "mythicbotany:alfsteel_nugget"
     },
-    "i": {
-      "item": "mythicbotany:alfsteel_ingot"
+    "g": {
+      "item": "minecraft:ghast_tear"
     },
     "p": {
       "item": "botania:natura_pylon"

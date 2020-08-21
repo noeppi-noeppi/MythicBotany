@@ -1,0 +1,24 @@
+{
+  "type": "botania:runic_altar",
+  "output": {
+    "item": "mythicbotany:muspelheim_rune"
+  },
+  "mana": 16000,
+  "ingredients": [
+    {
+      "tag": "forge:ingots/nether_brick"
+    },
+    {
+      "tag": "botania:runes/fire"
+    },
+    {
+      "tag": "botania:runes/summer"
+    },
+    {
+      "tag": "botania:runes/wrath"
+    },
+    {
+      "item": "minecraft:magma_block"
+    }
+  ]
+}

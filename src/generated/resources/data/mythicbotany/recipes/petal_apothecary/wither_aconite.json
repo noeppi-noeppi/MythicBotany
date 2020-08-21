@@ -1,0 +1,20 @@
+{
+  "type": "botania:petal_apothecary",
+  "output": {
+    "item": "mythicbotany:wither_aconite"
+  },
+  "ingredients": [
+    {
+      "tag": "botania:petals/black"
+    },
+    {
+      "tag": "botania:petals/black"
+    },
+    {
+      "tag": "botania:runes/pride"
+    },
+    {
+      "item": "minecraft:wither_rose"
+    }
+  ]
+}

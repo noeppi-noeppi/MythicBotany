@@ -1,0 +1,24 @@
+{
+  "type": "botania:runic_altar",
+  "output": {
+    "item": "mythicbotany:midgard_rune"
+  },
+  "mana": 16000,
+  "ingredients": [
+    {
+      "tag": "forge:ingots/manasteel"
+    },
+    {
+      "tag": "botania:runes/earth"
+    },
+    {
+      "tag": "botania:runes/spring"
+    },
+    {
+      "tag": "botania:runes/greed"
+    },
+    {
+      "item": "minecraft:grass_block"
+    }
+  ]
+}

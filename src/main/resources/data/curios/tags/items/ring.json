@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "mythicbotany:mana_ring_greatest",
+    "mythicbotany:aura_ring_greatest",
+    "mythicbotany:fire_ring",
+    "mythicbotany:ice_ring"
+  ]
+}

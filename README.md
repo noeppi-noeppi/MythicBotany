@@ -12,11 +12,13 @@ gradle setup
   
 <hr>
   
-The pattern that is required under the ManaInfuser is
+The pattern that is required below the ManaInfuser is
 
+```
 sgs
 gsg
 sgs
+```
 
 s = shimmerrock
 g = gold block

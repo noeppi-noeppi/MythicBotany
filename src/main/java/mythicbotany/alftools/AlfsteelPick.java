@@ -1,16 +1,22 @@
 package mythicbotany.alftools;
 
 import mythicbotany.ModItems;
+import mythicbotany.MythicBotany;
+import mythicbotany.base.Registerable;
 import mythicbotany.pylon.PylonRepairable;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.botania.common.core.helper.PlayerHelper;
 import vazkii.botania.common.item.ItemTemperanceStone;
 import vazkii.botania.common.item.equipment.tool.ToolCommons;
@@ -23,12 +29,19 @@ import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
 
-public class AlfsteelPick extends ItemTerraPick implements PylonRepairable {
+public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Registerable {
 
     private static final List<Material> MATERIALS = Arrays.asList(Material.ROCK, Material.IRON, Material.ICE, Material.GLASS, Material.PISTON, Material.ANVIL, Material.ORGANIC, Material.EARTH, Material.SAND, Material.SNOW, Material.SNOW_BLOCK, Material.CLAY);
 
     public AlfsteelPick(Properties props) {
         super(props.maxDamage(4600));
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void registerClient(String id) {
+        ItemModelsProperties.func_239418_a_(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.MODID, "tipped"), (stack, world, entity) -> isTipped(stack) ? 1 : 0);
+        ItemModelsProperties.func_239418_a_(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.MODID, "active"), (stack, world, entity) -> isEnabled(stack) ? 1 : 0);
     }
 
     @Override
@@ -76,12 +89,12 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable {
     }
 
     @Override
-    public int getRepairManaPerTick(ItemStack stack) {
-        return AlfsteelSword.MANA_PER_DURABILITY;
+    public boolean canRepairPylon(ItemStack stack) {
+        return stack.getDamage() > 0;
     }
 
     @Override
-    public int getRepairAmountPerTick() {
-        return 5;
+    public int getRepairManaPerTick(ItemStack stack) {
+        return AlfsteelSword.MANA_PER_DURABILITY;
     }
 }

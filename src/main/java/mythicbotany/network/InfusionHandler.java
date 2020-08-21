@@ -79,7 +79,6 @@ public class InfusionHandler implements MythicHandler<InfusionHandler.InfusionMe
                         fromG + ((toG - fromG) * (float) msg.progress),
                         fromB + ((toB - fromB) * (float) msg.progress)
                 };
-                System.out.println(colorsfx[0] + "  " + colorsfx[1] + "  " + colorsfx[2]);
                 WispParticleData data = WispParticleData.wisp(0.85F, colorsfx[0], colorsfx[1], colorsfx[2], 0.25F);
                 world.addParticle(data, x, y, z, 0, (float) (-g * 0.05), 0);
                 data = WispParticleData.wisp((float) Math.random() * 0.1F + 0.1F, colorsfx[0], colorsfx[1], colorsfx[2], 0.9F);

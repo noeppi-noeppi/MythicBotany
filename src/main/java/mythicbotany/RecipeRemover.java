@@ -33,6 +33,6 @@ public class RecipeRemover {
 
     private static <T> ImmutableMap<ResourceLocation, T> withRecipesRemove(Map<ResourceLocation, T> map) {
         //noinspection UnstableApiUsage
-        return map.entrySet().stream().parallel().filter(entry -> {System.out.println(entry.getKey());return !RECIPES_TO_REMOVE.contains(entry.getKey());}).collect(ImmutableMap.toImmutableMap(Map.Entry::getKey, Map.Entry::getValue));
+        return map.entrySet().stream().parallel().filter(entry -> !RECIPES_TO_REMOVE.contains(entry.getKey())).collect(ImmutableMap.toImmutableMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }

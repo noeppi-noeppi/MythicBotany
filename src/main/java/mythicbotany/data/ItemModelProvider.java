@@ -11,6 +11,7 @@ package mythicbotany.data;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
+import mythicbotany.functionalflora.base.BlockFunctionalFlower;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -81,7 +82,8 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
 		handheldItem(ModItems.alfsteelSword);
 		items.remove(ModItems.alfsteelPick);
 		items.remove(ModItems.alfsteelAxe);
-		items.remove(ModBlocks.alfsteelPylon.asItem());
+		items.remove(ModItems.fadedNetherStar);
+		items.remove(ModItems.dreamwoodWand);
 
 		items.forEach(item -> {
 			if (!(item instanceof BlockItem) && !handheld.contains(item)) {
@@ -90,11 +92,20 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
 		});
 	}
 
+
+	@SuppressWarnings("SuspiciousMethodCalls")
 	private void registerItemBlocks(Set<BlockItem> itemBlocks) {
+		itemBlocks.remove(ModBlocks.alfsteelPylon.asItem());
+
 		itemBlocks.forEach(i -> {
+			@SuppressWarnings("deprecation")
 			String name = Registry.ITEM.getKey(i).getPath();
-			getBuilder(name).parent(new AlwaysExistentModelFile(new ResourceLocation(MythicBotany.MODID, "block/" + name)));
-			//withExistingParent(name, new ResourceLocation(MythicBotany.MODID, "block/" + name));
+			if (i.getBlock() instanceof BlockFunctionalFlower<?>) {
+				withExistingParent(name, GENERATED)
+						.texture("layer0", new ResourceLocation(MythicBotany.MODID, "block/" + name));
+			} else {
+				getBuilder(name).parent(new AlwaysExistentModelFile(new ResourceLocation(MythicBotany.MODID, "block/" + name)));
+			}
 		});
 	}
 }

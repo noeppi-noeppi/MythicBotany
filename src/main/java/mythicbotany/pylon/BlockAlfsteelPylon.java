@@ -1,7 +1,6 @@
 package mythicbotany.pylon;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import mythicbotany.base.BlockTE;
 import mythicbotany.network.MythicNetwork;
 import net.minecraft.block.Block;
@@ -20,17 +19,15 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import vazkii.botania.api.BotaniaAPIClient;
 import vazkii.botania.api.wand.IWandHUD;
 import vazkii.botania.api.wand.IWandable;
-import vazkii.botania.client.core.handler.HUDHandler;
-import vazkii.botania.client.core.helper.RenderHelper;
-import vazkii.botania.common.block.tile.mana.TilePool;
-import vazkii.botania.common.item.ItemManaTablet;
-import vazkii.botania.common.item.ModItems;
 
 import javax.annotation.Nonnull;
 
@@ -40,6 +37,12 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
 
     public BlockAlfsteelPylon(Properties properties) {
         super(TileAlfsteelPylon.class, properties, new Item.Properties().setISTER(() -> RenderAlfsteelPylon.TEISR::new));
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void registerClient(String id) {
+        ClientRegistry.bindTileEntityRenderer(getTileType(), RenderAlfsteelPylon::new);
     }
 
     @SuppressWarnings("deprecation")
@@ -59,7 +62,7 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
     public void onBlockClicked(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull PlayerEntity player) {
         if (!world.isRemote) {
             ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
-            if (stack.getItem() instanceof PylonRepairable && ((PylonRepairable) stack.getItem()).canRepair(stack)) {
+            if (stack.getItem() instanceof PylonRepairable && ((PylonRepairable) stack.getItem()).canRepairPylon(stack)) {
                 ItemStack copy = stack.copy();
                 player.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
                 ItemEntity entity = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, copy);
@@ -74,7 +77,8 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
     public ActionResultType onBlockActivated(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand hand, @Nonnull BlockRayTraceResult hit) {
         if (!world.isRemote) {
             ItemStack stack = player.getHeldItem(hand);
-            if (stack.getItem() instanceof PylonRepairable && ((PylonRepairable) stack.getItem()).canRepair(stack)) {
+            PylonRepairable repairable = PylonRepairables.getRepairInfo(stack);
+            if (stack.getCount() == 1 && repairable != null && repairable.canRepairPylon(stack)) {
                 ItemStack copy = stack.copy();
                 player.setHeldItem(hand, ItemStack.EMPTY);
                 ItemEntity entity = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, copy);
@@ -93,7 +97,7 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
     @OnlyIn(Dist.CLIENT)
     public void renderHUD(MatrixStack matrixStack, Minecraft minecraft, World world, BlockPos pos) {
         TileAlfsteelPylon te = getTile(world, pos);
-        int color = 4474111;
+        int color = 0xEE7C00;
         BotaniaAPIClient.instance().drawSimpleManaHUD(matrixStack, color, te.getCurrentMana(), TileAlfsteelPylon.MAX_MANA, "Alfsteel Pylon");
     }
 
@@ -103,5 +107,10 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
             MythicNetwork.requestTE(world, pos);
         }
         return true;
+    }
+
+    @Override
+    public float getEnchantPowerBonus(BlockState state, IWorldReader world, BlockPos pos) {
+        return 15;
     }
 }

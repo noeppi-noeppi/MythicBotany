@@ -1,8 +1,10 @@
 package mythicbotany.pylon;
 
+import mythicbotany.ModBlocks;
 import mythicbotany.base.TileEntityMana;
 import mythicbotany.network.MythicNetwork;
 import mythicbotany.network.PylonHandler;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -33,17 +35,16 @@ public class TileAlfsteelPylon extends TileEntityMana implements ITickableTileEn
             if (items.size() == 1) {
                 ItemEntity item = items.get(0);
                 ItemStack stack = item.getItem();
-                if (!stack.isEmpty() && stack.getCount() == 1) {
-                    if (stack.getItem() instanceof PylonRepairable && ((PylonRepairable) stack.getItem()).canRepair(stack)) {
-                        int manaCost = ((PylonRepairable) stack.getItem()).getRepairManaPerTick(stack);
-                        if (mana >= manaCost) {
+                PylonRepairable repairable = PylonRepairables.getRepairInfo(stack);
+                if (repairable != null && stack.getCount() == 1) {
+                    int manaCost = repairable.getRepairManaPerTick(stack);
+                    if (mana >= manaCost) {
                             mana -= manaCost;
-                            stack = ((PylonRepairable) stack.getItem()).repairOneTick(stack);
+                            stack = repairable.repairOneTick(stack);
                             item.setItem(stack);
                             markDirty();
                             MythicNetwork.INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new PylonHandler.PylonMessage(world.func_234923_W_().getRegistryName(), pos));
                         }
-                    }
                 }
             }
         }

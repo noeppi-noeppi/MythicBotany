@@ -1,0 +1,23 @@
+{
+  "type": "botania:petal_apothecary",
+  "output": {
+    "item": "mythicbotany:hellebore"
+  },
+  "ingredients": [
+    {
+      "tag": "botania:petals/red"
+    },
+    {
+      "tag": "botania:petals/red"
+    },
+    {
+      "tag": "botania:petals/purple"
+    },
+    {
+      "tag": "botania:petals/cyan"
+    },
+    {
+      "tag": "botania:runes/fire"
+    }
+  ]
+}

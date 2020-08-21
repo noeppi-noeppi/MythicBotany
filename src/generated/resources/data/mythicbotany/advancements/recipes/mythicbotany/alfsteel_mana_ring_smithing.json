@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "mythicbotany:alfsteel_mana_ring_smithing"
+    ]
+  },
+  "criteria": {
+    "alfsteel_mana_ring_criteria": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "botania:mana_ring_greater"
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "mythicbotany:alfsteel_mana_ring_smithing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "alfsteel_mana_ring_criteria",
+      "has_the_recipe"
+    ]
+  ]
+}

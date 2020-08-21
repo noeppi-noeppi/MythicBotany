@@ -1,48 +1,39 @@
 package mythicbotany;
 
-import com.google.common.collect.ImmutableSet;
 import mythicbotany.base.Registerable;
 import mythicbotany.data.DataGenerators;
 import mythicbotany.infuser.InfuserRecipe;
 import mythicbotany.network.MythicNetwork;
-import mythicbotany.pylon.RenderAlfsteelPylon;
+import mythicbotany.pylon.PylonRepairables;
 import mythicbotany.runic.RunicSpellRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.RecipeManager;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DeferredWorkQueue;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import vazkii.botania.common.Botania;
-import vazkii.botania.common.item.equipment.tool.terrasteel.ItemTerraAxe;
-import vazkii.botania.common.item.equipment.tool.terrasteel.ItemTerraPick;
-import vazkii.botania.common.lib.ResourceLocationHelper;
+import top.theillusivec4.curios.api.SlotTypePreset;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod("mythicbotany")
 public class MythicBotany {
@@ -54,16 +45,17 @@ public class MythicBotany {
     public static final ItemGroup TAB = new ItemGroup(MODID) {
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(ModItems.alfsteelIngot);
+            return new ItemStack(ModItems.alfsteelSword);
         }
     };
 
     private static boolean registered = false;
-    private static final Set<Pair<String, Object>> registerables = new HashSet<>();
+    private static final List<Pair<String, Object>> registerables = new ArrayList<>();
 
     public MythicBotany() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::sendIMC);
         MinecraftForge.EVENT_BUS.addListener(this::serverStart);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(DataGenerators::gatherData);
@@ -74,7 +66,6 @@ public class MythicBotany {
     private static void register() {
         ModItems.register();
         ModBlocks.register();
-        Set<Pair<String, Object>> r = registerables;
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -94,6 +85,9 @@ public class MythicBotany {
                 new ItemStack(vazkii.botania.common.item.ModItems.pixieDust));
 
         InfuserRecipe.add(new RunicSpellRecipe(100000, 0xFFFFFF, 0xFFFFFF));
+
+        PylonRepairables.register(new PylonRepairables.ItemPylonRepairable(), PylonRepairables.PRIORITY_ITEM_WITH_INTERFACE);
+        PylonRepairables.register(new PylonRepairables.MendingPylonRepairable(), PylonRepairables.PRIORITY_MENDING);
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
@@ -104,18 +98,18 @@ public class MythicBotany {
             }
         }
         registerables.stream().filter(pair -> pair.getRight() instanceof Registerable).forEach(pair -> ((Registerable) pair.getRight()).registerClient(pair.getLeft()));
+    }
 
-        ClientRegistry.bindTileEntityRenderer(ModBlocks.alfsteelPylon.getTileType(), RenderAlfsteelPylon::new);
+    private void sendIMC(final InterModEnqueueEvent event) {
+        InterModComms.sendTo("curios", "register_type", () -> SlotTypePreset.RING.getMessageBuilder().size(3).build());
 
-        ItemModelsProperties.func_239418_a_(ModItems.alfsteelAxe, new ResourceLocation(MODID, "active"), (stack, world, entity) -> entity instanceof PlayerEntity && !ItemTerraAxe.shouldBreak((PlayerEntity) entity) ? 0.0F : 1.0F);
-        ItemModelsProperties.func_239418_a_(ModItems.alfsteelPick, new ResourceLocation(MODID, "tipped"), (stack, world, entity) -> ItemTerraPick.isTipped(stack) ? 1.0F : 0.0F);
-        ItemModelsProperties.func_239418_a_(ModItems.alfsteelPick, new ResourceLocation(MODID, "active"), (stack, world, entity) -> ItemTerraPick.isEnabled(stack) ? 1.0F : 0.0F);
     }
 
     public static void register(String id, Object obj) {
         registerables.add(Pair.of(id, obj));
         if (obj instanceof Registerable) {
             ((Registerable) obj).getAdditionalRegisters().forEach(o -> register(id, o));
+            ((Registerable) obj).getNamedAdditionalRegisters().forEach((str, o) -> register(id + "_" + str, o));
         }
     }
 
@@ -217,6 +211,20 @@ public class MythicBotany {
             registerables.stream().filter(pair -> pair.getRight() instanceof Biome).forEach(pair -> {
                 ((Biome) pair.getRight()).setRegistryName(new ResourceLocation(MODID, pair.getLeft()));
                 event.getRegistry().register((Biome) pair.getRight());
+            });
+        }
+
+        @SubscribeEvent
+        public static void onRecipeTypesRegistry(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
+            synchronized (registerables) {
+                if (!registered) {
+                    registered = true;
+                    register();
+                }
+            }
+            registerables.stream().filter(pair -> pair.getRight() instanceof IRecipeSerializer<?>).forEach(pair -> {
+                ((IRecipeSerializer<?>) pair.getRight()).setRegistryName(new ResourceLocation(MODID, pair.getLeft()));
+                event.getRegistry().register((IRecipeSerializer<?>) pair.getRight());
             });
         }
     }

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "mythicbotany:wither_aconite_floating",
+  "ingredients": [
+    {
+      "tag": "botania:floating_flowers"
+    },
+    {
+      "item": "mythicbotany:wither_aconite"
+    }
+  ],
+  "result": {
+    "item": "mythicbotany:wither_aconite_floating"
+  }
+}

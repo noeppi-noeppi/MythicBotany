@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "mythicbotany:asgard_rune",
+    "mythicbotany:vanaheim_rune",
+    "mythicbotany:alfheim_rune",
+    "mythicbotany:midgard_rune",
+    "mythicbotany:joetunheim_rune",
+    "mythicbotany:muspelheim_rune",
+    "mythicbotany:niflheim_rune",
+    "mythicbotany:nidavellir_rune",
+    "mythicbotany:helheim_rune"
+  ]
+}

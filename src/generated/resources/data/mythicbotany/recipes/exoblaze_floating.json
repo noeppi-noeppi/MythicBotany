@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "mythicbotany:exoblaze_floating",
+  "ingredients": [
+    {
+      "tag": "botania:floating_flowers"
+    },
+    {
+      "item": "mythicbotany:exoblaze"
+    }
+  ],
+  "result": {
+    "item": "mythicbotany:exoblaze_floating"
+  }
+}

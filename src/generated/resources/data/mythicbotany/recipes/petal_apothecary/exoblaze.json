@@ -1,0 +1,26 @@
+{
+  "type": "botania:petal_apothecary",
+  "output": {
+    "item": "mythicbotany:exoblaze"
+  },
+  "ingredients": [
+    {
+      "tag": "botania:petals/yellow"
+    },
+    {
+      "tag": "botania:petals/yellow"
+    },
+    {
+      "tag": "botania:petals/gray"
+    },
+    {
+      "tag": "botania:petals/light_gray"
+    },
+    {
+      "tag": "botania:runes/fire"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    }
+  ]
+}
