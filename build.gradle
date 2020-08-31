@@ -18,9 +18,9 @@ apply plugin: 'maven-publish'
 //apply plugin: 'org.spongepowered.mixin'
 
 
-version = '0.0.1'
+version = '1.16.2-0.0.1'
 group = 'io.github.noeppi_noeppi.mods'
-archivesBaseName = 'MythicBotany-1.16.2'
+archivesBaseName = 'MythicBotany'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
