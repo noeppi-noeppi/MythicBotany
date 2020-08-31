@@ -54,21 +54,21 @@ public class ItemTagProvider extends ItemTagsProvider {
 
 	public void addDefaultItemTag(Item item) {
 		if (item instanceof ItemRune) {
-			this.func_240522_a_(ModTags.Items.RUNES).func_240534_a_(item);
+			this.getOrCreateBuilder(ModTags.Items.RUNES).add(item);
 		}
 	}
 
 	public void addDefaultBlockItemTag(Block block) {
 		if (block instanceof BlockFunctionalFlower<?>) {
-			this.func_240522_a_(ModTags.Items.SPECIAL_FLOWERS).func_240534_a_(block.asItem());
+			this.getOrCreateBuilder(ModTags.Items.SPECIAL_FLOWERS).add(block.asItem());
 			if (((BlockFunctionalFlower<?>) block).isGenerating) {
-				this.func_240522_a_(ModTags.Items.GENERATING_SPECIAL_FLOWERS).func_240534_a_(block.asItem());
+				this.getOrCreateBuilder(ModTags.Items.GENERATING_SPECIAL_FLOWERS).add(block.asItem());
 			} else {
-				this.func_240522_a_(ModTags.Items.FUNCTIONAL_SPECIAL_FLOWERS).func_240534_a_(block.asItem());
+				this.getOrCreateBuilder(ModTags.Items.FUNCTIONAL_SPECIAL_FLOWERS).add(block.asItem());
 			}
 		} else if (block instanceof BlockFloatingFunctionalFlower<?>) {
-			this.func_240522_a_(ModTags.Items.FLOATING_FLOWERS).func_240534_a_(block.asItem());
-			this.func_240522_a_(ModTags.Items.SPECIAL_FLOATING_FLOWERS).func_240534_a_(block.asItem());
+			this.getOrCreateBuilder(ModTags.Items.FLOATING_FLOWERS).add(block.asItem());
+			this.getOrCreateBuilder(ModTags.Items.SPECIAL_FLOATING_FLOWERS).add(block.asItem());
 		}
 	}
 }

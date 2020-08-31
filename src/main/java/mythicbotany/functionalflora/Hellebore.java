@@ -3,7 +3,7 @@ package mythicbotany.functionalflora;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
 import mythicbotany.network.MythicNetwork;
 import net.minecraft.entity.monster.HoglinEntity;
-import net.minecraft.entity.monster.piglin.PiglinEntity;
+import net.minecraft.entity.monster.piglin.AbstractPiglinEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -26,11 +26,11 @@ public class Hellebore extends FunctionalFlowerBase {
         if (!world.isRemote) {
             int prevMana = mana;
 
-            List<PiglinEntity> piglins = world.getEntitiesWithinAABB(PiglinEntity.class, new AxisAlignedBB(pos.getX() - 5.5, pos.getY() - 2, pos.getZ() - 5.5, pos.getX() + 6.5, pos.getY() + 3, pos.getZ() + 6.5));
-            for (PiglinEntity piglin : piglins) {
-                if (mana >= MANA_PER_ENTITY_AND_SECOND && piglin.timeInOverworld > 20) {
+            List<AbstractPiglinEntity> piglins = world.getEntitiesWithinAABB(AbstractPiglinEntity.class, new AxisAlignedBB(pos.getX() - 5.5, pos.getY() - 2, pos.getZ() - 5.5, pos.getX() + 6.5, pos.getY() + 3, pos.getZ() + 6.5));
+            for (AbstractPiglinEntity piglin : piglins) {
+                if (mana >= MANA_PER_ENTITY_AND_SECOND && piglin.field_242334_c > 20) {
                     mana -= MANA_PER_ENTITY_AND_SECOND;
-                    piglin.timeInOverworld = 0;
+                    piglin.field_242334_c = 0;
                     MythicNetwork.spawnParticle(world, ParticleTypes.FLAME, 10, piglin.getPosX(), piglin.getPosY(), piglin.getPosZ(), 0, 0.05, 0, 0.4, 0.8, 0.4, true);
                 }
             }

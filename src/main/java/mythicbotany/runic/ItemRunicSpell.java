@@ -33,10 +33,10 @@ public class ItemRunicSpell extends ItemBase {
     public void addInformation(@Nonnull ItemStack stack, World world, @Nonnull List<ITextComponent> list, @Nonnull ITooltipFlag flags) {
         Affinities aff = RuneSpell.getAffinities(getRune(stack, 1), getRune(stack, 2), getRune(stack, 3));
         if (aff == null) {
-            list.add(new TranslationTextComponent("tooltip.mythicbotany.affinity.invalid").func_240699_a_(TextFormatting.LIGHT_PURPLE));
+            list.add(new TranslationTextComponent("tooltip.mythicbotany.affinity.invalid").mergeStyle(TextFormatting.LIGHT_PURPLE));
         } else {
-            list.add(new StringTextComponent(aff.translatedString()).func_240699_a_(TextFormatting.LIGHT_PURPLE));
-            list.add(new TranslationTextComponent("tooltip.mythicbotany.affinity.manacost", Integer.toString(aff.manaCost)).func_240699_a_(TextFormatting.LIGHT_PURPLE));
+            list.add(new StringTextComponent(aff.translatedString()).mergeStyle(TextFormatting.LIGHT_PURPLE));
+            list.add(new TranslationTextComponent("tooltip.mythicbotany.affinity.manacost", Integer.toString(aff.manaCost)).mergeStyle(TextFormatting.LIGHT_PURPLE));
         }
     }
 

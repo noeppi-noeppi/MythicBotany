@@ -28,6 +28,6 @@ public class BlockTagProvider extends BlockTagsProvider {
 
 	@Override
 	protected void registerTags() {
-		func_240522_a_(BlockTags.BEACON_BASE_BLOCKS).func_240532_a_(ModBlocks.alfsteelBlock);
+		getOrCreateBuilder(BlockTags.BEACON_BASE_BLOCKS).add(ModBlocks.alfsteelBlock);
 	}
 }

@@ -16,7 +16,6 @@ import net.minecraft.potion.Effect;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -197,20 +196,6 @@ public class MythicBotany {
             registerables.stream().filter(pair -> pair.getRight() instanceof Effect).forEach(pair -> {
                 ((Effect) pair.getRight()).setRegistryName(new ResourceLocation(MODID, pair.getLeft()));
                 event.getRegistry().register((Effect) pair.getRight());
-            });
-        }
-
-        @SubscribeEvent
-        public static void onBiomesRegistry(final RegistryEvent.Register<Biome> event) {
-            synchronized (registerables) {
-                if (!registered) {
-                    registered = true;
-                    register();
-                }
-            }
-            registerables.stream().filter(pair -> pair.getRight() instanceof Biome).forEach(pair -> {
-                ((Biome) pair.getRight()).setRegistryName(new ResourceLocation(MODID, pair.getLeft()));
-                event.getRegistry().register((Biome) pair.getRight());
             });
         }
 

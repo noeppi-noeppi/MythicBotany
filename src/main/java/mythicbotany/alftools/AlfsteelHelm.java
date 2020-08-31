@@ -121,13 +121,13 @@ public class AlfsteelHelm extends ItemTerrasteelHelm implements PylonRepairable 
     public void addArmorSetDescription(ItemStack stack, List<ITextComponent> list) {
         super.addArmorSetDescription(stack, list);
         if (stack.getItem() == ModItems.alfsteelHelmet) {
-            list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_helmet.description")).func_240699_a_(TextFormatting.GOLD));
+            list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_helmet.description")).mergeStyle(TextFormatting.GOLD));
         } else if (stack.getItem() == ModItems.alfsteelChest) {
-            list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_chestplate.description")).func_240699_a_(TextFormatting.GOLD));
+            list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_chestplate.description")).mergeStyle(TextFormatting.GOLD));
         } else if (stack.getItem() == ModItems.alfsteelLegs) {
-            list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_leggings.description")).func_240699_a_(TextFormatting.GOLD));
+            list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_leggings.description")).mergeStyle(TextFormatting.GOLD));
         } else if (stack.getItem() == ModItems.alfsteelBoots) {
-            list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_boots.description")).func_240699_a_(TextFormatting.GOLD));
+            list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_boots.description")).mergeStyle(TextFormatting.GOLD));
         }
     }
 

@@ -89,7 +89,7 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
         FunctionalFlowerBase te = getTile(world, pos);
         String name = I18n.format(getNonFloatingBlock().getTranslationKey());
         // noinspection deprecation,deprecation
-        BotaniaAPIClient.instance().drawComplexManaHUD(matrixStack, te.color, te.getCurrentMana(), te.maxMana, name, Registry.ITEM.getValue(getNonFloatingBlock().isGenerating ? SPREADER_ID : POOL_ID).map(ItemStack::new).orElse(ItemStack.EMPTY), te.isValidBinding());
+        BotaniaAPIClient.instance().drawComplexManaHUD(matrixStack, te.color, te.getCurrentMana(), te.maxMana, name, Registry.ITEM.func_241873_b(getNonFloatingBlock().isGenerating ? SPREADER_ID : POOL_ID).map(ItemStack::new).orElse(ItemStack.EMPTY), te.isValidBinding());
     }
 
     @Override
@@ -125,14 +125,14 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
     public void addInformation(@Nonnull ItemStack stack, @Nullable IBlockReader world, @Nonnull List<ITextComponent> list, @Nonnull ITooltipFlag flag) {
         super.addInformation(stack, world, list, flag);
         if (getNonFloatingBlock().isGenerating) {
-            list.add(new TranslationTextComponent("botania.flowerType.generating").func_240701_a_(TextFormatting.BLUE, TextFormatting.ITALIC));
+            list.add(new TranslationTextComponent("botania.flowerType.generating").mergeStyle(TextFormatting.BLUE, TextFormatting.ITALIC));
 
         } else {
-            list.add(new TranslationTextComponent("botania.flowerType.functional").func_240701_a_(TextFormatting.BLUE, TextFormatting.ITALIC));
+            list.add(new TranslationTextComponent("botania.flowerType.functional").mergeStyle(TextFormatting.BLUE, TextFormatting.ITALIC));
 
         }
         //noinspection ConstantConditions
-        list.add(new TranslationTextComponent("block." + MythicBotany.MODID + "." + this.getNonFloatingBlock().getRegistryName().getPath() + ".description").func_240701_a_(TextFormatting.GRAY, TextFormatting.ITALIC));
+        list.add(new TranslationTextComponent("block." + MythicBotany.MODID + "." + this.getNonFloatingBlock().getRegistryName().getPath() + ".description").mergeStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
     }
 
     @SuppressWarnings("deprecation")
