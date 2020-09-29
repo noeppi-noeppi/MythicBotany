@@ -12,6 +12,7 @@ import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
 import mythicbotany.recipes.RecipeInfuser;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -90,10 +91,12 @@ public class InfusionCategory implements IRecipeCategory<RecipeInfuser> {
         RenderSystem.enableAlphaTest();
         RenderSystem.enableBlend();
         this.overlay.draw(matrixStack);
-        HUDHandler.renderManaBar(matrixStack, 28, 105, 255, 0.75F, recipe.getManaUsage(), 8000000);
+        HUDHandler.renderManaBar(matrixStack, 24, 105, 255, 0.75F, recipe.getManaUsage(), 8000000);
         RenderSystem.disableBlend();
         RenderSystem.disableAlphaTest();
-        Minecraft.getInstance().fontRenderer.drawString(matrixStack, new BigDecimal(recipe.getManaUsage() / (double) 1000000).setScale(2, RoundingMode.HALF_UP).toPlainString() + " Mana Pools", 29, 115, Color.BLACK.getRGB());
+        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
+        String text = new BigDecimal(recipe.getManaUsage() / (double) 1000000).setScale(2, RoundingMode.HALF_UP).toPlainString() + " Mana Pools";
+        fontRenderer.drawString(matrixStack, text, (float) (75 - fontRenderer.getStringWidth(text) / 2), 114, Color.BLACK.getRGB());
     }
 
     @Override
