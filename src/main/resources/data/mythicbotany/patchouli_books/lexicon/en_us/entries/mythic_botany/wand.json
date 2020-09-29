@@ -1,0 +1,13 @@
+{
+  "name": "lexicon.mythicbotany.wand.title",
+  "category": "mythicbotany:mythic_botany",
+  "icon": "mythicbotany:dreamwood_twig_wand",
+  "entry_color": "aa00",
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "mythicbotany:dreamwood_twig_wand",
+      "text": "lexicon.mythicbotany.wand.page1"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "mythicbotany:ice_ring",
+  "pattern": [
+    "gm ",
+    "m m",
+    " m "
+  ],
+  "key": {
+    "m": {
+      "item": "botania:elementium_ingot"
+    },
+    "g": {
+      "item": "mythicbotany:niflheim_rune"
+    }
+  },
+  "result": {
+    "item": "mythicbotany:ice_ring"
+  }
+}

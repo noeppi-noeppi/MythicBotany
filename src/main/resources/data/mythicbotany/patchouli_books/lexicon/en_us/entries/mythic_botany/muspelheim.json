@@ -1,0 +1,13 @@
+{
+  "name": "item.mythicbotany.fire_ring",
+  "category": "mythicbotany:mythic_botany",
+  "icon": "mythicbotany:fire_ring",
+  "entry_color": "aa00",
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "mythicbotany:fire_ring",
+      "text": "lexicon.mythicbotany.muspelheim.page1"
+    }
+  ]
+}

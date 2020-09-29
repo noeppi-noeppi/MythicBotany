@@ -74,10 +74,32 @@
   "lexicon.mythicbotany.tools.page1": "For a long time now you thought diamond was the best you could reach without the power of a botanist. Then came netherite. It's the same with terrasteel and alfsteel. So just like diamond you can upgrade terrasteel tools and armor to their alfsteel counterparts via smithing. This improvement comes with higher mana costs to use those tools.",
   "lexicon.mythicbotany.tools.page2": "This doubled ingot is reqired for terrasteel armor to be upgraded to alfsteel.",
   "lexicon.mythicbotany.tools.page3": "This sword does much more damage and you can swing it much faster.",
-  "lexicon.mythicbotany.tools.page4": "Despite being able to chop down whole trees in just seconds this axe can pull nearby items towards you when doing a shif right-click.",
-  "lexicon.mythicbotany.tools.page5": "",
-  "lexicon.mythicbotany.tools.page6": "",
-  "lexicon.mythicbotany.tools.page7": "",
-  "lexicon.mythicbotany.tools.page8": "",
-  "lexicon.mythicbotany.tools.page9": ""
+  "lexicon.mythicbotany.tools.page4": "Despite being able to chop down whole trees in just seconds this axe can pull nearby items towards you when doing a shift right-click.",
+  "lexicon.mythicbotany.tools.page5": "This pickaxe is able to area-mine even more blocks at once. It mines multiple blocks in the direction you're looking as well.",
+  "lexicon.mythicbotany.tools.page6": "This helmet can get all ancient wills like the terrasteel but it also makes you reach further with your arms.",
+  "lexicon.mythicbotany.tools.page7": "The knockback resistance of this chestplate is as high as the knockback resistance of a full terrasteel armor set.",
+  "lexicon.mythicbotany.tools.page8": "This leggings drastically improves your walking speed.",
+  "lexicon.mythicbotany.tools.page9": "Those shoes make you jump much higher into the sky.",
+
+  "lexicon.mythicbotany.manaband.title": "Alfsteel Mana Bands",
+  "lexicon.mythicbotany.manaband.page1": "By upgrading the $(l:botania:baubles/mana_ring)Greater Band of Mana$() with some alfsteel in the smithing table, you get a new band of mana that is capable of holding about twice as much mana as before.",
+  "lexicon.mythicbotany.manaband.page2": "Just like the Greater Band of Mana you can also upgrade the $(l:botania:baubles/aura_ring)Greater Band of Aura$() to produce mana at a much faster rate.",
+
+  "lexicon.mythicbotany.pylon.title": "Alfsteel Pylons",
+  "lexicon.mythicbotany.pylon.page1": "Those pylons are required to craft the Gaia Pylon. They can also receive mana from spreaders and repair alfsteel tools and tools enchanted with mending that are thrown on top of it. When repairing alfsteel tools you pay less mana than when using a mana tablet in your inventory.",
+
+  "lexicon.mythicbotany.wand.title": "Dreamwood wands",
+  "lexicon.mythicbotany.wand.page1": "Just like livingwood, dreamwood can be used to create wands of the forest.",
+
+  "lexicon.mythicbotany.muspelheim.page1": "This ring makes you immune to all kind of fire damage and makes you ignite someone when you attack him.",
+  "lexicon.mythicbotany.niflheim.page1": "When you attack something, it gets a very strong slowness effect for a short time and you're immune to cramming and in-wall damage.",
+
+  "lexicon.mythicbotany.generating.title": "Generating Flora",
+  "lexicon.mythicbotany.generating.page1": "The wither aconite uses up nether stars droppen on it to create mana from them.",
+  "lexicon.mythicbotany.generating.page2": "At some point in time your flowers will create mana that fast that spreaders are not enough to handle it. The this comes in. It allows the mana of flowers to be inserted into the spark network directly.",
+
+  "lexicon.mythicbotany.functional.title": "Functional Flora",
+  "lexicon.mythicbotany.functional.page1": "The Exoblaze uses mana to fill the fuel of nearby brewing stands. Never put blaze powder in again.",
+  "lexicon.mythicbotany.functional.page2": "The Aquapanthus uses a very small amount of mana to fill nearby culdrons and petal apothecaries with water.",
+  "lexicon.mythicbotany.functional.page3": "Piglins and Hoglins that are near a Hellebore will not turn into zombies as long as the flower has enough mana."
 }
