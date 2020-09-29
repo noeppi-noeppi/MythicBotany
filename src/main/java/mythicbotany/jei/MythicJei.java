@@ -8,7 +8,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
-import mythicbotany.infuser.InfuserRecipe;
+import mythicbotany.recipes.IInfuserRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @JeiPlugin
 public class MythicJei implements IModPlugin {
@@ -44,7 +45,7 @@ public class MythicJei implements IModPlugin {
         ClientWorld world = Minecraft.getInstance().world;
         RecipeManager recipes = Objects.requireNonNull(world).getRecipeManager();
 
-        registration.addRecipes(InfuserRecipe.getRecipes(), InfusionCategory.UID);
+        registration.addRecipes(recipes.getRecipes().stream().filter(recipe -> recipe instanceof IInfuserRecipe).collect(Collectors.toList()), InfusionCategory.UID);
     }
 
     @Override

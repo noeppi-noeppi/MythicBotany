@@ -2,9 +2,9 @@ package mythicbotany;
 
 import mythicbotany.base.Registerable;
 import mythicbotany.data.DataGenerators;
-import mythicbotany.infuser.InfuserRecipe;
 import mythicbotany.network.MythicNetwork;
 import mythicbotany.pylon.PylonRepairables;
+import mythicbotany.recipes.RecipeTypes;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
@@ -57,6 +57,7 @@ public class MythicBotany {
         MinecraftForge.EVENT_BUS.addListener(this::serverStart);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(DataGenerators::gatherData);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, RecipeTypes::register);
 
         MinecraftForge.EVENT_BUS.register(new EventListener());
     }
@@ -69,18 +70,6 @@ public class MythicBotany {
     private void setup(final FMLCommonSetupEvent event) {
         LOGGER.info("Loading MythicBotany v" + VERSION);
         MythicNetwork.registerPackets();
-
-        InfuserRecipe.add(new ItemStack(vazkii.botania.common.item.ModItems.terrasteel),
-                500000, 0x0000FF, 0x00FF00,
-                new ItemStack(vazkii.botania.common.item.ModItems.manaSteel),
-                new ItemStack(vazkii.botania.common.item.ModItems.manaDiamond),
-                new ItemStack(vazkii.botania.common.item.ModItems.manaPearl));
-
-        InfuserRecipe.add(new ItemStack(ModItems.alfsteelIngot),
-                2000000, 0xFF008D, 0xFF9600,
-                new ItemStack(vazkii.botania.common.item.ModItems.elementium),
-                new ItemStack(vazkii.botania.common.item.ModItems.dragonstone),
-                new ItemStack(vazkii.botania.common.item.ModItems.pixieDust));
 
         PylonRepairables.register(new PylonRepairables.ItemPylonRepairable(), PylonRepairables.PRIORITY_ITEM_WITH_INTERFACE);
         PylonRepairables.register(new PylonRepairables.MendingPylonRepairable(), PylonRepairables.PRIORITY_MENDING);
@@ -113,7 +102,7 @@ public class MythicBotany {
         RecipeRemover.removeRecipes(event.getServer().getRecipeManager());
     }
 
-    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
 
         @SubscribeEvent

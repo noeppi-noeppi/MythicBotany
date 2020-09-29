@@ -1,6 +1,5 @@
 package mythicbotany.jei;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mezz.jei.api.constants.VanillaTypes;
@@ -11,10 +10,11 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
-import mythicbotany.infuser.InfuserRecipe;
+import mythicbotany.recipes.RecipeInfuser;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector2f;
 import vazkii.botania.client.core.handler.HUDHandler;
@@ -24,10 +24,12 @@ import javax.annotation.Nonnull;
 import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class InfusionCategory implements IRecipeCategory<InfuserRecipe> {
+public class InfusionCategory implements IRecipeCategory<RecipeInfuser> {
 
     public static final ResourceLocation UID = new ResourceLocation(MythicBotany.MODID, "jei_category_infusion");
 
@@ -51,8 +53,8 @@ public class InfusionCategory implements IRecipeCategory<InfuserRecipe> {
 
     @Nonnull
     @Override
-    public Class<? extends InfuserRecipe> getRecipeClass() {
-        return InfuserRecipe.class;
+    public Class<? extends RecipeInfuser> getRecipeClass() {
+        return RecipeInfuser.class;
     }
 
     @Nonnull
@@ -74,25 +76,28 @@ public class InfusionCategory implements IRecipeCategory<InfuserRecipe> {
     }
 
     @Override
-    public void setIngredients(InfuserRecipe recipe, @Nonnull IIngredients ii) {
-        List<List<ItemStack>> list = recipe.displayIngredients();
+    public void setIngredients(RecipeInfuser recipe, @Nonnull IIngredients ii) {
+        List<List<ItemStack>> list = new ArrayList<>();
+        for (Ingredient ingredient : recipe.getIngredients()) {
+            list.add(Arrays.asList(ingredient.getMatchingStacks()));
+        }
         ii.setInputLists(VanillaTypes.ITEM, list);
-        ii.setOutputLists(VanillaTypes.ITEM, ImmutableList.of(recipe.displayResult()));
+        ii.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
     }
 
     @SuppressWarnings("deprecation")
-    public void draw(InfuserRecipe recipe, @Nonnull MatrixStack matrixStack, double mouseX, double mouseY) {
+    public void draw(RecipeInfuser recipe, @Nonnull MatrixStack matrixStack, double mouseX, double mouseY) {
         RenderSystem.enableAlphaTest();
         RenderSystem.enableBlend();
         this.overlay.draw(matrixStack);
-        HUDHandler.renderManaBar(matrixStack, 28, 105, 255, 0.75F, recipe.manaCost, 8000000);
+        HUDHandler.renderManaBar(matrixStack, 28, 105, 255, 0.75F, recipe.getManaUsage(), 8000000);
         RenderSystem.disableBlend();
         RenderSystem.disableAlphaTest();
-        Minecraft.getInstance().fontRenderer.drawString(matrixStack, new BigDecimal(recipe.manaCost / (double) 1000000).setScale(2, RoundingMode.HALF_UP).toPlainString() + " Mana Pools", 29, 115, Color.BLACK.getRGB());
+        Minecraft.getInstance().fontRenderer.drawString(matrixStack, new BigDecimal(recipe.getManaUsage() / (double) 1000000).setScale(2, RoundingMode.HALF_UP).toPlainString() + " Mana Pools", 29, 115, Color.BLACK.getRGB());
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull InfuserRecipe recipe, @Nonnull IIngredients ii) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull RecipeInfuser recipe, @Nonnull IIngredients ii) {
         layout.getItemStacks().init(0, true, 64, 52);
         layout.getItemStacks().set(0, new ItemStack(ModBlocks.manaInfuser));
         int index = 1;

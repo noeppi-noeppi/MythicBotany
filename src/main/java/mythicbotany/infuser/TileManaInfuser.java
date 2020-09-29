@@ -3,6 +3,7 @@ package mythicbotany.infuser;
 import com.google.common.base.Predicates;
 import mythicbotany.base.TileEntityBase;
 import mythicbotany.network.MythicNetwork;
+import mythicbotany.recipes.RecipeInfuser;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -29,7 +30,7 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
     private int mana;
     private boolean active;
     @Nullable
-    private transient InfuserRecipe recipe;
+    private transient RecipeInfuser recipe;
     @Nullable
     private ItemStack output;
 
@@ -48,7 +49,7 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
         if (world.isRemote || !hasValidPlatform())
             return;
         if (active && recipe != null && mana > 0) {
-            MythicNetwork.spawnInfusionParticles(world, pos, mana / (float) recipe.manaCost, recipe.fromColor, recipe.toColor);
+            MythicNetwork.spawnInfusionParticles(world, pos, mana / (float) recipe.getManaUsage(), recipe.fromColor(), recipe.toColor());
         }
         List<ItemEntity> items = getItems();
         List<ItemStack> stacks = items.stream().map(ItemEntity::getItem).collect(Collectors.toList());
@@ -63,7 +64,7 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
                 output = null;
                 world.updateComparatorOutputLevel(this.pos, this.getBlockState().getBlock());
                 markDirty();
-            } else if (mana >= recipe.manaCost) {
+            } else if (mana >= recipe.getManaUsage()) {
                 active = false;
                 recipe = null;
                 fromColor = -1;
@@ -78,22 +79,22 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
                 markDirty();
             }
         } else {
-            Pair<InfuserRecipe, ItemStack> match = InfuserRecipe.getOutput(stacks);
+            Pair<RecipeInfuser, ItemStack> match = RecipeInfuser.getOutput(this.world, stacks);
             if (match != null) {
                 if (!active) {
                     active = true;
                     recipe = match.getLeft();
                     mana = 0;
-                    maxMana = recipe.manaCost;
-                    fromColor = recipe.fromColor;
-                    toColor = recipe.toColor;
+                    maxMana = recipe.getManaUsage();
+                    fromColor = recipe.fromColor();
+                    toColor = recipe.toColor();
                     output = match.getRight();
                 } else {
                     recipe = match.getLeft();
-                    mana = MathHelper.clamp(mana, 0, recipe.manaCost);
-                    maxMana = recipe.manaCost;
-                    fromColor = recipe.fromColor;
-                    toColor = recipe.toColor;
+                    mana = MathHelper.clamp(mana, 0, recipe.getManaUsage());
+                    maxMana = recipe.getManaUsage();
+                    fromColor = recipe.fromColor();
+                    toColor = recipe.toColor();
                     output = match.getRight();
                 }
                 world.updateComparatorOutputLevel(this.pos, this.getBlockState().getBlock());
@@ -144,7 +145,7 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
     @Override
     public int getAvailableSpaceForMana() {
         if (recipe != null) {
-            return Math.max(0, recipe.manaCost - mana);
+            return Math.max(0, recipe.getManaUsage() - mana);
         } else {
             return 0;
         }
@@ -172,14 +173,14 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
         if (recipe == null) {
             return true;
         } else {
-            return mana >= recipe.manaCost;
+            return mana >= recipe.getManaUsage();
         }
     }
 
     @Override
     public void receiveMana(int i) {
         if (recipe != null) {
-            mana = MathHelper.clamp(mana + i, 0, recipe.manaCost);
+            mana = MathHelper.clamp(mana + i, 0, recipe.getManaUsage());
             //noinspection ConstantConditions
             world.updateComparatorOutputLevel(this.pos, this.getBlockState().getBlock());
             markDirty();
