@@ -1,0 +1,20 @@
+{
+  "type": "mythicbotany:infusion",
+  "output": {
+    "item": "mythicbotany:alfsteel_ingot"
+  },
+  "mana": 2000000,
+  "ingredients": [
+    {
+      "tag": "forge:ingots/elementium"
+    },
+    {
+      "tag": "forge:gems/dragonstone"
+    },
+    {
+      "item": "botania:pixie_dust"
+    }
+  ],
+  "fromColor": 16711821,
+  "toColor": 16750080
+}

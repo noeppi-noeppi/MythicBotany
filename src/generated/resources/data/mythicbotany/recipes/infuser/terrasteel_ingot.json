@@ -1,0 +1,20 @@
+{
+  "type": "mythicbotany:infusion",
+  "output": {
+    "item": "botania:terrasteel_ingot"
+  },
+  "mana": 500000,
+  "ingredients": [
+    {
+      "tag": "forge:ingots/manasteel"
+    },
+    {
+      "item": "botania:mana_pearl"
+    },
+    {
+      "tag": "forge:gems/mana_diamond"
+    }
+  ],
+  "fromColor": 255,
+  "toColor": 65280
+}
