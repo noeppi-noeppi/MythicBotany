@@ -17,7 +17,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.model.data.IModelData;
 import vazkii.botania.api.subtile.RadiusDescriptor;
@@ -84,11 +83,11 @@ public class RenderFunctionalFlower<T extends FunctionalFlowerBase> extends Tile
                         RadiusDescriptor descriptor = te.getRadius();
                         if (descriptor != null) {
                             matrixStack.push();
-                            matrixStack.translate((double) (-te.getPos().getX()), (double) (-te.getPos().getY()), (double) (-te.getPos().getZ()));
+                            matrixStack.translate(-te.getPos().getX(), -te.getPos().getY(), -te.getPos().getZ());
                             if (descriptor.isCircle()) {
                                 renderCircle(matrixStack, buffer, descriptor.getSubtileCoords(), descriptor.getCircleRadius());
                             } else {
-                                RenderTileSpecialFlower.renderRectangle(matrixStack, buffer, descriptor.getAABB(), true, (Integer) null, (byte) 32);
+                                RenderTileSpecialFlower.renderRectangle(matrixStack, buffer, descriptor.getAABB(), true, null, (byte) 32);
                             }
                             matrixStack.pop();
                         }
@@ -102,7 +101,7 @@ public class RenderFunctionalFlower<T extends FunctionalFlowerBase> extends Tile
         ItemStack stackHeld = PlayerHelper.getFirstHeldItem(view, ModItems.twigWand);
         if (!stackHeld.isEmpty() && ItemTwigWand.getBindMode(stackHeld)) {
             Optional<BlockPos> coords = ItemTwigWand.getBindingAttempt(stackHeld);
-            return coords.isPresent() && ((BlockPos) coords.get()).equals(tilePos);
+            return coords.isPresent() && coords.get().equals(tilePos);
         } else {
             return false;
         }
@@ -126,36 +125,28 @@ public class RenderFunctionalFlower<T extends FunctionalFlowerBase> extends Tile
         radius -= f;
         IVertexBuilder vertexBuffer = buffer.getBuffer(RenderHelper.CIRCLE);
         Matrix4f mat = matrixStack.getLast().getMatrix();
-        Runnable centerFunc = () -> {
-            vertexBuffer.pos(mat, 0.0F, f, 0.0F).color(r, g, b, alpha).endVertex();
-        };
+        Runnable centerFunc = () -> vertexBuffer.pos(mat, 0.0F, f, 0.0F).color(r, g, b, alpha).endVertex();
         List<Runnable> vertexFuncs = new ArrayList<>();
 
         for (int i = 0; i < totalAngles + 1; i += step) {
             double rad = (double) (totalAngles - i) * 3.141592653589793D / 180.0D;
             float xp = (float) (Math.cos(rad) * radius);
             float zp = (float) (Math.sin(rad) * radius);
-            vertexFuncs.add(() -> {
-                vertexBuffer.pos(mat, xp, f, zp).color(r, g, b, alpha).endVertex();
-            });
+            vertexFuncs.add(() -> vertexBuffer.pos(mat, xp, f, zp).color(r, g, b, alpha).endVertex());
         }
 
         RenderHelper.triangleFan(centerFunc, vertexFuncs);
-        radius += (double) f;
+        radius += f;
         float f1 = f + f / 4.0F;
         int alpha2 = 64;
-        centerFunc = () -> {
-            vertexBuffer.pos(mat, 0.0F, f1, 0.0F).color(r, g, b, alpha2).endVertex();
-        };
+        centerFunc = () -> vertexBuffer.pos(mat, 0.0F, f1, 0.0F).color(r, g, b, alpha2).endVertex();
         vertexFuncs.clear();
 
         for (int i = 0; i < totalAngles + 1; i += step) {
             double rad = (double) (totalAngles - i) * 3.141592653589793D / 180.0D;
             float xp = (float) (Math.cos(rad) * radius);
             float zp = (float) (Math.sin(rad) * radius);
-            vertexFuncs.add(() -> {
-                vertexBuffer.pos(mat, xp, f1, zp).color(r, g, b, alpha2).endVertex();
-            });
+            vertexFuncs.add(() -> vertexBuffer.pos(mat, xp, f1, zp).color(r, g, b, alpha2).endVertex());
         }
 
         RenderHelper.triangleFan(centerFunc, vertexFuncs);

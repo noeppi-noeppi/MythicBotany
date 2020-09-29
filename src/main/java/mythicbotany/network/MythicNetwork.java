@@ -6,7 +6,6 @@ import mythicbotany.network.TeUpdateHandler.TeUpdateMessage;
 import mythicbotany.network.TeRequestHandler.TeRequestMessage;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.ParticleType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -15,9 +14,7 @@ import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
-import org.spongepowered.asm.mixin.MixinEnvironment;
 
-import java.util.Objects;
 import java.util.Optional;
 
 public class MythicNetwork {

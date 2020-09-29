@@ -18,11 +18,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import vazkii.botania.api.mana.spark.ISparkAttachable;
 import vazkii.botania.api.mana.spark.ISparkEntity;
 import vazkii.botania.common.block.ModBlocks;
-import vazkii.botania.common.block.tile.TileRuneAltar;
-import vazkii.botania.common.block.tile.TileTerraPlate;
-import vazkii.botania.common.block.tile.mana.TileSpreader;
-import vazkii.botania.common.network.PacketBotaniaEffect;
-import vazkii.botania.common.network.PacketHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

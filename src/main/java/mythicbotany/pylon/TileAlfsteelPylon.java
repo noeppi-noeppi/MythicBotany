@@ -1,10 +1,8 @@
 package mythicbotany.pylon;
 
-import mythicbotany.ModBlocks;
 import mythicbotany.base.TileEntityMana;
 import mythicbotany.network.MythicNetwork;
 import mythicbotany.network.PylonHandler;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.ITickableTileEntity;

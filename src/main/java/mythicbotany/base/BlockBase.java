@@ -2,7 +2,6 @@ package mythicbotany.base;
 
 import com.google.common.collect.ImmutableSet;
 import mythicbotany.MythicBotany;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;

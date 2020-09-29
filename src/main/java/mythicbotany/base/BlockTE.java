@@ -5,13 +5,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import vazkii.botania.common.block.tile.TileTerraPlate;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.util.Set;

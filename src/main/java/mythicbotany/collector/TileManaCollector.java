@@ -34,11 +34,6 @@ public class TileManaCollector extends TileEntityMana implements IManaCollector,
         return maxMana;
     }
 
-    @Override
-    public boolean areIncomingTranfersDone() {
-        return super.areIncomingTranfersDone();
-    }
-
     public void remove() {
         super.remove();
         ManaNetworkEvent.removeCollector(this);

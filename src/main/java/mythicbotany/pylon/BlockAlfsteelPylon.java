@@ -23,7 +23,6 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import vazkii.botania.api.BotaniaAPIClient;
 import vazkii.botania.api.wand.IWandHUD;
