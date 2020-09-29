@@ -205,4 +205,7 @@
 
 Parts of the Assets and code were copied from botania and the modified. See the
 Botania License (https://botaniamod.net/license.php). The credits for this go to
-Vazkii and the Botania authors.
+Vazkii and the Botania authors. Everything that is in
+src/main/resources/assets/mythicbotany/textures is licensed under the botania license.
+
+    https://botaniamod.net/license.php
