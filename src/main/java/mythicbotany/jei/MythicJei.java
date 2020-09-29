@@ -9,11 +9,9 @@ import mezz.jei.api.runtime.IJeiRuntime;
 import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
 import mythicbotany.infuser.InfuserRecipe;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.util.ResourceLocation;
 
@@ -22,7 +20,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @JeiPlugin
 public class MythicJei implements IModPlugin {
@@ -38,8 +35,7 @@ public class MythicJei implements IModPlugin {
     @Override
     public void registerCategories(@Nonnull IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(
-                new InfusionCategory(registration.getJeiHelpers().getGuiHelper()),
-                new SmithingCategory(registration.getJeiHelpers().getGuiHelper())
+                new InfusionCategory(registration.getJeiHelpers().getGuiHelper())
         );
     }
 
@@ -49,13 +45,11 @@ public class MythicJei implements IModPlugin {
         RecipeManager recipes = Objects.requireNonNull(world).getRecipeManager();
 
         registration.addRecipes(InfuserRecipe.getRecipes(), InfusionCategory.UID);
-        registration.addRecipes(recipes.getRecipes().stream().filter(recipe -> recipe.getType() == IRecipeType.SMITHING).collect(Collectors.toList()), SmithingCategory.UID);
     }
 
     @Override
     public void registerRecipeCatalysts(@Nonnull IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.manaInfuser), InfusionCategory.UID);
-        registration.addRecipeCatalyst(new ItemStack(Blocks.SMITHING_TABLE), SmithingCategory.UID);
     }
 
     @Override

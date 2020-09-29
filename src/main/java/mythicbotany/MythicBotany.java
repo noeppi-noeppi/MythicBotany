@@ -5,7 +5,6 @@ import mythicbotany.data.DataGenerators;
 import mythicbotany.infuser.InfuserRecipe;
 import mythicbotany.network.MythicNetwork;
 import mythicbotany.pylon.PylonRepairables;
-import mythicbotany.runic.RunicSpellRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
@@ -82,8 +81,6 @@ public class MythicBotany {
                 new ItemStack(vazkii.botania.common.item.ModItems.elementium),
                 new ItemStack(vazkii.botania.common.item.ModItems.dragonstone),
                 new ItemStack(vazkii.botania.common.item.ModItems.pixieDust));
-
-        InfuserRecipe.add(new RunicSpellRecipe(100000, 0xFFFFFF, 0xFFFFFF));
 
         PylonRepairables.register(new PylonRepairables.ItemPylonRepairable(), PylonRepairables.PRIORITY_ITEM_WITH_INTERFACE);
         PylonRepairables.register(new PylonRepairables.MendingPylonRepairable(), PylonRepairables.PRIORITY_MENDING);

@@ -5,7 +5,6 @@ import mythicbotany.base.ItemBase;
 import mythicbotany.bauble.ItemFireRing;
 import mythicbotany.bauble.ItemIceRing;
 import mythicbotany.functionalflora.WitherAconite;
-import mythicbotany.runic.ItemRunicSpell;
 import mythicbotany.wand.ItemDreamwoodWand;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
@@ -36,7 +35,6 @@ public class ModItems {
     public static final Item alfsteelBoots = new AlfsteelArmor(EquipmentSlotType.FEET, new Properties().group(MythicBotany.TAB).maxStackSize(1).isBurnable());
     public static final Item greatestManaRing = new GreatestManaRing(new Properties().group(MythicBotany.TAB).maxStackSize(1).isBurnable());
     public static final Item greatestAuraRing = new GreatestAuraRing(new Properties().group(MythicBotany.TAB).maxStackSize(1).isBurnable());
-    public static final Item runicSpell = new ItemRunicSpell(new Properties());
     public static final Item fadedNetherStar = new Item(new Properties().maxStackSize(1).maxDamage(WitherAconite.MANA_PER_STAR));
     public static final Item dreamwoodWand = new ItemDreamwoodWand(new Properties().group(MythicBotany.TAB).maxStackSize(1).rarity(Rarity.RARE));
     public static final Item fireRing = new ItemFireRing(new Properties().group(MythicBotany.TAB).maxStackSize(1));
@@ -64,7 +62,6 @@ public class ModItems {
         MythicBotany.register("alfsteel_boots", alfsteelBoots);
         MythicBotany.register("mana_ring_greatest", greatestManaRing);
         MythicBotany.register("aura_ring_greatest", greatestAuraRing);
-        MythicBotany.register("runic_spell", runicSpell);
         MythicBotany.register("faded_nether_star", fadedNetherStar);
         MythicBotany.register("dreamwood_twig_wand", dreamwoodWand);
         MythicBotany.register("fire_ring", fireRing);

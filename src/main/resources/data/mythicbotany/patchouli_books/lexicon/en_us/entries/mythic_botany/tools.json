@@ -1,0 +1,59 @@
+{
+  "name": "lexicon.mythicbotany.tools.title",
+  "category": "mythicbotany:mythic_botany",
+  "icon": "mythicbotany:alfsteel_axe",
+  "entry_color": "aa00",
+  "pages": [
+    {
+      "type": "text",
+      "text": "lexicon.mythicbotany.tools.page1"
+    },
+    {
+      "type": "crafting",
+      "text": "lexicon.mythicbotany.tools.page2",
+      "recipe": "mythicbotany:alfsteel_armor_upgrade"
+    },
+    {
+      "type": "spotlight",
+      "item": "mythicbotany:alfsteel_sword",
+      "link_recipe": true,
+      "text": "lexicon.mythicbotany.tools.page3"
+    },
+    {
+      "type": "spotlight",
+      "item": "mythicbotany:alfsteel_axe",
+      "link_recipe": true,
+      "text": "lexicon.mythicbotany.tools.page4"
+    },
+    {
+      "type": "spotlight",
+      "item": "mythicbotany:alfsteel_pick",
+      "link_recipe": true,
+      "text": "lexicon.mythicbotany.tools.page5"
+    },
+    {
+      "type": "spotlight",
+      "item": "mythicbotany:alfsteel_helmet",
+      "link_recipe": true,
+      "text": "lexicon.mythicbotany.tools.page6"
+    },
+    {
+      "type": "spotlight",
+      "item": "mythicbotany:alfsteel_chestplate",
+      "link_recipe": true,
+      "text": "lexicon.mythicbotany.tools.page7"
+    },
+    {
+      "type": "spotlight",
+      "item": "mythicbotany:alfsteel_leggings",
+      "link_recipe": true,
+      "text": "lexicon.mythicbotany.tools.page8"
+    },
+    {
+      "type": "spotlight",
+      "item": "mythicbotany:alfsteel_boots",
+      "link_recipe": true,
+      "text": "lexicon.mythicbotany.tools.page9"
+    }
+  ]
+}

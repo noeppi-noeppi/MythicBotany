@@ -1,0 +1,57 @@
+{
+  "name": "lexicon.mythicbotany.runes.title",
+  "category": "mythicbotany:mythic_botany",
+  "icon": "mythicbotany:niflheim_rune",
+  "entry_color": "aa00",
+  "pages": [
+    {
+      "type": "text",
+      "text": "lexicon.mythicbotany.runes.page1"
+    },
+    {
+      "type": "botania:runic_altar",
+      "text": "lexicon.mythicbotany.runes.runeMidgard",
+      "recipe": "mythicbotany:runic_altar/midgard"
+    },
+    {
+      "type": "botania:runic_altar",
+      "text": "lexicon.mythicbotany.runes.runeAlfheim",
+      "recipe": "mythicbotany:runic_altar/alfheim"
+    },
+    {
+      "type": "botania:runic_altar",
+      "text": "lexicon.mythicbotany.runes.runeNidavellir",
+      "recipe": "mythicbotany:runic_altar/nidavellir"
+    },
+    {
+      "type": "botania:runic_altar",
+      "text": "lexicon.mythicbotany.runes.runeJoetunheim",
+      "recipe": "mythicbotany:runic_altar/joetunheim"
+    },
+    {
+      "type": "botania:runic_altar",
+      "text": "lexicon.mythicbotany.runes.runeMuspelheim",
+      "recipe": "mythicbotany:runic_altar/muspelheim"
+    },
+    {
+      "type": "botania:runic_altar",
+      "text": "lexicon.mythicbotany.runes.runeNiflheim",
+      "recipe": "mythicbotany:runic_altar/niflheim"
+    },
+    {
+      "type": "botania:runic_altar",
+      "text": "lexicon.mythicbotany.runes.runeAsgard",
+      "recipe": "mythicbotany:runic_altar/asgard"
+    },
+    {
+      "type": "botania:runic_altar",
+      "text": "lexicon.mythicbotany.runes.runeVanaheim",
+      "recipe": "mythicbotany:runic_altar/vanaheim"
+    },
+    {
+      "type": "botania:runic_altar",
+      "text": "lexicon.mythicbotany.runes.runeHelheim",
+      "recipe": "mythicbotany:runic_altar/helheim"
+    }
+  ]
+}

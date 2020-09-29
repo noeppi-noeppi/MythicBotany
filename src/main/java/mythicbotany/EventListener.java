@@ -32,7 +32,7 @@ public class EventListener {
             }
             if (CuriosApi.getCuriosHelper().findEquippedCurio(ModItems.iceRing, (LivingEntity) event.getSource().getTrueSource()).isPresent()) {
                 if (!event.getEntityLiving().isPotionActive(Effects.SLOWNESS)) {
-                    event.getEntityLiving().addPotionEffect(new EffectInstance(Effects.SLOWNESS, 10, 9));
+                    event.getEntityLiving().addPotionEffect(new EffectInstance(Effects.SLOWNESS, 20, 99));
                 }
             }
         }

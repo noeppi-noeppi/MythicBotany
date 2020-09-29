@@ -1,7 +1,6 @@
 {
   "itemGroup.mythicbotany": "MythicBotany",
 
-
   "item.mythicbotany.asgard_rune": "Rune of Asgard",
   "item.mythicbotany.vanaheim_rune": "Rune of Vanaheim",
   "item.mythicbotany.alfheim_rune": "Rune of Alfheim",
@@ -23,7 +22,6 @@
   "item.mythicbotany.alfsteel_boots": "Alfsteel Boots",
   "item.mythicbotany.mana_ring_greatest": "Greatest Band of Mana",
   "item.mythicbotany.aura_ring_greatest": "Greatest Band of Aura",
-  "item.mythicbotany.runic_spell": "Rune Spell",
   "item.mythicbotany.faded_nether_star": "Faded Nether Star",
   "item.mythicbotany.fire_ring": "Ring of Muspelheim",
   "item.mythicbotany.ice_ring": "Ring of Niflheim",
@@ -51,16 +49,9 @@
   "block.mythicbotany.aquapanthus.description": "Try it when it's dry.",
   "block.mythicbotany.hellebore.description": "It feels like Helheim..",
 
-  "tooltip.mythicbotany.affinity.name": "Affinities:",
-  "tooltip.mythicbotany.affinity.fire": "Fire",
-  "tooltip.mythicbotany.affinity.water": "Water",
-  "tooltip.mythicbotany.affinity.air": "Air",
-  "tooltip.mythicbotany.affinity.earth": "Earth",
-  "tooltip.mythicbotany.affinity.invalid": "Invalid Rune Spell",
-  "tooltip.mythicbotany.affinity.manacost": "Mana Cost: %s",
-
   "lexicon.mythicbotany.title": "MythicBotany",
   "lexicon.mythicbotany.description": "Dive deeper int othe world of magic",
+
   "lexicon.mythicbotany.runes.title": "Runes of the Nine Worlds",
   "lexicon.mythicbotany.runes.page1": "You can create runes that represent the $(thing)Nine World$(0) in the $(item) Runic ALtar$(0). They're tier 4 runes and require the Runes of the $(thing)Deadly sins$(0). Those new runes unleash great power but can be dangerous if not used correctly. Handle them with caution.",
   "lexicon.mythicbotany.runes.runeMidgard": "Midgard is the world of the humans.",
@@ -71,5 +62,22 @@
   "lexicon.mythicbotany.runes.runeNiflheim": "Niflheim is the world of the frost giants.",
   "lexicon.mythicbotany.runes.runeAsgard": "Asgard is the world of the Aesir",
   "lexicon.mythicbotany.runes.runeVanaheim": "Vanaheim is the world of the Vanir.",
-  "lexicon.mythicbotany.runes.runeHelheim": "Helheim is the world of the dead."
+  "lexicon.mythicbotany.runes.runeHelheim": "Helheim is the world of the dead.",
+
+  "lexicon.mythicbotany.infuser.title": "The Mana Infuser",
+  "lexicon.mythicbotany.infuser.page1": "The mana infuser is an upgraded version of the $(l:botania:basics/terrasteel)Terrestrial Agglomeration Plate$() that is also capable of creating other mana-alloys. Like the terrestrial agglomeration plate this requires a platform below. However this requires a dominant spark upgrade to pull mana from sparks.",
+  "lexicon.mythicbotany.infuser.page2": "Upgrading the terrestrial agglomeration plate to a mana infuser.",
+  "lexicon.mythicbotany.infuser.page3": "The platform required for the mana infuser to work",
+  "lexicon.mythicbotany.infuser.page4": "Alfsteel is created like terrasteel but with resources from alfheim. It requires much more mana but can be used to create various powerful things.",
+
+  "lexicon.mythicbotany.tools.title": "Alfsteel Tools",
+  "lexicon.mythicbotany.tools.page1": "For a long time now you thought diamond was the best you could reach without the power of a botanist. Then came netherite. It's the same with terrasteel and alfsteel. So just like diamond you can upgrade terrasteel tools and armor to their alfsteel counterparts via smithing. This improvement comes with higher mana costs to use those tools.",
+  "lexicon.mythicbotany.tools.page2": "This doubled ingot is reqired for terrasteel armor to be upgraded to alfsteel.",
+  "lexicon.mythicbotany.tools.page3": "This sword does much more damage and you can swing it much faster.",
+  "lexicon.mythicbotany.tools.page4": "Despite being able to chop down whole trees in just seconds this axe can pull nearby items towards you when doing a shif right-click.",
+  "lexicon.mythicbotany.tools.page5": "",
+  "lexicon.mythicbotany.tools.page6": "",
+  "lexicon.mythicbotany.tools.page7": "",
+  "lexicon.mythicbotany.tools.page8": "",
+  "lexicon.mythicbotany.tools.page9": ""
 }
