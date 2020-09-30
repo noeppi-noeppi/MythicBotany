@@ -1,5 +1,6 @@
 {
   "type": "mythicbotany:infusion",
+  "group": "infuser",
   "output": {
     "item": "botania:terrasteel_ingot"
   },
