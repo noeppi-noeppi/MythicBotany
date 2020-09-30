@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import mythicbotany.ModRecipes;
+import net.minecraft.command.arguments.IRangeArgument;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -16,14 +18,17 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.ForgeRegistryEntry;
+import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
-public class RecipeInfuser implements IInfuserRecipe {
+public class InfuserRecipe implements IInfuserRecipe {
+
     private final ResourceLocation id;
     private final ItemStack output;
     private final NonNullList<Ingredient> inputs;
@@ -31,8 +36,7 @@ public class RecipeInfuser implements IInfuserRecipe {
     private final int fromColor;
     private final int toColor;
 
-    public RecipeInfuser(ResourceLocation id, ItemStack output, int mana, int fromColor, int toColor, Ingredient... inputs) {
-        Preconditions.checkArgument(inputs.length <= 16);
+    public InfuserRecipe(ResourceLocation id, ItemStack output, int mana, int fromColor, int toColor, Ingredient... inputs) {
         this.id = id;
         this.output = output;
         this.mana = mana;
@@ -59,30 +63,9 @@ public class RecipeInfuser implements IInfuserRecipe {
     @Override
     public boolean matches(@Nonnull IInventory inv, @Nonnull World worldIn) {
         List<Ingredient> ingredientsMissing = new ArrayList<>(inputs);
-
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack input = inv.getStackInSlot(i);
-            if (input.isEmpty()) {
-                break;
-            }
-
-            int stackIndex = -1;
-
-            for (int j = 0; j < ingredientsMissing.size(); j++) {
-                Ingredient ingredient = ingredientsMissing.get(j);
-                if (ingredient.test(input)) {
-                    stackIndex = j;
-                    break;
-                }
-            }
-
-            if (stackIndex != -1) {
-                ingredientsMissing.remove(stackIndex);
-            } else {
-                return false;
-            }
-        }
-
+        IntStream.range(0, inv.getSizeInventory()).boxed().map(inv::getStackInSlot).filter(stack -> !stack.isEmpty()).forEach(stack -> {
+            ingredientsMissing.stream().filter(ingredient -> ingredient.test(stack)).findFirst().ifPresent(ingredientsMissing::remove);
+        });
         return ingredientsMissing.isEmpty();
     }
 
@@ -101,14 +84,14 @@ public class RecipeInfuser implements IInfuserRecipe {
     @Nonnull
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return RecipeTypes.INFUSER_SERIALIZER;
+        return ModRecipes.INFUSER_SERIALIZER;
     }
 
+    @Override
     public ItemStack result(List<ItemStack> inputs) {
         if (inputs.size() != this.inputs.size())
             return ItemStack.EMPTY;
-        outer:
-        for (Ingredient item : this.inputs) {
+        outer: for (Ingredient item : this.inputs) {
             for (ItemStack stack : inputs) {
                 if (item.test(stack))
                     continue outer;
@@ -125,21 +108,21 @@ public class RecipeInfuser implements IInfuserRecipe {
     }
 
     @Nullable
-    public static Pair<RecipeInfuser, ItemStack> getOutput(World world, List<ItemStack> inputs) {
+    public static Pair<IInfuserRecipe, ItemStack> getOutput(World world, List<ItemStack> inputs) {
         for (IRecipe<?> recipe : world.getRecipeManager().getRecipes()) {
             if (recipe instanceof IInfuserRecipe) {
-                ItemStack stack = ((RecipeInfuser) recipe).result(inputs);
+                ItemStack stack = ((IInfuserRecipe) recipe).result(inputs);
                 if (!stack.isEmpty())
-                    return Pair.of((RecipeInfuser) recipe, stack);
+                    return Pair.of((IInfuserRecipe) recipe, stack);
             }
         }
         return null;
     }
 
-    public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<RecipeInfuser> {
+    public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<InfuserRecipe> {
         @Nonnull
         @Override
-        public RecipeInfuser read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
+        public InfuserRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
             ItemStack output = CraftingHelper.getItemStack(JSONUtils.getJsonObject(json, "output"), true);
             int mana = JSONUtils.getInt(json, "mana");
             int fromColor = JSONUtils.getInt(json, "fromColor");
@@ -149,12 +132,12 @@ public class RecipeInfuser implements IInfuserRecipe {
             for (JsonElement e : ingrs) {
                 inputs.add(Ingredient.deserialize(e));
             }
-            return new RecipeInfuser(recipeId, output, mana, fromColor, toColor, inputs.toArray(new Ingredient[0]));
+            return new InfuserRecipe(recipeId, output, mana, fromColor, toColor, inputs.toArray(new Ingredient[0]));
         }
 
         @Nullable
         @Override
-        public RecipeInfuser read(@Nonnull ResourceLocation recipeId, @Nonnull PacketBuffer buffer) {
+        public InfuserRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull PacketBuffer buffer) {
             Ingredient[] inputs = new Ingredient[buffer.readVarInt()];
             for (int i = 0; i < inputs.length; i++) {
                 inputs[i] = Ingredient.read(buffer);
@@ -163,11 +146,11 @@ public class RecipeInfuser implements IInfuserRecipe {
             int mana = buffer.readVarInt();
             int fromColor = buffer.readVarInt();
             int toColor = buffer.readVarInt();
-            return new RecipeInfuser(recipeId, output, mana, fromColor, toColor, inputs);
+            return new InfuserRecipe(recipeId, output, mana, fromColor, toColor, inputs);
         }
 
         @Override
-        public void write(@Nonnull PacketBuffer buffer, @Nonnull RecipeInfuser recipe) {
+        public void write(@Nonnull PacketBuffer buffer, @Nonnull InfuserRecipe recipe) {
             buffer.writeVarInt(recipe.getIngredients().size());
             for (Ingredient input : recipe.getIngredients()) {
                 input.write(buffer);

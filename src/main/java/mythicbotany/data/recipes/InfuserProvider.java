@@ -3,7 +3,7 @@ package mythicbotany.data.recipes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import mythicbotany.MythicBotany;
-import mythicbotany.recipes.RecipeTypes;
+import mythicbotany.ModRecipes;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
@@ -44,7 +44,7 @@ public class InfuserProvider extends RecipeProvider {
     }
 
     private static ResourceLocation idFor(String s) {
-        return new ResourceLocation(MythicBotany.MODID, "infuser/" + s);
+        return new ResourceLocation(MythicBotany.MODID, "mythicbotany_infuser/" + s);
     }
 
     private static class FinishedRecipe implements IFinishedRecipe {
@@ -91,7 +91,7 @@ public class InfuserProvider extends RecipeProvider {
         @Nonnull
         @Override
         public IRecipeSerializer<?> getSerializer() {
-            return RecipeTypes.INFUSER_SERIALIZER;
+            return ModRecipes.INFUSER_SERIALIZER;
         }
 
         @Nullable

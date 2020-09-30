@@ -1,18 +1,15 @@
 package mythicbotany.recipes;
 
-import mythicbotany.MythicBotany;
+import mythicbotany.ModRecipes;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public interface IInfuserRecipe extends IRecipe<IInventory> {
-
-    ResourceLocation TYPE_ID = new ResourceLocation(MythicBotany.MODID, "infusion");
 
     int getManaUsage();
 
@@ -23,7 +20,7 @@ public interface IInfuserRecipe extends IRecipe<IInventory> {
     @Nonnull
     @Override
     default IRecipeType<?> getType() {
-        return Registry.RECIPE_TYPE.func_241873_b(TYPE_ID).get();
+        return ModRecipes.INFUSER;
     }
 
     @Nonnull
@@ -36,4 +33,6 @@ public interface IInfuserRecipe extends IRecipe<IInventory> {
     default boolean canFit(int width, int height) {
         return false;
     }
+
+    ItemStack result(List<ItemStack> inputs);
 }

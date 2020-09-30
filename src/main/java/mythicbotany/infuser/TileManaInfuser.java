@@ -3,7 +3,8 @@ package mythicbotany.infuser;
 import com.google.common.base.Predicates;
 import mythicbotany.base.TileEntityBase;
 import mythicbotany.network.MythicNetwork;
-import mythicbotany.recipes.RecipeInfuser;
+import mythicbotany.recipes.IInfuserRecipe;
+import mythicbotany.recipes.InfuserRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -30,7 +31,7 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
     private int mana;
     private boolean active;
     @Nullable
-    private transient RecipeInfuser recipe;
+    private transient IInfuserRecipe recipe;
     @Nullable
     private ItemStack output;
 
@@ -79,7 +80,7 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
                 markDirty();
             }
         } else {
-            Pair<RecipeInfuser, ItemStack> match = RecipeInfuser.getOutput(this.world, stacks);
+            Pair<IInfuserRecipe, ItemStack> match = InfuserRecipe.getOutput(this.world, stacks);
             if (match != null) {
                 if (!active) {
                     active = true;

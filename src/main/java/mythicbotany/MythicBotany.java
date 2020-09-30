@@ -4,17 +4,18 @@ import mythicbotany.base.Registerable;
 import mythicbotany.data.DataGenerators;
 import mythicbotany.network.MythicNetwork;
 import mythicbotany.pylon.PylonRepairables;
-import mythicbotany.recipes.RecipeTypes;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -57,7 +58,6 @@ public class MythicBotany {
         MinecraftForge.EVENT_BUS.addListener(this::serverStart);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(DataGenerators::gatherData);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, RecipeTypes::register);
 
         MinecraftForge.EVENT_BUS.register(new EventListener());
     }
@@ -65,6 +65,7 @@ public class MythicBotany {
     private static void register() {
         ModItems.register();
         ModBlocks.register();
+        ModRecipes.register();
     }
 
     private void setup(final FMLCommonSetupEvent event) {
