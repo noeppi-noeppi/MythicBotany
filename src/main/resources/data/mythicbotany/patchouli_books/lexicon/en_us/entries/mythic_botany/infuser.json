@@ -34,8 +34,15 @@
     {
       "type": "spotlight",
       "item": "mythicbotany:alfsteel_ingot",
-      "link_recipe": true,
       "text": "lexicon.mythicbotany.infuser.page4"
+    },
+    {
+      "type": "mythicbotany:infuser",
+      "recipe": "mythicbotany:mythicbotany_infusion/terrasteel_ingot"
+    },
+    {
+      "type": "mythicbotany:infuser",
+      "recipe": "mythicbotany:mythicbotany_infusion/alfsteel_ingot"
     }
   ]
 }

@@ -10,7 +10,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
-import mythicbotany.infuser.InfuserRecipe;
+import mythicbotany.infuser.IInfuserRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class InfusionCategory implements IRecipeCategory<InfuserRecipe> {
+public class InfusionCategory implements IRecipeCategory<IInfuserRecipe> {
 
     public static final ResourceLocation UID = new ResourceLocation(MythicBotany.MODID, "jei_category_infusion");
 
@@ -54,8 +54,8 @@ public class InfusionCategory implements IRecipeCategory<InfuserRecipe> {
 
     @Nonnull
     @Override
-    public Class<? extends InfuserRecipe> getRecipeClass() {
-        return InfuserRecipe.class;
+    public Class<? extends IInfuserRecipe> getRecipeClass() {
+        return IInfuserRecipe.class;
     }
 
     @Nonnull
@@ -77,7 +77,7 @@ public class InfusionCategory implements IRecipeCategory<InfuserRecipe> {
     }
 
     @Override
-    public void setIngredients(InfuserRecipe recipe, @Nonnull IIngredients ii) {
+    public void setIngredients(IInfuserRecipe recipe, @Nonnull IIngredients ii) {
         List<List<ItemStack>> list = new ArrayList<>();
         for (Ingredient ingredient : recipe.getIngredients()) {
             list.add(Arrays.asList(ingredient.getMatchingStacks()));
@@ -87,7 +87,7 @@ public class InfusionCategory implements IRecipeCategory<InfuserRecipe> {
     }
 
     @SuppressWarnings("deprecation")
-    public void draw(InfuserRecipe recipe, @Nonnull MatrixStack matrixStack, double mouseX, double mouseY) {
+    public void draw(IInfuserRecipe recipe, @Nonnull MatrixStack matrixStack, double mouseX, double mouseY) {
         RenderSystem.enableAlphaTest();
         RenderSystem.enableBlend();
         this.overlay.draw(matrixStack);
@@ -100,7 +100,7 @@ public class InfusionCategory implements IRecipeCategory<InfuserRecipe> {
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull InfuserRecipe recipe, @Nonnull IIngredients ii) {
+    public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull IInfuserRecipe recipe, @Nonnull IIngredients ii) {
         layout.getItemStacks().init(0, true, 64, 52);
         layout.getItemStacks().set(0, new ItemStack(ModBlocks.manaInfuser));
         int index = 1;
