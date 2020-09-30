@@ -10,7 +10,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
-import mythicbotany.recipes.InfuserRecipe;
+import mythicbotany.infuser.InfuserRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
@@ -95,7 +95,7 @@ public class InfusionCategory implements IRecipeCategory<InfuserRecipe> {
         RenderSystem.disableBlend();
         RenderSystem.disableAlphaTest();
         FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-        String text = new BigDecimal(recipe.getManaUsage() / (double) 1000000).setScale(2, RoundingMode.HALF_UP).toPlainString() + " Mana Pools";
+        String text = BigDecimal.valueOf(recipe.getManaUsage() / (double) 1000000).setScale(2, RoundingMode.HALF_UP).toPlainString() + " Mana Pools";
         fontRenderer.drawString(matrixStack, text, (float) (75 - fontRenderer.getStringWidth(text) / 2), 114, Color.BLACK.getRGB());
     }
 

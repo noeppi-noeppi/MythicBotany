@@ -3,8 +3,6 @@ package mythicbotany.infuser;
 import com.google.common.base.Predicates;
 import mythicbotany.base.TileEntityBase;
 import mythicbotany.network.MythicNetwork;
-import mythicbotany.recipes.IInfuserRecipe;
-import mythicbotany.recipes.InfuserRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -86,18 +84,14 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
                     active = true;
                     recipe = match.getLeft();
                     mana = 0;
-                    maxMana = recipe.getManaUsage();
-                    fromColor = recipe.fromColor();
-                    toColor = recipe.toColor();
-                    output = match.getRight();
                 } else {
                     recipe = match.getLeft();
                     mana = MathHelper.clamp(mana, 0, recipe.getManaUsage());
-                    maxMana = recipe.getManaUsage();
-                    fromColor = recipe.fromColor();
-                    toColor = recipe.toColor();
-                    output = match.getRight();
                 }
+                maxMana = recipe.getManaUsage();
+                fromColor = recipe.fromColor();
+                toColor = recipe.toColor();
+                output = match.getRight();
                 world.updateComparatorOutputLevel(this.pos, this.getBlockState().getBlock());
                 markDirty();
             } else if (active || recipe != null || output != null) {
@@ -186,7 +180,6 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
             world.updateComparatorOutputLevel(this.pos, this.getBlockState().getBlock());
             markDirty();
         }
-        System.out.println("mana: " + mana);
     }
 
     @Override

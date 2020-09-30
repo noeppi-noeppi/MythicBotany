@@ -1,11 +1,9 @@
-package mythicbotany.recipes;
+package mythicbotany.infuser;
 
-import com.google.common.base.Preconditions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mythicbotany.ModRecipes;
-import net.minecraft.command.arguments.IRangeArgument;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -18,7 +16,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
@@ -42,7 +39,7 @@ public class InfuserRecipe implements IInfuserRecipe {
         this.mana = mana;
         this.fromColor = fromColor;
         this.toColor = toColor;
-        this.inputs = NonNullList.from(null, inputs);
+        this.inputs = NonNullList.from(Ingredient.EMPTY, inputs);
     }
 
     @Override
@@ -63,9 +60,9 @@ public class InfuserRecipe implements IInfuserRecipe {
     @Override
     public boolean matches(@Nonnull IInventory inv, @Nonnull World worldIn) {
         List<Ingredient> ingredientsMissing = new ArrayList<>(inputs);
-        IntStream.range(0, inv.getSizeInventory()).boxed().map(inv::getStackInSlot).filter(stack -> !stack.isEmpty()).forEach(stack -> {
-            ingredientsMissing.stream().filter(ingredient -> ingredient.test(stack)).findFirst().ifPresent(ingredientsMissing::remove);
-        });
+        IntStream.range(0, inv.getSizeInventory()).boxed().map(inv::getStackInSlot).filter(stack -> !stack.isEmpty()).forEach(stack ->
+                ingredientsMissing.stream().filter(ingredient -> ingredient.test(stack)).findFirst().ifPresent(ingredientsMissing::remove)
+        );
         return ingredientsMissing.isEmpty();
     }
 

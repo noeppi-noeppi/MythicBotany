@@ -20,6 +20,7 @@ import net.minecraft.data.ShapelessRecipeBuilder;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Items;
 import net.minecraft.util.IItemProvider;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import vazkii.botania.common.lib.ModTags;
 import vazkii.botania.data.recipes.WrapperResult;
@@ -28,6 +29,7 @@ import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
 public class RecipeProvider extends net.minecraft.data.RecipeProvider {
+
     public RecipeProvider(DataGenerator generator) {
         super(generator);
     }
@@ -126,13 +128,13 @@ public class RecipeProvider extends net.minecraft.data.RecipeProvider {
                 .patternLine("aaa")
                 .setGroup(ingot.asItem().getRegistryName() + "_from_nuggets")
                 .addCriterion("has_item", hasItem(nugget))
-                .build(consumer, ingot.asItem().getRegistryName().getPath() + "_from_nuggets");
+                .build(consumer, new ResourceLocation(MythicBotany.MODID, ingot.asItem().getRegistryName().getPath() + "_from_nuggets"));
 
         ShapelessRecipeBuilder.shapelessRecipe(nugget, 9)
                 .addIngredient(ingot)
                 .setGroup(nugget.asItem().getRegistryName() + "_from_ingot")
                 .addCriterion("has_item", hasItem(ingot))
-                .build(consumer, nugget.asItem().getRegistryName().getPath() + "_from_ingot");
+                .build(consumer, new ResourceLocation(MythicBotany.MODID, nugget.asItem().getRegistryName().getPath() + "_from_ingot"));
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -145,13 +147,13 @@ public class RecipeProvider extends net.minecraft.data.RecipeProvider {
                 .patternLine("aaa")
                 .setGroup(block.asItem().getRegistryName() + "_from_ingots")
                 .addCriterion("has_item", hasItem(ingot))
-                .build(consumer, block.asItem().getRegistryName().getPath() + "_from_ingots");
+                .build(consumer, new ResourceLocation(MythicBotany.MODID, block.asItem().getRegistryName().getPath() + "_from_ingots"));
 
         ShapelessRecipeBuilder.shapelessRecipe(ingot, 9)
                 .addIngredient(block)
                 .setGroup(ingot.asItem().getRegistryName() + "_from_block")
                 .addCriterion("has_item", hasItem(block))
-                .build(consumer, ingot.asItem().getRegistryName().getPath() + "_from_block");
+                .build(consumer, new ResourceLocation(MythicBotany.MODID, ingot.asItem().getRegistryName().getPath() + "_from_block"));
     }
 
     private void makeRing(Consumer<IFinishedRecipe> consumer, IItemProvider ring, IItemProvider material, IItemProvider gem) {

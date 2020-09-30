@@ -65,15 +65,12 @@ public class InfusionHandler implements MythicHandler<InfusionHandler.InfusionMe
                 double z = msg.z + Math.cos(wticks * Math.PI / 180) * r + 0.5;
 
                 wticks += tickIncrement;
-                System.out.println(msg.progress);
                 float fromR = ((msg.fromColor >> 16) & 0xFF) / 255f;
                 float fromG = ((msg.fromColor >> 8) & 0xFF) / 255f;
                 float fromB = ((msg.fromColor) & 0xFF) / 255f;
                 float toR = ((msg.toColor >> 16) & 0xFF) / 255f;
                 float toG = ((msg.toColor >> 8) & 0xFF) / 255f;
                 float toB = ((msg.toColor) & 0xFF) / 255f;
-                System.out.println(fromR + "  " + fromG + "  " + fromB);
-                System.out.println(toR + "  " + toG + "  " + toB);
                 float[] colorsfx = new float[] {
                         fromR + ((toR - fromR) * (float) msg.progress),
                         fromG + ((toG - fromG) * (float) msg.progress),

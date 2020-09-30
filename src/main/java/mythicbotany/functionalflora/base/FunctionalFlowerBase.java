@@ -184,11 +184,10 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
             } else {
                 if (!(te instanceof IManaPool)) {
                     poolTile = null;
-                    spreaderTile = null;
                 } else {
                     poolTile = (IManaPool) te;
-                    spreaderTile = null;
                 }
+                spreaderTile = null;
             }
         }
 

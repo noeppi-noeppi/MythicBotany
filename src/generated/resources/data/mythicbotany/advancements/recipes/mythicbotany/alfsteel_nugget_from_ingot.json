@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:alfsteel_ingot_from_nuggets"
+      "mythicbotany:alfsteel_nugget_from_ingot"
     ]
   },
   "criteria": {
@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:alfsteel_nugget"
+            "item": "mythicbotany:alfsteel_ingot"
           }
         ]
       }
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:alfsteel_ingot_from_nuggets"
+        "recipe": "mythicbotany:alfsteel_nugget_from_ingot"
       }
     }
   },

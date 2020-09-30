@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:alfsteel_block_from_ingots"
+      "mythicbotany:alfsteel_block_from_ingots"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:alfsteel_block_from_ingots"
+        "recipe": "mythicbotany:alfsteel_block_from_ingots"
       }
     }
   },

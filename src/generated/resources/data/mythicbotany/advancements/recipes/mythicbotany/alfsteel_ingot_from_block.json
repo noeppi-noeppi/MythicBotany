@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "mythicbotany:infuser/terrasteel_ingot"
+      "mythicbotany:alfsteel_ingot_from_block"
     ]
   },
   "criteria": {
@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:mana_infuser"
+            "item": "mythicbotany:alfsteel_block"
           }
         ]
       }
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "mythicbotany:infuser/terrasteel_ingot"
+        "recipe": "mythicbotany:alfsteel_ingot_from_block"
       }
     }
   },

@@ -1,4 +1,4 @@
-package mythicbotany.recipes;
+package mythicbotany.infuser;
 
 import mythicbotany.ModRecipes;
 import net.minecraft.inventory.IInventory;

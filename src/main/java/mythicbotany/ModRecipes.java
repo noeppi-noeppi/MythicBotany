@@ -1,7 +1,7 @@
 package mythicbotany;
 
-import mythicbotany.recipes.IInfuserRecipe;
-import mythicbotany.recipes.InfuserRecipe;
+import mythicbotany.infuser.IInfuserRecipe;
+import mythicbotany.infuser.InfuserRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 

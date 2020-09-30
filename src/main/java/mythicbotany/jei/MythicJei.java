@@ -8,7 +8,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
-import mythicbotany.recipes.IInfuserRecipe;
+import mythicbotany.infuser.IInfuserRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
