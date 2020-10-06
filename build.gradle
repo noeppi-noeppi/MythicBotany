@@ -1,3 +1,6 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+
 buildscript {
     repositories {
         maven { url 'https://files.minecraftforge.net/maven' }
@@ -18,9 +21,9 @@ apply plugin: 'maven-publish'
 //apply plugin: 'org.spongepowered.mixin'
 
 
-version = '1.16.3-0.1.0'
 group = 'io.github.noeppi_noeppi.mods'
-archivesBaseName = 'MythicBotany'
+archivesBaseName = getName()
+version = getVersion(project, "1.16.3-0.1")
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
@@ -182,4 +185,22 @@ publishing {
             url "/var/www/maven"
         }
     }
+}
+
+private static String getVersion(Project project, String baseVersion) {
+    java.nio.file.Path mavenPath = Paths.get('/var/www/maven').resolve(project.group.toString().replace('.', '/')).resolve(project.getName())
+    if (!Files.isDirectory(mavenPath)) {
+        return "${baseVersion}.0"
+    }
+    return "${baseVersion}." + Files.walk(mavenPath)
+            .filter{path -> Files.isRegularFile(path) && path.getFileName().toString().endsWith('.pom')}
+            .map{path ->
+                String fileName = path.getFileName().toString()
+                fileName.substring(fileName.indexOf('-') + 1, fileName.length() - 4)
+            }.filter{version -> version.startsWith(baseVersion)}
+            .max{s1, s2 -> s1.compareTo(s2)}
+            .map{ver -> ver.substring(ver.findLastIndexOf{ str -> !"0123456789".contains(str) } + 1)}
+            .map{ver -> ver.isEmpty() ? "-1" : ver }
+            .map{ver -> (ver.toInteger() + 1).toString()}
+            .orElse("0")
 }
