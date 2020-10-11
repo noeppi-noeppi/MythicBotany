@@ -20,21 +20,21 @@ Dive deeper into the world of botania.
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.mythicbotany]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.16.1]"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.mythicbotany]]
     modId="botania"
     mandatory=true
     versionRange="[1.16-299,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.mythicbotany]]
     modId="jei"
     mandatory=false
     versionRange="[1.16.1-7.0.0.6,)"

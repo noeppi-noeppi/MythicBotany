@@ -14,6 +14,7 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath group: 'org.apache.maven', name: 'maven-artifact', version: '3.6.3+'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -27,7 +28,7 @@ group = 'io.github.noeppi_noeppi.mods'
 archivesBaseName = 'MythicBotany'
 version = getVersion(group, archivesBaseName, "1.16.3-1.0")
 
-println version
+println "${archivesBaseName} version: ${version}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
