@@ -8,22 +8,20 @@
  */
 package mythicbotany.data;
 
+import io.github.noeppi_noeppi.libx.data.provider.BlockTagProviderBase;
+import io.github.noeppi_noeppi.libx.mod.ModX;
 import mythicbotany.ModBlocks;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 import javax.annotation.Nonnull;
 
-public class BlockTagProvider extends BlockTagsProvider {
-	public BlockTagProvider(DataGenerator generator) {
-		super(generator);
-	}
+public class BlockTagProvider extends BlockTagProviderBase {
 
-	@Nonnull
-	@Override
-	public String getName() {
-		return "MythicBotany block tags";
+	public BlockTagProvider(ModX mod, DataGenerator generatorIn, ExistingFileHelper fileHelper) {
+		super(mod, generatorIn, fileHelper);
 	}
 
 	@Override

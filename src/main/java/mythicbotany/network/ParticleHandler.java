@@ -1,5 +1,7 @@
 package mythicbotany.network;
 
+import io.github.noeppi_noeppi.libx.network.NetworkHandler;
+import mythicbotany.MythicBotany;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.BasicParticleType;
@@ -11,7 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
-public class ParticleHandler implements MythicHandler<ParticleHandler.ParticleMessage> {
+public class ParticleHandler implements NetworkHandler<ParticleHandler.ParticleMessage> {
 
     @Override
     public Class<ParticleMessage> messageClass() {
@@ -62,7 +64,7 @@ public class ParticleHandler implements MythicHandler<ParticleHandler.ParticleMe
                 return;
             ParticleType<?> particle = ForgeRegistries.PARTICLE_TYPES.getValue(msg.particleId);
             if (particle instanceof BasicParticleType) {
-                MythicNetwork.spawnParticle(world, (BasicParticleType) particle, msg.amount, msg.x, msg.y, msg.z, msg.xm, msg.ym, msg.zm, msg.xd, msg.yd, msg.zd, msg.randomizePosition);
+                MythicBotany.getNetwork().spawnParticle(world, (BasicParticleType) particle, msg.amount, msg.x, msg.y, msg.z, msg.xm, msg.ym, msg.zm, msg.xd, msg.yd, msg.zd, msg.randomizePosition);
             }
         });
     }

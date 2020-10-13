@@ -33,7 +33,7 @@ public class InfuserProvider extends RecipeProvider {
                 .addIngredient(ModTags.Items.GEMS_MANA_DIAMOND)
                 .setManaCost(500000)
                 .setColors(0x0000FF, 0x00FF00)
-                .build(consumer, new ResourceLocation(MythicBotany.MODID, vazkii.botania.common.item.ModItems.terrasteel.getRegistryName().getPath()));
+                .build(consumer, new ResourceLocation(MythicBotany.getInstance().modid, vazkii.botania.common.item.ModItems.terrasteel.getRegistryName().getPath()));
 
         InfuserRecipeBuilder.infuserRecipe(ModItems.alfsteelIngot)
                 .addIngredient(ModTags.Items.INGOTS_ELEMENTIUM)

@@ -1,5 +1,6 @@
 package mythicbotany.functionalflora;
 
+import mythicbotany.MythicBotany;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
 import mythicbotany.network.MythicNetwork;
 import net.minecraft.entity.monster.HoglinEntity;
@@ -31,7 +32,7 @@ public class Hellebore extends FunctionalFlowerBase {
                 if (mana >= MANA_PER_ENTITY_AND_SECOND && piglin.field_242334_c > 20) {
                     mana -= MANA_PER_ENTITY_AND_SECOND;
                     piglin.field_242334_c = 0;
-                    MythicNetwork.spawnParticle(world, ParticleTypes.FLAME, 10, piglin.getPosX(), piglin.getPosY(), piglin.getPosZ(), 0, 0.05, 0, 0.4, 0.8, 0.4, true);
+                    MythicBotany.getNetwork().spawnParticle(world, ParticleTypes.FLAME, 10, piglin.getPosX(), piglin.getPosY(), piglin.getPosZ(), 0, 0.05, 0, 0.4, 0.8, 0.4, true);
                 }
             }
 
@@ -40,7 +41,7 @@ public class Hellebore extends FunctionalFlowerBase {
                 if (mana >= MANA_PER_ENTITY_AND_SECOND && hoglin.field_234358_by_ > 20) {
                     mana -= MANA_PER_ENTITY_AND_SECOND;
                     hoglin.field_234358_by_ = 0;
-                    MythicNetwork.spawnParticle(world, ParticleTypes.FLAME, 10, hoglin.getPosX(), hoglin.getPosY(), hoglin.getPosZ(), 0, 0.08, 0, 0.8, 0.7, 0.8, true);
+                    MythicBotany.getNetwork().spawnParticle(world, ParticleTypes.FLAME, 10, hoglin.getPosX(), hoglin.getPosY(), hoglin.getPosZ(), 0, 0.08, 0, 0.8, 0.7, 0.8, true);
                 }
             }
 

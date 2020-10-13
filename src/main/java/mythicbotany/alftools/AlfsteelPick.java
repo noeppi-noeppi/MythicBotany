@@ -1,8 +1,8 @@
 package mythicbotany.alftools;
 
+import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
-import mythicbotany.base.Registerable;
 import mythicbotany.pylon.PylonRepairable;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,8 +40,8 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
     @Override
     @OnlyIn(Dist.CLIENT)
     public void registerClient(String id) {
-        ItemModelsProperties.func_239418_a_(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.MODID, "tipped"), (stack, world, entity) -> isTipped(stack) ? 1 : 0);
-        ItemModelsProperties.func_239418_a_(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.MODID, "active"), (stack, world, entity) -> isEnabled(stack) ? 1 : 0);
+        ItemModelsProperties.func_239418_a_(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.getInstance().modid, "tipped"), (stack, world, entity) -> isTipped(stack) ? 1 : 0);
+        ItemModelsProperties.func_239418_a_(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.getInstance().modid, "active"), (stack, world, entity) -> isEnabled(stack) ? 1 : 0);
     }
 
     @Override

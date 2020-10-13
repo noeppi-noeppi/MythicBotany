@@ -44,7 +44,7 @@ public class ManaInfusionProvider extends RecipeProvider {
 	}
 
 	private static ResourceLocation id(String s) {
-		return new ResourceLocation(MythicBotany.MODID, "mana_infusion/" + s);
+		return new ResourceLocation(MythicBotany.getInstance().modid, "mana_infusion/" + s);
 	}
 
 	private static Ingredient ingr(IItemProvider i) {

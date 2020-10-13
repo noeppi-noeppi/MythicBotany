@@ -1,5 +1,6 @@
 package mythicbotany.network;
 
+import io.github.noeppi_noeppi.libx.network.NetworkHandler;
 import mythicbotany.ModItems;
 import mythicbotany.alftools.AlfsteelSword;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -9,7 +10,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class AlfSwordLeftClickHandler implements MythicHandler<AlfSwordLeftClickHandler.AlfSwordLeftClickMessage> {
+public class AlfSwordLeftClickHandler implements NetworkHandler<AlfSwordLeftClickHandler.AlfSwordLeftClickMessage> {
 
     @Override
     public Class<AlfSwordLeftClickMessage> messageClass() {

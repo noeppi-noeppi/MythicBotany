@@ -1,8 +1,8 @@
 package mythicbotany.alftools;
 
+import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
-import mythicbotany.base.Registerable;
 import mythicbotany.pylon.PylonRepairable;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,7 +35,7 @@ public class AlfsteelAxe extends ItemTerraAxe implements PylonRepairable, Regist
     @Override
     @OnlyIn(Dist.CLIENT)
     public void registerClient(String id) {
-        ItemModelsProperties.func_239418_a_(ModItems.alfsteelAxe, new ResourceLocation(MythicBotany.MODID, "active"), (stack, world, entity) -> entity instanceof PlayerEntity && !shouldBreak((PlayerEntity) entity) ? 0.0F : 1.0F);
+        ItemModelsProperties.func_239418_a_(ModItems.alfsteelAxe, new ResourceLocation(MythicBotany.getInstance().modid, "active"), (stack, world, entity) -> entity instanceof PlayerEntity && !shouldBreak((PlayerEntity) entity) ? 0.0F : 1.0F);
     }
 
     @Nonnull

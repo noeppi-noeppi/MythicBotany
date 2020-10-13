@@ -1,7 +1,8 @@
 package mythicbotany.infuser;
 
 import com.google.common.base.Predicates;
-import mythicbotany.base.TileEntityBase;
+import io.github.noeppi_noeppi.libx.mod.registration.TileEntityBase;
+import mythicbotany.MythicBotany;
 import mythicbotany.network.MythicNetwork;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -48,7 +49,7 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
         if (world.isRemote || !hasValidPlatform())
             return;
         if (active && recipe != null && mana > 0) {
-            MythicNetwork.spawnInfusionParticles(world, pos, mana / (float) recipe.getManaUsage(), recipe.fromColor(), recipe.toColor());
+            MythicBotany.getNetwork().spawnInfusionParticles(world, pos, mana / (float) recipe.getManaUsage(), recipe.fromColor(), recipe.toColor());
         }
         List<ItemEntity> items = getItems();
         List<ItemStack> stacks = items.stream().map(ItemEntity::getItem).collect(Collectors.toList());
@@ -243,14 +244,6 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
         maxMana = tag.getInt("maxMana");
         fromColor = tag.getInt("fromColor");
         toColor = tag.getInt("toColor");
-    }
-
-    @Override
-    public void onLoad() {
-        //noinspection ConstantConditions
-        if (world.isRemote) {
-            MythicNetwork.requestTE(world, pos);
-        }
     }
 
     public int getSourceColor() {

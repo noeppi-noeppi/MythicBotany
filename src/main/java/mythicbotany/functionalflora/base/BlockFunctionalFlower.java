@@ -3,8 +3,10 @@ package mythicbotany.functionalflora.base;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import io.github.noeppi_noeppi.libx.LibX;
+import io.github.noeppi_noeppi.libx.mod.ModX;
+import io.github.noeppi_noeppi.libx.mod.registration.BlockBase;
 import mythicbotany.MythicBotany;
-import mythicbotany.base.BlockBase;
 import mythicbotany.network.MythicNetwork;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -62,20 +64,20 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
     private final BlockFloatingFunctionalFlower<T> floatingBlock;
     public final boolean isGenerating;
 
-    public BlockFunctionalFlower(Class<T> teClass, Properties properties, boolean isGenerating) {
-        this(teClass, properties.doesNotBlockMovement()
+    public BlockFunctionalFlower(ModX mod, Class<T> teClass, Properties properties, boolean isGenerating) {
+        this(mod, teClass, properties.doesNotBlockMovement()
                 .setOpaque((state, world, pos) -> false)
                 .zeroHardnessAndResistance().sound(SoundType.PLANT), new Item.Properties(), isGenerating);
     }
 
-    public BlockFunctionalFlower(Class<T> teClass, Properties properties, Item.Properties itemProperties, boolean isGenerating) {
-        super(properties.doesNotBlockMovement()
+    public BlockFunctionalFlower(ModX mod, Class<T> teClass, Properties properties, Item.Properties itemProperties, boolean isGenerating) {
+        super(mod, properties.doesNotBlockMovement()
                 .setOpaque((state, world, pos) -> false)
                 .zeroHardnessAndResistance().sound(SoundType.PLANT), itemProperties);
 
         this.teClass = teClass;
         this.isGenerating = isGenerating;
-        this.floatingBlock = new BlockFloatingFunctionalFlower<>(this);
+        this.floatingBlock = new BlockFloatingFunctionalFlower<>(mod, this);
 
         try {
             this.teCtor = teClass.getConstructor(TileEntityType.class);
@@ -125,7 +127,7 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
     @Override
     public boolean onUsedByWand(PlayerEntity player, ItemStack stack, World world, BlockPos pos, Direction side) {
         if (world.isRemote) {
-            MythicNetwork.requestTE(world, pos);
+            LibX.getNetwork().requestTE(world, pos);
         }
         return true;
     }
@@ -197,7 +199,7 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
 
         }
         //noinspection ConstantConditions
-        list.add(new TranslationTextComponent("block." + MythicBotany.MODID + "." + this.getRegistryName().getPath() + ".description").mergeStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
+        list.add(new TranslationTextComponent("block." + mod.modid + "." + this.getRegistryName().getPath() + ".description").mergeStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
     }
 
     @SuppressWarnings("deprecation")

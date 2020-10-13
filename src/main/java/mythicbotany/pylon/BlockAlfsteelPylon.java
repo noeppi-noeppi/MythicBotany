@@ -1,8 +1,9 @@
 package mythicbotany.pylon;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import mythicbotany.base.BlockTE;
-import mythicbotany.network.MythicNetwork;
+import io.github.noeppi_noeppi.libx.LibX;
+import io.github.noeppi_noeppi.libx.mod.ModX;
+import io.github.noeppi_noeppi.libx.mod.registration.BlockTE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -34,8 +35,8 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
 
     private static final VoxelShape SHAPE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 21.0D, 14.0D);
 
-    public BlockAlfsteelPylon(Properties properties) {
-        super(TileAlfsteelPylon.class, properties, new Item.Properties().setISTER(() -> RenderAlfsteelPylon.TEISR::new));
+    public BlockAlfsteelPylon(ModX mod, Properties properties) {
+        super(mod, TileAlfsteelPylon.class, properties, new Item.Properties().setISTER(() -> RenderAlfsteelPylon.TEISR::new));
     }
 
     @Override
@@ -103,7 +104,7 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
     @Override
     public boolean onUsedByWand(PlayerEntity player, ItemStack stack, World world, BlockPos pos, Direction side) {
         if (world.isRemote) {
-            MythicNetwork.requestTE(world, pos);
+            LibX.getNetwork().requestTE(world, pos);
         }
         return true;
     }

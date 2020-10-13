@@ -1,5 +1,6 @@
 package mythicbotany.network;
 
+import io.github.noeppi_noeppi.libx.network.NetworkHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
@@ -9,7 +10,7 @@ import vazkii.botania.client.fx.WispParticleData;
 
 import java.util.function.Supplier;
 
-public class PylonHandler implements MythicHandler<PylonHandler.PylonMessage> {
+public class PylonHandler implements NetworkHandler<PylonHandler.PylonMessage> {
 
     @Override
     public Class<PylonMessage> messageClass() {

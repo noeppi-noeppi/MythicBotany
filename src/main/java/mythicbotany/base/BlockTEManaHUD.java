@@ -1,6 +1,9 @@
 package mythicbotany.base;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import io.github.noeppi_noeppi.libx.LibX;
+import io.github.noeppi_noeppi.libx.mod.ModX;
+import io.github.noeppi_noeppi.libx.mod.registration.BlockTE;
 import mythicbotany.network.MythicNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -22,23 +25,23 @@ public class BlockTEManaHUD<T extends TileEntityMana> extends BlockTE<T> impleme
 
     public final int color;
 
-    public BlockTEManaHUD(Class<T> teClass, Properties properties) {
-        super(teClass, properties);
+    public BlockTEManaHUD(ModX mod, Class<T> teClass, Properties properties) {
+        super(mod, teClass, properties);
         this.color = DEFAULT_COLOR;
     }
 
-    public BlockTEManaHUD(Class<T> teClass, Properties properties, Item.Properties itemProperties) {
-        super(teClass, properties, itemProperties);
+    public BlockTEManaHUD(ModX mod, Class<T> teClass, Properties properties, Item.Properties itemProperties) {
+        super(mod, teClass, properties, itemProperties);
         this.color = DEFAULT_COLOR;
     }
 
-    public BlockTEManaHUD(Class<T> teClass, Properties properties, int color) {
-        super(teClass, properties);
+    public BlockTEManaHUD(ModX mod, Class<T> teClass, Properties properties, int color) {
+        super(mod, teClass, properties);
         this.color = color;
     }
 
-    public BlockTEManaHUD(Class<T> teClass, Properties properties, Item.Properties itemProperties, int color) {
-        super(teClass, properties, itemProperties);
+    public BlockTEManaHUD(ModX mod, Class<T> teClass, Properties properties, Item.Properties itemProperties, int color) {
+        super(mod, teClass, properties, itemProperties);
         this.color = color;
     }
 
@@ -52,7 +55,7 @@ public class BlockTEManaHUD<T extends TileEntityMana> extends BlockTE<T> impleme
     @Override
     public boolean onUsedByWand(PlayerEntity player, ItemStack stack, World world, BlockPos pos, Direction side) {
         if (world.isRemote) {
-            MythicNetwork.requestTE(world, pos);
+            LibX.getNetwork().requestTE(world, pos);
         }
         return true;
     }
