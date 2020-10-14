@@ -11,12 +11,9 @@ package mythicbotany.data;
 import io.github.noeppi_noeppi.libx.data.provider.BlockTagProviderBase;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import mythicbotany.ModBlocks;
-import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-
-import javax.annotation.Nonnull;
 
 public class BlockTagProvider extends BlockTagProviderBase {
 

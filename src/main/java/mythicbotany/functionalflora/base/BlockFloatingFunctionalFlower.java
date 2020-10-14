@@ -4,8 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.noeppi_noeppi.libx.LibX;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import io.github.noeppi_noeppi.libx.mod.registration.BlockBase;
-import mythicbotany.MythicBotany;
-import mythicbotany.network.MythicNetwork;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;

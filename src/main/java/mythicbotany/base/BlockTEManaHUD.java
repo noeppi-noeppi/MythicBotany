@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.noeppi_noeppi.libx.LibX;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import io.github.noeppi_noeppi.libx.mod.registration.BlockTE;
-import mythicbotany.network.MythicNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;

@@ -2,7 +2,7 @@ package mythicbotany.network;
 
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import io.github.noeppi_noeppi.libx.network.NetworkX;
-import mythicbotany.network.ParticleHandler.ParticleMessage;
+import mythicbotany.network.ParticleSerializer.ParticleMessage;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,11 +22,11 @@ public class MythicNetwork extends NetworkX {
 
     @Override
     public void registerPackets() {
-        register(new ParticleHandler(), NetworkDirection.PLAY_TO_CLIENT);
-        register(new InfusionHandler(), NetworkDirection.PLAY_TO_CLIENT);
-        register(new PylonHandler(), NetworkDirection.PLAY_TO_CLIENT);
+        register(new ParticleSerializer(), () -> ParticleHandler::handle, NetworkDirection.PLAY_TO_CLIENT);
+        register(new InfusionSerializer(), () -> InfusionHandler::handle, NetworkDirection.PLAY_TO_CLIENT);
+        register(new PylonSerializer(), () -> PylonHandler::handle, NetworkDirection.PLAY_TO_CLIENT);
 
-        register(new AlfSwordLeftClickHandler(), NetworkDirection.PLAY_TO_SERVER);
+        register(new AlfSwordLeftClickSerializer(), () -> AlfSwordLeftClickHandler::handle, NetworkDirection.PLAY_TO_SERVER);
     }
 
     public void spawnParticle(World world, BasicParticleType particle, int amount, double x, double y, double z, double xm, double ym, double zm, double xd, double yd, double zd) {
@@ -57,7 +57,7 @@ public class MythicNetwork extends NetworkX {
 
     public void spawnInfusionParticles(World world, BlockPos pos, double progress, int fromColor, int toColor) {
         if (!world.isRemote) {
-           instance.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new InfusionHandler.InfusionMessage(pos.getX(), pos.getY(), pos.getZ(), world.func_234923_W_().getRegistryName(), progress, fromColor, toColor));
+           instance.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new InfusionSerializer.InfusionMessage(pos.getX(), pos.getY(), pos.getZ(), world.func_234923_W_().getRegistryName(), progress, fromColor, toColor));
         }
     }
 }

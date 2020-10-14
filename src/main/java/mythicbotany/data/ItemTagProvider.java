@@ -16,8 +16,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.common.item.material.ItemRune;
 import vazkii.botania.common.lib.ModTags;
 
-import javax.annotation.Nonnull;
-
 public class ItemTagProvider extends ItemTagProviderBase {
 
 	public ItemTagProvider(ModX mod, DataGenerator generatorIn, ExistingFileHelper fileHelper, BlockTagProviderBase blockTags) {

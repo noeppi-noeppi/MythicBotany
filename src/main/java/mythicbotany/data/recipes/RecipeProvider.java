@@ -22,7 +22,6 @@ import net.minecraft.data.ShapelessRecipeBuilder;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Items;
 import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.common.lib.ModTags;

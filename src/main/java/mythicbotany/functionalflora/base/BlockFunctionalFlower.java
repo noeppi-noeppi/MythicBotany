@@ -6,8 +6,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.noeppi_noeppi.libx.LibX;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import io.github.noeppi_noeppi.libx.mod.registration.BlockBase;
-import mythicbotany.MythicBotany;
-import mythicbotany.network.MythicNetwork;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -110,9 +108,9 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(String id) {
+    public void registerClient(ResourceLocation id) {
         ClientRegistry.bindTileEntityRenderer(teType, RenderFunctionalFlower::new);
-        RenderTypeLookup.setRenderLayer(this, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(this, RenderType.getTranslucent());
     }
 
     @Override

@@ -2,7 +2,6 @@ package mythicbotany.functionalflora;
 
 import mythicbotany.MythicBotany;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
-import mythicbotany.network.MythicNetwork;
 import net.minecraft.entity.monster.HoglinEntity;
 import net.minecraft.entity.monster.piglin.AbstractPiglinEntity;
 import net.minecraft.particles.ParticleTypes;

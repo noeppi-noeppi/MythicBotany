@@ -34,7 +34,7 @@ public class AlfsteelAxe extends ItemTerraAxe implements PylonRepairable, Regist
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(String id) {
+    public void registerClient(ResourceLocation id) {
         ItemModelsProperties.func_239418_a_(ModItems.alfsteelAxe, new ResourceLocation(MythicBotany.getInstance().modid, "active"), (stack, world, entity) -> entity instanceof PlayerEntity && !shouldBreak((PlayerEntity) entity) ? 0.0F : 1.0F);
     }
 

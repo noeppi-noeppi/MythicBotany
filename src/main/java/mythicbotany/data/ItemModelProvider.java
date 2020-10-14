@@ -4,7 +4,6 @@ import io.github.noeppi_noeppi.libx.data.provider.ItemModelProviderBase;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModItems;
-import mythicbotany.functionalflora.base.BlockFloatingFunctionalFlower;
 import mythicbotany.functionalflora.base.BlockFunctionalFlower;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.BlockItem;

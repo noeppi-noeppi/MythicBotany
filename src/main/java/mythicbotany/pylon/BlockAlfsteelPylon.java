@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -41,7 +42,7 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(String id) {
+    public void registerClient(ResourceLocation id) {
         ClientRegistry.bindTileEntityRenderer(getTileType(), RenderAlfsteelPylon::new);
     }
 
