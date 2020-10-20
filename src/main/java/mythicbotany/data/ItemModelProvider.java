@@ -14,7 +14,10 @@ public class ItemModelProvider extends ItemModelProviderBase {
 
 	public ItemModelProvider(ModX mod, DataGenerator generator, ExistingFileHelper fileHelper) {
 		super(mod, generator, fileHelper);
+	}
 
+	@Override
+	protected void setup() {
 		handheld(ModItems.alfsteelSword);
 		manualModel(ModItems.alfsteelPick);
 		manualModel(ModItems.alfsteelAxe);

@@ -17,7 +17,10 @@ public class BlockStateProvider extends BlockStateProviderBase {
 
     public BlockStateProvider(ModX mod, DataGenerator generator, ExistingFileHelper fileHelper) {
         super(mod, generator, fileHelper);
+    }
 
+    @Override
+    protected void setup() {
         manualModel(ModBlocks.manaInfuser);
         manualModel(ModBlocks.alfsteelPylon);
     }

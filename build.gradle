@@ -145,7 +145,7 @@ dependencies {
     compile fg.deobf('vazkii.botania:Botania:1.16.3-407-SNAPSHOT')
     compile fg.deobf('vazkii.patchouli:Patchouli:1.16-42')
     compile fg.deobf('top.theillusivec4.curios:curios-forge:1.16.3-4.0.2.0')
-    compile fg.deobf("io.github.noeppi_noeppi.mods:LibX:1.16.3-0.1.15")
+    compile fg.deobf("io.github.noeppi_noeppi.mods:LibX:1.16.3-0.1.29")
 
     runtimeOnly fg.deobf('mezz.jei:jei-1.16.2:7.3.2.27')
 }

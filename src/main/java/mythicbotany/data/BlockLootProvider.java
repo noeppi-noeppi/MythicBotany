@@ -17,4 +17,9 @@ public class BlockLootProvider extends BlockLootProviderBase {
 	public BlockLootProvider(ModX mod, DataGenerator generator) {
 		super(mod, generator);
 	}
+
+	@Override
+	protected void setup() {
+
+	}
 }
