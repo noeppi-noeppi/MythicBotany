@@ -30,7 +30,7 @@ import java.util.Random;
 
 public class RenderAlfsteelPylon extends TileEntityRenderer<TileAlfsteelPylon> {
 
-    public static final ResourceLocation TEXTURE = new ResourceLocation(MythicBotany.MODID, "textures/model/pylon_alfsteel.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(MythicBotany.getInstance().modid, "textures/model/pylon_alfsteel.png");
     public static final RenderType PYLON_GLOW = initFieldPylonGlow(false);
     public static final RenderType PYLON_GLOW_ITEM = initFieldPylonGlow(true);
 
@@ -38,7 +38,7 @@ public class RenderAlfsteelPylon extends TileEntityRenderer<TileAlfsteelPylon> {
         RenderType.State.Builder glState = RenderType.State.getBuilder().texture(new RenderState.TextureState(TEXTURE, false, false)).transparency(AccessorRenderState.getTranslucentTransparency()).diffuseLighting(new RenderState.DiffuseLightingState(true)).alpha(new RenderState.AlphaState(0.0F)).cull(new RenderState.CullState(false)).lightmap(new RenderState.LightmapState(true));
         if (forItem)
             glState = glState.target(AccessorRenderState.getItemEntityTarget());
-        RenderType layer = RenderType.makeType(MythicBotany.MODID  + ":alfsteel_pylon_glow" + (forItem ? "_item" : ""), DefaultVertexFormats.ENTITY, 7, 128, glState.build(false));
+        RenderType layer = RenderType.makeType(MythicBotany.getInstance().modid  + ":alfsteel_pylon_glow" + (forItem ? "_item" : ""), DefaultVertexFormats.ENTITY, 7, 128, glState.build(false));
         return ShaderHelper.useShaders() ? new ShaderWrappedRenderLayer(ShaderHelper.BotaniaShader.PYLON_GLOW, null, layer) : layer;
     }
 

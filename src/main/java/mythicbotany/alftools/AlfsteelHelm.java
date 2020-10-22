@@ -46,7 +46,7 @@ public class AlfsteelHelm extends ItemTerrasteelHelm implements PylonRepairable 
     }
 
     public String getArmorTextureAfterInk(ItemStack stack, EquipmentSlotType slot) {
-        return ConfigHandler.CLIENT.enableArmorModels.get() ? MythicBotany.MODID + ":textures/model/armor_alfsteel.png" : (slot == EquipmentSlotType.CHEST ? MythicBotany.MODID + ":textures/model/alfsteel_1.png" : MythicBotany.MODID + ":textures/model/alfsteel_0.png");
+        return ConfigHandler.CLIENT.enableArmorModels.get() ? MythicBotany.getInstance().modid + ":textures/model/armor_alfsteel.png" : (slot == EquipmentSlotType.CHEST ? MythicBotany.getInstance().modid + ":textures/model/alfsteel_1.png" : MythicBotany.getInstance().modid + ":textures/model/alfsteel_0.png");
     }
 
     private void onJump(LivingEvent.LivingJumpEvent event) {

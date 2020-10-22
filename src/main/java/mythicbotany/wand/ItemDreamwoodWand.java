@@ -1,9 +1,9 @@
 package mythicbotany.wand;
 
 import com.google.common.collect.ImmutableSet;
+import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
-import mythicbotany.base.Registerable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -56,8 +56,8 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(String id) {
-        ItemModelsProperties.func_239418_a_(ModItems.dreamwoodWand, new ResourceLocation(MythicBotany.MODID, "bindmode"), (stack, world, entity) -> ItemTwigWand.getBindMode(stack) ? 1 : 0);
+    public void registerClient(ResourceLocation id) {
+        ItemModelsProperties.func_239418_a_(ModItems.dreamwoodWand, new ResourceLocation(MythicBotany.getInstance().modid, "bindmode"), (stack, world, entity) -> ItemTwigWand.getBindMode(stack) ? 1 : 0);
         Minecraft.getInstance().getItemColors().register((stack, colorId) -> colorId == 1 ? DyeColor.byId(getColor1(stack)).getColorValue() : (colorId == 2 ? DyeColor.byId(getColor2(stack)).getColorValue() : -1), ModItems.dreamwoodWand);
         MinecraftForge.EVENT_BUS.addListener(this::onRenderGameOverlay);
     }

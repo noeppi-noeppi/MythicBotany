@@ -1,7 +1,7 @@
 package mythicbotany.functionalflora;
 
+import io.github.noeppi_noeppi.libx.LibX;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
-import mythicbotany.network.MythicNetwork;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
@@ -47,7 +47,7 @@ public class Aquapanthus extends FunctionalFlowerBase {
                         currentlyFilling = null;
                     }
                 }
-                MythicNetwork.updateTE(world, pos);
+                LibX.getNetwork().updateTE(world, pos);
                 markDirty();
             } else {
                 if (tickToNextCheck > 0) {

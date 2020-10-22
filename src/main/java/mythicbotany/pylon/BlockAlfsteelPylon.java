@@ -1,8 +1,9 @@
 package mythicbotany.pylon;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import mythicbotany.base.BlockTE;
-import mythicbotany.network.MythicNetwork;
+import io.github.noeppi_noeppi.libx.LibX;
+import io.github.noeppi_noeppi.libx.mod.ModX;
+import io.github.noeppi_noeppi.libx.mod.registration.BlockTE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -34,13 +36,13 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
 
     private static final VoxelShape SHAPE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 21.0D, 14.0D);
 
-    public BlockAlfsteelPylon(Properties properties) {
-        super(TileAlfsteelPylon.class, properties, new Item.Properties().setISTER(() -> RenderAlfsteelPylon.TEISR::new));
+    public BlockAlfsteelPylon(ModX mod, Properties properties) {
+        super(mod, TileAlfsteelPylon.class, properties, new Item.Properties().setISTER(() -> RenderAlfsteelPylon.TEISR::new));
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(String id) {
+    public void registerClient(ResourceLocation id) {
         ClientRegistry.bindTileEntityRenderer(getTileType(), RenderAlfsteelPylon::new);
     }
 
@@ -103,7 +105,7 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
     @Override
     public boolean onUsedByWand(PlayerEntity player, ItemStack stack, World world, BlockPos pos, Direction side) {
         if (world.isRemote) {
-            MythicNetwork.requestTE(world, pos);
+            LibX.getNetwork().requestTE(world, pos);
         }
         return true;
     }

@@ -1,111 +1,37 @@
-/*
- * This class is distributed as part of the Botania Mod.
- * Get the Source Code in github:
- * https://github.com/Vazkii/Botania
- *
- * Botania is Open Source and distributed under the
- * Botania License: http://botaniamod.net/license.php
- */
 package mythicbotany.data;
 
+import io.github.noeppi_noeppi.libx.data.provider.ItemModelProviderBase;
+import io.github.noeppi_noeppi.libx.mod.ModX;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModItems;
-import mythicbotany.MythicBotany;
 import mythicbotany.functionalflora.base.BlockFunctionalFlower;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
 
-import javax.annotation.Nonnull;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
+public class ItemModelProvider extends ItemModelProviderBase {
 
-import static vazkii.botania.data.BlockstateProvider.takeAll;
-
-public class ItemModelProvider extends net.minecraftforge.client.model.generators.ItemModelProvider {
-
-	private final Set<Item> handheld = new HashSet<>();
-
-	public ItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-		super(generator, MythicBotany.MODID, existingFileHelper);
-	}
-
-	@Nonnull
-	@Override
-	public String getName() {
-		return "MythicBotany item models";
+	public ItemModelProvider(ModX mod, DataGenerator generator, ExistingFileHelper fileHelper) {
+		super(mod, generator, fileHelper);
 	}
 
 	@Override
-	protected void registerModels() {
-		Set<Item> items = Registry.ITEM.stream().filter(i -> MythicBotany.MODID.equals(Registry.ITEM.getKey(i).getNamespace()))
-				.collect(Collectors.toSet());
-		registerItemBlocks(takeAll(items, i -> i instanceof BlockItem).stream().map(i -> (BlockItem) i).collect(Collectors.toSet()));
-		registerItems(items);
+	protected void setup() {
+		handheld(ModItems.alfsteelSword);
+		manualModel(ModItems.alfsteelPick);
+		manualModel(ModItems.alfsteelAxe);
+		manualModel(ModItems.fadedNetherStar);
+		manualModel(ModItems.dreamwoodWand);
+		manualModel(ModBlocks.alfsteelPylon.asItem());
 	}
 
-	private static String name(Item i) {
-		return Registry.ITEM.getKey(i).getPath();
-	}
-
-	private static final ResourceLocation GENERATED = new ResourceLocation("item/generated");
-	private static final ResourceLocation HANDHELD = new ResourceLocation("item/handheld");
-
-	private ItemModelBuilder handheldItem(String name) {
-		return withExistingParent(name, HANDHELD)
-				.texture("layer0", new ResourceLocation(MythicBotany.MODID, "item/" + name));
-	}
-
-	@SuppressWarnings("UnusedReturnValue")
-	private ItemModelBuilder handheldItem(Item i) {
-		handheld.add(i);
-		return handheldItem(name(i));
-	}
-
-	private ItemModelBuilder generatedItem(String name) {
-		return withExistingParent(name, GENERATED)
-				.texture("layer0", new ResourceLocation(MythicBotany.MODID, "item/" + name));
-	}
-
-	@SuppressWarnings("UnusedReturnValue")
-	private ItemModelBuilder generatedItem(Item i) {
-		return generatedItem(name(i));
-	}
-
-	private void registerItems(Set<Item> items) {
-
-		handheldItem(ModItems.alfsteelSword);
-		items.remove(ModItems.alfsteelPick);
-		items.remove(ModItems.alfsteelAxe);
-		items.remove(ModItems.fadedNetherStar);
-		items.remove(ModItems.dreamwoodWand);
-
-		items.forEach(item -> {
-			if (!(item instanceof BlockItem) && !handheld.contains(item)) {
-				generatedItem(item);
-			}
-		});
-	}
-
-
-	@SuppressWarnings("SuspiciousMethodCalls")
-	private void registerItemBlocks(Set<BlockItem> itemBlocks) {
-		itemBlocks.remove(ModBlocks.alfsteelPylon.asItem());
-
-		itemBlocks.forEach(i -> {
-			@SuppressWarnings("deprecation")
-			String name = Registry.ITEM.getKey(i).getPath();
-			if (i.getBlock() instanceof BlockFunctionalFlower<?>) {
-				withExistingParent(name, GENERATED)
-						.texture("layer0", new ResourceLocation(MythicBotany.MODID, "block/" + name));
-			} else {
-				getBuilder(name).parent(new AlwaysExistentModelFile(new ResourceLocation(MythicBotany.MODID, "block/" + name)));
-			}
-		});
+	@Override
+	protected void defaultBlock(ResourceLocation id, BlockItem item) {
+		if (item.getBlock() instanceof BlockFunctionalFlower<?>) {
+			this.withExistingParent(id.getPath(), GENERATED).texture("layer0", new ResourceLocation(id.getNamespace(), "block/" + id.getPath()));
+		} else {
+			super.defaultBlock(id, item);
+		}
 	}
 }

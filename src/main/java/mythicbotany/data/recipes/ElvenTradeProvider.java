@@ -44,7 +44,7 @@ public class ElvenTradeProvider extends RecipeProvider {
 	}
 
 	private static ResourceLocation id(String path) {
-		return new ResourceLocation(MythicBotany.MODID, "elven_trade/" + path);
+		return new ResourceLocation(MythicBotany.getInstance().modid, "elven_trade/" + path);
 	}
 
 	private static class FinishedRecipe implements IFinishedRecipe {

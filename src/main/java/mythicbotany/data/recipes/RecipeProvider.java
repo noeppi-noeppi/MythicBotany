@@ -8,6 +8,8 @@
  */
 package mythicbotany.data.recipes;
 
+import io.github.noeppi_noeppi.libx.data.provider.recipe.RecipeProviderBase;
+import io.github.noeppi_noeppi.libx.mod.ModX;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
@@ -20,24 +22,18 @@ import net.minecraft.data.ShapelessRecipeBuilder;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Items;
 import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.common.lib.ModTags;
 import vazkii.botania.data.recipes.WrapperResult;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
-public class RecipeProvider extends net.minecraft.data.RecipeProvider {
+public class RecipeProvider extends RecipeProviderBase {
 
-    public RecipeProvider(DataGenerator generator) {
-        super(generator);
-    }
-
-    @Nonnull
-    @Override
-    public String getName() {
-        return "MythicBotany crafting recipes";
+    public RecipeProvider(ModX mod, DataGenerator generator) {
+        super(mod, generator);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -60,7 +56,7 @@ public class RecipeProvider extends net.minecraft.data.RecipeProvider {
                 .patternLine("eee")
                 .patternLine("wdz")
                 .patternLine("xay")
-                .setGroup(MythicBotany.MODID + ":infuser")
+                .setGroup(MythicBotany.getInstance().modid + ":infuser")
                 .addCriterion("has_item", hasItem(ModItems.asgardRune))
                 .build(consumer);
 
@@ -78,7 +74,7 @@ public class RecipeProvider extends net.minecraft.data.RecipeProvider {
                 .patternLine(" n ")
                 .patternLine("npn")
                 .patternLine(" g ")
-                .setGroup(MythicBotany.MODID + ":alfsteel_pylon")
+                .setGroup(MythicBotany.getInstance().modid + ":alfsteel_pylon")
                 .addCriterion("has_item", hasItem(vazkii.botania.common.block.ModBlocks.naturaPylon))
                 .build(consumer);
 
@@ -89,9 +85,9 @@ public class RecipeProvider extends net.minecraft.data.RecipeProvider {
                 .patternLine(" d ")
                 .patternLine("epe")
                 .patternLine(" d ")
-                .setGroup(MythicBotany.MODID + ":modified_gaia_pylon_with_alfsteel")
+                .setGroup(MythicBotany.getInstance().modid + ":modified_gaia_pylon_with_alfsteel")
                 .addCriterion("has_item", hasItem(ModBlocks.alfsteelPylon))
-                .build(consumer, MythicBotany.MODID + ":modified_gaia_pylon_with_alfsteel");
+                .build(consumer, MythicBotany.getInstance().modid + ":modified_gaia_pylon_with_alfsteel");
 
         ShapedRecipeBuilder.shapedRecipe(ModBlocks.manaCollector)
                 .key('d', vazkii.botania.common.block.ModBlocks.dreamwoodGlimmering)
@@ -101,7 +97,7 @@ public class RecipeProvider extends net.minecraft.data.RecipeProvider {
                 .patternLine("dgd")
                 .patternLine("dpd")
                 .patternLine("dmd")
-                .setGroup(MythicBotany.MODID + ":mana_collector")
+                .setGroup(MythicBotany.getInstance().modid + ":mana_collector")
                 .addCriterion("has_item", hasItem(vazkii.botania.common.item.ModItems.gaiaIngot))
                 .build(consumer);
 
@@ -114,46 +110,6 @@ public class RecipeProvider extends net.minecraft.data.RecipeProvider {
                 .setGroup(ModItems.dreamwoodWand.getRegistryName().toString())
                 .addCriterion("has_item", hasItem(ModTags.Items.PETALS))
                 .build(WrapperResult.ofType(RecipeDreamwoodWand.SERIALIZER, consumer));
-    }
-
-    @SuppressWarnings({"SameParameterValue", "ConstantConditions"})
-    private void makeBlockItemNugget(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider ingot, IItemProvider nugget) {
-
-        makeBlockItem(consumer, block, ingot);
-
-        ShapedRecipeBuilder.shapedRecipe(ingot)
-                .key('a', nugget)
-                .patternLine("aaa")
-                .patternLine("aaa")
-                .patternLine("aaa")
-                .setGroup(ingot.asItem().getRegistryName() + "_from_nuggets")
-                .addCriterion("has_item", hasItem(nugget))
-                .build(consumer, new ResourceLocation(MythicBotany.MODID, ingot.asItem().getRegistryName().getPath() + "_from_nuggets"));
-
-        ShapelessRecipeBuilder.shapelessRecipe(nugget, 9)
-                .addIngredient(ingot)
-                .setGroup(nugget.asItem().getRegistryName() + "_from_ingot")
-                .addCriterion("has_item", hasItem(ingot))
-                .build(consumer, new ResourceLocation(MythicBotany.MODID, nugget.asItem().getRegistryName().getPath() + "_from_ingot"));
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    private void makeBlockItem(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider ingot) {
-
-        ShapedRecipeBuilder.shapedRecipe(block)
-                .key('a', ingot)
-                .patternLine("aaa")
-                .patternLine("aaa")
-                .patternLine("aaa")
-                .setGroup(block.asItem().getRegistryName() + "_from_ingots")
-                .addCriterion("has_item", hasItem(ingot))
-                .build(consumer, new ResourceLocation(MythicBotany.MODID, block.asItem().getRegistryName().getPath() + "_from_ingots"));
-
-        ShapelessRecipeBuilder.shapelessRecipe(ingot, 9)
-                .addIngredient(block)
-                .setGroup(ingot.asItem().getRegistryName() + "_from_block")
-                .addCriterion("has_item", hasItem(block))
-                .build(consumer, new ResourceLocation(MythicBotany.MODID, ingot.asItem().getRegistryName().getPath() + "_from_block"));
     }
 
     private void makeRing(Consumer<IFinishedRecipe> consumer, IItemProvider ring, IItemProvider material, IItemProvider gem) {
@@ -171,8 +127,8 @@ public class RecipeProvider extends net.minecraft.data.RecipeProvider {
 
     private void makeFloatingFlowerRecipes(Consumer<IFinishedRecipe> consumer) {
         //noinspection deprecation
-        Registry.ITEM.stream()
-                .filter(i -> MythicBotany.MODID.equals(Registry.ITEM.getKey(i).getNamespace()))
+        ForgeRegistries.ITEMS.getValues().stream()
+                .filter(i -> MythicBotany.getInstance().modid.equals(Registry.ITEM.getKey(i).getNamespace()))
                 .filter(i -> i instanceof BlockItem)
                 .filter(i -> ((BlockItem) i).getBlock() instanceof BlockFloatingFunctionalFlower<?>)
                 .forEach(i -> {

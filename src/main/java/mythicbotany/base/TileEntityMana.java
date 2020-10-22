@@ -1,6 +1,7 @@
 package mythicbotany.base;
 
 import com.google.common.base.Predicates;
+import io.github.noeppi_noeppi.libx.mod.registration.TileEntityBase;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;

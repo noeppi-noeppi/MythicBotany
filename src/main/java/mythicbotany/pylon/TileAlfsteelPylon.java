@@ -1,8 +1,8 @@
 package mythicbotany.pylon;
 
+import mythicbotany.MythicBotany;
 import mythicbotany.base.TileEntityMana;
-import mythicbotany.network.MythicNetwork;
-import mythicbotany.network.PylonHandler;
+import mythicbotany.network.PylonSerializer;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -41,7 +41,7 @@ public class TileAlfsteelPylon extends TileEntityMana implements ITickableTileEn
                             stack = repairable.repairOneTick(stack);
                             item.setItem(stack);
                             markDirty();
-                            MythicNetwork.INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new PylonHandler.PylonMessage(world.func_234923_W_().getRegistryName(), pos));
+                            MythicBotany.getNetwork().instance.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new PylonSerializer.PylonMessage(world.func_234923_W_().getRegistryName(), pos));
                         }
                 }
             }
@@ -51,13 +51,5 @@ public class TileAlfsteelPylon extends TileEntityMana implements ITickableTileEn
     private List<ItemEntity> getItems() {
         //noinspection ConstantConditions
         return this.world.getEntitiesWithinAABB(ItemEntity.class, new AxisAlignedBB(this.pos.add(0, 1, 0), this.pos.add(1, 2, 1)));
-    }
-
-    @Override
-    public void onLoad() {
-        //noinspection ConstantConditions
-        if (world.isRemote) {
-            MythicNetwork.requestTE(world, pos);
-        }
     }
 }

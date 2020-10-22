@@ -12,6 +12,6 @@ public class ModRecipes {
     public static final IRecipeSerializer<InfuserRecipe> INFUSER_SERIALIZER = new InfuserRecipe.Serializer();
 
     public static void register() {
-        MythicBotany.register(INFUSER.toString(), INFUSER_SERIALIZER);
+        MythicBotany.getInstance().register(INFUSER.toString(), INFUSER_SERIALIZER);
     }
 }

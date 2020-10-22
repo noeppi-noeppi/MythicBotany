@@ -1,47 +1,15 @@
 package mythicbotany.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 import vazkii.botania.client.fx.WispParticleData;
 
 import java.util.function.Supplier;
 
-public class InfusionHandler implements MythicHandler<InfusionHandler.InfusionMessage> {
+public class InfusionHandler {
 
-    @Override
-    public Class<InfusionMessage> messageClass() {
-        return InfusionMessage.class;
-    }
-
-    @Override
-    public void encode(InfusionMessage msg, PacketBuffer buf) {
-        buf.writeInt(msg.x);
-        buf.writeInt(msg.y);
-        buf.writeInt(msg.z);
-        buf.writeResourceLocation(msg.dimension);
-        buf.writeDouble(msg.progress);
-        buf.writeInt(msg.fromColor);
-        buf.writeInt(msg.toColor);
-    }
-
-    @Override
-    public InfusionMessage decode(PacketBuffer buf) {
-        InfusionMessage msg = new InfusionMessage();
-        msg.x = buf.readInt();
-        msg.y = buf.readInt();
-        msg.z = buf.readInt();
-        msg.dimension = buf.readResourceLocation();
-        msg.progress = buf.readDouble();
-        msg.fromColor = buf.readInt();
-        msg.toColor = buf.readInt();
-        return msg;
-    }
-
-    @Override
-    public void handle(InfusionMessage msg, Supplier<NetworkEvent.Context> ctx) {
+    public static void handle(InfusionSerializer.InfusionMessage msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             World world = Minecraft.getInstance().world;
             //noinspection ConstantConditions
@@ -89,27 +57,5 @@ public class InfusionHandler implements MythicHandler<InfusionHandler.InfusionMe
                 }
             }
         });
-    }
-
-    public static class InfusionMessage {
-
-        public InfusionMessage() {
-
-        }
-
-        public InfusionMessage(int x, int y, int z, ResourceLocation dimension, double progress, int fromColor, int toColor) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.dimension = dimension;
-            this.progress = progress;
-            this.fromColor = fromColor;
-            this.toColor = toColor;
-        }
-
-        public int x, y, z;
-        public ResourceLocation dimension;
-        public double progress;
-        public int fromColor, toColor;
     }
 }

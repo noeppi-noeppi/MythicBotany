@@ -1,6 +1,7 @@
 package mythicbotany.infuser;
 
-import mythicbotany.base.BlockTE;
+import io.github.noeppi_noeppi.libx.mod.ModX;
+import io.github.noeppi_noeppi.libx.mod.registration.BlockTE;
 import net.minecraft.block.BlockState;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.util.math.BlockPos;
@@ -15,8 +16,8 @@ public class BlockManaInfuser extends BlockTE<TileManaInfuser> {
 
     private static final VoxelShape SHAPE = makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
 
-    public BlockManaInfuser(Class<TileManaInfuser> teClass, Properties properties) {
-        super(teClass, properties);
+    public BlockManaInfuser(ModX mod, Class<TileManaInfuser> teClass, Properties properties) {
+        super(mod, teClass, properties);
     }
 
     @SuppressWarnings("deprecation")

@@ -135,25 +135,27 @@ public class InfuserRecipe implements IInfuserRecipe {
         @Nullable
         @Override
         public InfuserRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull PacketBuffer buffer) {
-            Ingredient[] inputs = new Ingredient[buffer.readVarInt()];
+            Ingredient[] inputs = new Ingredient[buffer.readInt()];
             for (int i = 0; i < inputs.length; i++) {
                 inputs[i] = Ingredient.read(buffer);
             }
             ItemStack output = buffer.readItemStack();
-            int mana = buffer.readVarInt();
-            int fromColor = buffer.readVarInt();
-            int toColor = buffer.readVarInt();
+            int mana = buffer.readInt();
+            int fromColor = buffer.readInt();
+            int toColor = buffer.readInt();
             return new InfuserRecipe(recipeId, output, mana, fromColor, toColor, inputs);
         }
 
         @Override
         public void write(@Nonnull PacketBuffer buffer, @Nonnull InfuserRecipe recipe) {
-            buffer.writeVarInt(recipe.getIngredients().size());
+            buffer.writeInt(recipe.getIngredients().size());
             for (Ingredient input : recipe.getIngredients()) {
                 input.write(buffer);
             }
             buffer.writeItemStack(recipe.getRecipeOutput(), false);
-            buffer.writeVarInt(recipe.getManaUsage());
+            buffer.writeInt(recipe.getManaUsage());
+            buffer.writeInt(recipe.fromColor);
+            buffer.writeInt(recipe.toColor);
         }
     }
 }

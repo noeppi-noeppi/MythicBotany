@@ -85,7 +85,7 @@ public class RuneProvider extends RecipeProvider {
 	}
 
 	private static ResourceLocation idFor(String s) {
-		return new ResourceLocation(MythicBotany.MODID, "runic_altar/" + s);
+		return new ResourceLocation(MythicBotany.getInstance().modid, "runic_altar/" + s);
 	}
 
 	private static class FinishedRecipe implements IFinishedRecipe {

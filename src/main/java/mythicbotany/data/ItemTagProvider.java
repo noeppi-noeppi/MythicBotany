@@ -1,55 +1,42 @@
-/*
- * This class is distributed as part of the Botania Mod.
- * Get the Source Code in github:
- * https://github.com/Vazkii/Botania
- *
- * Botania is Open Source and distributed under the
- * Botania License: http://botaniamod.net/license.php
- */
 package mythicbotany.data;
 
+import io.github.noeppi_noeppi.libx.data.provider.BlockTagProviderBase;
+import io.github.noeppi_noeppi.libx.data.provider.ItemTagProviderBase;
+import io.github.noeppi_noeppi.libx.mod.ModX;
 import mythicbotany.MythicBotany;
 import mythicbotany.functionalflora.base.BlockFloatingFunctionalFlower;
 import mythicbotany.functionalflora.base.BlockFunctionalFlower;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.ItemTagsProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.registry.Registry;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.common.item.material.ItemRune;
 import vazkii.botania.common.lib.ModTags;
 
-import javax.annotation.Nonnull;
+public class ItemTagProvider extends ItemTagProviderBase {
 
-public class ItemTagProvider extends ItemTagsProvider {
-	public ItemTagProvider(DataGenerator generatorIn, BlockTagProvider blockTagProvider) {
-		super(generatorIn, blockTagProvider);
-	}
-
-	@Nonnull
-	@Override
-	public String getName() {
-		return "MythicBotany item tags";
+	public ItemTagProvider(ModX mod, DataGenerator generatorIn, ExistingFileHelper fileHelper, BlockTagProviderBase blockTags) {
+		super(mod, generatorIn, fileHelper, blockTags);
 	}
 
 	@Override
 	protected void registerTags() {
 
 		//noinspection deprecation
-		Registry.ITEM.stream()
-				.filter(i -> MythicBotany.MODID.equals(Registry.ITEM.getKey(i).getNamespace()))
+		ForgeRegistries.ITEMS.getValues().stream()
+				.filter(i -> MythicBotany.getInstance().modid.equals(Registry.ITEM.getKey(i).getNamespace()))
 				.filter(i -> !(i instanceof BlockItem))
 				.forEach(this::addDefaultItemTag);
 
 		//noinspection deprecation
-		Registry.ITEM.stream()
-				.filter(i -> MythicBotany.MODID.equals(Registry.ITEM.getKey(i).getNamespace()))
+		ForgeRegistries.ITEMS.getValues().stream()
+				.filter(i -> MythicBotany.getInstance().modid.equals(Registry.ITEM.getKey(i).getNamespace()))
 				.filter(i -> i instanceof BlockItem)
 				.map(i -> ((BlockItem) i).getBlock())
 				.forEach(this::addDefaultBlockItemTag);
-
-		//this.func_240522_a_(ModTags.Items.SHEARS).func_240534_a_(ModItems.elementiumShears, ModItems.manasteelShears);
 	}
 
 	public void addDefaultItemTag(Item item) {

@@ -3,9 +3,9 @@ package mythicbotany.alftools;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import mythicbotany.ModItems;
+import mythicbotany.MythicBotany;
 import mythicbotany.pylon.PylonRepairable;
-import mythicbotany.network.AlfSwordLeftClickHandler;
-import mythicbotany.network.MythicNetwork;
+import mythicbotany.network.AlfSwordLeftClickSerializer;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -37,7 +37,7 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
 
     private void leftClick(PlayerInteractEvent.LeftClickEmpty evt) {
         if (!evt.getItemStack().isEmpty() && evt.getItemStack().getItem() == this) {
-            MythicNetwork.INSTANCE.sendToServer(new AlfSwordLeftClickHandler.AlfSwordLeftClickMessage());
+            MythicBotany.getNetwork().instance.sendToServer(new AlfSwordLeftClickSerializer.AlfSwordLeftClickMessage());
         }
     }
 

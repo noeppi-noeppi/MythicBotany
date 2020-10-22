@@ -1,7 +1,6 @@
 package mythicbotany.functionalflora.base;
 
-import mythicbotany.base.TileEntityBase;
-import mythicbotany.network.MythicNetwork;
+import io.github.noeppi_noeppi.libx.mod.registration.TileEntityBase;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -315,14 +314,6 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
     @OnlyIn(Dist.CLIENT)
     public RadiusDescriptor getRadius() {
         return null;
-    }
-
-    @Override
-    public void onLoad() {
-        //noinspection ConstantConditions
-        if (world.isRemote) {
-            MythicNetwork.requestTE(world, pos);
-        }
     }
 
     @Override
