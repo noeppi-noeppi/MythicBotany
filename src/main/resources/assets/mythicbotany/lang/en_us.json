@@ -38,6 +38,8 @@
   "block.mythicbotany.aquapanthus_floating": "Floating Aquapanthus",
   "block.mythicbotany.hellebore": "Hellebore",
   "block.mythicbotany.hellebore_floating": "Floating Hellebore",
+  "block.mythicbotany.raindeletia": "Raindeltia",
+  "block.mythicbotany.raindeletia_floating": "Floating Raindeltia",
 
   "item.mythicbotany.alfsteel_helmet.description": "Makes you reach a little bit further.",
   "item.mythicbotany.alfsteel_chestplate.description": "Gives you a fairly good knockback resistance",
@@ -47,7 +49,8 @@
   "block.mythicbotany.exoblaze.description": "Blazing!",
   "block.mythicbotany.wither_aconite.description": "It gobbles nether stars.",
   "block.mythicbotany.aquapanthus.description": "Try it when it's dry.",
-  "block.mythicbotany.hellebore.description": "It feels like Helheim..",
+  "block.mythicbotany.hellebore.description": "It feels like Helheim.",
+  "block.mythicbotany.raindeletia.description": "Rain is not a pain.",
 
   "lexicon.mythicbotany.title": "MythicBotany",
   "lexicon.mythicbotany.description": "Dive deeper into the world of magic",
@@ -96,7 +99,8 @@
 
   "lexicon.mythicbotany.generating.title": "Generating Flora",
   "lexicon.mythicbotany.generating.page1": "The wither aconite uses up nether stars droppen on it to create mana from them.",
-  "lexicon.mythicbotany.generating.page2": "At some point in time your flowers will create mana that fast that spreaders are not enough to handle it. The this comes in. It allows the mana of flowers to be inserted into the spark network directly.",
+  "lexicon.mythicbotany.generating.page2": "The raindeletia produces mana when it's raining and even more mana when it's thundering. Placing it on vivid grass or enchanted soil makes it generate much more. ",
+  "lexicon.mythicbotany.generating.page3": "At some point in time your flowers will create mana that fast that spreaders are not enough to handle it. The this comes in. It allows the mana of flowers to be inserted into the spark network directly.",
 
   "lexicon.mythicbotany.functional.title": "Functional Flora",
   "lexicon.mythicbotany.functional.page1": "The Exoblaze uses mana to fill the fuel of nearby brewing stands. Never put blaze powder in again.",

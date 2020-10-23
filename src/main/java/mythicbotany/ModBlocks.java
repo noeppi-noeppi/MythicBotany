@@ -4,10 +4,7 @@ import io.github.noeppi_noeppi.libx.mod.registration.BlockBase;
 import io.github.noeppi_noeppi.libx.mod.registration.BlockTE;
 import mythicbotany.base.BlockTEManaHUD;
 import mythicbotany.collector.TileManaCollector;
-import mythicbotany.functionalflora.Aquapanthus;
-import mythicbotany.functionalflora.Exoblaze;
-import mythicbotany.functionalflora.Hellebore;
-import mythicbotany.functionalflora.WitherAconite;
+import mythicbotany.functionalflora.*;
 import mythicbotany.functionalflora.base.BlockFunctionalFlower;
 import mythicbotany.infuser.BlockManaInfuser;
 import mythicbotany.infuser.TileManaInfuser;
@@ -27,6 +24,7 @@ public class ModBlocks {
     public static final BlockFunctionalFlower<WitherAconite> witherAconite = new BlockFunctionalFlower<>(MythicBotany.getInstance(), WitherAconite.class, Properties.create(Material.PLANTS), true);
     public static final BlockFunctionalFlower<Aquapanthus> aquapanthus = new BlockFunctionalFlower<>(MythicBotany.getInstance(), Aquapanthus.class, Properties.create(Material.PLANTS), false);
     public static final BlockFunctionalFlower<Hellebore> hellebore = new BlockFunctionalFlower<>(MythicBotany.getInstance(), Hellebore.class, Properties.create(Material.PLANTS), false);
+    public static final BlockFunctionalFlower<Raindeletia> raindeletia = new BlockFunctionalFlower<>(MythicBotany.getInstance(), Raindeletia.class, Properties.create(Material.PLANTS), true);
 
     public static void register() {
         MythicBotany.getInstance().register("mana_infuser", manaInfuser);
@@ -37,5 +35,6 @@ public class ModBlocks {
         MythicBotany.getInstance().register("wither_aconite", witherAconite);
         MythicBotany.getInstance().register("aquapanthus", aquapanthus);
         MythicBotany.getInstance().register("hellebore", hellebore);
+        MythicBotany.getInstance().register("raindeletia", raindeletia);
     }
 }

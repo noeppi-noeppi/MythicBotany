@@ -38,6 +38,8 @@
   "block.mythicbotany.aquapanthus_floating": "Schwebender Aquapanthus",
   "block.mythicbotany.hellebore": "Höllenrose",
   "block.mythicbotany.hellebore_floating": "Schwebende Höllenrose",
+  "block.mythicbotany.raindeletia": "Regengewächs",
+  "block.mythicbotany.raindeletia_floating": "Floating Regengewächs",
 
   "item.mythicbotany.alfsteel_helmet.description": "Gibt dir eine etwas größere Reichweite.",
   "item.mythicbotany.alfsteel_chestplate.description": "Gibt dir eine gute Standfestigkeit.",
@@ -47,5 +49,6 @@
   "block.mythicbotany.exoblaze.description": "Feurig!",
   "block.mythicbotany.wither_aconite.description": "Sie verschlingt Nethersterne.",
   "block.mythicbotany.aquapanthus.description": "Wässrig!.",
-  "block.mythicbotany.hellebore.description": "Es fühlt sich wie Helheim an..."
+  "block.mythicbotany.hellebore.description": "Es fühlt sich wie Helheim an.",
+  "block.mythicbotany.raindeletia.description": "Regen ist ein Segen."
 }

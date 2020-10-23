@@ -95,6 +95,7 @@ public class PetalProvider extends RecipeProvider {
 		consumer.accept(make(ModBlocks.witherAconite, black, black, runePride, Ingredient.fromItems(Blocks.WITHER_ROSE)));
 		consumer.accept(make(ModBlocks.aquapanthus, blue, blue, lightBlue, green, cyan));
 		consumer.accept(make(ModBlocks.hellebore, red, red, purple, cyan, runeFire));
+		consumer.accept(make(ModBlocks.raindeletia, lightBlue, blue, magenta, white, runeWater));
 	}
 
 	private static Ingredient tagIngrBotania(String tag) {
@@ -131,11 +132,13 @@ public class PetalProvider extends RecipeProvider {
 			json.add("ingredients", ingredients);
 		}
 
+		@Nonnull
 		@Override
 		public ResourceLocation getID() {
 			return id;
 		}
 
+		@Nonnull
 		@Override
 		public IRecipeSerializer<?> getSerializer() {
 			return ModRecipeTypes.PETAL_SERIALIZER;

@@ -37,6 +37,8 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import vazkii.botania.api.BotaniaAPIClient;
 import vazkii.botania.api.wand.IWandHUD;
@@ -50,7 +52,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends BlockBase implements IWandHUD, IWandable {
+public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends BlockBase implements IWandHUD, IWandable, IPlantable {
 
     public static final ResourceLocation POOL_ID = new ResourceLocation("botania", "mana_pool");
     public static final ResourceLocation SPREADER_ID = new ResourceLocation("botania", "mana_spreader");
@@ -110,7 +112,7 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
     @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id) {
         ClientRegistry.bindTileEntityRenderer(teType, RenderFunctionalFlower::new);
-        RenderTypeLookup.setRenderLayer(this, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(this, RenderType.getCutoutMipped());
     }
 
     @Override
@@ -168,19 +170,22 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
     protected boolean isValidGround(BlockState state, IBlockReader world, BlockPos pos) {
         return state.isIn(Blocks.GRASS_BLOCK) || state.isIn(Blocks.DIRT) || state.isIn(Blocks.COARSE_DIRT)
                 || state.isIn(Blocks.PODZOL) || state.isIn(Blocks.FARMLAND) || state.isIn(ModBlocks.enchantedSoil)
-                || state.isIn(Blocks.MYCELIUM);
+                || state.isIn(Blocks.MYCELIUM) || state.canSustainPlant(world, pos, Direction.UP, this);
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public boolean isValidPosition(@Nonnull BlockState state, @Nonnull IWorldReader worldIn, BlockPos pos) {
         BlockPos blockpos = pos.down();
         return this.isValidGround(worldIn.getBlockState(blockpos), worldIn, blockpos);
     }
 
+    @Override
     public boolean propagatesSkylightDown(BlockState state, @Nonnull IBlockReader reader, @Nonnull BlockPos pos) {
         return state.getFluidState().isEmpty();
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public boolean allowsMovement(@Nonnull BlockState state, @Nonnull IBlockReader worldIn, @Nonnull BlockPos pos, @Nonnull PathType type) {
         return type == PathType.AIR && !this.canCollide || super.allowsMovement(state, worldIn, pos, type);
@@ -200,8 +205,8 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
         list.add(new TranslationTextComponent("block." + mod.modid + "." + this.getRegistryName().getPath() + ".description").mergeStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
+    @SuppressWarnings("deprecation")
     public boolean isTransparent(@Nonnull BlockState state) {
         return true;
     }
@@ -239,5 +244,12 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
     @Override
     public BlockRenderType getRenderType(@Nonnull BlockState state) {
         return BlockRenderType.MODEL;
+    }
+
+    @Override
+    public BlockState getPlant(IBlockReader world, BlockPos pos) {
+        BlockState state = world.getBlockState(pos);
+        if (state.getBlock() != this) return getDefaultState();
+        return state;
     }
 }
