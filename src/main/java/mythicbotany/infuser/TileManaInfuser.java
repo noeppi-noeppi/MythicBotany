@@ -220,8 +220,8 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
     public CompoundNBT getUpdateTag() {
         //noinspection ConstantConditions
         if (world.isRemote)
-            return new CompoundNBT();
-        CompoundNBT compound = new CompoundNBT();
+            return super.getUpdateTag();
+        CompoundNBT compound = super.getUpdateTag();
         compound.putInt("mana", mana);
         compound.putInt("max", maxMana);
         if (recipe != null) {

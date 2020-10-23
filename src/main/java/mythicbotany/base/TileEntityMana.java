@@ -108,7 +108,7 @@ public abstract class TileEntityMana extends TileEntityBase implements ISparkAtt
     @Nonnull
     @Override
     public CompoundNBT getUpdateTag() {
-        CompoundNBT tag = new CompoundNBT();
+        CompoundNBT tag = super.getUpdateTag();
         //noinspection ConstantConditions
         if (!world.isRemote) {
             tag.putInt("mana", mana);

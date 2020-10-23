@@ -258,7 +258,7 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
     @Nonnull
     @Override
     public CompoundNBT getUpdateTag() {
-        CompoundNBT tag = new CompoundNBT();
+        CompoundNBT tag = super.getUpdateTag();
         //noinspection ConstantConditions
         if (!world.isRemote) {
             tag.putInt("mana", MathHelper.clamp(mana, 0, maxMana));
