@@ -106,11 +106,13 @@ public class InfuserRecipe implements IInfuserRecipe {
 
     @Nullable
     public static Pair<IInfuserRecipe, ItemStack> getOutput(World world, List<ItemStack> inputs) {
-        for (IRecipe<?> recipe : world.getRecipeManager().getRecipes()) {
-            if (recipe instanceof IInfuserRecipe) {
-                ItemStack stack = ((IInfuserRecipe) recipe).result(inputs);
-                if (!stack.isEmpty())
-                    return Pair.of((IInfuserRecipe) recipe, stack);
+        if (!inputs.isEmpty()) {
+            for (IRecipe<?> recipe : world.getRecipeManager().getRecipes(ModRecipes.INFUSER).values()) {
+                if (recipe instanceof IInfuserRecipe) {
+                    ItemStack stack = ((IInfuserRecipe) recipe).result(inputs);
+                    if (!stack.isEmpty())
+                        return Pair.of((IInfuserRecipe) recipe, stack);
+                }
             }
         }
         return null;
