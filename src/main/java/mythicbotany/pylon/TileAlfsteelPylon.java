@@ -37,12 +37,12 @@ public class TileAlfsteelPylon extends TileEntityMana implements ITickableTileEn
                 if (repairable != null && stack.getCount() == 1) {
                     int manaCost = repairable.getRepairManaPerTick(stack);
                     if (mana >= manaCost) {
-                            mana -= manaCost;
-                            stack = repairable.repairOneTick(stack);
-                            item.setItem(stack);
-                            markDirty();
-                            MythicBotany.getNetwork().instance.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new PylonSerializer.PylonMessage(world.func_234923_W_().getRegistryName(), pos));
-                        }
+                        mana -= manaCost;
+                        stack = repairable.repairOneTick(stack);
+                        item.setItem(stack);
+                        markDirty();
+                        MythicBotany.getNetwork().instance.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new PylonSerializer.PylonMessage(world.func_234923_W_().getRegistryName(), pos));
+                    }
                 }
             }
         }

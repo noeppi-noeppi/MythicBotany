@@ -82,6 +82,12 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
 
     @Override
     public int getRepairManaPerTick(ItemStack stack) {
-        return AlfsteelSword.MANA_PER_DURABILITY;
+        return (int) (2.5 * MANA_PER_DURABILITY);
+    }
+
+    @Override
+    public ItemStack repairOneTick(ItemStack stack) {
+        stack.setDamage(Math.max(0, stack.getDamage() - 5));
+        return stack;
     }
 }

@@ -59,20 +59,6 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
     }
 
     @SuppressWarnings("deprecation")
-    @Override
-    public void onBlockClicked(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull PlayerEntity player) {
-        if (!world.isRemote) {
-            ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
-            if (stack.getItem() instanceof PylonRepairable && ((PylonRepairable) stack.getItem()).canRepairPylon(stack)) {
-                ItemStack copy = stack.copy();
-                player.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
-                ItemEntity entity = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, copy);
-                world.addEntity(entity);
-            }
-        }
-    }
-
-    @SuppressWarnings("deprecation")
     @Nonnull
     @Override
     public ActionResultType onBlockActivated(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand hand, @Nonnull BlockRayTraceResult hit) {
