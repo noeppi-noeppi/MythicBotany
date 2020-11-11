@@ -3,6 +3,7 @@ package mythicbotany.data;
 import io.github.noeppi_noeppi.libx.data.provider.BlockTagProviderBase;
 import io.github.noeppi_noeppi.libx.data.provider.ItemTagProviderBase;
 import io.github.noeppi_noeppi.libx.mod.ModX;
+import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.functionalflora.base.BlockFloatingFunctionalFlower;
 import mythicbotany.functionalflora.base.BlockFunctionalFlower;
@@ -37,6 +38,9 @@ public class ItemTagProvider extends ItemTagProviderBase {
 				.filter(i -> i instanceof BlockItem)
 				.map(i -> ((BlockItem) i).getBlock())
 				.forEach(this::addDefaultBlockItemTag);
+
+		this.getOrCreateBuilder(ModTags.Items.TERRA_PICK_BLACKLIST).add(ModItems.greatestAuraRing);
+		this.getOrCreateBuilder(ModTags.Items.TERRA_PICK_BLACKLIST).add(ModItems.alfsteelHelmet);
 	}
 
 	public void addDefaultItemTag(Item item) {

@@ -103,4 +103,9 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
         stack.setDamage(Math.max(0, stack.getDamage() - 5));
         return stack;
     }
+
+    @Override
+    public boolean canReceiveManaFromItem(ItemStack stack, ItemStack otherStack) {
+        return !otherStack.getItem().isIn(ModTags.Items.TERRA_PICK_BLACKLIST);
+    }
 }
