@@ -22,5 +22,6 @@ public class ParticleHandler {
                 MythicBotany.getNetwork().spawnParticle(world, (BasicParticleType) particle, msg.amount, msg.x, msg.y, msg.z, msg.xm, msg.ym, msg.zm, msg.xd, msg.yd, msg.zd, msg.randomizePosition);
             }
         });
+        ctx.get().setPacketHandled(true);
     }
 }

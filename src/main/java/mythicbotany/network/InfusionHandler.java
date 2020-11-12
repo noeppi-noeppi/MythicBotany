@@ -57,5 +57,6 @@ public class InfusionHandler {
                 }
             }
         });
+        ctx.get().setPacketHandled(true);
     }
 }

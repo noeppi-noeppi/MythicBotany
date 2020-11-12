@@ -37,6 +37,7 @@ public class MythicBotany extends ModXRegistration {
         addRegistrationHandler(ModBlocks::register);
         addRegistrationHandler(ModItems::register);
         addRegistrationHandler(ModRecipes::register);
+        addRegistrationHandler(ModMisc::register);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::sendIMC);
         MinecraftForge.EVENT_BUS.addListener(this::serverStart);

@@ -15,5 +15,6 @@ public class PylonHandler {
             WispParticleData data = WispParticleData.wisp(0.85f, 1f, 0.6f, 0f, 0.25f);
             Minecraft.getInstance().world.addParticle(data, msg.pos.getX() + 0.25 + (Minecraft.getInstance().world.rand.nextFloat() / 2), msg.pos.getY() + 0.75 + (Minecraft.getInstance().world.rand.nextFloat() / 4), msg.pos.getZ() + 0.25 + (Minecraft.getInstance().world.rand.nextFloat() / 2), 0, 0.3, 0);
         });
+        ctx.get().setPacketHandled(true);
     }
 }

@@ -108,4 +108,9 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
     public boolean canReceiveManaFromItem(ItemStack stack, ItemStack otherStack) {
         return !otherStack.getItem().isIn(ModTags.Items.TERRA_PICK_BLACKLIST);
     }
+
+    @Override
+    public boolean disposeOfTrashBlocks(ItemStack stack) {
+        return isTipped(stack);
+    }
 }

@@ -17,5 +17,6 @@ public class AlfSwordLeftClickHandler {
                     || sender.getItemStackFromSlot(EquipmentSlotType.OFFHAND).getItem() == ModItems.alfsteelSword))
             ((AlfsteelSword) ModItems.alfsteelSword).trySpawnBurst((ctx.get()).getSender());
         });
+        ctx.get().setPacketHandled(true);
     }
 }
