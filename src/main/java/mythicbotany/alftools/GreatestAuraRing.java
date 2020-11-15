@@ -15,7 +15,7 @@ public class GreatestAuraRing extends ItemBauble implements IManaGivingItem {
 
     public void onWornTick(ItemStack stack, LivingEntity player) {
         if (!player.world.isRemote && player instanceof PlayerEntity) {
-            ManaItemHandler.instance().dispatchManaExact(stack, (PlayerEntity)player, 2, true);
+            ManaItemHandler.instance().dispatchManaExact(stack, (PlayerEntity)player, 4, true);
         }
     }
 }
