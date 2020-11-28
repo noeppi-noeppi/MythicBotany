@@ -1,6 +1,7 @@
 package mythicbotany;
 
 import io.github.noeppi_noeppi.libx.mod.registration.ModXRegistration;
+import mythicbotany.config.ClientConfig;
 import mythicbotany.data.DataGenerators;
 import mythicbotany.network.MythicNetwork;
 import mythicbotany.pylon.PylonRepairables;
@@ -8,7 +9,9 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -35,6 +38,8 @@ public class MythicBotany extends ModXRegistration {
 
         instance = this;
         network = new MythicNetwork(this);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.CLIENT_CONFIG);
 
         addRegistrationHandler(ModBlocks::register);
         addRegistrationHandler(ModItems::register);
