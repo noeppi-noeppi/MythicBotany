@@ -113,4 +113,9 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
     public boolean disposeOfTrashBlocks(ItemStack stack) {
         return isTipped(stack);
     }
+
+    @Override
+    public int getEntityLifespan(ItemStack itemStack, World world) {
+        return Integer.MAX_VALUE;
+    }
 }
