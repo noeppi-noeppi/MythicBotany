@@ -15,7 +15,7 @@ public class ParticleHandler {
     public static void handle(ParticleSerializer.ParticleMessage msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             World world = Minecraft.getInstance().world;
-            if (world == null || !world.func_234923_W_().getRegistryName().equals(msg.dimension))
+            if (world == null || !world.getDimensionKey().getRegistryName().equals(msg.dimension))
                 return;
             ParticleType<?> particle = ForgeRegistries.PARTICLE_TYPES.getValue(msg.particleId);
             if (particle instanceof BasicParticleType) {

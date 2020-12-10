@@ -18,7 +18,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -26,6 +25,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.api.BotaniaAPIClient;
 import vazkii.botania.api.wand.IWandHUD;
 import vazkii.botania.api.wand.IWandable;
@@ -88,8 +88,7 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
     public void renderHUD(MatrixStack matrixStack, Minecraft minecraft, World world, BlockPos pos) {
         FunctionalFlowerBase te = getTile(world, pos);
         String name = I18n.format(getNonFloatingBlock().getTranslationKey());
-        // noinspection deprecation,deprecation
-        BotaniaAPIClient.instance().drawComplexManaHUD(matrixStack, te.color, te.getCurrentMana(), te.maxMana, name, Registry.ITEM.func_241873_b(getNonFloatingBlock().isGenerating ? SPREADER_ID : POOL_ID).map(ItemStack::new).orElse(ItemStack.EMPTY), te.isValidBinding());
+        BotaniaAPIClient.instance().drawComplexManaHUD(matrixStack, te.color, te.getCurrentMana(), te.maxMana, name, new ItemStack(ForgeRegistries.ITEMS.getValue(getNonFloatingBlock().isGenerating ? SPREADER_ID : POOL_ID)), te.isValidBinding());
     }
 
     @Override

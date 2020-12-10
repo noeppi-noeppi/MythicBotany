@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[32,)"
+loaderVersion="[35,)"
 license="APACHE-2.0"
 issueTrackerURL="http://placeholder.invalid"
 
@@ -16,21 +16,21 @@ Dive deeper into the world of botania.
 [[dependencies.mythicbotany]]
     modId="forge"
     mandatory=true
-    versionRange="[34,)"
+    versionRange="[35,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.mythicbotany]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.3,)"
+    versionRange="[1.16.4,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.mythicbotany]]
     modId="botania"
     mandatory=true
-    versionRange="[1.16-299,)"
+    versionRange="[1.16.4-410,)"
     ordering="NONE"
     side="BOTH"
 

@@ -13,7 +13,7 @@ public class InfusionHandler {
         ctx.get().enqueueWork(() -> {
             World world = Minecraft.getInstance().world;
             //noinspection ConstantConditions
-            if (world == null && !msg.dimension.equals(world.func_234923_W_().getRegistryName()))
+            if (world == null && !msg.dimension.equals(world.getDimensionKey().getRegistryName()))
                 return;
 
             int ticks = (int) (100.0 * msg.progress);

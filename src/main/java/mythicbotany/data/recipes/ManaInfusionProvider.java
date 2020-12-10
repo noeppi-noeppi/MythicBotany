@@ -1,11 +1,3 @@
-/*
- * This class is distributed as part of the Botania Mod.
- * Get the Source Code in github:
- * https://github.com/Vazkii/Botania
- *
- * Botania is Open Source and distributed under the
- * Botania License: http://botaniamod.net/license.php
- */
 package mythicbotany.data.recipes;
 
 import com.google.gson.JsonObject;
@@ -25,6 +17,7 @@ import vazkii.botania.common.core.helper.ItemNBTHelper;
 import vazkii.botania.common.crafting.ModRecipeTypes;
 import vazkii.botania.common.crafting.StateIngredientHelper;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
@@ -33,13 +26,14 @@ public class ManaInfusionProvider extends RecipeProvider {
 		super(gen);
 	}
 
-	@Override
+	@Nonnull
+    @Override
 	public String getName() {
 		return "MythicBotany mana pool recipes";
 	}
 
 	@Override
-	protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
+	protected void registerRecipes(@Nonnull Consumer<IFinishedRecipe> consumer) {
 		//consumer.accept(new FinishedRecipe(id("manasteel"), new ItemStack(ModItems.manaSteel), Ingredient.fromTag(Tags.Items.INGOTS_IRON), 3000));
 	}
 
@@ -107,12 +101,14 @@ public class ManaInfusionProvider extends RecipeProvider {
 			return prop.getName((T) val);
 		}
 
-		@Override
+		@Nonnull
+        @Override
 		public ResourceLocation getID() {
 			return id;
 		}
 
-		@Override
+		@Nonnull
+        @Override
 		public IRecipeSerializer<?> getSerializer() {
 			return ModRecipeTypes.MANA_INFUSION_SERIALIZER;
 		}

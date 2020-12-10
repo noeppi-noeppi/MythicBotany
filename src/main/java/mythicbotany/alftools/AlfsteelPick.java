@@ -40,8 +40,8 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
     @Override
     @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id) {
-        ItemModelsProperties.func_239418_a_(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.getInstance().modid, "tipped"), (stack, world, entity) -> isTipped(stack) ? 1 : 0);
-        ItemModelsProperties.func_239418_a_(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.getInstance().modid, "active"), (stack, world, entity) -> isEnabled(stack) ? 1 : 0);
+        ItemModelsProperties.registerProperty(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.getInstance().modid, "tipped"), (stack, world, entity) -> isTipped(stack) ? 1 : 0);
+        ItemModelsProperties.registerProperty(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.getInstance().modid, "active"), (stack, world, entity) -> isEnabled(stack) ? 1 : 0);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
                     if (range != 0 || level == 1) {
                         Vector3i beginDiff = new Vector3i(doX ? -range : 0, doY ? -1 : 0, doZ ? -range : 0);
                         Vector3i endDiff = new Vector3i(doX ? range : rangeDepth * -side.getXOffset(), doY ? rangeY * 2 - 1 : 0, doZ ? range : rangeDepth * -side.getZOffset());
-                        ToolCommons.removeBlocksInIteration(player, stack, world, pos, beginDiff, endDiff, (state) -> MATERIALS.contains(state.getMaterial()), isTipped(stack));
+                        ToolCommons.removeBlocksInIteration(player, stack, world, pos, beginDiff, endDiff, (state) -> MATERIALS.contains(state.getMaterial()));
                         if (origLevel == 5) {
                             PlayerHelper.grantCriterion((ServerPlayerEntity)player, ResourceLocationHelper.prefix("challenge/rank_ss_pick"), "code_triggered");
                         }
@@ -110,6 +110,7 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public boolean disposeOfTrashBlocks(ItemStack stack) {
         return isTipped(stack);
     }

@@ -1,11 +1,3 @@
-/*
- * This class is distributed as part of the Botania Mod.
- * Get the Source Code in github:
- * https://github.com/Vazkii/Botania
- *
- * Botania is Open Source and distributed under the
- * Botania License: http://botaniamod.net/license.php
- */
 package mythicbotany.data.recipes;
 
 import com.google.gson.JsonArray;
@@ -21,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import vazkii.botania.common.core.helper.ItemNBTHelper;
 import vazkii.botania.common.crafting.ModRecipeTypes;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,13 +25,14 @@ public class ElvenTradeProvider extends RecipeProvider {
 		super(gen);
 	}
 
-	@Override
+	@Nonnull
+    @Override
 	public String getName() {
 		return "MysticBotany elven trade recipes";
 	}
 
 	@Override
-	protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
+	protected void registerRecipes(@Nonnull Consumer<IFinishedRecipe> consumer) {
 		//Ingredient livingwood = Ingredient.fromTag(ModTags.Items.LIVINGWOOD);
 		//consumer.accept(new FinishedRecipe(id("dreamwood"), new ItemStack(ModBlocks.dreamwood), livingwood));
 	}
@@ -63,7 +57,7 @@ public class ElvenTradeProvider extends RecipeProvider {
 		}
 
 		@Override
-		public void serialize(JsonObject json) {
+		public void serialize(@Nonnull JsonObject json) {
 			JsonArray in = new JsonArray();
 			for (Ingredient ingr : inputs) {
 				in.add(ingr.serialize());
@@ -78,12 +72,14 @@ public class ElvenTradeProvider extends RecipeProvider {
 			json.add("output", out);
 		}
 
-		@Override
+		@Nonnull
+        @Override
 		public ResourceLocation getID() {
 			return id;
 		}
 
-		@Override
+		@Nonnull
+        @Override
 		public IRecipeSerializer<?> getSerializer() {
 			return ModRecipeTypes.ELVEN_TRADE_SERIALIZER;
 		}

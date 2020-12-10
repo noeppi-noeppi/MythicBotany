@@ -1,11 +1,3 @@
-/*
- * This class is distributed as part of the Botania Mod.
- * Get the Source Code in github:
- * https://github.com/Vazkii/Botania
- *
- * Botania is Open Source and distributed under the
- * Botania License: http://botaniamod.net/license.php
- */
 package mythicbotany.data.recipes;
 
 import com.google.gson.JsonArray;
@@ -27,6 +19,7 @@ import vazkii.botania.common.core.helper.ItemNBTHelper;
 import vazkii.botania.common.crafting.ModRecipeTypes;
 import vazkii.botania.common.lib.ModTags;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
@@ -35,7 +28,8 @@ public class RuneProvider extends RecipeProvider {
 		super(gen);
 	}
 
-	@Override
+	@Nonnull
+    @Override
 	public String getName() {
 		return "MythicBotany runic altar recipes";
 	}
@@ -112,12 +106,14 @@ public class RuneProvider extends RecipeProvider {
 			json.add("ingredients", ingredients);
 		}
 
-		@Override
+		@Nonnull
+        @Override
 		public ResourceLocation getID() {
 			return id;
 		}
 
-		@Override
+		@Nonnull
+        @Override
 		public IRecipeSerializer<?> getSerializer() {
 			return ModRecipeTypes.RUNE_SERIALIZER;
 		}

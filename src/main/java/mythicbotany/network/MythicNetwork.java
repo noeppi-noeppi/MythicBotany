@@ -50,14 +50,14 @@ public class MythicNetwork extends NetworkX {
                 }
             }
         } else {
-            instance.send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(x, y, z, 100, world.func_234923_W_())),
-                    new ParticleMessage(particle.getRegistryName(), world.func_234923_W_().getRegistryName(), x, y, z, amount, xm, ym, zm, xd, yd, zd, randomizePosition));
+            instance.send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(x, y, z, 100, world.getDimensionKey())),
+                    new ParticleMessage(particle.getRegistryName(), world.getDimensionKey().getRegistryName(), x, y, z, amount, xm, ym, zm, xd, yd, zd, randomizePosition));
         }
     }
 
     public void spawnInfusionParticles(World world, BlockPos pos, double progress, int fromColor, int toColor) {
         if (!world.isRemote) {
-           instance.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new InfusionSerializer.InfusionMessage(pos.getX(), pos.getY(), pos.getZ(), world.func_234923_W_().getRegistryName(), progress, fromColor, toColor));
+           instance.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new InfusionSerializer.InfusionMessage(pos.getX(), pos.getY(), pos.getZ(), world.getDimensionKey().getRegistryName(), progress, fromColor, toColor));
         }
     }
 }

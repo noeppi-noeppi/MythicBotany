@@ -57,7 +57,7 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id) {
-        ItemModelsProperties.func_239418_a_(ModItems.dreamwoodWand, new ResourceLocation(MythicBotany.getInstance().modid, "bindmode"), (stack, world, entity) -> ItemTwigWand.getBindMode(stack) ? 1 : 0);
+        ItemModelsProperties.registerProperty(ModItems.dreamwoodWand, new ResourceLocation(MythicBotany.getInstance().modid, "bindmode"), (stack, world, entity) -> ItemTwigWand.getBindMode(stack) ? 1 : 0);
         Minecraft.getInstance().getItemColors().register((stack, colorId) -> colorId == 1 ? DyeColor.byId(getColor1(stack)).getColorValue() : (colorId == 2 ? DyeColor.byId(getColor2(stack)).getColorValue() : -1), ModItems.dreamwoodWand);
         MinecraftForge.EVENT_BUS.addListener(this::onRenderGameOverlay);
     }
@@ -99,7 +99,7 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
                         spark.remove();
                     }
                     event.setCanceled(true);
-                    event.setCancellationResult(ActionResultType.func_233537_a_(world.isRemote));
+                    event.setCancellationResult(ActionResultType.func_233537_a_(false));
                 } else {
                     SparkHelper.getSparksAround(world, spark.getPosX(), spark.getPosY() + (double) (spark.getHeight() / 2.0F), spark.getPosZ(), spark.getNetwork()).forEach((otherSpark) -> EntitySpark.particleBeam(player, spark, (Entity) otherSpark));
                 }
@@ -119,7 +119,7 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
                         }
                     }
                     event.setCanceled(true);
-                    event.setCancellationResult(ActionResultType.func_233537_a_(world.isRemote));
+                    event.setCancellationResult(ActionResultType.func_233537_a_(false));
                 } else {
                     displayRelatives(player, new ArrayList<>(), spark.getMaster());
                 }

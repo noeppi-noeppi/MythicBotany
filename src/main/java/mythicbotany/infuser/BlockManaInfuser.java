@@ -4,8 +4,6 @@ import io.github.noeppi_noeppi.libx.crafting.recipe.RecipeHelper;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import io.github.noeppi_noeppi.libx.mod.registration.BlockTE;
 import mythicbotany.ModRecipes;
-import mythicbotany.pylon.PylonRepairable;
-import mythicbotany.pylon.PylonRepairables;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;

@@ -41,7 +41,7 @@ public class TileAlfsteelPylon extends TileEntityMana implements ITickableTileEn
                         stack = repairable.repairOneTick(stack);
                         item.setItem(stack);
                         markDirty();
-                        MythicBotany.getNetwork().instance.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new PylonSerializer.PylonMessage(world.func_234923_W_().getRegistryName(), pos));
+                        MythicBotany.getNetwork().instance.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new PylonSerializer.PylonMessage(world.getDimensionKey().getRegistryName(), pos));
                     }
                 }
             }

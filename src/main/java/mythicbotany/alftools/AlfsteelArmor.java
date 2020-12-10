@@ -25,7 +25,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.botania.common.core.handler.ConfigHandler;
 import vazkii.botania.common.item.equipment.armor.terrasteel.ItemTerrasteelArmor;
 import vazkii.botania.common.lib.ModTags;
 
@@ -44,7 +43,7 @@ public class AlfsteelArmor extends ItemTerrasteelArmor implements PylonRepairabl
     }
 
     public String getArmorTextureAfterInk(ItemStack stack, EquipmentSlotType slot) {
-        return ConfigHandler.CLIENT.enableArmorModels.get() ? MythicBotany.getInstance().modid + ":textures/model/armor_alfsteel.png" : (slot == EquipmentSlotType.CHEST ? MythicBotany.getInstance().modid + ":textures/model/alfsteel_1.png" : MythicBotany.getInstance().modid + ":textures/model/alfsteel_0.png");
+        return MythicBotany.getInstance().modid + ":textures/model/armor_alfsteel.png";
     }
 
     private void onJump(LivingEvent.LivingJumpEvent event) {

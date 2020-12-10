@@ -54,7 +54,7 @@ public class RenderAlfsteelPylon extends TileEntityRenderer<TileAlfsteelPylon> {
     }
 
     public void doRender(@Nullable TileAlfsteelPylon pylon, float pticks, MatrixStack ms, IRenderTypeBuffer buffers, int light, int overlay) {
-        boolean direct = pylon == null && (forceTransform == ItemCameraTransforms.TransformType.GUI || forceTransform.func_241716_a_());
+        boolean direct = pylon == null && (forceTransform == ItemCameraTransforms.TransformType.GUI || forceTransform.isFirstPerson());
         RenderType glow = direct ? PYLON_GLOW_ITEM : PYLON_GLOW;
 
         ms.push();
