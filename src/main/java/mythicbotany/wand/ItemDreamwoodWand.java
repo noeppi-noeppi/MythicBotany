@@ -1,6 +1,7 @@
 package mythicbotany.wand;
 
 import com.google.common.collect.ImmutableSet;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
@@ -74,9 +75,17 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
             Block block = state == null ? null : state.getBlock();
             if (PlayerHelper.hasAnyHeldItem(minecraft.player)) {
                 if (PlayerHelper.hasHeldItem(minecraft.player, ModItems.dreamwoodWand) && block instanceof IWandHUD) {
+                    //noinspection deprecation
+                    RenderSystem.pushTextureAttributes();
+                    event.getMatrixStack().push();
                     minecraft.getProfiler().startSection("wandItemDreamwood");
                     ((IWandHUD) block).renderHUD(event.getMatrixStack(), minecraft, minecraft.world, bpos);
                     minecraft.getProfiler().endSection();
+                    event.getMatrixStack().pop();
+                    //noinspection deprecation
+                    RenderSystem.popAttributes();
+                    //noinspection deprecation
+                    RenderSystem.color4f(1, 1, 1, 1);
                 }
             }
         }
