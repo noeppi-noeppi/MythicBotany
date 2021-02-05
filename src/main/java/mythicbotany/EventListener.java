@@ -2,10 +2,9 @@ package mythicbotany;
 
 import com.google.common.collect.ImmutableSet;
 import mythicbotany.alftools.AlfsteelHelm;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
@@ -17,8 +16,10 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import top.theillusivec4.curios.api.CuriosApi;
+import vazkii.botania.api.item.IAncientWillContainer;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -70,17 +71,18 @@ public class EventListener {
         }
     }
     
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public void citicalHit(CriticalHitEvent event) {
         if (event.getResult() == Event.Result.ALLOW || (event.getResult() == Event.Result.DEFAULT && event.isVanillaCritical())) {
-            float strength = event.getPlayer().getCooledAttackStrength(0.5f);
-            if (event.getTarget() instanceof LivingEntity) {
-               strength *= EnchantmentHelper.getModifierForCreature(event.getPlayer().getHeldItemMainhand(), ((LivingEntity) event.getTarget()).getCreatureAttribute());
-            } else {
-               strength *= EnchantmentHelper.getModifierForCreature(event.getPlayer().getHeldItemMainhand(), CreatureAttribute.UNDEFINED);
+            if (((AlfsteelHelm) ModItems.alfsteelHelmet).hasArmorSet(event.getPlayer())) {
+                if (((AlfsteelHelm) ModItems.alfsteelHelmet).hasAncientWill(event.getPlayer().getItemStackFromSlot(EquipmentSlotType.HEAD), IAncientWillContainer.AncientWillType.DHAROK)) {
+                    float calculatedModifier = event.getDamageModifier() * (1f + (1f - event.getPlayer().getHealth() / event.getPlayer().getMaxHealth()) * 0.5f);
+                    if (calculatedModifier != 1 && calculatedModifier != 0 && Float.isFinite(calculatedModifier)) {
+                        event.setDamageModifier(calculatedModifier);
+                    }
+                }
+                crittingPlayers.add(event.getPlayer().getUniqueID());
             }
-            event.setDamageModifier(event.getDamageModifier() * (((AlfsteelHelm) ModItems.alfsteelHelmet).onCritDamageCalc(strength, event.getPlayer()) / strength));
-            crittingPlayers.add(event.getPlayer().getUniqueID());
         }
     }
     
@@ -95,6 +97,20 @@ public class EventListener {
     public void endTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             crittingPlayers.clear();
+        }
+    }
+    
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void livingHurt(LivingHurtEvent event) {
+        // Required for old worlds which have been generated with bug #22.
+        // Removes NaN from health and absorption amount
+        if (!event.getEntityLiving().getPersistentData().getBoolean("mythicbotany-fix-22a")) {
+            event.getEntityLiving().getPersistentData().putBoolean("mythicbotany-fix-22a", true);
+            if (Float.isNaN(event.getEntityLiving().getHealth()) || Float.isNaN(event.getEntityLiving().getAbsorptionAmount())) {
+                event.getEntityLiving().setHealth(Float.isFinite(event.getEntityLiving().getMaxHealth()) ? event.getEntityLiving().getMaxHealth() : 1);
+                event.getEntityLiving().setAbsorptionAmount(0);
+                MythicBotany.getInstance().logger.info("Fixed #22 for entity " + event.getEntityLiving().getUniqueID() + ".");
+            }
         }
     }
 }
