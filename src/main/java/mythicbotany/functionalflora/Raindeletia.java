@@ -17,7 +17,7 @@ public class Raindeletia extends FunctionalFlowerBase {
         if (!world.isRemote) {
             float multiplier = 0;
             if (world.isRainingAt(pos)) {
-                multiplier = world.isThundering() ? 3 : 0.01f;
+                multiplier = world.isThundering() ? 3 : 0.09f;
             }
             if (world.getBlockState(pos.down()).getBlock() == ModBlocks.enchantedSoil) {
                 multiplier = multiplier * 5;
