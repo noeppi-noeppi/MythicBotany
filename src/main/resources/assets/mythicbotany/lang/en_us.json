@@ -68,7 +68,7 @@
   "lexicon.mythicbotany.runes.runeHelheim": "Helheim is the world of the dead.",
 
   "lexicon.mythicbotany.infuser.title": "The Mana Infuser",
-  "lexicon.mythicbotany.infuser.page1": "The mana infuser is an upgraded version of the $(l:botania:basics/terrasteel)Terrestrial Agglomeration Plate$() that is also capable of creating other mana-alloys. Like the terrestrial agglomeration plate this requires a platform below. However this requires a dominant spark upgrade to pull mana from sparks.",
+  "lexicon.mythicbotany.infuser.page1": "The mana infuser is an upgraded version of the $(l:botania:basics/terrasteel)Terrestrial Agglomeration Plate$() that is also capable of creating other mana-alloys. Like the terrestrial agglomeration plate this requires a platform below. $(thing)However this requires a dominant spark upgrade to pull mana from sparks.$()",
   "lexicon.mythicbotany.infuser.page2": "Upgrading the terrestrial agglomeration plate to a mana infuser.",
   "lexicon.mythicbotany.infuser.page3": "The platform required for the mana infuser to work",
   "lexicon.mythicbotany.infuser.page4": "Alfsteel is created like terrasteel but with resources from alfheim. It requires much more mana but can be used to create various powerful things.",
