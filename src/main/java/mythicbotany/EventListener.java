@@ -2,6 +2,7 @@ package mythicbotany;
 
 import com.google.common.collect.ImmutableSet;
 import mythicbotany.alftools.AlfsteelHelm;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -15,11 +16,13 @@ import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 import vazkii.botania.api.item.IAncientWillContainer;
+import vazkii.botania.common.block.mana.BlockEnchanter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -110,6 +113,17 @@ public class EventListener {
                 event.getEntityLiving().setHealth(Float.isFinite(event.getEntityLiving().getMaxHealth()) ? event.getEntityLiving().getMaxHealth() : 1);
                 event.getEntityLiving().setAbsorptionAmount(0);
                 MythicBotany.getInstance().logger.info("Fixed #22 for entity " + event.getEntityLiving().getUniqueID() + ".");
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        ItemStack held = event.getItemStack();
+        if (!held.isEmpty() && held.getItem() == ModItems.dreamwoodWand) {
+            BlockState state = event.getWorld().getBlockState(event.getPos());
+            if (state.getBlock() instanceof BlockEnchanter) {
+                event.setUseBlock(Event.Result.DENY);
             }
         }
     }
