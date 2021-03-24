@@ -1,27 +1,50 @@
 package mythicbotany.functionalflora;
 
+import com.google.common.collect.ImmutableSet;
 import io.github.noeppi_noeppi.libx.LibX;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import vazkii.botania.api.item.IPetalApothecary;
 import vazkii.botania.api.subtile.RadiusDescriptor;
 import vazkii.botania.client.fx.WispParticleData;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Set;
 
 public class Aquapanthus extends FunctionalFlowerBase {
 
     public static final int MAX_TICK_TO_NEXT_CHECK = 5;
     public static final int MANA_PER_TICK = 2;
     public static final int TICKS_TO_FILL = 20;
+    public static final Set<ResourceLocation> FILLING_SLOW_IDS = ImmutableSet.of(
+            new ResourceLocation("exnihilosequentia", "barrel_wood"),
+            new ResourceLocation("exnihilosequentia", "barrel_stone"),
+            new ResourceLocation("excompressum", "oak_crucible"),
+            new ResourceLocation("excompressum", "spruce_crucible"),
+            new ResourceLocation("excompressum", "birch_crucible"),
+            new ResourceLocation("excompressum", "jungle_crucible"),
+            new ResourceLocation("excompressum", "acacia_crucible"),
+            new ResourceLocation("excompressum", "dark_oak_crucible")
+    );
+    public static final Set<ResourceLocation> FILLING_FAST_IDS = ImmutableSet.of(
+            new ResourceLocation("exnihilosequentia", "crucible_wood"),
+            new ResourceLocation("exnihilosequentia", "crucible_fired")
+    );
 
     private transient int tickToNextCheck = 0;
     @Nullable
@@ -62,8 +85,7 @@ public class Aquapanthus extends FunctionalFlowerBase {
                         BlockPos pos = basePos.add(xd, 0, zd);
                         BlockState state = world.getBlockState(pos);
                         TileEntity te = world.getTileEntity(pos);
-                        if ((state.getBlock() == Blocks.CAULDRON && state.get(CauldronBlock.LEVEL) < 3)
-                                || (te instanceof IPetalApothecary && ((IPetalApothecary) te).getFluid() == IPetalApothecary.State.EMPTY)) {
+                        if (canFill(state, te)) {
                             currentlyFilling = pos;
                             fillingSince = 0;
                             markDirty();
@@ -92,6 +114,33 @@ public class Aquapanthus extends FunctionalFlowerBase {
         }
     }
 
+    private boolean canFill(BlockState state, TileEntity te) {
+        if ((state.getBlock() == Blocks.CAULDRON && state.get(CauldronBlock.LEVEL) < 3)
+                || (te instanceof IPetalApothecary && ((IPetalApothecary) te).getFluid() == IPetalApothecary.State.EMPTY)) {
+            return true;
+        } else if ((FILLING_SLOW_IDS.contains(state.getBlock().getRegistryName())
+                || FILLING_FAST_IDS.contains(state.getBlock().getRegistryName()))
+                && te != null) {
+            //noinspection ConstantConditions
+            IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP).orElse(null);
+            //noinspection ConstantConditions
+            if (handler != null) {
+                int filled;
+                if (FILLING_FAST_IDS.contains(state.getBlock().getRegistryName())) {
+                    filled = handler.fill(new FluidStack(Fluids.WATER, FluidAttributes.BUCKET_VOLUME), IFluidHandler.FluidAction.SIMULATE);
+                } else {
+                    filled = handler.fill(new FluidStack(Fluids.WATER, (FluidAttributes.BUCKET_VOLUME / 3) + 1), IFluidHandler.FluidAction.SIMULATE);
+                }
+                // extra check for capacity is required as excompressum seems to accept more fluid even if full
+                return filled > 0 && handler.getFluidInTank(0).getAmount() < handler.getTankCapacity(0);
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
     private boolean fill() {
         //noinspection ConstantConditions
         BlockState state = world.getBlockState(currentlyFilling);
@@ -108,6 +157,25 @@ public class Aquapanthus extends FunctionalFlowerBase {
                 return false;
             }
             return true;
+        } else if ((FILLING_SLOW_IDS.contains(state.getBlock().getRegistryName())
+                || FILLING_FAST_IDS.contains(state.getBlock().getRegistryName()))
+                && te != null) {
+            if (fillingSince >= TICKS_TO_FILL) {
+                //noinspection ConstantConditions
+                IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP).orElse(null);
+                //noinspection ConstantConditions
+                if (handler != null) {
+                    if (FILLING_FAST_IDS.contains(state.getBlock().getRegistryName())) {
+                        handler.fill(new FluidStack(Fluids.WATER, FluidAttributes.BUCKET_VOLUME), IFluidHandler.FluidAction.EXECUTE);
+                    } else {
+                        handler.fill(new FluidStack(Fluids.WATER, (FluidAttributes.BUCKET_VOLUME / 3) + 1), IFluidHandler.FluidAction.EXECUTE);
+                    }
+                    te.markDirty();
+                }
+                return false;
+            } else {
+                return canFill(state, te);
+            }
         } else {
             return false;
         }
