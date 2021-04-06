@@ -43,8 +43,6 @@ public class InfusionProcessor extends PetalApothecaryProcessor {
                     return IVariable.from(this.recipe.getRecipeOutput().getDisplayName());
                 case "mana":
                     return IVariable.wrap(((IInfuserRecipe) this.recipe).getManaUsage());
-                case "scaled_mana":
-                    return IVariable.wrap(Math.round(((IInfuserRecipe) this.recipe).getManaUsage() / 8d));
                 default:
                     return null;
             }

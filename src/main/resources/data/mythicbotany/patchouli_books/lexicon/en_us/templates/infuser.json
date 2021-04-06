@@ -3,13 +3,13 @@
   "components": [
     {
       "type": "image",
-      "image": "botania:textures/gui/petal_overlay.png",
-      "x": 0,
-      "y": 8,
-      "width": 116,
-      "height": 106,
-      "u": 17,
-      "v": 8
+      "image": "botania:textures/gui/terrasteel_overlay.png",
+      "x": 50,
+      "y": 28,
+      "width": 15,
+      "height": 29,
+      "u": 65,
+      "v": 48
     },
     {
       "type": "header",
@@ -19,44 +19,39 @@
     },
     {
       "type": "custom",
-      "class": "mythicbotany.patchouli.RotatingRecipeComponent",
-      "x": -1,
-      "y": 21,
+      "class": "mythicbotany.patchouli.MultipleInputsComponent",
+      "x": 50,
+      "y": 58,
       "recipe_name": "#recipe"
     },
     {
       "type": "item",
       "item": "#output",
-      "framed": "false",
       "link_recipe": true,
-      "x": 87,
-      "y": 18
-    },
-    {
-      "type": "item",
-      "item": "mythicbotany:mana_infuser",
-      "framed": "false",
-      "x": 49,
-      "y": 53
+      "x": 50,
+      "y": 10
     },
     {
       "type": "custom",
-      "class": "vazkii.botania.client.patchouli.component.ManaComponent",
-      "mana": "#scaled_mana",
+      "class": "mythicbotany.patchouli.LargeManaComponent",
+      "mana": "#mana",
       "x": -1,
-      "y": 100
+      "y": 105
     },
     {
-      "type": "text",
-      "text": "botaniamisc.shiftToStopSpin",
-      "color": "-67000000",
-      "x": 13,
-      "y": 123
+      "type": "custom",
+      "class": "vazkii.botania.client.patchouli.component.TerraPlateComponent",
+      "x": 36,
+      "y": 74,
+      "plate": "mythicbotany:mana_infuser",
+      "corner": "botania:shimmerrock",
+      "center": "botania:shimmerrock",
+      "edge": "minecraft:gold_block"
     },
     {
       "type": "text",
       "text": "#text",
-      "y": 134
+      "y": 131
     }
   ]
 }
