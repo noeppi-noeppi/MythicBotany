@@ -24,32 +24,20 @@ public class ItemTagProvider extends ItemTagProviderBase {
 	}
 
 	@Override
-	protected void registerTags() {
-
-		//noinspection deprecation
-		ForgeRegistries.ITEMS.getValues().stream()
-				.filter(i -> MythicBotany.getInstance().modid.equals(Registry.ITEM.getKey(i).getNamespace()))
-				.filter(i -> !(i instanceof BlockItem))
-				.forEach(this::addDefaultItemTag);
-
-		//noinspection deprecation
-		ForgeRegistries.ITEMS.getValues().stream()
-				.filter(i -> MythicBotany.getInstance().modid.equals(Registry.ITEM.getKey(i).getNamespace()))
-				.filter(i -> i instanceof BlockItem)
-				.map(i -> ((BlockItem) i).getBlock())
-				.forEach(this::addDefaultBlockItemTag);
-
+	protected void setup() {
 		this.getOrCreateBuilder(ModTags.Items.TERRA_PICK_BLACKLIST).add(ModItems.greatestAuraRing);
 		this.getOrCreateBuilder(ModTags.Items.TERRA_PICK_BLACKLIST).add(ModItems.alfsteelHelmet);
 	}
 
-	public void addDefaultItemTag(Item item) {
+	@Override
+	public void defaultItemTags(Item item) {
 		if (item instanceof ItemRune) {
 			this.getOrCreateBuilder(ModTags.Items.RUNES).add(item);
 		}
 	}
-
-	public void addDefaultBlockItemTag(Block block) {
+	
+	@Override
+	public void defaultBlockItemTags(Block block) {
 		if (block instanceof BlockFunctionalFlower<?>) {
 			this.getOrCreateBuilder(ModTags.Items.SPECIAL_FLOWERS).add(block.asItem());
 			if (((BlockFunctionalFlower<?>) block).isGenerating) {

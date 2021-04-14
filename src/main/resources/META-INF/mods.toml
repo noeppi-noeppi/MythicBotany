@@ -44,6 +44,6 @@ Dive deeper into the world of botania.
 [[dependencies.mythicbotany]]
     modId="libx"
     mandatory=true
-    versionRange="[1.16.3-1.0.1,)"
+    versionRange="[1.16.3-1.0.39,)"
     ordering="NONE"
     side="BOTH"

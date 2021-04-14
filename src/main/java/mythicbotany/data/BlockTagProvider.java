@@ -14,7 +14,7 @@ public class BlockTagProvider extends BlockTagProviderBase {
 	}
 
 	@Override
-	protected void registerTags() {
+	protected void setup() {
 		getOrCreateBuilder(BlockTags.BEACON_BASE_BLOCKS).add(ModBlocks.alfsteelBlock);
 	}
 }
