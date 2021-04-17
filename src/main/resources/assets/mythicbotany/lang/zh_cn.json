@@ -68,7 +68,7 @@
   "lexicon.mythicbotany.runes.runeHelheim": "海尔冥府(亡灵国度)",
 
   "lexicon.mythicbotany.infuser.title": "精灵凝聚板",
-  "lexicon.mythicbotany.infuser.page1": "精灵凝聚板是$(l:botania:basics / terrasteel)泰拉凝聚板$()的升级版，它也能够凝聚其他魔力合金，和泰拉凝聚板一样，也需要搭建平台。 $(thing)但是，这需要使用火花升级，才能正常使用。",
+  "lexicon.mythicbotany.infuser.page1": "精灵凝聚板是$(l:botania:basics/terrasteel)泰拉凝聚板$()的升级版，它也能够凝聚其他魔力合金，和泰拉凝聚板一样，也需要搭建平台。 $(thing)但是，这需要使用火花升级，才能正常使用。",
   "lexicon.mythicbotany.infuser.page2": "从泰拉凝聚板进阶为精灵凝聚板。",
   "lexicon.mythicbotany.infuser.page3": "首先需要用四个金块和五个微光石摆成棋盘状，再在中间的微光石上放上精灵凝聚板。",
   "lexicon.mythicbotany.infuser.page4": "精灵钢的制造方式与泰拉钢类似，但是其材料来自亚尔夫海姆(精灵国度)。 它需要更多的魔力，但是可以用来制造各种强大的东西。",
@@ -85,8 +85,8 @@
   "lexicon.mythicbotany.tools.page9": "精灵靴可以让你跳得更高。",
 
   "lexicon.mythicbotany.manaband.title": "精灵戒指",
-  "lexicon.mythicbotany.manaband.page1": "通过将$(l:botania:baubles / mana_ring_greater)高级魔力之戒$()升级,需要一块精灵钢，您将获得一个新的戒指，这能够容纳的魔力是以前的两倍。",
-  "lexicon.mythicbotany.manaband.page2": "就像精灵魔力戒一样，您也可以升级$(l:botania:baubles / aura_ring_greater)高级光环之戒$()以更快的速度产生魔力。",
+  "lexicon.mythicbotany.manaband.page1": "通过将$(l:botania:baubles/mana_ring_greater)高级魔力之戒$()升级,需要一块精灵钢，您将获得一个新的戒指，这能够容纳的魔力是以前的两倍。",
+  "lexicon.mythicbotany.manaband.page2": "就像精灵魔力戒一样，您也可以升级$(l:botania:baubles/aura_ring_greater)高级光环之戒$()以更快的速度产生魔力。",
 
   "lexicon.mythicbotany.pylon.title": "精灵水晶",
   "lexicon.mythicbotany.pylon.page1": "精灵水晶是制作盖亚水晶的材料。 并可以使用魔力发射器提供魔力，将破损的魔力工具(或施加了魔力修复的工具)放在上面修复。通过这种方式修复耐久所消耗的魔力值低于正常魔力消耗。",
