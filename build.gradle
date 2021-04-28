@@ -6,12 +6,11 @@ apply from: 'https://raw.githubusercontent.com/noeppi-noeppi/ModUtils/master/mod
 
 repositories {
     maven { url = 'https://dvs1.progwml6.com/files/maven/' }
-    maven { url = 'https://modmaven.k-4u.nl' }
+    //maven { url = 'https://modmaven.k-4u.nl' }
     maven { url = 'https://maven.blamejared.com/' }
     maven { url = 'https://maven.theillusivec4.top/' }
     maven { url = 'https://maven.melanx.de/' }
     maven { url = 'https://www.cursemaven.com' }
-    maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
 }
 
 dependencies {
