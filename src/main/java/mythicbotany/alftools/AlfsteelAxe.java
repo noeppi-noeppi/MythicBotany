@@ -23,6 +23,7 @@ import vazkii.botania.common.lib.ModTags;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class AlfsteelAxe extends ItemTerraAxe implements PylonRepairable, Registerable {
 
@@ -34,8 +35,8 @@ public class AlfsteelAxe extends ItemTerraAxe implements PylonRepairable, Regist
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id) {
-        ItemModelsProperties.registerProperty(ModItems.alfsteelAxe, new ResourceLocation(MythicBotany.getInstance().modid, "active"), (stack, world, entity) -> entity instanceof PlayerEntity && !shouldBreak((PlayerEntity) entity) ? 0.0F : 1.0F);
+    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
+        defer.accept(() -> ItemModelsProperties.registerProperty(ModItems.alfsteelAxe, new ResourceLocation(MythicBotany.getInstance().modid, "active"), (stack, world, entity) -> entity instanceof PlayerEntity && !shouldBreak((PlayerEntity) entity) ? 0 : 1));
     }
 
     @Nonnull

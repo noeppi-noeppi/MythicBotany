@@ -3,17 +3,14 @@ package mythicbotany.data;
 import io.github.noeppi_noeppi.libx.data.provider.BlockTagProviderBase;
 import io.github.noeppi_noeppi.libx.data.provider.ItemTagProviderBase;
 import io.github.noeppi_noeppi.libx.mod.ModX;
+import mythicbotany.ModItemTags;
 import mythicbotany.ModItems;
-import mythicbotany.MythicBotany;
 import mythicbotany.functionalflora.base.BlockFloatingFunctionalFlower;
 import mythicbotany.functionalflora.base.BlockFunctionalFlower;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.common.item.material.ItemRune;
 import vazkii.botania.common.lib.ModTags;
 
@@ -25,8 +22,10 @@ public class ItemTagProvider extends ItemTagProviderBase {
 
 	@Override
 	protected void setup() {
-		this.getOrCreateBuilder(ModTags.Items.TERRA_PICK_BLACKLIST).add(ModItems.greatestAuraRing);
+		this.getOrCreateBuilder(ModTags.Items.TERRA_PICK_BLACKLIST).add(ModItems.auraRingGreatest);
 		this.getOrCreateBuilder(ModTags.Items.TERRA_PICK_BLACKLIST).add(ModItems.alfsteelHelmet);
+		this.getOrCreateBuilder(ModItemTags.RITUAL_RUNES).addTag(ModTags.Items.RUNES);
+		this.getOrCreateBuilder(ModItemTags.RITUAL_RUNES).add(ModItems.fimbultyrTablet);
 	}
 
 	@Override

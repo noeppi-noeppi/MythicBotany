@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "mythicbotany:kvasir_mead",
+  "ingredients": [
+    {
+      "item": "mythicbotany:kvasir_blood"
+    },
+    {
+      "item": "minecraft:honey_bottle"
+    }
+  ],
+  "result": {
+    "item": "mythicbotany:kvasir_mead"
+  }
+}

@@ -15,6 +15,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Items;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.registry.Registry;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.common.lib.ModTags;
 import vazkii.botania.data.recipes.WrapperResult;
@@ -93,15 +94,54 @@ public class RecipeProvider extends RecipeProviderBase {
                 .addCriterion("has_item", hasItem(vazkii.botania.common.item.ModItems.gaiaIngot))
                 .build(consumer);
 
-        ShapedRecipeBuilder.shapedRecipe(ModItems.dreamwoodWand)
+        ShapedRecipeBuilder.shapedRecipe(ModItems.dreamwoodTwigWand)
                 .key('p', ModTags.Items.PETALS)
                 .key('t', vazkii.botania.common.item.ModItems.dreamwoodTwig)
                 .patternLine(" pt")
                 .patternLine(" tp")
                 .patternLine("t  ")
-                .setGroup(ModItems.dreamwoodWand.getRegistryName().toString())
+                .setGroup(ModItems.dreamwoodTwigWand.getRegistryName().toString())
                 .addCriterion("has_item", hasItem(ModTags.Items.PETALS))
                 .build(WrapperResult.ofType(RecipeDreamwoodWand.SERIALIZER, consumer));
+        
+        ShapedRecipeBuilder.shapedRecipe(ModBlocks.yggdrasilBranch)
+                .key('l', ModTags.Items.LIVINGWOOD)
+                .key('t', ModTags.Items.NUGGETS_TERRASTEEL)
+                .patternLine("lll")
+                .patternLine("ttt")
+                .patternLine("lll")
+                .setGroup(ModBlocks.yggdrasilBranch.getRegistryName().toString())
+                .addCriterion("has_item0", hasItem(ModTags.Items.LIVINGWOOD))
+                .addCriterion("has_item1", hasItem(ModTags.Items.NUGGETS_TERRASTEEL))
+                .build(consumer);
+        
+        ShapedRecipeBuilder.shapedRecipe(ModBlocks.runeHolder)
+                .key('i', Tags.Items.INGOTS_IRON)
+                .key('p', ModTags.Items.DUSTS_MANA)
+                .patternLine(" i ")
+                .patternLine("ipi")
+                .setGroup(ModBlocks.runeHolder.getRegistryName().toString())
+                .addCriterion("has_item0", hasItem(Tags.Items.INGOTS_IRON))
+                .addCriterion("has_item1", hasItem(ModTags.Items.DUSTS_MANA))
+                .build(consumer);
+        
+        ShapedRecipeBuilder.shapedRecipe(ModBlocks.masterRuneHolder)
+                .key('e', Tags.Items.GEMS_EMERALD)
+                .key('p', ModTags.Items.DUSTS_MANA)
+                .patternLine(" e ")
+                .patternLine("epe")
+                .setGroup(ModBlocks.runeHolder.getRegistryName().toString())
+                .addCriterion("has_item0", hasItem(Tags.Items.GEMS_EMERALD))
+                .addCriterion("has_item1", hasItem(ModTags.Items.DUSTS_MANA))
+                .build(consumer);
+        
+        ShapelessRecipeBuilder.shapelessRecipe(ModItems.kvasirMead)
+                .addIngredient(ModItems.kvasirBlood)
+                .addIngredient(Items.HONEY_BOTTLE)
+                .setGroup(ModItems.kvasirMead.getRegistryName().toString())
+                .addCriterion("has_item0", hasItem(ModItems.kvasirBlood))
+                .addCriterion("has_item1", hasItem(Items.HONEY_BOTTLE))
+                .build(consumer);
     }
 
     private void makeRing(Consumer<IFinishedRecipe> consumer, IItemProvider ring, IItemProvider material, IItemProvider gem) {

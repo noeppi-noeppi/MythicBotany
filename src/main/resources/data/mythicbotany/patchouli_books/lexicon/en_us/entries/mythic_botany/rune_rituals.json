@@ -1,0 +1,31 @@
+{
+  "name": "lexicon.mythicbotany.rune_rituals.title",
+  "category": "mythicbotany:mythic_botany",
+  "icon": "mythicbotany:fimbultyr_tablet",
+  "entry_color": "aa00",
+  "pages": [
+    {
+      "type": "text",
+      "text": "lexicon.mythicbotany.rune_rituals.page1"
+    },
+    {
+      "type": "text",
+      "text": "lexicon.mythicbotany.rune_rituals.page2"
+    },
+    {
+      "type": "text",
+      "text": "lexicon.mythicbotany.rune_rituals.page3"
+    },
+    {
+      "type": "crafting",
+      "recipe": "mythicbotany:rune_holder",
+      "recipe2": "mythicbotany:master_rune_holder"
+    },
+    {
+      "type": "spotlight",
+      "item": "mythicbotany:fimbultyr_tablet",
+      "link_recipe": true,
+      "text": "lexicon.mythicbotany.rune_rituals.page5"
+    }
+  ]
+}

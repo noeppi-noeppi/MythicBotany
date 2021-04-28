@@ -1,0 +1,28 @@
+{
+  "name": "item.mythicbotany.kvasir_mead",
+  "category": "mythicbotany:alfheim",
+  "icon": "mythicbotany:kvasir_mead",
+  "entry_color": "aa00",
+  "pages": [
+    {
+      "type": "text",
+      "text": "lexicon.alfheim.kvasir.page1"
+    },
+    {
+      "type": "crafting",
+      "recipe": "mythicbotany:kvasir_mead",
+      "text": "lexicon.alfheim.kvasir.page2"
+    },
+    {
+      "type": "mythicbotany:ritual_pattern",
+      "title": "item.mythicbotany.kvasir_blood",
+      "recipe": "mythicbotany:mythicbotany_rune_rituals/kvasir_blood"
+    },
+    {
+      "type": "mythicbotany:ritual_info",
+      "title": "",
+      "recipe": "mythicbotany:mythicbotany_rune_rituals/kvasir_blood",
+      "text": "lexicon.alfheim.kvasir.page4"
+    }
+  ]
+}

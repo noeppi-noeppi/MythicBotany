@@ -12,7 +12,7 @@ public class DataGenerators {
 			evt.getGenerator().addProvider(blockTagProvider);
 			evt.getGenerator().addProvider(new ItemTagProvider(MythicBotany.getInstance(), evt.getGenerator(), evt.getExistingFileHelper(), blockTagProvider));
 			evt.getGenerator().addProvider(new RecipeProvider(MythicBotany.getInstance(), evt.getGenerator()));
-			evt.getGenerator().addProvider(new SmeltingProvider(evt.getGenerator()));
+			evt.getGenerator().addProvider(new SmeltingProvider(MythicBotany.getInstance(), evt.getGenerator()));
 			evt.getGenerator().addProvider(new BlockStateProvider(MythicBotany.getInstance(), evt.getGenerator(), evt.getExistingFileHelper()));
 			evt.getGenerator().addProvider(new ItemModelProvider(MythicBotany.getInstance(), evt.getGenerator(), evt.getExistingFileHelper()));
 			evt.getGenerator().addProvider(new ElvenTradeProvider(evt.getGenerator()));
@@ -20,7 +20,8 @@ public class DataGenerators {
 			evt.getGenerator().addProvider(new PetalProvider(evt.getGenerator()));
 			evt.getGenerator().addProvider(new RuneProvider(evt.getGenerator()));
 			evt.getGenerator().addProvider(new SmithingProvider(evt.getGenerator()));
-			evt.getGenerator().addProvider(new InfuserProvider(evt.getGenerator()));
+			evt.getGenerator().addProvider(new InfuserProvider(MythicBotany.getInstance(), evt.getGenerator()));
+			evt.getGenerator().addProvider(new RitualProvider(MythicBotany.getInstance(), evt.getGenerator()));
 		}
 	}
 }

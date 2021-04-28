@@ -23,6 +23,10 @@ public class BlockStateProvider extends BlockStateProviderBase {
     protected void setup() {
         manualModel(ModBlocks.manaInfuser);
         manualModel(ModBlocks.alfsteelPylon);
+        manualModel(ModBlocks.yggdrasilBranch);
+        manualModel(ModBlocks.runeHolder);
+        manualModel(ModBlocks.masterRuneHolder);
+        manualModel(ModBlocks.mjoellnir);
     }
 
     @Override

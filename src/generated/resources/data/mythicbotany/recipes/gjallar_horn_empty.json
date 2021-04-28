@@ -1,0 +1,10 @@
+{
+  "type": "botania:mana_infusion",
+  "input": {
+    "item": "botania:horn_grass"
+  },
+  "output": {
+    "item": "mythicbotany:gjallar_horn_empty"
+  },
+  "mana": 20000
+}

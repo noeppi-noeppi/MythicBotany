@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "mythicbotany:dragonstone_ore"
+  },
+  "result": "botania:dragonstone",
+  "experience": 0.35,
+  "cookingtime": 100
+}

@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "mythicbotany.refmap.json",
+  "package": "mythicbotany.mixin",
+  "minVersion": "0.8",
+  "client": [],
+  "server": [],
+  "mixins": [
+    "MixinWorldRenderer"
+  ]
+}

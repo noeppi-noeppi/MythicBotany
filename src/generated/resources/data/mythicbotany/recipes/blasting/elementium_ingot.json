@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "mythicbotany:elementium_ore"
+  },
+  "result": "botania:elementium_ingot",
+  "experience": 0.35,
+  "cookingtime": 100
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "mythicbotany:block/yggdrasil_branch"
+    },
+    "facing=south": {
+      "model": "mythicbotany:block/yggdrasil_branch",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "mythicbotany:block/yggdrasil_branch",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "mythicbotany:block/yggdrasil_branch",
+      "y": 90
+    }
+  }
+}

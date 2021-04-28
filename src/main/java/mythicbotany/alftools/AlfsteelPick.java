@@ -28,6 +28,7 @@ import vazkii.botania.common.lib.ResourceLocationHelper;
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Registerable {
 
@@ -39,9 +40,11 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id) {
-        ItemModelsProperties.registerProperty(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.getInstance().modid, "tipped"), (stack, world, entity) -> isTipped(stack) ? 1 : 0);
-        ItemModelsProperties.registerProperty(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.getInstance().modid, "active"), (stack, world, entity) -> isEnabled(stack) ? 1 : 0);
+    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
+        defer.accept(() -> {
+            ItemModelsProperties.registerProperty(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.getInstance().modid, "tipped"), (stack, world, entity) -> isTipped(stack) ? 1 : 0);
+            ItemModelsProperties.registerProperty(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.getInstance().modid, "active"), (stack, world, entity) -> isEnabled(stack) ? 1 : 0);
+        });
     }
 
     @Override

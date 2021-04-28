@@ -37,7 +37,7 @@ import java.util.UUID;
 public class AlfsteelHelm extends ItemTerrasteelHelm implements PylonRepairable {
 
     private static final float JUMP_FACTOR = 0.025f;
-    private static final LazyValue<ItemStack[]> armorSet = new LazyValue<>(() -> new ItemStack[]{new ItemStack(ModItems.alfsteelHelmet), new ItemStack(ModItems.alfsteelChest), new ItemStack(ModItems.alfsteelLegs), new ItemStack(ModItems.alfsteelBoots)});
+    private static final LazyValue<ItemStack[]> armorSet = new LazyValue<>(() -> new ItemStack[]{new ItemStack(ModItems.alfsteelHelmet), new ItemStack(ModItems.alfsteelChestplate), new ItemStack(ModItems.alfsteelLeggings), new ItemStack(ModItems.alfsteelBoots)});
 
     public AlfsteelHelm(Properties props) {
         super(props.maxDamage(5200));
@@ -69,9 +69,9 @@ public class AlfsteelHelm extends ItemTerrasteelHelm implements PylonRepairable 
                 Attribute reachDistance = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("forge", "reach_distance"));
                 if (reachDistance != null)
                     ret.put(reachDistance, new AttributeModifier(uuid, "Alfsteel modifier " + this.type, 2, AttributeModifier.Operation.ADDITION));
-            } else if (this == ModItems.alfsteelChest) {
+            } else if (this == ModItems.alfsteelChestplate) {
                 ret.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Alfsteel modifier " + this.type, 1, AttributeModifier.Operation.ADDITION));
-            } else if (this == ModItems.alfsteelLegs) {
+            } else if (this == ModItems.alfsteelLeggings) {
                 ret.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Alfsteel modifier " + this.type, 0.05, AttributeModifier.Operation.ADDITION));
                 Attribute swimSpeed = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("forge", "swim_speed"));
                 if (swimSpeed != null) {
@@ -100,9 +100,9 @@ public class AlfsteelHelm extends ItemTerrasteelHelm implements PylonRepairable 
                     case HEAD:
                         return stack.getItem() == ModItems.alfsteelHelmet;
                     case CHEST:
-                        return stack.getItem() == ModItems.alfsteelChest;
+                        return stack.getItem() == ModItems.alfsteelChestplate;
                     case LEGS:
-                        return stack.getItem() == ModItems.alfsteelLegs;
+                        return stack.getItem() == ModItems.alfsteelLeggings;
                     case FEET:
                         return stack.getItem() == ModItems.alfsteelBoots;
                     default:
@@ -121,9 +121,9 @@ public class AlfsteelHelm extends ItemTerrasteelHelm implements PylonRepairable 
         super.addArmorSetDescription(stack, list);
         if (stack.getItem() == ModItems.alfsteelHelmet) {
             list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_helmet.description")).mergeStyle(TextFormatting.GOLD));
-        } else if (stack.getItem() == ModItems.alfsteelChest) {
+        } else if (stack.getItem() == ModItems.alfsteelChestplate) {
             list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_chestplate.description")).mergeStyle(TextFormatting.GOLD));
-        } else if (stack.getItem() == ModItems.alfsteelLegs) {
+        } else if (stack.getItem() == ModItems.alfsteelLeggings) {
             list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_leggings.description")).mergeStyle(TextFormatting.GOLD));
         } else if (stack.getItem() == ModItems.alfsteelBoots) {
             list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_boots.description")).mergeStyle(TextFormatting.GOLD));

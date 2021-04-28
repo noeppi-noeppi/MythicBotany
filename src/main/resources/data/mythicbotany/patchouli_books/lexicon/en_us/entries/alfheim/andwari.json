@@ -1,0 +1,29 @@
+{
+  "name": "item.mythicbotany.andwari_ring",
+  "category": "mythicbotany:alfheim",
+  "icon": "mythicbotany:andwari_ring",
+  "entry_color": "aa00",
+  "pages": [
+    {
+      "type": "text",
+      "text": "lexicon.alfheim.andwari.page1"
+    },
+    {
+      "type": "image",
+      "images": [ "mythicbotany:textures/image/andwari_entrance.png", "mythicbotany:textures/image/andwari_cave.png" ],
+      "border": true,
+      "text": "lexicon.alfheim.andwari.page2"
+    },
+    {
+      "type": "mythicbotany:ritual_pattern",
+      "title": "item.mythicbotany.andwari_ring",
+      "recipe": "mythicbotany:mythicbotany_rune_rituals/andwari_ring"
+    },
+    {
+      "type": "mythicbotany:ritual_info",
+      "title": "",
+      "recipe": "mythicbotany:mythicbotany_rune_rituals/andwari_ring",
+      "text": "lexicon.alfheim.andwari.page4"
+    }
+  ]
+}

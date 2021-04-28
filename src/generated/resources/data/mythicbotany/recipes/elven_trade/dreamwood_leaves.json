@@ -1,0 +1,13 @@
+{
+  "type": "botania:elven_trade",
+  "ingredients": [
+    {
+      "tag": "minecraft:leaves"
+    }
+  ],
+  "output": [
+    {
+      "item": "mythicbotany:dreamwood_leaves"
+    }
+  ]
+}

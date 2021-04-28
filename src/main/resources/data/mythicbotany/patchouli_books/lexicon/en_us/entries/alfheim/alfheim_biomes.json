@@ -1,0 +1,30 @@
+{
+  "name": "lexicon.alfheim.biomes.title",
+  "category": "mythicbotany:alfheim",
+  "icon": "mythicbotany:alf_pixie_spawn_egg",
+  "entry_color": "aa00",
+  "pages": [
+    {
+      "type": "text",
+      "text": "lexicon.alfheim.biomes.page1"
+    },
+    {
+      "type": "image",
+      "images": [ "mythicbotany:textures/image/alfheim_hills.png" ],
+      "border": true,
+      "text": "lexicon.alfheim.biomes.page2"
+    },
+    {
+      "type": "image",
+      "images": [ "mythicbotany:textures/image/dreamwood_forest.png" ],
+      "border": true,
+      "text": "lexicon.alfheim.biomes.page3"
+    },
+    {
+      "type": "image",
+      "images": [ "mythicbotany:textures/image/golden_fields.png" ],
+      "border": true,
+      "text": "lexicon.alfheim.biomes.page4"
+    }
+  ]
+}

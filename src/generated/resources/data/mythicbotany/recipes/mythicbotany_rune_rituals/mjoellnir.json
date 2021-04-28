@@ -1,0 +1,170 @@
+{
+  "type": "mythicbotany:rune_ritual",
+  "group": "rune_rituals",
+  "center": {
+    "item": "mythicbotany:fimbultyr_tablet"
+  },
+  "runes": [
+    {
+      "rune": {
+        "tag": "botania:runes/wrath"
+      },
+      "x": -5,
+      "z": 0
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/wrath"
+      },
+      "x": 5,
+      "z": 0
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/wrath"
+      },
+      "x": 0,
+      "z": -5
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/wrath"
+      },
+      "x": 0,
+      "z": 5
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/greed"
+      },
+      "x": -4,
+      "z": -4
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/greed"
+      },
+      "x": -4,
+      "z": 4
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/greed"
+      },
+      "x": 4,
+      "z": -4
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/greed"
+      },
+      "x": 4,
+      "z": 4
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/air"
+      },
+      "x": -3,
+      "z": 2
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/air"
+      },
+      "x": 3,
+      "z": 2
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/air"
+      },
+      "x": -2,
+      "z": 3
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/air"
+      },
+      "x": 2,
+      "z": 3
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/earth"
+      },
+      "x": -3,
+      "z": -2
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/earth"
+      },
+      "x": 3,
+      "z": -2
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/earth"
+      },
+      "x": -2,
+      "z": -3
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/earth"
+      },
+      "x": 2,
+      "z": -3
+    },
+    {
+      "rune": {
+        "item": "mythicbotany:nidavellir_rune"
+      },
+      "x": -2,
+      "z": 0
+    },
+    {
+      "rune": {
+        "item": "mythicbotany:nidavellir_rune"
+      },
+      "x": 2,
+      "z": 0
+    },
+    {
+      "rune": {
+        "item": "mythicbotany:asgard_rune"
+      },
+      "x": 0,
+      "z": 2
+    },
+    {
+      "rune": {
+        "item": "mythicbotany:joetunheim_rune"
+      },
+      "x": 0,
+      "z": -2
+    }
+  ],
+  "mana": 500000,
+  "ticks": 200,
+  "inputs": [
+    {
+      "item": "minecraft:polished_andesite"
+    },
+    {
+      "tag": "forge:ingots/gold"
+    },
+    {
+      "item": "botania:golden_seeds"
+    },
+    {
+      "item": "botania:red_string"
+    },
+    {
+      "item": "botania:tiny_planet"
+    }
+  ],
+  "outputs": [],
+  "special_output": "mythicbotany:mjoellnir"
+}

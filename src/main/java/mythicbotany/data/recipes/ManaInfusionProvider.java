@@ -1,6 +1,7 @@
 package mythicbotany.data.recipes;
 
 import com.google.gson.JsonObject;
+import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
 import net.minecraft.block.BlockState;
 import net.minecraft.data.DataGenerator;
@@ -34,7 +35,7 @@ public class ManaInfusionProvider extends RecipeProvider {
 
 	@Override
 	protected void registerRecipes(@Nonnull Consumer<IFinishedRecipe> consumer) {
-		//consumer.accept(new FinishedRecipe(id("manasteel"), new ItemStack(ModItems.manaSteel), Ingredient.fromTag(Tags.Items.INGOTS_IRON), 3000));
+		consumer.accept(new FinishedRecipe(ModItems.gjallarHornEmpty.getRegistryName(), new ItemStack(ModItems.gjallarHornEmpty), ingr(vazkii.botania.common.item.ModItems.grassHorn), 20000));
 	}
 
 	private static ResourceLocation id(String s) {

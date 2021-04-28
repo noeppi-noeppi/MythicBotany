@@ -22,7 +22,7 @@ public class ItemModelProvider extends ItemModelProviderBase {
 		manualModel(ModItems.alfsteelPick);
 		manualModel(ModItems.alfsteelAxe);
 		manualModel(ModItems.fadedNetherStar);
-		manualModel(ModItems.dreamwoodWand);
+		manualModel(ModItems.dreamwoodTwigWand);
 		manualModel(ModBlocks.alfsteelPylon.asItem());
 	}
 

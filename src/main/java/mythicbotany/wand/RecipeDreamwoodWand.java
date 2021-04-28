@@ -53,7 +53,7 @@ public class RecipeDreamwoodWand extends TwigWandRecipe {
 
     @Nonnull
     public ItemStack getRecipeOutput() {
-        return new ItemStack(ModItems.dreamwoodWand);
+        return new ItemStack(ModItems.dreamwoodTwigWand);
     }
 
     @Nonnull

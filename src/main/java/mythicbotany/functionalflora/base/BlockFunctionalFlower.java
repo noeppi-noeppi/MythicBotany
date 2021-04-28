@@ -50,6 +50,7 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends BlockBase implements IWandHUD, IWandable, IPlantable {
 
@@ -109,7 +110,7 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id) {
+    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
         ClientRegistry.bindTileEntityRenderer(teType, RenderFunctionalFlower::new);
         RenderTypeLookup.setRenderLayer(this, RenderType.getCutoutMipped());
     }

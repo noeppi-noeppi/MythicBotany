@@ -42,6 +42,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
 
@@ -57,9 +58,11 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id) {
-        ItemModelsProperties.registerProperty(ModItems.dreamwoodWand, new ResourceLocation(MythicBotany.getInstance().modid, "bindmode"), (stack, world, entity) -> ItemTwigWand.getBindMode(stack) ? 1 : 0);
-        Minecraft.getInstance().getItemColors().register((stack, colorId) -> colorId == 1 ? DyeColor.byId(getColor1(stack)).getColorValue() : (colorId == 2 ? DyeColor.byId(getColor2(stack)).getColorValue() : -1), ModItems.dreamwoodWand);
+    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
+        defer.accept(() -> {
+            ItemModelsProperties.registerProperty(ModItems.dreamwoodTwigWand, new ResourceLocation(MythicBotany.getInstance().modid, "bindmode"), (stack, world, entity) -> ItemTwigWand.getBindMode(stack) ? 1 : 0);
+            Minecraft.getInstance().getItemColors().register((stack, colorId) -> colorId == 1 ? DyeColor.byId(getColor1(stack)).getColorValue() : (colorId == 2 ? DyeColor.byId(getColor2(stack)).getColorValue() : -1), ModItems.dreamwoodTwigWand);
+        });
         MinecraftForge.EVENT_BUS.addListener(this::onRenderGameOverlay);
     }
 
@@ -74,16 +77,12 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
             BlockState state = bpos != null ? minecraft.world.getBlockState(bpos) : null;
             Block block = state == null ? null : state.getBlock();
             if (PlayerHelper.hasAnyHeldItem(minecraft.player)) {
-                if (PlayerHelper.hasHeldItem(minecraft.player, ModItems.dreamwoodWand) && block instanceof IWandHUD) {
-                    //noinspection deprecation
-                    RenderSystem.pushTextureAttributes();
+                if (PlayerHelper.hasHeldItem(minecraft.player, ModItems.dreamwoodTwigWand) && block instanceof IWandHUD) {
                     event.getMatrixStack().push();
                     minecraft.getProfiler().startSection("wandItemDreamwood");
                     ((IWandHUD) block).renderHUD(event.getMatrixStack(), minecraft, minecraft.world, bpos);
                     minecraft.getProfiler().endSection();
                     event.getMatrixStack().pop();
-                    //noinspection deprecation
-                    RenderSystem.popAttributes();
                     //noinspection deprecation
                     RenderSystem.color4f(1, 1, 1, 1);
                 }
@@ -95,7 +94,7 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
         World world = event.getWorld();
         PlayerEntity player = event.getPlayer();
         ItemStack held = player.getHeldItem(event.getHand());
-        if (!world.isRemote && !held.isEmpty() && held.getItem() == ModItems.dreamwoodWand) {
+        if (!world.isRemote && !held.isEmpty() && held.getItem() == ModItems.dreamwoodTwigWand) {
             if (event.getTarget() instanceof EntitySpark) {
                 EntitySpark spark = (EntitySpark) event.getTarget();
                 if (player.isSneaking()) {
@@ -170,7 +169,7 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
     }
 
     public static ItemStack forColors(int color1, int color2) {
-        ItemStack stack = new ItemStack(ModItems.dreamwoodWand);
+        ItemStack stack = new ItemStack(ModItems.dreamwoodTwigWand);
         ItemNBTHelper.setInt(stack, "color1", color1);
         ItemNBTHelper.setInt(stack, "color2", color2);
         return stack;

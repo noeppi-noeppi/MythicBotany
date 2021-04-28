@@ -1,27 +1,22 @@
 package mythicbotany.data.recipes;
 
+import io.github.noeppi_noeppi.libx.data.provider.recipe.RecipeProviderBase;
+import io.github.noeppi_noeppi.libx.mod.ModX;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.data.recipes.builder.InfuserRecipeBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.RecipeProvider;
 import net.minecraft.util.ResourceLocation;
 import vazkii.botania.common.lib.ModTags;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
-public class InfuserProvider extends RecipeProvider {
+public class InfuserProvider extends RecipeProviderBase {
 
-    public InfuserProvider(DataGenerator generatorIn) {
-        super(generatorIn);
-    }
-
-    @Nonnull
-    @Override
-    public String getName() {
-        return "MythicBotany infuser recipes";
+    public InfuserProvider(ModX mod, DataGenerator generator) {
+        super(mod, generator);
     }
 
     @Override

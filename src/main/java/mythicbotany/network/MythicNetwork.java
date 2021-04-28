@@ -3,6 +3,7 @@ package mythicbotany.network;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import io.github.noeppi_noeppi.libx.network.NetworkX;
 import mythicbotany.network.ParticleSerializer.ParticleMessage;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -17,7 +18,7 @@ public class MythicNetwork extends NetworkX {
 
     @Override
     protected String getProtocolVersion() {
-        return "2";
+        return "3";
     }
 
     @Override
@@ -25,6 +26,7 @@ public class MythicNetwork extends NetworkX {
         register(new ParticleSerializer(), () -> ParticleHandler::handle, NetworkDirection.PLAY_TO_CLIENT);
         register(new InfusionSerializer(), () -> InfusionHandler::handle, NetworkDirection.PLAY_TO_CLIENT);
         register(new PylonSerializer(), () -> PylonHandler::handle, NetworkDirection.PLAY_TO_CLIENT);
+        register(new UpdatePortalTimeSerializer(), () -> UpdatePortalTimeHandler::handle, NetworkDirection.PLAY_TO_CLIENT);
 
         register(new AlfSwordLeftClickSerializer(), () -> AlfSwordLeftClickHandler::handle, NetworkDirection.PLAY_TO_SERVER);
     }
@@ -58,6 +60,12 @@ public class MythicNetwork extends NetworkX {
     public void spawnInfusionParticles(World world, BlockPos pos, double progress, int fromColor, int toColor) {
         if (!world.isRemote) {
            instance.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new InfusionSerializer.InfusionMessage(pos.getX(), pos.getY(), pos.getZ(), world.getDimensionKey().getRegistryName(), progress, fromColor, toColor));
+        }
+    }
+    
+    public void updatePortalTime(ServerPlayerEntity player, int portalTime) {
+        if (!player.getEntityWorld().isRemote) {
+            instance.send(PacketDistributor.PLAYER.with(() -> player), new UpdatePortalTimeSerializer.UpdatePortalTimeMessage(portalTime));
         }
     }
 }

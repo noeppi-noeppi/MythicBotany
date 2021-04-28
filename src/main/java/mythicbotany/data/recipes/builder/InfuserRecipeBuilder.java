@@ -16,18 +16,20 @@ import vazkii.botania.common.core.helper.ItemNBTHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class InfuserRecipeBuilder {
+    
     private final ItemStack result;
-    private final List<Ingredient> ingredients = Lists.newArrayList();
+    private final List<Ingredient> ingredients = new ArrayList<>();
     private String group;
     private int manaCost = -1;
     private int fromColor = 0xFFFFFF;
     private int toColor = 0xFFFFFF;
 
-    public InfuserRecipeBuilder(ItemStack result) {
+    private InfuserRecipeBuilder(ItemStack result) {
         this.result = result;
     }
 

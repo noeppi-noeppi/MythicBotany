@@ -1,13 +1,26 @@
 package mythicbotany;
 
 import io.github.noeppi_noeppi.libx.mod.registration.ModXRegistration;
+import mythicbotany.alfheim.Alfheim;
+import mythicbotany.alfheim.AlfheimFeatures;
+import mythicbotany.alfheim.teleporter.AlfheimPortalHandler;
 import mythicbotany.config.ClientConfig;
 import mythicbotany.data.DataGenerators;
+import mythicbotany.kvasir.WanderingTraderRuneInput;
+import mythicbotany.mjoellnir.MjoellnirRuneOutput;
 import mythicbotany.network.MythicNetwork;
+import mythicbotany.patchouli.PageRitualInfo;
+import mythicbotany.patchouli.PageRitualPattern;
 import mythicbotany.pylon.PylonRepairables;
+import mythicbotany.rune.RuneRitualRecipe;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DimensionType;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -18,6 +31,7 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import top.theillusivec4.curios.api.SlotTypePreset;
+import vazkii.patchouli.client.book.ClientBookRegistry;
 
 import javax.annotation.Nonnull;
 
@@ -41,10 +55,10 @@ public class MythicBotany extends ModXRegistration {
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.CLIENT_CONFIG);
 
-        addRegistrationHandler(ModBlocks::register);
-        addRegistrationHandler(ModItems::register);
         addRegistrationHandler(ModRecipes::register);
         addRegistrationHandler(ModMisc::register);
+        addRegistrationHandler(Alfheim::register);
+        addRegistrationHandler(AlfheimFeatures::register);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::sendIMC);
         MinecraftForge.EVENT_BUS.addListener(this::serverStart);
@@ -52,6 +66,11 @@ public class MythicBotany extends ModXRegistration {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(DataGenerators::gatherData);
 
         MinecraftForge.EVENT_BUS.register(new EventListener());
+        //noinspection CodeBlock2Expr
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+            MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, AlfheimPortalHandler::renderGameOverlay);
+        });
+        MinecraftForge.EVENT_BUS.addListener(AlfheimPortalHandler::endTick);
     }
 
     @Nonnull
@@ -67,14 +86,25 @@ public class MythicBotany extends ModXRegistration {
     @Override
     protected void setup(final FMLCommonSetupEvent event) {
         logger.info("Loading MythicBotany");
+        
+        event.enqueueWork(() -> {
+            ModEntities.setup();
+            
+            PylonRepairables.register(new PylonRepairables.ItemPylonRepairable(), PylonRepairables.PRIORITY_ITEM_WITH_INTERFACE);
+            PylonRepairables.register(new PylonRepairables.MendingPylonRepairable(), PylonRepairables.PRIORITY_MENDING);
 
-        PylonRepairables.register(new PylonRepairables.ItemPylonRepairable(), PylonRepairables.PRIORITY_ITEM_WITH_INTERFACE);
-        PylonRepairables.register(new PylonRepairables.MendingPylonRepairable(), PylonRepairables.PRIORITY_MENDING);
+            RuneRitualRecipe.registerSpecialInput(WanderingTraderRuneInput.INSTANCE);
+            RuneRitualRecipe.registerSpecialOutput(MjoellnirRuneOutput.INSTANCE);
+        });
     }
 
     @Override
-    protected void clientSetup(FMLClientSetupEvent fmlClientSetupEvent) {
-        //
+    protected void clientSetup(FMLClientSetupEvent event) {
+        ModEntities.clientSetup();
+        event.enqueueWork(() -> {
+            ClientBookRegistry.INSTANCE.pageTypes.put(new ResourceLocation(modid, "ritual_pattern"), PageRitualPattern.class);
+            ClientBookRegistry.INSTANCE.pageTypes.put(new ResourceLocation(modid, "ritual_info"), PageRitualInfo.class);
+        });
     }
 
     private void sendIMC(final InterModEnqueueEvent event) {

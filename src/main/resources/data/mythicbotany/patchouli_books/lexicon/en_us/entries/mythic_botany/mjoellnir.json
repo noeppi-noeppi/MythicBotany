@@ -1,0 +1,35 @@
+{
+  "name": "block.mythicbotany.mjoellnir",
+  "category": "mythicbotany:mythic_botany",
+  "icon": "mythicbotany:mjoellnir",
+  "entry_color": "aa00",
+  "pages": [
+    {
+      "type": "text",
+      "text": "lexicon.mythicbotany.mjoellnir.page1"
+    },
+    {
+      "type": "text",
+      "text": "lexicon.mythicbotany.mjoellnir.page2"
+    },
+    {
+      "type": "text",
+      "text": "lexicon.mythicbotany.mjoellnir.page3"
+    },
+    {
+      "type": "text",
+      "text": "lexicon.mythicbotany.mjoellnir.page4"
+    },
+    {
+      "type": "mythicbotany:ritual_pattern",
+      "title": "block.mythicbotany.mjoellnir",
+      "recipe": "mythicbotany:mythicbotany_rune_rituals/mjoellnir"
+    },
+    {
+      "type": "mythicbotany:ritual_info",
+      "title": "",
+      "recipe": "mythicbotany:mythicbotany_rune_rituals/mjoellnir",
+      "text": "lexicon.mythicbotany.mjoellnir.page6"
+    }
+  ]
+}

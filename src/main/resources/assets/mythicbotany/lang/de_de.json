@@ -1,7 +1,7 @@
 {
   "itemGroup.mythicbotany": "MythicBotany",
 
-  "item.mythicbotany.asgard_rune": "Rune von Aagard",
+  "item.mythicbotany.asgard_rune": "Rune von Asgard",
   "item.mythicbotany.vanaheim_rune": "Rune von Wanenheim",
   "item.mythicbotany.alfheim_rune": "Rune von Alfheim",
   "item.mythicbotany.midgard_rune": "Rune von Midgard",
@@ -25,6 +25,15 @@
   "item.mythicbotany.faded_nether_star": "Verblasster Netherstern",
   "item.mythicbotany.fire_ring": "Ring von Muspelheim",
   "item.mythicbotany.ice_ring": "Ring von Niflheim",
+  "item.mythicbotany.gjallar_horn_empty": "Gjallarhorn",
+  "item.mythicbotany.gjallar_horn_full": "Wasser vom Quell des Mimir",
+  "item.mythicbotany.cursed_andwari_ring": "Verfluchter Ring des Andwari",
+  "item.mythicbotany.andwari_ring": "Ring des Andwari",
+  "item.mythicbotany.fimbultyr_tablet": "Runentafel von Fimbultyr",
+  "item.mythicbotany.kvasir_blood": "Blut des Kvasir",
+  "item.mythicbotany.kvasir_mead": "Mett des Kvasir",
+  "item.mythicbotany.dream_cherry": "Traumkirsche",
+  "item.mythicbotany.alf_pixie_spawn_egg": "Alfheim Pixie Spawn-Ei",
 
   "block.mythicbotany.mana_infuser": "Mana-Infundierer",
   "block.mythicbotany.alfsteel_block": "Alfstahl-Block",
@@ -40,6 +49,14 @@
   "block.mythicbotany.hellebore_floating": "Schwebende Höllenrose",
   "block.mythicbotany.raindeletia": "Regengewächs",
   "block.mythicbotany.raindeletia_floating": "Floating Regengewächs",
+  "block.mythicbotany.yggdrasil_branch": "Ableger von Yggdrasil",
+  "block.mythicbotany.rune_holder": "Runenhalter",
+  "block.mythicbotany.master_rune_holder": "Zentraler Runenhalter",
+  "block.mythicbotany.mjoellnir": "Mjöllnir",
+  "block.mythicbotany.dreamwood_leaves": "Traumholzblätter",
+  "block.mythicbotany.elementium_ore": "Elementiumerz",
+  "block.mythicbotany.dragonstone_ore": "Drachensteinerz",
+  "block.mythicbotany.gold_ore": "Golderz",
 
   "item.mythicbotany.alfsteel_helmet.description": "Gibt dir eine etwas größere Reichweite.",
   "item.mythicbotany.alfsteel_chestplate.description": "Gibt dir eine gute Standfestigkeit.",
@@ -50,5 +67,30 @@
   "block.mythicbotany.wither_aconite.description": "Sie verschlingt Nethersterne.",
   "block.mythicbotany.aquapanthus.description": "Wässrig!.",
   "block.mythicbotany.hellebore.description": "Es fühlt sich wie Helheim an.",
-  "block.mythicbotany.raindeletia.description": "Regen ist ein Segen."
+  "block.mythicbotany.raindeletia.description": "Regen ist ein Segen.",
+
+  "enchantment.mythicbotany.hammer_mobility": "Dynamischer Hammer",
+  "entity.mythicbotany.mjoellnir": "Mjöllnir",
+  "entity.mythicbotany.alf_pixie": "Alfheim Fee",
+
+  "tooltip.mythicbotany.rune_ritual": "Runen-Ritual",
+  "tooltip.mythicbotany.rune_master": "Rune für den zentralen Runenhalter.",
+  "tooltip.mythicbotany.rune_consume": "Diese Rune wird verbraucht.",
+  "tooltip.mythicbotany.rune_keep": "Diese Rune wird NICHT verbraucht.",
+  "tooltip.mythicbotany.rune_offset": "Relative Position: %s, %s",
+  "tooltip.mythicbotany.sacrifice_entity1": "Kreatur muss in der Nähe des Rituals sein.",
+  "tooltip.mythicbotany.sacrifice_entity2": "Sie wird während des Rituals geopfert.",
+
+  "message.mythicbotany.mimir_knowledge": "Als du das Wasser aus dem Brunnen des Mimir trinkst, beginnst du Dinge zu begreifen, die du dir nicht im Traum hättest vorstellen können.",
+  "message.mythicbotany.mimir_known": "Du hast das Wissen des Mimir bereits erreicht.",
+  "message.mythicbotany.kvasir_knowledge": "Als du das Mett von großer Bosheit trinkst, erlangst du die Fähigkeit in allen Sprachen der Neun Welten zu reden.",
+  "message.mythicbotany.kvasir_known": "Du hast die Talente des Kvasir bereits erreicht.",
+  "message.mythicbotany.mimir_unknown": "Du gibst dein Bestes, kannst den tieferen Sinn dahinter aber nicht verstehen. Aber man sagt, das Wasser vom Brunnen des Mimir zu trinken hilft.",
+  "message.mythicbotany.ritual_running": "Das Ritual läuft gerade.",
+  "message.mythicbotany.ritual_wrong_shape": "Das Ritual kommt dir falsch vor obwohl du die Runen im Detail studiert hast.",
+  "message.mythicbotany.ritual_less_mana": "Du verstehst das Ritual, aber bist nicht mächtig genug. Vielleicht solltest du mehr Mana bereitstellen.",
+  "message.mythicbotany.ritual_wrong_items": "Das Ritual ist dir bekannt und du bist mächtig genug dafür. Allerdings scheint irgendetwas mit den Zutaten nicht zu stimmen.",
+  "message.mythicbotany.ritual_no_trader": "Das Ritual muss grausamer durchgeführt werden. Ohne einen Fahrenden Händler wirst du es nicht schaffen..",
+  "message.mythicbotany.mjoellnir_heavy_pick": "Der Hammer wiegt viel zu viel, dass du ihn heben könntest. Man sagt jedoch, die Götter würden ihre Kraft aus den Goldenen Äpfeln von Idun erhalten.",
+  "message.mythicbotany.mjoellnir_heavy_drop": "Du merkst wie die Kraft in deinen Armen nachlässt. Es gbt keine andere Möglichkeit. Du musst den Hammer fallen lassen."
 }

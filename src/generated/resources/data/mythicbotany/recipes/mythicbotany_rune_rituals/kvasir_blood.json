@@ -1,0 +1,112 @@
+{
+  "type": "mythicbotany:rune_ritual",
+  "group": "rune_rituals",
+  "center": {
+    "item": "mythicbotany:fimbultyr_tablet"
+  },
+  "runes": [
+    {
+      "rune": {
+        "item": "mythicbotany:midgard_rune"
+      },
+      "x": -2,
+      "z": -2
+    },
+    {
+      "rune": {
+        "item": "mythicbotany:midgard_rune"
+      },
+      "x": 2,
+      "z": 2
+    },
+    {
+      "rune": {
+        "item": "mythicbotany:helheim_rune"
+      },
+      "x": 2,
+      "z": -2
+    },
+    {
+      "rune": {
+        "item": "mythicbotany:helheim_rune"
+      },
+      "x": -2,
+      "z": 2
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/summer"
+      },
+      "x": -1,
+      "z": -3
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/summer"
+      },
+      "x": 1,
+      "z": 3
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/summer"
+      },
+      "x": -3,
+      "z": -1
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/summer"
+      },
+      "x": 3,
+      "z": 1
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/fire"
+      },
+      "x": 1,
+      "z": -3
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/fire"
+      },
+      "x": -1,
+      "z": 3
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/fire"
+      },
+      "x": 3,
+      "z": -1
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/fire"
+      },
+      "x": -3,
+      "z": 1
+    }
+  ],
+  "mana": 20000,
+  "ticks": 200,
+  "inputs": [
+    {
+      "item": "botania:ender_dagger"
+    },
+    {
+      "item": "mythicbotany:alfsteel_nugget"
+    },
+    {
+      "item": "botania:vial"
+    }
+  ],
+  "outputs": [
+    {
+      "item": "mythicbotany:kvasir_blood"
+    }
+  ],
+  "special_input": "mythicbotany:wandering_trader"
+}

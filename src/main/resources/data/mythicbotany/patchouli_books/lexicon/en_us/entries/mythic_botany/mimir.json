@@ -1,0 +1,28 @@
+{
+  "name": "lexicon.mythicbotany.mimir.title",
+  "category": "mythicbotany:mythic_botany",
+  "icon": "mythicbotany:gjallar_horn_full",
+  "entry_color": "aa00",
+  "pages": [
+    {
+      "type": "text",
+      "text": "lexicon.mythicbotany.mimir.page1"
+    },
+    {
+      "type": "crafting",
+      "recipe": "mythicbotany:yggdrasil_branch",
+      "text": "lexicon.mythicbotany.mimir.page2"
+    },
+    {
+      "type": "botania:mana_infusion",
+      "text": "lexicon.mythicbotany.mimir.page3",
+      "recipes": "mythicbotany:gjallar_horn_empty"
+    },
+    {
+      "type": "spotlight",
+      "item": "mythicbotany:gjallar_horn_full",
+      "link_recipe": true,
+      "text": "lexicon.mythicbotany.mimir.page4"
+    }
+  ]
+}

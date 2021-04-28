@@ -31,6 +31,7 @@ import vazkii.botania.api.wand.IWandHUD;
 import vazkii.botania.api.wand.IWandable;
 
 import javax.annotation.Nonnull;
+import java.util.function.Consumer;
 
 public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IWandHUD, IWandable {
 
@@ -42,7 +43,7 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id) {
+    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
         ClientRegistry.bindTileEntityRenderer(getTileType(), RenderAlfsteelPylon::new);
     }
 

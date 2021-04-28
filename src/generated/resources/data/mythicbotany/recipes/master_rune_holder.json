@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "mythicbotany:rune_holder",
+  "pattern": [
+    " e ",
+    "epe"
+  ],
+  "key": {
+    "e": {
+      "tag": "forge:gems/emerald"
+    },
+    "p": {
+      "tag": "forge:dusts/mana"
+    }
+  },
+  "result": {
+    "item": "mythicbotany:master_rune_holder"
+  }
+}

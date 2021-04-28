@@ -1,0 +1,88 @@
+{
+  "type": "mythicbotany:rune_ritual",
+  "group": "rune_rituals",
+  "center": {
+    "tag": "botania:runes/mana"
+  },
+  "runes": [
+    {
+      "rune": {
+        "tag": "botania:runes/pride"
+      },
+      "x": 2,
+      "z": 2
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/pride"
+      },
+      "x": 2,
+      "z": -2
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/pride"
+      },
+      "x": -2,
+      "z": 2
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/pride"
+      },
+      "x": -2,
+      "z": -2
+    },
+    {
+      "rune": {
+        "item": "mythicbotany:alfheim_rune"
+      },
+      "x": -3,
+      "z": 0
+    },
+    {
+      "rune": {
+        "item": "mythicbotany:alfheim_rune"
+      },
+      "x": 3,
+      "z": 0
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/water"
+      },
+      "x": 0,
+      "z": -3
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/water"
+      },
+      "x": 0,
+      "z": 3
+    }
+  ],
+  "mana": 0,
+  "ticks": 200,
+  "inputs": [
+    [
+      {
+        "item": "mythicbotany:cursed_andwari_ring"
+      },
+      {
+        "item": "mythicbotany:andwari_ring"
+      }
+    ],
+    {
+      "item": "botania:manaweave_cloth"
+    }
+  ],
+  "outputs": [
+    {
+      "item": "mythicbotany:andwari_ring",
+      "nbt": {
+        "Damage": 0
+      }
+    }
+  ]
+}

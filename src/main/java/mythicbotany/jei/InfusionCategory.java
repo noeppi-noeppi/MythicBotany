@@ -106,7 +106,7 @@ public class InfusionCategory implements IRecipeCategory<IInfuserRecipe> {
         RenderSystem.enableAlphaTest();
         RenderSystem.enableBlend();
         this.overlay.draw(matrixStack, 25, 14);
-        HUDHandler.renderManaBar(matrixStack, 6, 126, 255, 0.75f, recipe.getManaUsage(), 4000000);
+        HUDHandler.renderManaBar(matrixStack, 6, 126, 0x0000FF, 0.75f, recipe.getManaUsage(), 4000000);
         this.infuserPlate.draw(matrixStack, 35, 92);
         RenderSystem.disableBlend();
         RenderSystem.disableAlphaTest();
