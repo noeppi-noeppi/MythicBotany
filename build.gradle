@@ -11,6 +11,7 @@ repositories {
     maven { url = 'https://maven.theillusivec4.top/' }
     maven { url = 'https://maven.melanx.de/' }
     maven { url = 'https://www.cursemaven.com' }
+    maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
 }
 
 dependencies {
