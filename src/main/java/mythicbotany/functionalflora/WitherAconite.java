@@ -13,10 +13,10 @@ import java.util.List;
 
 public class WitherAconite extends FunctionalFlowerBase {
 
-    public static final int MANA_PER_STAR = 2000000;
+    public static final int DEFAULT_MANA_PER_STAR = 2000000;
 
     public WitherAconite(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn, 0x333333, MANA_PER_STAR / 500, MANA_PER_STAR / 2000, true);
+        super(tileEntityTypeIn, 0x333333, DEFAULT_MANA_PER_STAR / 500, DEFAULT_MANA_PER_STAR / 2000, true);
     }
 
     @Override

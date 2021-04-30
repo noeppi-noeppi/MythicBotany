@@ -9,6 +9,7 @@ import mythicbotany.bauble.ItemIceRing;
 import mythicbotany.functionalflora.WitherAconite;
 import mythicbotany.kvasir.ItemKvasirMead;
 import mythicbotany.mimir.FullGjallarHorn;
+import mythicbotany.misc.ItemFadedNetherStar;
 import mythicbotany.wand.ItemDreamwoodWand;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
@@ -42,7 +43,7 @@ public class ModItems {
     public static final Item alfsteelBoots = new AlfsteelArmor(EquipmentSlotType.FEET, new Properties().group(MythicBotany.getInstance().tab).maxStackSize(1).isImmuneToFire());
     public static final Item manaRingGreatest = new GreatestManaRing(new Properties().group(MythicBotany.getInstance().tab).maxStackSize(1).isImmuneToFire());
     public static final Item auraRingGreatest = new GreatestAuraRing(new Properties().group(MythicBotany.getInstance().tab).maxStackSize(1).isImmuneToFire());
-    public static final Item fadedNetherStar = new Item(new Properties().maxStackSize(1).maxDamage(WitherAconite.MANA_PER_STAR));
+    public static final Item fadedNetherStar = new ItemFadedNetherStar();
     public static final Item dreamwoodTwigWand = new ItemDreamwoodWand(new Properties().group(MythicBotany.getInstance().tab).maxStackSize(1).rarity(Rarity.RARE));
     public static final Item fireRing = new ItemFireRing(new Properties().group(MythicBotany.getInstance().tab).maxStackSize(1));
     public static final Item iceRing = new ItemIceRing(new Properties().group(MythicBotany.getInstance().tab).maxStackSize(1));

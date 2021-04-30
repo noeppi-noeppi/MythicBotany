@@ -1,5 +1,6 @@
 package mythicbotany;
 
+import io.github.noeppi_noeppi.libx.event.DatapacksReloadedEvent;
 import io.github.noeppi_noeppi.libx.mod.registration.ModXRegistration;
 import mythicbotany.alfheim.Alfheim;
 import mythicbotany.alfheim.AlfheimFeatures;
@@ -62,6 +63,7 @@ public class MythicBotany extends ModXRegistration {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::sendIMC);
         MinecraftForge.EVENT_BUS.addListener(this::serverStart);
+        MinecraftForge.EVENT_BUS.addListener(this::datapacksReloaded);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(DataGenerators::gatherData);
 
@@ -112,6 +114,10 @@ public class MythicBotany extends ModXRegistration {
     }
 
     public void serverStart(FMLServerStartingEvent event) {
+        RecipeRemover.removeRecipes(event.getServer().getRecipeManager());
+    }
+    
+    public void datapacksReloaded(DatapacksReloadedEvent event) {
         RecipeRemover.removeRecipes(event.getServer().getRecipeManager());
     }
 }

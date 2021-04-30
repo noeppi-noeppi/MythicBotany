@@ -1,5 +1,6 @@
 package mythicbotany.functionalflora;
 
+import mythicbotany.config.MythicConfig;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.MathHelper;
@@ -17,17 +18,17 @@ public class Raindeletia extends FunctionalFlowerBase {
         if (!world.isRemote) {
             float multiplier = 0;
             if (world.isRainingAt(pos)) {
-                multiplier = world.isThundering() ? 3 : 0.09f;
+                multiplier = world.isThundering() ? MythicConfig.flowers.raindeletia.thunder : MythicConfig.flowers.raindeletia.rain;
             }
             if (world.getBlockState(pos.down()).getBlock() == ModBlocks.enchantedSoil) {
-                multiplier = multiplier * 5;
+                multiplier = multiplier * MythicConfig.flowers.raindeletia.enchanted_soil;
             } else if (world.getBlockState(pos.down()).getBlock() == ModBlocks.vividGrass) {
-                multiplier = multiplier * 2f;
+                multiplier = multiplier * MythicConfig.flowers.raindeletia.vivid_grass;
             }  else if (world.getBlockState(pos.down()).getBlock() == ModBlocks.dryGrass) {
-                multiplier = multiplier * 0.5f;
+                multiplier = multiplier * MythicConfig.flowers.raindeletia.dry_grass;
             }
 
-            int manaTransfer = Math.round(multiplier * 5);
+            int manaTransfer = Math.round(multiplier * MythicConfig.flowers.raindeletia.base);
             mana = MathHelper.clamp(mana + manaTransfer, 0, maxMana);
             didWork = true;
         }

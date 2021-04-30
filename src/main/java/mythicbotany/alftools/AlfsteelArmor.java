@@ -4,6 +4,7 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
+import mythicbotany.config.MythicConfig;
 import mythicbotany.pylon.PylonRepairable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -34,7 +35,6 @@ import java.util.UUID;
 
 public class AlfsteelArmor extends ItemTerrasteelArmor implements PylonRepairable {
 
-    private static final float JUMP_FACTOR = 0.025f;
     private static final LazyValue<ItemStack[]> armorSet = new LazyValue<>(() -> new ItemStack[]{new ItemStack(ModItems.alfsteelHelmet), new ItemStack(ModItems.alfsteelChestplate), new ItemStack(ModItems.alfsteelLeggings), new ItemStack(ModItems.alfsteelBoots)});
 
     public AlfsteelArmor(EquipmentSlotType type, Properties props) {
@@ -51,8 +51,8 @@ public class AlfsteelArmor extends ItemTerrasteelArmor implements PylonRepairabl
             LivingEntity entity = event.getEntityLiving();
 
             float rot = entity.rotationYaw * ((float)Math.PI / 180F);
-            float xzFactor = entity.isSprinting() ? JUMP_FACTOR : 0;
-            entity.setMotion(entity.getMotion().add(-MathHelper.sin(rot) * xzFactor, JUMP_FACTOR, MathHelper.cos(rot) * xzFactor));
+            float xzFactor = entity.isSprinting() ? MythicConfig.alftools.jump_modifier : 0;
+            entity.setMotion(entity.getMotion().add(-MathHelper.sin(rot) * xzFactor, MythicConfig.alftools.jump_modifier, MathHelper.cos(rot) * xzFactor));
         }
     }
 
@@ -66,16 +66,16 @@ public class AlfsteelArmor extends ItemTerrasteelArmor implements PylonRepairabl
             if (this == ModItems.alfsteelHelmet) {
                 Attribute reachDistance = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("forge", "reach_distance"));
                 if (reachDistance != null)
-                    ret.put(reachDistance, new AttributeModifier(uuid, "Alfsteel modifier " + this.type, 2, AttributeModifier.Operation.ADDITION));
+                    ret.put(reachDistance, new AttributeModifier(uuid, "Alfsteel modifier " + this.type, MythicConfig.alftools.reach_modifier, AttributeModifier.Operation.ADDITION));
             } else if (this == ModItems.alfsteelChestplate) {
-                ret.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Alfsteel modifier " + this.type, 1, AttributeModifier.Operation.ADDITION));
+                ret.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Alfsteel modifier " + this.type, MythicConfig.alftools.knockback_resistance_modifier, AttributeModifier.Operation.ADDITION));
             } else if (this == ModItems.alfsteelLeggings) {
-                ret.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Alfsteel modifier " + this.type, 0.05, AttributeModifier.Operation.ADDITION));
+                ret.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Alfsteel modifier " + this.type, MythicConfig.alftools.speed_modifier, AttributeModifier.Operation.ADDITION));
                 Attribute swimSpeed = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("forge", "swim_speed"));
                 if (swimSpeed != null) {
                     @SuppressWarnings("ConstantConditions")
                     UUID uuid2 = new UUID(ForgeRegistries.ITEMS.getKey(this).hashCode() + slot.toString().hashCode(), 1L);
-                    ret.put(swimSpeed, new AttributeModifier(uuid2, "Alfsteel modifier swim " + this.type, 0.05, AttributeModifier.Operation.ADDITION));
+                    ret.put(swimSpeed, new AttributeModifier(uuid2, "Alfsteel modifier swim " + this.type, MythicConfig.alftools.speed_modifier, AttributeModifier.Operation.ADDITION));
                 }
             }
         }

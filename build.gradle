@@ -14,13 +14,13 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.16.3-1.0.59')
+    annotationProcessor fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.16.3-1.0.61')
 
     compileOnly fg.deobf('mezz.jei:jei-1.16.4:7.6.0.58:api')
     compile fg.deobf('vazkii.botania:Botania:1.16.4-413')
     compile fg.deobf('vazkii.patchouli:Patchouli:1.16.4-50')
     compile fg.deobf('top.theillusivec4.curios:curios-forge:1.16.4-4.0.3.0')
-    compile fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.16.3-1.0.59')
+    compile fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.16.3-1.0.61')
     
     runtimeOnly fg.deobf('curse.maven:ex-nihilo-sequentia-400012:3227779')
     runtimeOnly fg.deobf('curse.maven:ex-compressum-241967:3226248')

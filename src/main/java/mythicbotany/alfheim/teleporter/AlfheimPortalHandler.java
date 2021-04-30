@@ -3,6 +3,7 @@ package mythicbotany.alfheim.teleporter;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mythicbotany.MythicBotany;
+import mythicbotany.config.MythicConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.IngameMenuScreen;
@@ -61,7 +62,9 @@ public class AlfheimPortalHandler {
     }
     
     public static boolean shouldCheck(World world) {
-        if (world instanceof ServerWorld) {
+        if (!MythicConfig.enableAlfheim) {
+            return false;
+        } else if (world instanceof ServerWorld) {
             return !timesInPortal.isEmpty() || ((ServerWorld) world).getServer().getTickCounter() % 4 == 3;
         } else {
             return false;
