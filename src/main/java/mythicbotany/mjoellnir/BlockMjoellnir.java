@@ -143,11 +143,11 @@ public class BlockMjoellnir extends Block implements Registerable {
             if (world.setBlockState(pos, ModBlocks.mjoellnir.getDefaultState(), 11)) {
                 if (drops != null) {
                     drops.forEach(drop -> {
-                        ItemEntity ie = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop);
+                        ItemEntity ie = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop.copy());
                         world.addEntity(ie);
                     });
                 }
-                getTile(world, pos).setStack(stack);
+                getTile(world, pos).setStack(stack.copy());
                 if (!world.isRemote) {
                     world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1, 1);
                 }
@@ -166,7 +166,7 @@ public class BlockMjoellnir extends Block implements Registerable {
     
     public static void putInWorld(ItemStack stack, World world, BlockPos pos, boolean dropOldOnReplace) {
         if (!placeInWorld(stack, world, pos, dropOldOnReplace)) {
-            ItemEntity ie = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+            ItemEntity ie = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack.copy());
             ie.setInvulnerable(true);
             world.addEntity(ie);
         }

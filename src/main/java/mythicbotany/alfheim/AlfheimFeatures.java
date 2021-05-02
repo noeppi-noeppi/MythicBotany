@@ -16,6 +16,7 @@ import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.MineshaftPieces;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureStart;
+import net.minecraft.world.gen.feature.template.BlockMatchRuleTest;
 import net.minecraft.world.gen.feature.template.RuleTest;
 import net.minecraft.world.gen.feature.template.TagMatchRuleTest;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
@@ -31,6 +32,7 @@ import java.util.Objects;
 
 public class AlfheimFeatures {
 
+    public static final RuleTest ALFHEIM_STONE_SIMPLE = new BlockMatchRuleTest(vazkii.botania.common.block.ModBlocks.livingrock);
     public static final RuleTest ALFHEIM_STONE = new TagMatchRuleTest(ModBlockTags.BASE_STONE_ALFHEIM);
 
     public static final IStructurePieceType ANDWARI_CAVE_PIECE = AndwariCave.Piece::new;
@@ -38,13 +40,13 @@ public class AlfheimFeatures {
     public static final ConfiguredSurfaceBuilder<?> GRASS_SURFACE = SurfaceBuilder.DEFAULT.func_242929_a(new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.COARSE_DIRT.getDefaultState()));
     public static final ConfiguredSurfaceBuilder<?> GOLD_SURFACE = SurfaceBuilder.DEFAULT.func_242929_a(new SurfaceBuilderConfig(vazkii.botania.common.block.ModBlocks.goldenGrass.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.COARSE_DIRT.getDefaultState()));
 
-    public static final ConfiguredFeature<?, ?> METAMORPHIC_FOREST_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModFluffBlocks.biomeStoneForest.getDefaultState(), 27)).range(256).square();
-    public static final ConfiguredFeature<?, ?> METAMORPHIC_MOUNTAIN_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModFluffBlocks.biomeStoneMountain.getDefaultState(), 27)).range(256).square();
-    public static final ConfiguredFeature<?, ?> METAMORPHIC_FUNGAL_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModFluffBlocks.biomeStoneFungal.getDefaultState(), 27)).range(256).square();
-    public static final ConfiguredFeature<?, ?> METAMORPHIC_SWAMP_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModFluffBlocks.biomeStoneSwamp.getDefaultState(), 27)).range(256).square();
-    public static final ConfiguredFeature<?, ?> METAMORPHIC_DESERT_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModFluffBlocks.biomeStoneDesert.getDefaultState(), 27)).range(256).square();
-    public static final ConfiguredFeature<?, ?> METAMORPHIC_TAIGA_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModFluffBlocks.biomeStoneTaiga.getDefaultState(), 27)).range(256).square();
-    public static final ConfiguredFeature<?, ?> METAMORPHIC_MESA_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModFluffBlocks.biomeStoneMesa.getDefaultState(), 27)).range(256).square();
+    public static final ConfiguredFeature<?, ?> METAMORPHIC_FOREST_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE_SIMPLE, ModFluffBlocks.biomeStoneForest.getDefaultState(), 27)).range(256).square();
+    public static final ConfiguredFeature<?, ?> METAMORPHIC_MOUNTAIN_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE_SIMPLE, ModFluffBlocks.biomeStoneMountain.getDefaultState(), 27)).range(256).square();
+    public static final ConfiguredFeature<?, ?> METAMORPHIC_FUNGAL_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE_SIMPLE, ModFluffBlocks.biomeStoneFungal.getDefaultState(), 27)).range(256).square();
+    public static final ConfiguredFeature<?, ?> METAMORPHIC_SWAMP_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE_SIMPLE, ModFluffBlocks.biomeStoneSwamp.getDefaultState(), 27)).range(256).square();
+    public static final ConfiguredFeature<?, ?> METAMORPHIC_DESERT_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE_SIMPLE, ModFluffBlocks.biomeStoneDesert.getDefaultState(), 27)).range(256).square();
+    public static final ConfiguredFeature<?, ?> METAMORPHIC_TAIGA_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE_SIMPLE, ModFluffBlocks.biomeStoneTaiga.getDefaultState(), 27)).range(256).square();
+    public static final ConfiguredFeature<?, ?> METAMORPHIC_MESA_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE_SIMPLE, ModFluffBlocks.biomeStoneMesa.getDefaultState(), 27)).range(256).square();
     public static final ConfiguredFeature<BaseTreeFeatureConfig, ?> TREES_DREAMWOOD = Feature.TREE.withConfiguration((
             new BaseTreeFeatureConfig.Builder(
                     new SimpleBlockStateProvider(vazkii.botania.common.block.ModBlocks.dreamwood.getDefaultState()),

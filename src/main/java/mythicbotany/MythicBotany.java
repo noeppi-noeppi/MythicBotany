@@ -2,6 +2,7 @@ package mythicbotany;
 
 import io.github.noeppi_noeppi.libx.event.DatapacksReloadedEvent;
 import io.github.noeppi_noeppi.libx.mod.registration.ModXRegistration;
+import mythicbotany.advancement.ModCriteria;
 import mythicbotany.alfheim.Alfheim;
 import mythicbotany.alfheim.AlfheimFeatures;
 import mythicbotany.alfheim.teleporter.AlfheimPortalHandler;
@@ -91,6 +92,7 @@ public class MythicBotany extends ModXRegistration {
         
         event.enqueueWork(() -> {
             ModEntities.setup();
+            ModCriteria.setup();
             
             PylonRepairables.register(new PylonRepairables.ItemPylonRepairable(), PylonRepairables.PRIORITY_ITEM_WITH_INTERFACE);
             PylonRepairables.register(new PylonRepairables.MendingPylonRepairable(), PylonRepairables.PRIORITY_MENDING);

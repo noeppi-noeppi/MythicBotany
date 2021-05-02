@@ -6,14 +6,16 @@ import mythicbotany.alftools.*;
 import mythicbotany.bauble.ItemAndwariRingCursed;
 import mythicbotany.bauble.ItemFireRing;
 import mythicbotany.bauble.ItemIceRing;
-import mythicbotany.functionalflora.WitherAconite;
 import mythicbotany.kvasir.ItemKvasirMead;
 import mythicbotany.mimir.FullGjallarHorn;
 import mythicbotany.misc.ItemFadedNetherStar;
 import mythicbotany.wand.ItemDreamwoodWand;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
+import net.minecraft.item.Food;
+import net.minecraft.item.Item;
 import net.minecraft.item.Item.Properties;
+import net.minecraft.item.Rarity;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import vazkii.botania.common.item.equipment.bauble.ItemBauble;
@@ -54,6 +56,6 @@ public class ModItems {
     public static final Item fimbultyrTablet = new ItemBase(MythicBotany.getInstance(), new Properties());
     public static final Item kvasirBlood = new ItemBase(MythicBotany.getInstance(), new Properties().maxStackSize(8));
     public static final Item kvasirMead = new ItemKvasirMead(MythicBotany.getInstance(), new Properties().maxStackSize(8));
-    public static final Item dreamCherry = new ItemBase(MythicBotany.getInstance(), new Item.Properties().food(new Food.Builder().hunger(12).saturation(2.8f).effect(() -> new EffectInstance(Effects.GLOWING, 20 * 5, 0), 0.3f).build()));
+    public static final Item dreamCherry = new ItemBase(MythicBotany.getInstance(), new Item.Properties().food(new Food.Builder().hunger(10).saturation(1.2f).effect(() -> new EffectInstance(Effects.GLOWING, 20 * 5, 0), 0.3f).build()));
     public static final Item alfPixieSpawnEgg = new SpawnEggItem(ModEntities.alfPixie, 0xFFB9E2, 0xC6C6A1, new Item.Properties().group(MythicBotany.getInstance().tab));
 }

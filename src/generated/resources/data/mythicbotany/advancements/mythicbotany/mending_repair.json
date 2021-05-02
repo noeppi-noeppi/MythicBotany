@@ -1,0 +1,40 @@
+{
+  "parent": "mythicbotany:mythicbotany/alfsteel",
+  "display": {
+    "icon": {
+      "item": "mythicbotany:alfsteel_pylon"
+    },
+    "title": {
+      "translate": "advancements.mythicbotany.mythicbotany.mending_repair.title"
+    },
+    "description": {
+      "translate": "advancements.mythicbotany.mythicbotany.mending_repair.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "alf_repair": {
+      "trigger": "mythicbotany:alf_repair",
+      "conditions": {
+        "item": {
+          "enchantments": [
+            {
+              "enchantment": "minecraft:mending",
+              "levels": {
+                "min": 1
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "alf_repair"
+    ]
+  ]
+}

@@ -20,8 +20,6 @@ import static net.minecraft.world.biome.BiomeMaker.getSkyColorWithTemperatureMod
 
 @RegisterClass
 public class Alfheim {
-
-    BiomeMaker m;
     
     @NoReg
     public static final RegistryKey<World> DIMENSION = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(MythicBotany.getInstance().modid, "alfheim"));

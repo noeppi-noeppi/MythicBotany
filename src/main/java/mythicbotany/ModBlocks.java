@@ -25,6 +25,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.AbstractBlock.Properties;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
+import net.minecraft.item.Rarity;
 import net.minecraftforge.common.ToolType;
 
 @RegisterClass
@@ -42,7 +43,7 @@ public class ModBlocks {
     public static final BlockTE<TileYggdrasilBranch> yggdrasilBranch = new BlockYggdrasilBranch(MythicBotany.getInstance(), Properties.create(Material.WOOD).hardnessAndResistance(4).sound(SoundType.WOOD));
     public static final BlockTE<TileRuneHolder> runeHolder = new BlockRuneHolder<>(MythicBotany.getInstance(), TileRuneHolder.class, Properties.create(Material.IRON).hardnessAndResistance(3).sound(SoundType.METAL));
     public static final BlockTE<TileMasterRuneHolder> masterRuneHolder = new BlockMasterRuneHolder(MythicBotany.getInstance(), Properties.create(Material.IRON).hardnessAndResistance(3).sound(SoundType.METAL));
-    public static final BlockMjoellnir mjoellnir = new BlockMjoellnir(Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 3600000.0F).noDrops(), new Item.Properties().maxStackSize(1));
+    public static final BlockMjoellnir mjoellnir = new BlockMjoellnir(Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 3600000.0F).noDrops(), new Item.Properties().maxStackSize(1).rarity(Rarity.EPIC));
     public static final Block dreamwoodLeaves = new BlockAlfheimLeaves(MythicBotany.getInstance());
     public static final BlockBase elementiumOre = new BlockBase(MythicBotany.getInstance(), AbstractBlock.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(2).setRequiresTool().hardnessAndResistance(4, 4));
     public static final BlockBase dragonstoneOre = new BlockBase(MythicBotany.getInstance(),AbstractBlock.Properties.create(Material.ROCK).harvestTool(ToolType.PICKAXE).harvestLevel(3).setRequiresTool().hardnessAndResistance(5, 5));

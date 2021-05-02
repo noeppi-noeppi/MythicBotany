@@ -1,0 +1,33 @@
+{
+  "parent": "mythicbotany:mythicbotany/root",
+  "display": {
+    "icon": {
+      "item": "mythicbotany:gjallar_horn_full"
+    },
+    "title": {
+      "translate": "advancements.mythicbotany.mythicbotany.mimir.title"
+    },
+    "description": {
+      "translate": "advancements.mythicbotany.mythicbotany.mimir.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "consume_item": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "mythicbotany:gjallar_horn_full"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "consume_item"
+    ]
+  ]
+}

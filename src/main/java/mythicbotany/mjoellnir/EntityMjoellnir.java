@@ -3,6 +3,7 @@ package mythicbotany.mjoellnir;
 import io.github.noeppi_noeppi.libx.util.BoundingBoxUtils;
 import mythicbotany.EventListener;
 import mythicbotany.ModBlocks;
+import mythicbotany.advancement.ModCriteria;
 import net.minecraft.block.PortalInfo;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -27,6 +28,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.network.NetworkHooks;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -262,6 +264,9 @@ public class EntityMjoellnir extends ProjectileEntity {
                 dmg += (5 * Enchantments.SHARPNESS.calcDamageByCreature(power, target.getCreatureAttribute()));
             }
             PlayerEntity thrower = getThrower();
+            if (thrower instanceof ServerPlayerEntity) {
+                ModCriteria.MJOELLNIR.trigger((ServerPlayerEntity) thrower, getStack(), target);
+            }
             target.attackEntityFrom(thrower == null ? DamageSource.GENERIC : DamageSource.causeIndirectDamage(this, thrower), dmg);
             LightningBoltEntity lightning = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, world);
             lightning.setPosition(target.getPosX(), target.getPosY(), target.getPosZ());

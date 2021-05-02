@@ -22,6 +22,7 @@ public class DataGenerators {
 			evt.getGenerator().addProvider(new SmithingProvider(evt.getGenerator()));
 			evt.getGenerator().addProvider(new InfuserProvider(MythicBotany.getInstance(), evt.getGenerator()));
 			evt.getGenerator().addProvider(new RitualProvider(MythicBotany.getInstance(), evt.getGenerator()));
+			evt.getGenerator().addProvider(new AdvancementProvider(MythicBotany.getInstance(), evt.getGenerator()));
 		}
 	}
 }

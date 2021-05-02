@@ -10,4 +10,5 @@ public class ModBlockTags {
     public static final ITag.INamedTag<Block> ALFHEIM_LOGS = BlockTags.makeWrapperTag(new ResourceLocation(MythicBotany.getInstance().modid, "alfheim_logs").toString());
     public static final ITag.INamedTag<Block> ALFHEIM_LEAVES = BlockTags.makeWrapperTag(new ResourceLocation(MythicBotany.getInstance().modid, "alfheim_leaves").toString());
     public static final ITag.INamedTag<Block> BASE_STONE_ALFHEIM = BlockTags.makeWrapperTag(new ResourceLocation(MythicBotany.getInstance().modid, "base_stone_alfheim").toString());
+    public static final ITag.INamedTag<Block> ALFHEIM_ORES = BlockTags.makeWrapperTag(new ResourceLocation(MythicBotany.getInstance().modid, "alfheim_ores").toString());
 }

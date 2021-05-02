@@ -1,0 +1,31 @@
+{
+  "parent": "mythicbotany:mythicbotany/mimir",
+  "display": {
+    "icon": {
+      "item": "mythicbotany:dream_cherry"
+    },
+    "title": {
+      "translate": "advancements.mythicbotany.mythicbotany.alfheim.title"
+    },
+    "description": {
+      "translate": "advancements.mythicbotany.mythicbotany.alfheim.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "changed_dimension": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "mythicbotany:alfheim"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "changed_dimension"
+    ]
+  ]
+}

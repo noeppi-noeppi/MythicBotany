@@ -1,16 +1,21 @@
 package mythicbotany.pylon;
 
 import mythicbotany.MythicBotany;
+import mythicbotany.advancement.ModCriteria;
 import mythicbotany.base.TileEntityMana;
 import mythicbotany.network.PylonSerializer;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.List;
+import java.util.UUID;
 
 public class TileAlfsteelPylon extends TileEntityMana implements ITickableTileEntity {
 
@@ -37,6 +42,11 @@ public class TileAlfsteelPylon extends TileEntityMana implements ITickableTileEn
                 if (repairable != null && stack.getCount() == 1) {
                     int manaCost = repairable.getRepairManaPerTick(stack);
                     if (mana >= manaCost) {
+                        UUID throwerId = item.getThrowerId();
+                        PlayerEntity thrower = throwerId == null ? null : world.getPlayerByUuid(throwerId);
+                        if (thrower instanceof ServerPlayerEntity) {
+                            ModCriteria.ALF_REPAIR.trigger((ServerPlayerEntity) thrower, stack);
+                        }
                         mana -= manaCost;
                         stack = repairable.repairOneTick(stack);
                         item.setItem(stack);

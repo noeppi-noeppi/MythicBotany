@@ -71,6 +71,7 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
                 player.setHeldItem(hand, ItemStack.EMPTY);
                 ItemEntity entity = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, copy);
                 entity.setMotion(0, 0, 0);
+                entity.setThrowerId(player.getUniqueID());
                 world.addEntity(entity);
                 return ActionResultType.SUCCESS;
             } else {

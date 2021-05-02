@@ -33,7 +33,7 @@
   "item.mythicbotany.kvasir_blood": "Blut des Kvasir",
   "item.mythicbotany.kvasir_mead": "Mett des Kvasir",
   "item.mythicbotany.dream_cherry": "Traumkirsche",
-  "item.mythicbotany.alf_pixie_spawn_egg": "Alfheim Pixie Spawn-Ei",
+  "item.mythicbotany.alf_pixie_spawn_egg": "Alfheim Fee Spawn-Ei",
 
   "block.mythicbotany.mana_infuser": "Mana-Infundierer",
   "block.mythicbotany.alfsteel_block": "Alfstahl-Block",
@@ -72,6 +72,11 @@
   "enchantment.mythicbotany.hammer_mobility": "Dynamischer Hammer",
   "entity.mythicbotany.mjoellnir": "Mjöllnir",
   "entity.mythicbotany.alf_pixie": "Alfheim Fee",
+  "biome.mythicbotany.alfheim_plains": "Alfheim Flachland",
+  "biome.mythicbotany.alfheim_hills": "Alfheim Hügel",
+  "biome.mythicbotany.dreamwood_forest": "Traumholzwald",
+  "biome.mythicbotany.golden_fields": "Goldene Felder",
+  "biome.mythicbotany.alfheim_lakes": "Alfheim Seen",
 
   "tooltip.mythicbotany.rune_ritual": "Runen-Ritual",
   "tooltip.mythicbotany.rune_master": "Rune für den zentralen Runenhalter.",
@@ -92,5 +97,24 @@
   "message.mythicbotany.ritual_wrong_items": "Das Ritual ist dir bekannt und du bist mächtig genug dafür. Allerdings scheint irgendetwas mit den Zutaten nicht zu stimmen.",
   "message.mythicbotany.ritual_no_trader": "Das Ritual muss grausamer durchgeführt werden. Ohne einen Fahrenden Händler wirst du es nicht schaffen..",
   "message.mythicbotany.mjoellnir_heavy_pick": "Der Hammer wiegt viel zu viel, dass du ihn heben könntest. Man sagt jedoch, die Götter würden ihre Kraft aus den Goldenen Äpfeln von Idun erhalten.",
-  "message.mythicbotany.mjoellnir_heavy_drop": "Du merkst wie die Kraft in deinen Armen nachlässt. Es gbt keine andere Möglichkeit. Du musst den Hammer fallen lassen."
+  "message.mythicbotany.mjoellnir_heavy_drop": "Du merkst wie die Kraft in deinen Armen nachlässt. Es gbt keine andere Möglichkeit. Du musst den Hammer fallen lassen.",
+
+  "advancements.mythicbotany.mythicbotany.root.title": "MythicBotany",
+  "advancements.mythicbotany.mythicbotany.root.description": "Tauche tiefer in die Welt der Magie ein",
+  "advancements.mythicbotany.mythicbotany.all_runes.title": "Runenkenner",
+  "advancements.mythicbotany.mythicbotany.all_runes.description": "Stelle alle Runen her.",
+  "advancements.mythicbotany.mythicbotany.mimir.title": "Wässrige Weisheit",
+  "advancements.mythicbotany.mythicbotany.mimir.description": "Trinke aus dem Brunnen des Mimir.",
+  "advancements.mythicbotany.mythicbotany.alfheim.title": "Angesicht zu Angesicht ",
+  "advancements.mythicbotany.mythicbotany.alfheim.description": "Reise nach Alfheim.",
+  "advancements.mythicbotany.mythicbotany.andwari.title": "Ein Piglin wäre stolz",
+  "advancements.mythicbotany.mythicbotany.andwari.description": "Befreie den Ring des Andwari von seinem Fluch.",
+  "advancements.mythicbotany.mythicbotany.mjoellnir.title": "Das ist der Hammer",
+  "advancements.mythicbotany.mythicbotany.mjoellnir.description": "Erstelle eine Kopie von Mjöllnir.",
+  "advancements.mythicbotany.mythicbotany.kill_pixie.title": "Ist das ein Schmetterling?",
+  "advancements.mythicbotany.mythicbotany.kill_pixie.description": "Wirf Mjöllnir auf eine Fee.",
+  "advancements.mythicbotany.mythicbotany.alfsteel.title": "Verwirrende Ähnlichkeit",
+  "advancements.mythicbotany.mythicbotany.alfsteel.description": "Stelle etwas Alfstahl her.",
+  "advancements.mythicbotany.mythicbotany.mending_repair.title": "Mana macht erfahren",
+  "advancements.mythicbotany.mythicbotany.mending_repair.description": "Repariere einen Gegenstand mit Reparatur-Verzauberung auf einem Alfstahl-Pylon."
 }
