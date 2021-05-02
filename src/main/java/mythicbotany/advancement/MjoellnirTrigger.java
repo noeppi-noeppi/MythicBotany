@@ -39,8 +39,8 @@ public class MjoellnirTrigger extends AbstractCriterionTrigger<MjoellnirTrigger.
 
     public static class Instance extends CriterionInstance {
 
-        private final ItemPredicate item;
-        private final EntityPredicate.AndPredicate entity;
+        public final ItemPredicate item;
+        public final EntityPredicate.AndPredicate entity;
 
         public Instance(ItemPredicate item, EntityPredicate.AndPredicate entity) {
             this(EntityPredicate.AndPredicate.ANY_AND, item, entity);
