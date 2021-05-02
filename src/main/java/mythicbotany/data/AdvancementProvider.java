@@ -1,5 +1,6 @@
 package mythicbotany.data;
 
+import io.github.noeppi_noeppi.libx.data.provider.AdvancementProviderBase;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModEntities;
