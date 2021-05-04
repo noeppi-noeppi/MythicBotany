@@ -25,4 +25,7 @@ dependencies {
     runtimeOnly fg.deobf('curse.maven:ex-nihilo-sequentia-400012:3227779')
     runtimeOnly fg.deobf('curse.maven:ex-compressum-241967:3226248')
     runtimeOnly fg.deobf('mezz.jei:jei-1.16.4:7.6.0.58')
+    
+//    runtimeOnly fg.deobf('curse.maven:endergetic-291509:3154938')
+//    runtimeOnly fg.deobf('curse.maven:abnormals-core-382216:3233486')
 }

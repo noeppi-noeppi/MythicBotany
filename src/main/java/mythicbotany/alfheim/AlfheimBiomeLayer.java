@@ -4,8 +4,10 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeRegistry;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer0;
+import net.minecraftforge.registries.ForgeRegistry;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +25,7 @@ public class AlfheimBiomeLayer implements IAreaTransformer0 {
     private static final List<Biome> rareBiomes = ImmutableList.of(
             Alfheim.goldenFields
 	);
+    @SuppressWarnings("FieldCanBeLocal")
     private final Registry<Biome> biomeRegistry;
     private final List<RegistryKey<Biome>> commonBiomeKeys;
     private final List<RegistryKey<Biome>> rareBiomeKeys;
@@ -42,9 +45,11 @@ public class AlfheimBiomeLayer implements IAreaTransformer0 {
     @Override
 	public int apply(INoiseRandom noiseRandom, int x, int y) {
 		if (noiseRandom.random(20) == 10) {
-		    return biomeRegistry.getId(biomeRegistry.getValueForKey(rareBiomeKeys.get(noiseRandom.random(rareBiomeKeys.size()))));
+            return ((ForgeRegistry<Biome>) net.minecraftforge.registries.ForgeRegistries.BIOMES).getID(rareBiomeKeys.get(noiseRandom.random(rareBiomeKeys.size())).getLocation());
+//		    return biomeRegistry.getId(biomeRegistry.getValueForKey(rareBiomeKeys.get(noiseRandom.random(rareBiomeKeys.size()))));
 		} else {
-            return biomeRegistry.getId(biomeRegistry.getValueForKey(commonBiomeKeys.get(noiseRandom.random(commonBiomeKeys.size()))));
+		    return ((ForgeRegistry<Biome>) net.minecraftforge.registries.ForgeRegistries.BIOMES).getID(commonBiomeKeys.get(noiseRandom.random(commonBiomeKeys.size())).getLocation());
+//          return biomeRegistry.getId(biomeRegistry.getValueForKey(commonBiomeKeys.get(noiseRandom.random(commonBiomeKeys.size()))));
 		}
 	}
 }
