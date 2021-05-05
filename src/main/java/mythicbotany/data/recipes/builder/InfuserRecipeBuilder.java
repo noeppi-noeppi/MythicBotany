@@ -1,6 +1,5 @@
 package mythicbotany.data.recipes.builder;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import mythicbotany.ModRecipes;

@@ -4,6 +4,7 @@ import io.github.noeppi_noeppi.libx.data.provider.BlockTagProviderBase;
 import io.github.noeppi_noeppi.libx.data.provider.ItemTagProviderBase;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import mythicbotany.ModBlockTags;
+import mythicbotany.ModBlocks;
 import mythicbotany.ModItemTags;
 import mythicbotany.ModItems;
 import mythicbotany.functionalflora.base.BlockFloatingFunctionalFlower;
@@ -11,6 +12,7 @@ import mythicbotany.functionalflora.base.BlockFunctionalFlower;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
+import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import vazkii.botania.common.item.material.ItemRune;
@@ -29,6 +31,7 @@ public class ItemTagProvider extends ItemTagProviderBase {
 		this.getOrCreateBuilder(ModTags.Items.TERRA_PICK_BLACKLIST).add(ModItems.alfsteelHelmet);
 		this.getOrCreateBuilder(ModItemTags.RITUAL_RUNES).addTag(ModTags.Items.RUNES);
 		this.getOrCreateBuilder(ModItemTags.RITUAL_RUNES).add(ModItems.fimbultyrTablet);
+		this.getOrCreateBuilder(ItemTags.GOLD_ORES).add(ModBlocks.goldOre.asItem());
 		this.copy(ModBlockTags.ALFHEIM_ORES, ModItemTags.ALFHEIM_ORES);
 		this.getOrCreateBuilder(Tags.Items.ORES).addTag(ModItemTags.ALFHEIM_ORES);
 	}

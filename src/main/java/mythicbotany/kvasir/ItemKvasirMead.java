@@ -2,7 +2,6 @@ package mythicbotany.kvasir;
 
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import io.github.noeppi_noeppi.libx.mod.registration.ItemBase;
-import mythicbotany.ModItems;
 import mythicbotany.MythicPlayerData;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.LivingEntity;

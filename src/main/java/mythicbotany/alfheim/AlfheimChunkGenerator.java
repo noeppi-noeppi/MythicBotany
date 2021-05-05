@@ -12,7 +12,6 @@ import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.gen.settings.StructureSeparationSettings;
-import vazkii.botania.client.render.world.SkyblockSkyRenderer;
 import vazkii.botania.common.block.ModBlocks;
 
 import java.util.Optional;
@@ -34,7 +33,7 @@ public class AlfheimChunkGenerator {
     
     private static DimensionStructuresSettings structures(DimensionStructuresSettings parent) {
         return new DimensionStructuresSettings(Optional.ofNullable(parent.func_236199_b_()), ImmutableMap.<Structure<?>, StructureSeparationSettings>builder()
-                .put(AlfheimWorldGen.andwariCave, new StructureSeparationSettings(200, 100, 438))
+                .put(AlfheimWorldGen.andwariCave, new StructureSeparationSettings(28, 8, 438))
                 .build()
         );
     }

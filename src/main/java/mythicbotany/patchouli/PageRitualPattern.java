@@ -1,6 +1,5 @@
 package mythicbotany.patchouli;
 
-import com.google.gson.annotations.SerializedName;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mythicbotany.MythicBotany;

@@ -10,7 +10,6 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
-import vazkii.botania.common.lib.ModTags;
 
 import java.util.function.Predicate;
 

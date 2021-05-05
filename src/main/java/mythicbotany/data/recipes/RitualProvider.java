@@ -6,7 +6,6 @@ import mythicbotany.ModItems;
 import mythicbotany.data.recipes.builder.RuneRitualRecipeBuilder;
 import mythicbotany.kvasir.WanderingTraderRuneInput;
 import mythicbotany.mjoellnir.MjoellnirRuneOutput;
-import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.ItemStack;
