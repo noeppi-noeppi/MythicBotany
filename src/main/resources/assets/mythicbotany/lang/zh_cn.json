@@ -88,7 +88,7 @@
   
   "message.mythicbotany.mimir_knowledge": "当您从装有智慧之泉水的海姆达尔号角，你就会在你最狂野的梦中获得一些你永远无法想象的知识。",
   "message.mythicbotany.mimir_known": "您已经从装有智慧之泉水的海姆达尔号角那里获得了丰富的知识。",
-  "message.mythicbotany.kvasir_knowledge": "当你喝下黑暗精灵制作诗之蜜酒，你会感觉到你突然获得了在九个世界中用任何语言说话的能力。",
+  "message.mythicbotany.kvasir_knowledge": "当你喝下黑暗精灵制作的诗之蜜酒，你会感觉到你获得了在九个世界中用任何语言交流的能力。",
   "message.mythicbotany.kvasir_known": "你已经获得了克瓦西尔的天赋。",
   "message.mythicbotany.mimir_unknown": "你已经尽力了，但似乎看不出其背后的深刻含义。 据说从装有智慧之泉水的海姆达尔号角喝水可能会有所帮助。",
   "message.mythicbotany.ritual_running": "仪式正在进行。",
@@ -101,7 +101,7 @@
 
   "advancements.mythicbotany.mythicbotany.root.title": "神话植物学",
   "advancements.mythicbotany.mythicbotany.root.description": "深入探索魔法的世界",
-  "advancements.mythicbotany.mythicbotany.all_runes.title": "符文大师",
+  "advancements.mythicbotany.mythicbotany.all_runes.title": "符文精通者",
   "advancements.mythicbotany.mythicbotany.all_runes.description": "制作所有类型的符文。",
   "advancements.mythicbotany.mythicbotany.mimir.title": "水的智慧",
   "advancements.mythicbotany.mythicbotany.mimir.description": "用装有智慧之泉水的海姆达尔号角喝水。",
@@ -209,9 +209,9 @@
   
   "lexicon.alfheim.andwari.page1": "安德瓦利是一个矮人，生活在精灵国度的山洞里。他拥有大量金宝藏和一个戒指来复制他的宝藏。当时洛基想要窃取这些宝藏，安德瓦利对他的戒指施加了诅咒，来防止别人使用它。但是，你找到了一种暂时删除诅咒的方法，如果你能找到戒指，可以让戒指再度使用。",
   "lexicon.alfheim.andwari.page2": "安德瓦利洞穴仅在黄金田野生物群系中产生",
-  "lexicon.alfheim.andwari.page4": "除去诅咒后，你可以使用一定的时间。只需放置一个金块即可获得奖励。 但是，这需要一些魔力。确保不要让它完全消耗，否则它将消耗大量魔力将您毒死。",
+  "lexicon.alfheim.andwari.page4": "除去诅咒后，你可以使用一定的时间。需要放置一个金块并消耗魔力来获得奖励。但你要确保不要让它完全消耗，否则它将消耗大量魔力将您毒死。",
   
-  "lexicon.alfheim.kvasir.page1": "克瓦希尔是阿萨神族和华纳神族共同创造出来的人类。他能在九个世界中游走，在每个地方都收到崇拜。但是两个黑暗精灵:法亚拉和戈拉想要得到克瓦希尔的才华，于是趁他睡熟时把他杀了，用他的血调和了蜜，制成了一种仙酒，喝了这种蜜酒的人可以像克瓦希尔那样周游九界。",
+  "lexicon.alfheim.kvasir.page1": "克瓦希尔是阿萨神族和华纳神族共同创造出来的矮人。他能在九个世界中游走，在每个地方都收到崇拜。但是两个黑暗精灵:法亚拉和戈拉想要得到克瓦希尔的才华，于是趁他睡熟时把他杀了，用他的血调和了蜜，制成了一种仙酒，喝了这种蜜酒的人可以像克瓦希尔那样周游九界。",
   "lexicon.alfheim.kvasir.page2": "喝完诗之蜜酒后，你可以通过$(l:botania:alfhomancy/intro)精灵传送门$()进入精灵国度。如果你不小心破坏了精灵国度的传送门，可以通过修补框架并扔入一块龙石。然后耐心等待它消失，传送门将会再次打开。",
   "lexicon.alfheim.kvasir.page4": "通过流浪商人作为克瓦希尔的代表，您能够通过流浪商人的血液以制成诗之蜜酒。"
 }
