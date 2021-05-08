@@ -9,6 +9,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import vazkii.botania.client.patchouli.component.ManaComponent;
 import vazkii.patchouli.api.IVariable;
 import vazkii.patchouli.client.book.BookEntry;
@@ -50,8 +53,8 @@ public class PageRitualInfo extends PageRuneRitualBase {
     public void onDisplayed(GuiBookEntry parent, int left, int top) {
         super.onDisplayed(parent, left, top);
         if (text != null) {
-            String translated = text.isEmpty() ? "" : (parent.book.i18n ? I18n.format(text) : text);
-            desc = new BookTextRenderer(parent, translated, 1, 64);
+            ITextComponent tc = text.isEmpty() ? new StringTextComponent("") : (parent.book.i18n ? new TranslationTextComponent(text) : new StringTextComponent(text));
+            desc = new BookTextRenderer(parent, tc, 1, 64);
         }
     }
 
