@@ -43,7 +43,7 @@ public class AlfheimPortalHandler {
     }
     
     public static boolean setInPortal(World world, PlayerEntity playerEntity) {
-        if (!world.isRemote && playerEntity instanceof ServerPlayerEntity && !playerEntity.func_242280_ah()) {
+        if (!world.isRemote && playerEntity instanceof ServerPlayerEntity && !playerEntity.hasPortalCooldown()) {
             ServerPlayerEntity player = (ServerPlayerEntity) playerEntity; 
             inPortal.add(player);
             int timeInPortal;

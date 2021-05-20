@@ -15,7 +15,7 @@ import java.util.Random;
 public class WheatFeature extends Feature<NoFeatureConfig> {
 
     public WheatFeature() {
-        super(NoFeatureConfig.field_236558_a_);
+        super(NoFeatureConfig.CODEC);
     }
 
     @Override

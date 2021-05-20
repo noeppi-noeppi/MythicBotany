@@ -107,7 +107,7 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
                         spark.remove();
                     }
                     event.setCanceled(true);
-                    event.setCancellationResult(ActionResultType.func_233537_a_(false));
+                    event.setCancellationResult(ActionResultType.successOrConsume(false));
                 } else {
                     SparkHelper.getSparksAround(world, spark.getPosX(), spark.getPosY() + (double) (spark.getHeight() / 2.0F), spark.getPosZ(), spark.getNetwork()).forEach((otherSpark) -> EntitySpark.particleBeam(player, spark, (Entity) otherSpark));
                 }
@@ -127,7 +127,7 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
                         }
                     }
                     event.setCanceled(true);
-                    event.setCancellationResult(ActionResultType.func_233537_a_(false));
+                    event.setCancellationResult(ActionResultType.successOrConsume(false));
                 } else {
                     displayRelatives(player, new ArrayList<>(), spark.getMaster());
                 }

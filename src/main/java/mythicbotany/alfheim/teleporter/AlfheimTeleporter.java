@@ -32,7 +32,7 @@ public class AlfheimTeleporter {
             target.setBlockState(pos, ModBlocks.returnPortal.getDefaultState(), 3);
         }
         player.teleport(target, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, player.rotationYaw, player.rotationPitch);
-        player.func_242279_ag();
+        player.setPortalCooldown();
     }
     
     public static void teleportToOverworld(ServerPlayerEntity player, BlockPos sourcePos) {
@@ -45,7 +45,7 @@ public class AlfheimTeleporter {
             pos = AlfheimWorldGen.highestFreeBlock(target, sourcePos, AlfheimWorldGen::passReplaceableAndLeaves);
         }
         player.teleport(target, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, player.rotationYaw, player.rotationPitch);
-        player.func_242279_ag();
+        player.setPortalCooldown();
     }
     
     @Nullable

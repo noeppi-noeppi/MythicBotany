@@ -38,7 +38,7 @@ public class ItemMjoellnir extends BlockItem {
         if (!player.isSneaking()) {
             throwHammer(world, player, hand);
             player.getCooldownTracker().setCooldown(this, 20 * 6);
-            return ActionResult.func_233538_a_(player.getHeldItem(hand), world.isRemote);
+            return ActionResult.successOrConsume(player.getHeldItem(hand), world.isRemote);
         } else {
             return super.onItemRightClick(world, player, hand);
         }

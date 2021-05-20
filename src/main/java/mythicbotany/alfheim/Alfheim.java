@@ -33,7 +33,7 @@ public class Alfheim {
             .category(Biome.Category.PLAINS)
             .withMobSpawnSettings(
                     alfheimMobs()
-                            .copy()
+                            .build()
             ).setEffects(
                     alfheimAmbience()
                             .build()
@@ -53,7 +53,7 @@ public class Alfheim {
             .category(Biome.Category.PLAINS)
             .withMobSpawnSettings(
                     alfheimMobs()
-                            .copy()
+                            .build()
             ).setEffects(
                     alfheimAmbience()
                             .build()
@@ -71,7 +71,7 @@ public class Alfheim {
             .category(Biome.Category.FOREST)
             .withMobSpawnSettings(
                     alfheimMobs()
-                            .copy()
+                            .build()
             ).setEffects(
                     alfheimAmbience()
                             .build()
@@ -90,7 +90,7 @@ public class Alfheim {
             .category(Biome.Category.PLAINS)
             .withMobSpawnSettings(
                     alfheimMobs()
-                            .copy()
+                            .build()
             ).setEffects(
                     alfheimAmbience()
                             .setWaterColor(4566514)
@@ -113,7 +113,7 @@ public class Alfheim {
             .category(Biome.Category.OCEAN)
             .withMobSpawnSettings(
                     alfheimMobs()
-                            .copy()
+                            .build()
             ).setEffects(
                     alfheimAmbience()
                             .setWaterColor(4566514)

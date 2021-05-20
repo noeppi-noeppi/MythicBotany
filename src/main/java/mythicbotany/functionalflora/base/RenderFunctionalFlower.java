@@ -59,7 +59,7 @@ public class RenderFunctionalFlower<T extends FunctionalFlowerBase> extends Tile
             BlockRendererDispatcher brd = Minecraft.getInstance().getBlockRendererDispatcher();
             BlockState state = te.getBlockState();
             IBakedModel ibakedmodel = brd.getModelForState(state);
-            brd.getBlockModelRenderer().renderModel(matrixStack.getLast(), buffer.getBuffer(RenderTypeLookup.func_239220_a_(state, false)), state, ibakedmodel, 1.0F, 1.0F, 1.0F, combinedLightIn, combinedOverlayIn, data);
+            brd.getBlockModelRenderer().renderModel(matrixStack.getLast(), buffer.getBuffer(RenderTypeLookup.getBlockRenderType(state, false)), state, ibakedmodel, 1.0F, 1.0F, 1.0F, combinedLightIn, combinedOverlayIn, data);
             matrixStack.pop();
         }/* else {
             IModelData data = te.getModelData();

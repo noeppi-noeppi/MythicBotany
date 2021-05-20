@@ -93,7 +93,7 @@ public class BlockMjoellnir extends Block implements Registerable {
                 player.sendMessage(new TranslationTextComponent("message.mythicbotany.mjoellnir_heavy_pick").mergeStyle(TextFormatting.GRAY), player.getUniqueID());
             }
         }
-        return ActionResultType.func_233537_a_(world.isRemote);
+        return ActionResultType.successOrConsume(world.isRemote);
     }
 
     @Nonnull

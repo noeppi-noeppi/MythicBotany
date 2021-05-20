@@ -32,8 +32,8 @@ public class AlfheimFeatures {
 
     public static final IStructurePieceType ANDWARI_CAVE_PIECE = AndwariCave.Piece::new;
 
-    public static final ConfiguredSurfaceBuilder<?> GRASS_SURFACE = SurfaceBuilder.DEFAULT.func_242929_a(new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.COARSE_DIRT.getDefaultState()));
-    public static final ConfiguredSurfaceBuilder<?> GOLD_SURFACE = SurfaceBuilder.DEFAULT.func_242929_a(new SurfaceBuilderConfig(vazkii.botania.common.block.ModBlocks.goldenGrass.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.COARSE_DIRT.getDefaultState()));
+    public static final ConfiguredSurfaceBuilder<?> GRASS_SURFACE = SurfaceBuilder.DEFAULT.withConfiguration(new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.COARSE_DIRT.getDefaultState()));
+    public static final ConfiguredSurfaceBuilder<?> GOLD_SURFACE = SurfaceBuilder.DEFAULT.withConfiguration(new SurfaceBuilderConfig(vazkii.botania.common.block.ModBlocks.goldenGrass.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.COARSE_DIRT.getDefaultState()));
 
     public static final ConfiguredFeature<?, ?> METAMORPHIC_FOREST_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE_SIMPLE, ModFluffBlocks.biomeStoneForest.getDefaultState(), 27)).range(256).square();
     public static final ConfiguredFeature<?, ?> METAMORPHIC_MOUNTAIN_STONE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE_SIMPLE, ModFluffBlocks.biomeStoneMountain.getDefaultState(), 27)).range(256).square();
@@ -46,7 +46,7 @@ public class AlfheimFeatures {
             new BaseTreeFeatureConfig.Builder(
                     new SimpleBlockStateProvider(vazkii.botania.common.block.ModBlocks.dreamwood.getDefaultState()),
                     new SimpleBlockStateProvider(ModBlocks.dreamwoodLeaves.getDefaultState().with(BlockStateProperties.PERSISTENT, true)),
-                    new RandomFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0)),
+                    new RandomFoliagePlacer(FeatureSpread.create(2), FeatureSpread.create(0)),
                     new ShatteredTrunkPlacer(7, 4, 0),
                     new TwoLayerFeature(1, 0, 1))
     ).setIgnoreVines().build());
@@ -58,17 +58,17 @@ public class AlfheimFeatures {
             .withConfiguration(new SingleRandomFeature(ImmutableList.of(() -> TREES_DREAMWOOD)))
             .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
             .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(2, 0.1f, 1)));
-    public static final ConfiguredFeature<?, ?> MOTIF_FLOWERS = AlfheimWorldGen.motifFlowers.withConfiguration(NoFeatureConfig.field_236559_b_);
-    public static final ConfiguredFeature<?, ?> ALFHEIM_GRASS = Feature.RANDOM_PATCH.withConfiguration(Features.Configs.JUNGLE_VEGETATION_CONFIG).withPlacement(Features.Placements.PATCH_PLACEMENT).func_242731_b(15);
-    public static final ConfiguredFeature<?, ?> MANA_CRYSTALS = AlfheimWorldGen.manaCrystals.withConfiguration(NoFeatureConfig.field_236559_b_);
-    public static final ConfiguredFeature<?, ?> ABANDONED_APOTHECARIES = AlfheimWorldGen.abandonedApothecaries.withConfiguration(NoFeatureConfig.field_236559_b_);
-    public static final ConfiguredFeature<?, ?> ELEMENTIUM_ORE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModBlocks.elementiumOre.getDefaultState(), 9)).range(64).square().func_242731_b(5);
+    public static final ConfiguredFeature<?, ?> MOTIF_FLOWERS = AlfheimWorldGen.motifFlowers.withConfiguration(NoFeatureConfig.INSTANCE);
+    public static final ConfiguredFeature<?, ?> ALFHEIM_GRASS = Feature.RANDOM_PATCH.withConfiguration(Features.Configs.JUNGLE_VEGETATION_CONFIG).withPlacement(Features.Placements.PATCH_PLACEMENT).count(15);
+    public static final ConfiguredFeature<?, ?> MANA_CRYSTALS = AlfheimWorldGen.manaCrystals.withConfiguration(NoFeatureConfig.INSTANCE);
+    public static final ConfiguredFeature<?, ?> ABANDONED_APOTHECARIES = AlfheimWorldGen.abandonedApothecaries.withConfiguration(NoFeatureConfig.INSTANCE);
+    public static final ConfiguredFeature<?, ?> ELEMENTIUM_ORE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModBlocks.elementiumOre.getDefaultState(), 9)).range(64).square().count(5);
     public static final ConfiguredFeature<?, ?> DRAGONSTONE_ORE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModBlocks.dragonstoneOre.getDefaultState(), 4)).range(16).square();
-    public static final ConfiguredFeature<?, ?> GOLD_ORE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModBlocks.goldOre.getDefaultState(), 9)).range(32).square().func_242731_b(2);
-    public static final ConfiguredFeature<?, ?> MORE_GOLD_ORE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModBlocks.goldOre.getDefaultState(), 9)).withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(32, 32, 80))).square().func_242731_b(20);
-    public static final ConfiguredFeature<?, ?> WHEAT_FIELDS = AlfheimWorldGen.wheatFields.withConfiguration(NoFeatureConfig.field_236559_b_);
+    public static final ConfiguredFeature<?, ?> GOLD_ORE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModBlocks.goldOre.getDefaultState(), 9)).range(32).square().count(2);
+    public static final ConfiguredFeature<?, ?> MORE_GOLD_ORE = Feature.ORE.withConfiguration(new OreFeatureConfig(ALFHEIM_STONE, ModBlocks.goldOre.getDefaultState(), 9)).withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(32, 32, 80))).square().count(20);
+    public static final ConfiguredFeature<?, ?> WHEAT_FIELDS = AlfheimWorldGen.wheatFields.withConfiguration(NoFeatureConfig.INSTANCE);
 
-    public static final StructureFeature<NoFeatureConfig, ? extends Structure<NoFeatureConfig>> ANDWARI_CAVE = AlfheimWorldGen.andwariCave.withConfiguration(NoFeatureConfig.field_236559_b_);
+    public static final StructureFeature<NoFeatureConfig, ? extends Structure<NoFeatureConfig>> ANDWARI_CAVE = AlfheimWorldGen.andwariCave.withConfiguration(NoFeatureConfig.INSTANCE);
     
     public static void register() {
         Registry.register(Registry.STRUCTURE_PIECE, new ResourceLocation(MythicBotany.getInstance().modid, "andwari_cave_piece"), ANDWARI_CAVE_PIECE);

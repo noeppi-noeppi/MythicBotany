@@ -36,7 +36,7 @@ public class AndwariCave extends Structure<NoFeatureConfig> implements Registera
     private static final ResourceLocation TEMPLATE = new ResourceLocation(MythicBotany.getInstance().modid, "andwari_cave");
     
     public AndwariCave() {
-        super(NoFeatureConfig.field_236558_a_);
+        super(NoFeatureConfig.CODEC);
     }
 
     @Override
@@ -61,7 +61,8 @@ public class AndwariCave extends Structure<NoFeatureConfig> implements Registera
             super(structure, x, z, box, refCount, seed);
         }
 
-        public void func_230364_a_(@Nonnull DynamicRegistries registries, @Nonnull ChunkGenerator generator, @Nonnull TemplateManager templates, int chunkX, int chunkZ, @Nonnull Biome biome, @Nonnull NoFeatureConfig config) {
+        @Override
+        public void addStructurePieces(@Nonnull DynamicRegistries registries, @Nonnull ChunkGenerator generator, @Nonnull TemplateManager templates, int chunkX, int chunkZ, @Nonnull Biome biome, @Nonnull NoFeatureConfig config) {
             int x = (chunkX * 16) + rand.nextInt(16) - 8;
             int z = (chunkZ * 16) + rand.nextInt(16) - 8;
             Piece piece = new Piece(templates, new BlockPos(chunkX * 16, generator.getHeight(x, z, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES) - 7, z), Rotation.randomRotation(rand));
@@ -93,11 +94,11 @@ public class AndwariCave extends Structure<NoFeatureConfig> implements Registera
             NBTX.putPos(nbt, "StructurePos", templatePosition);
             nbt.putInt("StructureRotation", placeSettings.getRotation().ordinal());
         }
-
+        
         @Override
-        public boolean func_230383_a_(@Nonnull ISeedReader world, @Nonnull StructureManager structures, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull MutableBoundingBox box, @Nonnull ChunkPos chunk, @Nonnull BlockPos pos) {
+        public boolean generateStructurePiece(@Nonnull ISeedReader world, @Nonnull StructureManager structures, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull MutableBoundingBox box, @Nonnull ChunkPos chunk, @Nonnull BlockPos pos) {
             this.templatePosition = AlfheimWorldGen.highestFreeBlock(world, this.templatePosition, AlfheimWorldGen::passReplaceableAndLeaves).down(8);
-            return super.func_230383_a_(world, structures, generator, rand, box, chunk, pos);
+            return super.generateStructurePiece(world, structures, generator, rand, box, chunk, pos);
         }
     }
 }

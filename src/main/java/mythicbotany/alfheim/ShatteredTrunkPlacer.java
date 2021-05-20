@@ -25,7 +25,7 @@ import java.util.Set;
 
 public class ShatteredTrunkPlacer extends AbstractTrunkPlacer {
 
-    public static final TrunkPlacerType<ShatteredTrunkPlacer> SHATTERED_TRUNK = new TrunkPlacerType<>(RecordCodecBuilder.create((p_236897_0_) -> func_236915_a_(p_236897_0_).apply(p_236897_0_, ShatteredTrunkPlacer::new)));
+    public static final TrunkPlacerType<ShatteredTrunkPlacer> SHATTERED_TRUNK = new TrunkPlacerType<>(RecordCodecBuilder.create((instance) -> getAbstractTrunkCodec(instance).apply(instance, ShatteredTrunkPlacer::new)));
 
     static {
         // Must be here in a static init block or the game will fail to load worlds
@@ -39,15 +39,15 @@ public class ShatteredTrunkPlacer extends AbstractTrunkPlacer {
 
     @Nonnull
     @Override
-    protected TrunkPlacerType<?> func_230381_a_() {
+    protected TrunkPlacerType<?> getPlacerType() {
         return SHATTERED_TRUNK;
     }
-
+    
     @Nonnull
     @Override
-    public List<FoliagePlacer.Foliage> func_230382_a_(@Nonnull IWorldGenerationReader world, @Nonnull Random rand, int height, @Nonnull BlockPos pos, @Nonnull Set<BlockPos> positions, @Nonnull MutableBoundingBox box, @Nonnull BaseTreeFeatureConfig config) {
+    public List<FoliagePlacer.Foliage> getFoliages(@Nonnull IWorldGenerationReader world, @Nonnull Random rand, int height, @Nonnull BlockPos pos, @Nonnull Set<BlockPos> positions, @Nonnull MutableBoundingBox box, @Nonnull BaseTreeFeatureConfig config) {
         List<FoliagePlacer.Foliage> list = new ArrayList<>();
-        func_236909_a_(world, pos.down());
+        placeTreeSoil(world, pos.down());
         for (Direction dir : Direction.values()) {
             if (dir.getAxis() != Direction.Axis.Y && rand.nextInt(3) == 0) {
                 BlockPos.Mutable mpos = pos.offset(Direction.UP).offset(dir).toMutable();
@@ -58,7 +58,7 @@ public class ShatteredTrunkPlacer extends AbstractTrunkPlacer {
                     }
                 }
                 if (world.hasBlockState(pos, AbstractBlock.AbstractBlockState::isSolid)) {
-                    func_236909_a_(world, pos.down());
+                    placeTreeSoil(world, pos.down());
                 }
             }
         }
@@ -97,9 +97,9 @@ public class ShatteredTrunkPlacer extends AbstractTrunkPlacer {
     private boolean placeLog(IWorldGenerationReader world, BlockPos pos, Random rand, MutableBoundingBox box, BaseTreeFeatureConfig config) {
         if (world.hasBlockState(pos, state -> {
             //noinspection deprecation
-            return state.isAir() || state.isIn(ModBlockTags.ALFHEIM_LEAVES) || state.getMaterial() == Material.TALL_PLANTS || state.isIn(Blocks.WATER);
+            return state.isAir() || state.isIn(ModBlockTags.ALFHEIM_LEAVES) || state.getMaterial() == Material.TALL_PLANTS || state.matchesBlock(Blocks.WATER);
         })) {
-            func_236913_a_(world, pos, config.trunkProvider.getBlockState(rand, pos), box);
+            handleBlockPlacement(world, pos, config.trunkProvider.getBlockState(rand, pos), box);
             return true;
         } else {
             return false;

@@ -20,19 +20,19 @@ public class AlfheimChunkGenerator {
 
     public static final Codec<NoiseChunkGenerator> CODEC = RecordCodecBuilder.create((p_236091_0_) -> p_236091_0_.group(
             BiomeProvider.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeProvider),
-            WorldSeedHolder.CODEC.fieldOf("seed").forGetter((p_236093_0_) -> p_236093_0_.field_236084_w_)
+            WorldSeedHolder.CODEC.fieldOf("seed").forGetter((p_236093_0_) -> p_236093_0_.seed)
     ).apply(p_236091_0_, p_236091_0_.stable((b, s) -> new NoiseChunkGenerator(b, s, AlfheimChunkGenerator::settings))));
 
     private static DimensionSettings settings() {
-        DimensionSettings defaultSettings = DimensionSettings.func_242746_i();
+        DimensionSettings defaultSettings = DimensionSettings.getDefaultDimensionSettings();
         //noinspection deprecation
         return new DimensionSettings(structures(defaultSettings.getStructures()), defaultSettings.getNoise(),
-                ModBlocks.livingrock.getDefaultState(), Blocks.WATER.getDefaultState(), defaultSettings.func_236117_e_(),
-                defaultSettings.func_236118_f_(), defaultSettings.func_236119_g_(), defaultSettings.func_236120_h_());
+                ModBlocks.livingrock.getDefaultState(), Blocks.WATER.getDefaultState(), defaultSettings.getBedrockRoofPosition(),
+                defaultSettings.getBedrockFloorPosition(), defaultSettings.getSeaLevel(), defaultSettings.isMobGenerationDisabled());
     }
     
     private static DimensionStructuresSettings structures(DimensionStructuresSettings parent) {
-        return new DimensionStructuresSettings(Optional.ofNullable(parent.func_236199_b_()), ImmutableMap.<Structure<?>, StructureSeparationSettings>builder()
+        return new DimensionStructuresSettings(Optional.ofNullable(parent.getSpreadSettings()), ImmutableMap.<Structure<?>, StructureSeparationSettings>builder()
                 .put(AlfheimWorldGen.andwariCave, new StructureSeparationSettings(28, 8, 438))
                 .build()
         );

@@ -99,9 +99,9 @@ public class RenderAlfsteelPylon extends TileEntityRenderer<TileAlfsteelPylon> {
         public TEISR() {
 
         }
-
+        
         @Override
-        public void func_239207_a_(ItemStack stack, @Nonnull ItemCameraTransforms.TransformType type, @Nonnull MatrixStack ms, @Nonnull IRenderTypeBuffer buffer, int light, int overlay) {
+        public void render(ItemStack stack, @Nonnull ItemCameraTransforms.TransformType type, @Nonnull MatrixStack ms, @Nonnull IRenderTypeBuffer buffer, int light, int overlay) {
             if (Block.getBlockFromItem(stack.getItem()) instanceof BlockAlfsteelPylon) {
                 TileEntityRenderer<TileAlfsteelPylon> r = TileEntityRendererDispatcher.instance.getRenderer(DUMMY.getValue());
                 //noinspection ConstantConditions

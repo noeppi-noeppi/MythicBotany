@@ -167,9 +167,9 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
     }
 
     protected boolean isValidGround(BlockState state, IBlockReader world, BlockPos pos) {
-        return state.isIn(Blocks.GRASS_BLOCK) || state.isIn(Blocks.DIRT) || state.isIn(Blocks.COARSE_DIRT)
-                || state.isIn(Blocks.PODZOL) || state.isIn(Blocks.FARMLAND) || state.isIn(ModBlocks.enchantedSoil)
-                || state.isIn(Blocks.MYCELIUM) || state.canSustainPlant(world, pos, Direction.UP, this);
+        return state.matchesBlock(Blocks.GRASS_BLOCK) || state.matchesBlock(Blocks.DIRT) || state.matchesBlock(Blocks.COARSE_DIRT)
+                || state.matchesBlock(Blocks.PODZOL) || state.matchesBlock(Blocks.FARMLAND) || state.matchesBlock(ModBlocks.enchantedSoil)
+                || state.matchesBlock(Blocks.MYCELIUM) || state.canSustainPlant(world, pos, Direction.UP, this);
     }
 
     @Override

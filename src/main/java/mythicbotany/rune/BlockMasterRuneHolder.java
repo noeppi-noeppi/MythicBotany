@@ -39,7 +39,7 @@ public class BlockMasterRuneHolder extends BlockRuneHolder<TileMasterRuneHolder>
                     tile.tryStartRitual(player);
                 }
             }
-            return ActionResultType.func_233537_a_(world.isRemote);
+            return ActionResultType.successOrConsume(world.isRemote);
         } else {
             return super.onBlockActivated(state, world, pos, player, hand, hit);
         }

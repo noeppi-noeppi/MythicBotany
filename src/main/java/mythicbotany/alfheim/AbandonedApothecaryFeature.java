@@ -46,7 +46,7 @@ public class AbandonedApothecaryFeature extends Feature<NoFeatureConfig> {
 
 
     public AbandonedApothecaryFeature() {
-        super(NoFeatureConfig.field_236558_a_);
+        super(NoFeatureConfig.CODEC);
     }
 
     @Override

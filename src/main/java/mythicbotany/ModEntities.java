@@ -18,7 +18,7 @@ public class ModEntities {
     public static final EntityType<AlfPixie> alfPixie = EntityType.Builder.<AlfPixie>create(AlfPixie::new, EntityClassification.CREATURE).size(1, 1).setUpdateInterval(3).setTrackingRange(16).setShouldReceiveVelocityUpdates(true).build(MythicBotany.getInstance().modid + "_alf_pixie");
 
     public static void setup() {
-        GlobalEntityTypeAttributes.put(alfPixie, AlfPixie.defaultAttributes());
+        GlobalEntityTypeAttributes.put(alfPixie, AlfPixie.entityAttributes());
         
         EntitySpawnPlacementRegistry.register(alfPixie, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AlfPixie::canSpawnAt);
     }

@@ -61,7 +61,7 @@ public class BlockRuneHolder<T extends TileRuneHolder> extends BlockTE<T> {
                 }
                 tile.getInventory().setStackInSlot(0, ItemStack.EMPTY);
             }
-            return ActionResultType.func_233537_a_(world.isRemote);
+            return ActionResultType.successOrConsume(world.isRemote);
         } else if (tile.getInventory().isItemValid(0, player.getHeldItem(hand)) && player.getHeldItem(hand).getCount() >= 1) {
             if (!world.isRemote) {
                 ItemStack held = player.getHeldItem(hand);
@@ -69,7 +69,7 @@ public class BlockRuneHolder<T extends TileRuneHolder> extends BlockTE<T> {
                 tile.getInventory().setStackInSlot(0, stack);
                 player.setHeldItem(hand, held);
             }
-            return ActionResultType.func_233537_a_(world.isRemote);
+            return ActionResultType.successOrConsume(world.isRemote);
         } else {
             return super.onBlockActivated(state, world, pos, player, hand, hit);
         }

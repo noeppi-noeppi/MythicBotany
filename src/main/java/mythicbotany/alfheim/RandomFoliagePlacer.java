@@ -21,7 +21,7 @@ import java.util.Set;
 
 public class RandomFoliagePlacer extends FoliagePlacer {
 
-    public static final FoliagePlacerType<RandomFoliagePlacer> RANDOM_FOLIAGE = new FoliagePlacerType<>(RecordCodecBuilder.create((p_236742_0_) -> func_242830_b(p_236742_0_).apply(p_236742_0_, RandomFoliagePlacer::new)));
+    public static final FoliagePlacerType<RandomFoliagePlacer> RANDOM_FOLIAGE = new FoliagePlacerType<>(RecordCodecBuilder.create((instance) -> getAbstractFoliageCodec(instance).apply(instance, RandomFoliagePlacer::new)));
 
     static {
         RANDOM_FOLIAGE.setRegistryName(new ResourceLocation(MythicBotany.getInstance().modid, "random_foliage"));
@@ -31,32 +31,31 @@ public class RandomFoliagePlacer extends FoliagePlacer {
     public RandomFoliagePlacer(FeatureSpread spread1, FeatureSpread spread2) {
         super(spread1, spread2);
     }
-
-
+    
     @Nonnull
     @Override
-    protected FoliagePlacerType<?> func_230371_a_() {
+    protected FoliagePlacerType<?> getPlacerType() {
         return RANDOM_FOLIAGE;
     }
-
+    
     @Override
-    protected void func_230372_a_(@Nonnull IWorldGenerationReader world, @Nonnull Random rand, @Nonnull BaseTreeFeatureConfig config, int p_230372_4_, @Nonnull Foliage foliage, int p_230372_6_, int p_230372_7_, @Nonnull Set<BlockPos> p_230372_8_, int p_230372_9_, @Nonnull MutableBoundingBox box) {
+    protected void generateFoliage(@Nonnull IWorldGenerationReader world, @Nonnull Random rand, @Nonnull BaseTreeFeatureConfig config, int p_230372_4_, @Nonnull Foliage foliage, int p_230372_6_, int p_230372_7_, @Nonnull Set<BlockPos> p_230372_8_, int p_230372_9_, @Nonnull MutableBoundingBox box) {
         int leaves = 3 + rand.nextInt(3);
         for (int i = 0; i < leaves; i++) {
             int x = rand.nextInt(5) - 2;
             int y = rand.nextInt(5) - 2;
             int z = rand.nextInt(5) - 2;
-            if (placeLeave(world, foliage.func_236763_a_().add(x, y, z), rand, box, config)) {
+            if (placeLeave(world, foliage.getPos().add(x, y, z), rand, box, config)) {
                 int nx = x == 0 ? 0 : x > 0 ? x - 1 : x + 1;
                 int ny = y == 0 ? 0 : y > 0 ? y - 1 : y + 1;
                 int nz = z == 0 ? 0 : z > 0 ? z - 1 : z + 1;
-                placeLeave(world, foliage.func_236763_a_().add(nx, ny, nz), rand, box, config);
+                placeLeave(world, foliage.getPos().add(nx, ny, nz), rand, box, config);
             }
         }
     }
 
     @Override
-    public int func_230374_a_(@Nonnull Random rand, int p_230374_2_, @Nonnull BaseTreeFeatureConfig config) {
+    public int getFoliageSize(@Nonnull Random rand, int p_230374_2_, @Nonnull BaseTreeFeatureConfig config) {
         return 3;
     }
 
@@ -68,9 +67,9 @@ public class RandomFoliagePlacer extends FoliagePlacer {
     private boolean placeLeave(IWorldGenerationReader world, BlockPos pos, Random rand, MutableBoundingBox box, BaseTreeFeatureConfig config) {
         if (world.hasBlockState(pos, state -> {
             //noinspection deprecation
-            return state.isAir() || state.getMaterial() == Material.TALL_PLANTS || state.isIn(Blocks.WATER);
+            return state.isAir() || state.getMaterial() == Material.TALL_PLANTS || state.matchesBlock(Blocks.WATER);
         })) {
-            TreeFeature.func_236408_b_(world, pos, config.leavesProvider.getBlockState(rand, pos));
+            TreeFeature.setBlockStateWithoutUpdate(world, pos, config.leavesProvider.getBlockState(rand, pos));
             box.expandTo(new MutableBoundingBox(pos, pos));
             return true;
         } else {

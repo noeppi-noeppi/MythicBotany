@@ -104,8 +104,13 @@ public class AlfPixie extends CreatureEntity {
         }
     }
 
-    public static AttributeModifierMap defaultAttributes() {
-        return MobEntity.func_233666_p_()
+    @Override
+    public boolean onLivingFall(float p_225503_1_, float p_225503_2_) {
+        return false;
+    }
+
+    public static AttributeModifierMap entityAttributes() {
+        return MobEntity.getDefaultAttributes()
                 .createMutableAttribute(Attributes.MAX_HEALTH, 4)
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 3)
                 .create();

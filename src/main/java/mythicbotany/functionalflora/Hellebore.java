@@ -28,18 +28,18 @@ public class Hellebore extends FunctionalFlowerBase {
 
             List<AbstractPiglinEntity> piglins = world.getEntitiesWithinAABB(AbstractPiglinEntity.class, new AxisAlignedBB(pos.getX() - 5.5, pos.getY() - 2, pos.getZ() - 5.5, pos.getX() + 6.5, pos.getY() + 3, pos.getZ() + 6.5));
             for (AbstractPiglinEntity piglin : piglins) {
-                if (mana >= MANA_PER_ENTITY_AND_SECOND && piglin.field_242334_c > 20) {
+                if (mana >= MANA_PER_ENTITY_AND_SECOND && piglin.ticksOutOfHell > 20) {
                     mana -= MANA_PER_ENTITY_AND_SECOND;
-                    piglin.field_242334_c = 0;
+                    piglin.ticksOutOfHell = 0;
                     MythicBotany.getNetwork().spawnParticle(world, ParticleTypes.FLAME, 10, piglin.getPosX(), piglin.getPosY(), piglin.getPosZ(), 0, 0.05, 0, 0.4, 0.8, 0.4, true);
                 }
             }
 
             List<HoglinEntity> hoglins = world.getEntitiesWithinAABB(HoglinEntity.class, new AxisAlignedBB(pos.getX() - 5.5, pos.getY() - 2, pos.getZ() - 5.5, pos.getX() + 6.5, pos.getY() + 3, pos.getZ() + 6.5));
             for (HoglinEntity hoglin : hoglins) {
-                if (mana >= MANA_PER_ENTITY_AND_SECOND && hoglin.field_234358_by_ > 20) {
+                if (mana >= MANA_PER_ENTITY_AND_SECOND && hoglin.ticksOutOfHell > 20) {
                     mana -= MANA_PER_ENTITY_AND_SECOND;
-                    hoglin.field_234358_by_ = 0;
+                    hoglin.ticksOutOfHell = 0;
                     MythicBotany.getNetwork().spawnParticle(world, ParticleTypes.FLAME, 10, hoglin.getPosX(), hoglin.getPosY(), hoglin.getPosZ(), 0, 0.08, 0, 0.8, 0.7, 0.8, true);
                 }
             }

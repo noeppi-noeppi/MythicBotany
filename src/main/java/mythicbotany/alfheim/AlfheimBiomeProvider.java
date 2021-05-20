@@ -72,7 +72,7 @@ public class AlfheimBiomeProvider extends BiomeProvider {
     @Nonnull
     @Override
     public Biome getNoiseBiome(int x, int y, int z) {
-        return genBiomes.func_242936_a(biomeRegistry, x, z);
+        return genBiomes.getLayerBiome(biomeRegistry, x, z);
     }
     
     private static <T extends IArea, C extends IExtendedNoiseRandom<T>> IAreaFactory<T> createAreaFactory(Registry<Biome> biomeRegistry, LongFunction<C> noiseRandom, long seed) {

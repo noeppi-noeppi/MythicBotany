@@ -21,7 +21,7 @@ public class MotifFlowerFeature extends Feature<NoFeatureConfig> {
     );
 
     public MotifFlowerFeature() {
-        super(NoFeatureConfig.field_236558_a_);
+        super(NoFeatureConfig.CODEC);
     }
 
     @Override

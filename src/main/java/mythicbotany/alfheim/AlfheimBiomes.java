@@ -43,8 +43,8 @@ public class AlfheimBiomes {
     public static BiomeGenerationSettings.Builder alfheimGen(AlfBiomeType type) {
         BiomeGenerationSettings.Builder builder = new BiomeGenerationSettings.Builder();
         builder = type.applySurface(builder);
-        builder = builder.withCarver(GenerationStage.Carving.AIR, ConfiguredCarvers.field_243767_a)
-                .withCarver(GenerationStage.Carving.AIR, ConfiguredCarvers.field_243768_b);
+        builder = builder.withCarver(GenerationStage.Carving.AIR, ConfiguredCarvers.CAVE)
+                .withCarver(GenerationStage.Carving.AIR, ConfiguredCarvers.CANYON);
         builder = type.applyCarver(builder);
         builder = builder.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_FOREST_STONE)
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_MOUNTAIN_STONE)

@@ -18,7 +18,7 @@ import java.util.Random;
 public class ManaCrystalFeature extends Feature<NoFeatureConfig> {
 
     public ManaCrystalFeature() {
-        super(NoFeatureConfig.field_236558_a_);
+        super(NoFeatureConfig.CODEC);
     }
 
     @Override

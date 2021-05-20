@@ -161,7 +161,7 @@ public class EntityMjoellnir extends ProjectileEntity {
     }
 
     @Override
-    protected void func_230299_a_(@Nonnull BlockRayTraceResult hit) {
+    protected void onBlockHit(@Nonnull BlockRayTraceResult hit) {
         List<LivingEntity> living = world.getEntitiesWithinAABB(LivingEntity.class, BoundingBoxUtils.expand(hit.getHitVec(), 2),
                 entity -> !entity.isSpectator() && entity.isAlive() && entity != getThrower());
         if (!living.isEmpty()) {
@@ -171,10 +171,10 @@ public class EntityMjoellnir extends ProjectileEntity {
 
     @Nullable
     @Override
-    protected PortalInfo func_241829_a(@Nonnull ServerWorld world) {
+    protected PortalInfo getPortalInfo(@Nonnull ServerWorld world) {
         return null;
     }
-
+    
     @Nullable
     private Vector3d getReturnPoint() {
         PlayerEntity throwerEntity = getThrower();
@@ -279,7 +279,7 @@ public class EntityMjoellnir extends ProjectileEntity {
                 int fireTicks = target.getFireTimer();
                 LivingEntity oldImmune = EventListener.lightningImmuneEntity;
                 EventListener.lightningImmuneEntity = target;
-                target.func_241841_a((ServerWorld) world, lightning);
+                target.causeLightningStrike((ServerWorld) world, lightning);
                 EventListener.lightningImmuneEntity = oldImmune;
                 target.forceFireTicks(fireTicks);
             }
@@ -304,7 +304,7 @@ public class EntityMjoellnir extends ProjectileEntity {
             int fireTicks = target.getFireTimer();
             LivingEntity oldImmune = EventListener.lightningImmuneEntity;
             EventListener.lightningImmuneEntity = target;
-            target.func_241841_a((ServerWorld) world, lightning);
+            target.causeLightningStrike((ServerWorld) world, lightning);
             EventListener.lightningImmuneEntity = oldImmune;
             target.forceFireTicks(fireTicks);
         }
