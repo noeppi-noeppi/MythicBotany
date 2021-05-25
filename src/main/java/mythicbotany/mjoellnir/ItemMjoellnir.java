@@ -3,6 +3,7 @@ package mythicbotany.mjoellnir;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import mythicbotany.ModMisc;
+import mythicbotany.config.MythicConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -37,7 +38,9 @@ public class ItemMjoellnir extends BlockItem {
     public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull PlayerEntity player, @Nonnull Hand hand) {
         if (!player.isSneaking()) {
             throwHammer(world, player, hand);
-            player.getCooldownTracker().setCooldown(this, 20 * 6);
+            if (MythicConfig.mjoellnir.ranged_cooldown > 0) {
+                player.getCooldownTracker().setCooldown(this, MythicConfig.mjoellnir.ranged_cooldown);
+            }
             return ActionResult.successOrConsume(player.getHeldItem(hand), world.isRemote);
         } else {
             return super.onItemRightClick(world, player, hand);
@@ -116,10 +119,10 @@ public class ItemMjoellnir extends BlockItem {
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         if (slot == EquipmentSlotType.MAINHAND) {
             float dmgModifier = EnchantmentHelper.getModifierForCreature(stack, CreatureAttribute.UNDEFINED);
-            float speedModifier = 0.2f * EnchantmentHelper.getEnchantmentLevel(ModMisc.hammerMobility, stack);
+            float speedModifier = MythicConfig.mjoellnir.attack_speed_multiplier * EnchantmentHelper.getEnchantmentLevel(ModMisc.hammerMobility, stack);
                 ImmutableMultimap.Builder<Attribute, AttributeModifier> attributeBuilder = ImmutableMultimap.builder();
-                attributeBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "mjoellnir_damage_modifier", 24 + (4 * dmgModifier), AttributeModifier.Operation.ADDITION));
-                attributeBuilder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "mjoellnir_attack_speed_modifier", -3.5 + speedModifier, AttributeModifier.Operation.ADDITION));
+                attributeBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "mjoellnir_damage_modifier", (MythicConfig.mjoellnir.base_damage_melee - 1) + ((MythicConfig.mjoellnir.enchantment_multiplier - 1) * dmgModifier), AttributeModifier.Operation.ADDITION));
+                attributeBuilder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "mjoellnir_attack_speed_modifier", MythicConfig.mjoellnir.base_attack_speed + speedModifier, AttributeModifier.Operation.ADDITION));
                 return attributeBuilder.build();
         } else {
             return super.getAttributeModifiers(slot, stack);

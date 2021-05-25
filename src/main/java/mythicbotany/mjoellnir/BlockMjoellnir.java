@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
+import mythicbotany.config.MythicConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -173,7 +174,7 @@ public class BlockMjoellnir extends Block implements Registerable {
     }
 
     public static boolean canHold(PlayerEntity player) {
-        return player.isCreative() || player.isSpectator() || (player.getActivePotionEffect(Effects.ABSORPTION) != null/* && player.getAbsorptionAmount() > 0*/);
+        return player.isCreative() || player.isSpectator() || MythicConfig.mjoellnir.requirement.test(player);
     }
 
     public static boolean putInInventory(PlayerEntity player, ItemStack stack, int hotbarSlot) {

@@ -4,6 +4,7 @@ import io.github.noeppi_noeppi.libx.util.BoundingBoxUtils;
 import mythicbotany.EventListener;
 import mythicbotany.ModBlocks;
 import mythicbotany.advancement.ModCriteria;
+import mythicbotany.config.MythicConfig;
 import net.minecraft.block.PortalInfo;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -258,9 +259,9 @@ public class EntityMjoellnir extends ProjectileEntity {
                 }
             }
             int power = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
-            float dmg = 20;
+            float dmg = MythicConfig.mjoellnir.base_damage_ranged + 1;
             if (power > 0) {
-                dmg += (5 * Enchantments.SHARPNESS.calcDamageByCreature(power, target.getCreatureAttribute()));
+                dmg += (MythicConfig.mjoellnir.enchantment_multiplier * Enchantments.SHARPNESS.calcDamageByCreature(power, target.getCreatureAttribute()));
             }
             PlayerEntity thrower = getThrower();
             if (thrower instanceof ServerPlayerEntity) {
@@ -294,13 +295,14 @@ public class EntityMjoellnir extends ProjectileEntity {
             target.setFire(2);
         }
         int power = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
-        float dmg = 4;
+        float dmg = MythicConfig.mjoellnir.base_damage_ranged + 1;
         if (power > 0) {
-            dmg += Enchantments.SHARPNESS.calcDamageByCreature(power, target.getCreatureAttribute());
+            dmg += (MythicConfig.mjoellnir.enchantment_multiplier * Enchantments.SHARPNESS.calcDamageByCreature(power, target.getCreatureAttribute()));
         }
+        dmg *= MythicConfig.mjoellnir.secondary_target_multiplier;
         PlayerEntity thrower = getThrower();
         target.attackEntityFrom(thrower == null ? DamageSource.GENERIC : DamageSource.causeIndirectDamage(this, thrower), dmg);
-        if (lightning != null && world.rand.nextInt(4) == 0) {
+        if (lightning != null && world.rand.nextFloat() < MythicConfig.mjoellnir.secondary_lightning_chance) {
             int fireTicks = target.getFireTimer();
             LivingEntity oldImmune = EventListener.lightningImmuneEntity;
             EventListener.lightningImmuneEntity = target;

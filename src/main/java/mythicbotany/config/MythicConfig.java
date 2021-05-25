@@ -7,6 +7,7 @@ import io.github.noeppi_noeppi.libx.config.validator.DoubleRange;
 import io.github.noeppi_noeppi.libx.config.validator.FloatRange;
 import io.github.noeppi_noeppi.libx.config.validator.IntRange;
 import mythicbotany.functionalflora.WitherAconite;
+import mythicbotany.mjoellnir.MjoellnirHoldRequirement;
 
 @RegisterConfig
 public class MythicConfig {
@@ -78,4 +79,46 @@ public class MythicConfig {
     }
     
     
+    public static class mjoellnir {
+        
+        @Config({
+                "What is required for a player to hold mjoellnir.",
+                "none   - Players will always be able to hold mjoellnir.",
+                "effect - Players need the absorption effect to hold mjoellnir.",
+                "hearts - Players need absorption hearts to hold mjoellnir.",
+                "         If they run out of golden hearts but still have the effect, mjoellnir is dropped."
+        })
+        public static MjoellnirHoldRequirement requirement = MjoellnirHoldRequirement.EFFECT;
+        
+        @Config("The base damage for melee attacks.")
+        @FloatRange(min = 1)
+        public static float base_damage_melee = 25;
+        
+        @Config("The base damage for the main target on ranged attacks.")
+        @FloatRange(min = 1)
+        public static float base_damage_ranged = 25;
+        
+        @Config("Enchantment multiplier for sharpness and power enchantments.")
+        @FloatRange(min = 1)
+        public static float enchantment_multiplier = 5;
+        
+        @Config({"The damage dealt to secondary targets on ranged attacks.", "This value is multiplied with the damage to the main target."})
+        @FloatRange(min = 0, max = 1)
+        public static float secondary_target_multiplier = 0.2f;
+        
+        @Config("The chance for secondary targets to get lightning effects  applied as well on ranged attacks.")
+        @FloatRange(min = 0, max = 1)
+        public static float secondary_lightning_chance = 0.25f;
+        
+        @Config("The base attack speed attribute for mjoellnir.")
+        public static float base_attack_speed = -3.5f;
+        
+        @Config("The amount the attack speed increases per level of hammer mobility.")
+        @FloatRange(min = 0)
+        public static float attack_speed_multiplier = 0.2f;
+        
+        @Config("The cooldown in ticks after a ranged attack, before mjoellnir can be thrown again.")
+        @IntRange(min = 0)
+        public static int ranged_cooldown = 120;
+    }
 }
