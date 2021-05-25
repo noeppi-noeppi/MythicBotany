@@ -57,17 +57,6 @@ public class EventListener {
 
     @SubscribeEvent
     public void onDamage(LivingHurtEvent event) {
-
-        if (event.getSource().isFireDamage()) {
-            if (CuriosApi.getCuriosHelper().findEquippedCurio(ModItems.fireRing, event.getEntityLiving()).isPresent()) {
-                event.setCanceled(true);
-            }
-        }
-        if (event.getSource() == DamageSource.CRAMMING && event.getSource() == DamageSource.DRYOUT && event.getSource() == DamageSource.IN_WALL) {
-            if (CuriosApi.getCuriosHelper().findEquippedCurio(ModItems.iceRing, event.getEntityLiving()).isPresent()) {
-                event.setCanceled(true);
-            }
-        }
         if (event.getSource().getTrueSource() instanceof PlayerEntity) {
             if (CuriosApi.getCuriosHelper().findEquippedCurio(ModItems.fireRing, (LivingEntity) event.getSource().getTrueSource()).isPresent()) {
                 if (event.getEntityLiving().getFireTimer() <= 1) {
@@ -111,6 +100,19 @@ public class EventListener {
     public void attackEntity(LivingAttackEvent event) {
         if (event.getSource() == DamageSource.LIGHTNING_BOLT && event.getEntityLiving() == lightningImmuneEntity) {
             event.setCanceled(true);
+            return;
+        }
+        if (event.getSource().isFireDamage()) {
+            if (CuriosApi.getCuriosHelper().findEquippedCurio(ModItems.fireRing, event.getEntityLiving()).isPresent()) {
+                event.setCanceled(true);
+                return;
+            }
+        }
+        if (event.getSource() == DamageSource.CRAMMING && event.getSource() == DamageSource.DRYOUT && event.getSource() == DamageSource.IN_WALL) {
+            if (CuriosApi.getCuriosHelper().findEquippedCurio(ModItems.iceRing, event.getEntityLiving()).isPresent()) {
+                event.setCanceled(true);
+                return;
+            }
         }
         if (event.getSource().getTrueSource() instanceof PlayerEntity && crittingPlayers.contains(event.getSource().getTrueSource().getUniqueID())) {
             ((AlfsteelHelm) ModItems.alfsteelHelmet).onEntityAttacked(event.getSource(), event.getAmount(), ((PlayerEntity) event.getSource().getTrueSource()), event.getEntityLiving());

@@ -83,10 +83,10 @@ public class MythicConfig {
         
         @Config({
                 "What is required for a player to hold mjoellnir.",
-                "none   - Players will always be able to hold mjoellnir.",
-                "effect - Players need the absorption effect to hold mjoellnir.",
-                "hearts - Players need absorption hearts to hold mjoellnir.",
-                "         If they run out of golden hearts but still have the effect, mjoellnir is dropped."
+                "nothing  - Players will always be able to hold mjoellnir.",
+                "effect   - Players need the absorption effect to hold mjoellnir.",
+                "hearts   - Players need absorption hearts to hold mjoellnir.",
+                "           If they run out of golden hearts but still have the effect, mjoellnir is dropped."
         })
         public static MjoellnirHoldRequirement requirement = MjoellnirHoldRequirement.EFFECT;
         
