@@ -12,16 +12,23 @@ import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
 import mythicbotany.infuser.IInfuserRecipe;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector2f;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import vazkii.botania.client.core.handler.HUDHandler;
 import vazkii.botania.client.integration.jei.PetalApothecaryRecipeCategory;
 import vazkii.botania.client.integration.jei.TerraPlateDrawable;
 
 import javax.annotation.Nonnull;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +44,7 @@ public class InfusionCategory implements IRecipeCategory<IInfuserRecipe> {
     private final IDrawable infuserPlate;
 
     public InfusionCategory(IGuiHelper guiHelper) {
-        this.background = guiHelper.createBlankDrawable(114, 131);
+        this.background = guiHelper.createBlankDrawable(114, 141);
         this.localizedName = I18n.format("block.mythicbotany.mana_infuser");
         this.overlay = guiHelper.createDrawable(new ResourceLocation("botania","textures/gui/terrasteel_jei_overlay.png"), 42, 29, 64, 64);
         this.icon = guiHelper.createDrawableIngredient(new ItemStack(ModBlocks.manaInfuser));
@@ -110,5 +117,9 @@ public class InfusionCategory implements IRecipeCategory<IInfuserRecipe> {
         this.infuserPlate.draw(matrixStack, 35, 92);
         RenderSystem.disableBlend();
         RenderSystem.disableAlphaTest();
+        IFormattableTextComponent manaAmount = new StringTextComponent(BigDecimal.valueOf(recipe.getManaUsage() / 1000000d).setScale(2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()).mergeStyle(TextFormatting.BLUE);
+        IFormattableTextComponent tc = new TranslationTextComponent("tooltip.mythicbotany.cost_pools", manaAmount);
+        //noinspection IntegerDivisionInFloatingPointContext
+        Minecraft.getInstance().fontRenderer.drawText(matrixStack, tc, 57 - (Minecraft.getInstance().fontRenderer.getStringPropertyWidth(tc) / 2), 133, 0x000000);
     }
 }

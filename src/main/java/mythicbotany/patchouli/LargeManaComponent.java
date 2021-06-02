@@ -37,10 +37,10 @@ public class LargeManaComponent implements ICustomComponent {
         //noinspection IntegerDivisionInFloatingPointContext
         font.drawText(matrixStack, manaUsage, this.x + 51 - font.getStringPropertyWidth(manaUsage) / 2, this.y, 0x66000000);
         
-        float ratio = ctx.isAreaHovered(mouseX, mouseY, this.x, this.y - 2, 102, 25) ? 0.25f : 1;
+        float ratio = ctx.isAreaHovered(mouseX, mouseY, this.x, this.y - 2, 102, 25) ? 1 : 0.25f;
 
         HUDHandler.renderManaBar(matrixStack, this.x, this.y + 10, 0x00CCFF, 0.75F, this.manaValues[ctx.getTicksInBook() / 20 % this.manaValues.length], Math.round(1000000 / ratio));
-        IFormattableTextComponent ratioTc = (new TranslationTextComponent("botaniamisc.ratio", new StringTextComponent(floatToString(ratio)).mergeStyle(TextFormatting.BLUE))).setStyle(ctx.getFont());
+        IFormattableTextComponent ratioTc = (new TranslationTextComponent("tooltip.mythicbotany.reverse_ratio", new StringTextComponent(floatToString(ratio)).mergeStyle(TextFormatting.BLUE))).setStyle(ctx.getFont());
         //noinspection IntegerDivisionInFloatingPointContext
         font.drawText(matrixStack, ratioTc, this.x + 51 - font.getStringPropertyWidth(ratioTc) / 2, this.y + 15, 0x777777);
     }

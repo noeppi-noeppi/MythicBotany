@@ -79,6 +79,8 @@
   "biome.mythicbotany.golden_fields": "Golden Fields",
   "biome.mythicbotany.alfheim_lakes": "Alfheim Lakes",
   
+  "tooltip.mythicbotany.cost_pools": "%s Mana Pools",
+  "tooltip.mythicbotany.reverse_ratio": "%sx Zoom (hover to zoom in)",
   "tooltip.mythicbotany.rune_ritual": "Rune Ritual",
   "tooltip.mythicbotany.rune_master": "Rune for the master rune holder.",
   "tooltip.mythicbotany.rune_consume": "This rune will be consumed.",
