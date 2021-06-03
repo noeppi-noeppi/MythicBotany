@@ -159,12 +159,13 @@ public class RuneRitualRecipe implements IRecipe<IInventory> {
         private final int z;
         private final int[] xcoords;
         private final int[] zcoords;
+        private final boolean consume;
         
-
-        public RunePosition(Ingredient rune, int x, int z) {
+        public RunePosition(Ingredient rune, int x, int z, boolean consume) {
             this.rune = rune;
             this.x = x;
             this.z = z;
+            this.consume = (x == 0 && z == 0) || consume;
             this.xcoords = new int[8];
             this.zcoords = new int[8];
             xcoords[0] = x;
@@ -191,6 +192,10 @@ public class RuneRitualRecipe implements IRecipe<IInventory> {
 
         public int getZ() {
             return z;
+        }
+
+        public boolean isConsumed() {
+            return consume;
         }
 
         public int getX(int transformIdx) {
@@ -221,7 +226,8 @@ public class RuneRitualRecipe implements IRecipe<IInventory> {
                 Ingredient rune = Ingredient.deserialize(elem.getAsJsonObject().get("rune"));
                 int x = elem.getAsJsonObject().get("x").getAsInt();
                 int z = elem.getAsJsonObject().get("z").getAsInt();
-                runes.add(new RunePosition(rune, x, z));
+                boolean consume = elem.getAsJsonObject().has("consume") && elem.getAsJsonObject().get("consume").getAsBoolean();
+                runes.add(new RunePosition(rune, x, z, consume));
             }
 
             int mana = json.has("mana") ? json.get("mana").getAsInt() : 0;
@@ -272,7 +278,8 @@ public class RuneRitualRecipe implements IRecipe<IInventory> {
                 Ingredient rune = Ingredient.read(buffer);
                 int x = buffer.readVarInt();
                 int z = buffer.readVarInt();
-                runes.add(new RunePosition(rune, x, z));
+                boolean consume = buffer.readBoolean();
+                runes.add(new RunePosition(rune, x, z, consume));
             }
 
             int mana = buffer.readVarInt();
@@ -327,6 +334,7 @@ public class RuneRitualRecipe implements IRecipe<IInventory> {
                 rune.getRune().write(buffer);
                 buffer.writeVarInt(rune.getX());
                 buffer.writeVarInt(rune.getZ());
+                buffer.writeBoolean(rune.isConsumed());
             }
             
             buffer.writeVarInt(recipe.getMana());

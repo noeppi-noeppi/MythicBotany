@@ -3,6 +3,7 @@ package mythicbotany.infuser;
 import com.google.common.base.Predicates;
 import io.github.noeppi_noeppi.libx.mod.registration.TileEntityBase;
 import mythicbotany.MythicBotany;
+import mythicbotany.misc.SolidifiedMana;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -54,6 +55,7 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
         List<ItemStack> stacks = items.stream().map(ItemEntity::getItem).collect(Collectors.toList());
         if (active && recipe != null && output != null) {
             if (recipe.result(stacks).isEmpty()) {
+                SolidifiedMana.dropMana(world, pos, mana);
                 active = false;
                 recipe = null;
                 fromColor = -1;
@@ -76,6 +78,8 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
                 world.addEntity(outItem);
                 output = null;
                 markDirty();
+            } else {
+                items.forEach(ie -> MythicBotany.getNetwork().setItemMagnetImmune(ie));
             }
         } else {
             Pair<IInfuserRecipe, ItemStack> match = InfuserRecipe.getOutput(this.world, stacks);
@@ -93,8 +97,10 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
                 toColor = recipe.toColor();
                 output = match.getRight();
                 world.updateComparatorOutputLevel(this.pos, this.getBlockState().getBlock());
+                items.forEach(ie -> MythicBotany.getNetwork().setItemMagnetImmune(ie));
                 markDirty();
             } else if (active || recipe != null || output != null) {
+                SolidifiedMana.dropMana(world, pos, mana);
                 active = false;
                 recipe = null;
                 fromColor = -1;

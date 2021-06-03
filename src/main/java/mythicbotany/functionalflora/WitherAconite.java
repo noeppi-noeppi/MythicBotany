@@ -1,6 +1,7 @@
 package mythicbotany.functionalflora;
 
 import mythicbotany.ModItems;
+import mythicbotany.MythicBotany;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
@@ -40,6 +41,7 @@ public class WitherAconite extends FunctionalFlowerBase {
                             mana = MathHelper.clamp(mana + manaTransfer, 0, maxMana);
                             didWork = true;
                             item.setItem(stack);
+                            MythicBotany.getNetwork().setItemMagnetImmune(item);
                         }
                     }
                 }

@@ -10,56 +10,64 @@
         "tag": "botania:runes/pride"
       },
       "x": 2,
-      "z": 2
+      "z": 2,
+      "consume": false
     },
     {
       "rune": {
         "tag": "botania:runes/pride"
       },
       "x": 2,
-      "z": -2
+      "z": -2,
+      "consume": false
     },
     {
       "rune": {
         "tag": "botania:runes/pride"
       },
       "x": -2,
-      "z": 2
+      "z": 2,
+      "consume": false
     },
     {
       "rune": {
         "tag": "botania:runes/pride"
       },
       "x": -2,
-      "z": -2
+      "z": -2,
+      "consume": false
     },
     {
       "rune": {
         "item": "mythicbotany:alfheim_rune"
       },
       "x": -3,
-      "z": 0
+      "z": 0,
+      "consume": false
     },
     {
       "rune": {
         "item": "mythicbotany:alfheim_rune"
       },
       "x": 3,
-      "z": 0
+      "z": 0,
+      "consume": false
     },
     {
       "rune": {
         "tag": "botania:runes/water"
       },
       "x": 0,
-      "z": -3
+      "z": -3,
+      "consume": false
     },
     {
       "rune": {
         "tag": "botania:runes/water"
       },
       "x": 0,
-      "z": 3
+      "z": 3,
+      "consume": false
     }
   ],
   "mana": 0,

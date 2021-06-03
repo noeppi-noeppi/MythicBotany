@@ -34,6 +34,7 @@
   "item.mythicbotany.kvasir_mead": "Mett des Kvasir",
   "item.mythicbotany.dream_cherry": "Traumkirsche",
   "item.mythicbotany.alf_pixie_spawn_egg": "Alfheim Fee Spawn-Ei",
+  "item.mythicbotany.solidified_mana": "Erstarrtes Mana",
 
   "block.mythicbotany.mana_infuser": "Mana-Infundierer",
   "block.mythicbotany.alfsteel_block": "Alfstahl-Block",
@@ -86,6 +87,7 @@
   "tooltip.mythicbotany.rune_offset": "Relative Position: %s, %s",
   "tooltip.mythicbotany.sacrifice_entity1": "Kreatur muss in der Nähe des Rituals sein.",
   "tooltip.mythicbotany.sacrifice_entity2": "Sie wird während des Rituals geopfert.",
+  "tooltip.mythicbotany.solidified_mana": "Wirf es in ein Manabecken um dein Mana zurück zu erhalten.",
 
   "message.mythicbotany.mimir_knowledge": "Als du das Wasser aus dem Brunnen des Mimir trinkst, beginnst du Dinge zu begreifen, die du dir nicht im Traum hättest vorstellen können.",
   "message.mythicbotany.mimir_known": "Du hast das Wissen des Mimir bereits erreicht.",

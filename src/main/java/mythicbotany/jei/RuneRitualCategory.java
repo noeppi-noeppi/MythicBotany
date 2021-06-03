@@ -96,9 +96,9 @@ public class RuneRitualCategory implements IRecipeCategory<RuneRitualRecipe> {
 
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull RuneRitualRecipe recipe, @Nonnull IIngredients ii) {
-        initRunePositioned(layout, 0, 0, 0);
+        initRunePositioned(layout, 0, 0, 0, true);
         for (int i = 0; i < recipe.getRunes().size(); i++) {
-            initRunePositioned(layout, i + 1, recipe.getRunes().get(i).getX(), recipe.getRunes().get(i).getZ());
+            initRunePositioned(layout, i + 1, recipe.getRunes().get(i).getX(), recipe.getRunes().get(i).getZ(), recipe.getRunes().get(i).isConsumed());
         }
         int baseInputId = 1 + recipe.getRunes().size();
         int inputSize = ii.getInputs(VanillaTypes.ITEM).size() - baseInputId;
@@ -135,9 +135,9 @@ public class RuneRitualCategory implements IRecipeCategory<RuneRitualRecipe> {
         }
     }
 
-    private void initRunePositioned(@Nonnull IRecipeLayout layout, int idx, int x, int z) {
+    private void initRunePositioned(@Nonnull IRecipeLayout layout, int idx, int x, int z, boolean consume) {
         int realX = 2 + (12 * (x + 5));
         int realZ = 2 + (12 * ((-z) + 5));
-        layout.getItemStacks().init(idx, true, LittleBoxItemRenderer.getRenderer(x, z), realX, realZ, 12, 12, 0, 0);
+        layout.getItemStacks().init(idx, true, LittleBoxItemRenderer.getRenderer(x, z, consume), realX, realZ, 12, 12, 0, 0);
     }
 }

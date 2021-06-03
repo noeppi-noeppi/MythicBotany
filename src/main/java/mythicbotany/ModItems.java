@@ -9,6 +9,7 @@ import mythicbotany.bauble.ItemIceRing;
 import mythicbotany.kvasir.ItemKvasirMead;
 import mythicbotany.mimir.FullGjallarHorn;
 import mythicbotany.misc.ItemFadedNetherStar;
+import mythicbotany.misc.SolidifiedMana;
 import mythicbotany.wand.ItemDreamwoodWand;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Food;
@@ -58,4 +59,5 @@ public class ModItems {
     public static final Item kvasirMead = new ItemKvasirMead(MythicBotany.getInstance(), new Properties().maxStackSize(8));
     public static final Item dreamCherry = new ItemBase(MythicBotany.getInstance(), new Item.Properties().food(new Food.Builder().hunger(10).saturation(1.2f).effect(() -> new EffectInstance(Effects.GLOWING, 20 * 5, 0), 0.3f).build()));
     public static final Item alfPixieSpawnEgg = new SpawnEggItem(ModEntities.alfPixie, 0xFFB9E2, 0xC6C6A1, new Item.Properties().group(MythicBotany.getInstance().tab));
+    public static final Item solidifiedMana = new SolidifiedMana(new Item.Properties().maxStackSize(1));
 }

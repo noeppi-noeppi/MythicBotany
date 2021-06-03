@@ -10,84 +10,96 @@
         "item": "mythicbotany:midgard_rune"
       },
       "x": -2,
-      "z": -2
+      "z": -2,
+      "consume": false
     },
     {
       "rune": {
         "item": "mythicbotany:midgard_rune"
       },
       "x": 2,
-      "z": 2
+      "z": 2,
+      "consume": false
     },
     {
       "rune": {
         "item": "mythicbotany:helheim_rune"
       },
       "x": 2,
-      "z": -2
+      "z": -2,
+      "consume": false
     },
     {
       "rune": {
         "item": "mythicbotany:helheim_rune"
       },
       "x": -2,
-      "z": 2
+      "z": 2,
+      "consume": false
     },
     {
       "rune": {
         "tag": "botania:runes/summer"
       },
       "x": -1,
-      "z": -3
+      "z": -3,
+      "consume": false
     },
     {
       "rune": {
         "tag": "botania:runes/summer"
       },
       "x": 1,
-      "z": 3
+      "z": 3,
+      "consume": false
     },
     {
       "rune": {
         "tag": "botania:runes/summer"
       },
       "x": -3,
-      "z": -1
+      "z": -1,
+      "consume": false
     },
     {
       "rune": {
         "tag": "botania:runes/summer"
       },
       "x": 3,
-      "z": 1
+      "z": 1,
+      "consume": false
     },
     {
       "rune": {
         "tag": "botania:runes/fire"
       },
       "x": 1,
-      "z": -3
+      "z": -3,
+      "consume": false
     },
     {
       "rune": {
         "tag": "botania:runes/fire"
       },
       "x": -1,
-      "z": 3
+      "z": 3,
+      "consume": false
     },
     {
       "rune": {
         "tag": "botania:runes/fire"
       },
       "x": 3,
-      "z": -1
+      "z": -1,
+      "consume": false
     },
     {
       "rune": {
         "tag": "botania:runes/fire"
       },
       "x": -3,
-      "z": 1
+      "z": 1,
+      "consume": false
     }
   ],
   "mana": 20000,

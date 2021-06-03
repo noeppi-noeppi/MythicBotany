@@ -69,6 +69,7 @@ public class BlockManaInfuser extends BlockTE<TileManaInfuser> {
                 ItemEntity entity = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.4, pos.getZ() + 0.5, copy);
                 entity.setMotion(0, 0, 0);
                 entity.setThrowerId(player.getUniqueID());
+                entity.setPickupDelay(40);
                 world.addEntity(entity);
                 return ActionResultType.SUCCESS;
             } else {

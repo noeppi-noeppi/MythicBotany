@@ -7,6 +7,7 @@ import io.github.noeppi_noeppi.libx.util.NBTX;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModItems;
 import mythicbotany.ModRecipes;
+import mythicbotany.misc.SolidifiedMana;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ItemEntity;
@@ -127,7 +128,7 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
                                 tile.setTarget(null, 0, true);
                                 ItemStack runeStack = tile.getInventory().getStackInSlot(0);
                                 tile.getInventory().setStackInSlot(0, ItemStack.EMPTY);
-                                if (!runeStack.isEmpty()) {
+                                if (!rune.isConsumed() && !runeStack.isEmpty()) {
                                     ItemEntity ie = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, runeStack);
                                     world.addEntity(ie);
                                 }
@@ -329,6 +330,7 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
             if (recipe.getSpecialInput() != null) {
                 recipe.getSpecialInput().cancel(world, pos, recipe, specialNbt);
             }
+            SolidifiedMana.dropMana(world, pos, recipe.getMana());
             recipe = null;
             recipeId = null;
             progress = 0;

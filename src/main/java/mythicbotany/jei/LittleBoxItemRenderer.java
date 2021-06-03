@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -19,15 +20,15 @@ import java.util.Map;
 
 public class LittleBoxItemRenderer implements IIngredientRenderer<ItemStack> {
 
-    private static final Map<Long, LittleBoxItemRenderer> renders = new HashMap<>();
+    private static final Map<Triple<Integer, Integer, Boolean>, LittleBoxItemRenderer> renders = new HashMap<>();
     private static IIngredientRenderer<ItemStack> parent;
     
-    public static LittleBoxItemRenderer getRenderer(int x, int z) {
-        long id = x | (((long) z) << 32l);
-        if (!renders.containsKey(id)) {
-            renders.put(id, new LittleBoxItemRenderer(x, z));
+    public static LittleBoxItemRenderer getRenderer(int x, int z, boolean consume) {
+        Triple<Integer, Integer, Boolean> triple = Triple.of(x, z, consume);
+        if (!renders.containsKey(triple)) {
+            renders.put(triple, new LittleBoxItemRenderer(x, z, consume));
         }
-        return renders.get(id);
+        return renders.get(triple);
     }
 
     public static void setParent(IIngredientRenderer<ItemStack> parent) {
@@ -36,10 +37,12 @@ public class LittleBoxItemRenderer implements IIngredientRenderer<ItemStack> {
 
     private final int x;
     private final int z;
+    private final boolean consume;
 
-    private LittleBoxItemRenderer(int x, int z) {
+    private LittleBoxItemRenderer(int x, int z, boolean consume) {
         this.x = x;
         this.z = z;
+        this.consume = (x == 0 && z == 0) || consume;
     }
 
     public void render(@Nonnull MatrixStack matrixStack, int x, int y, @Nullable ItemStack stack) {
@@ -56,10 +59,13 @@ public class LittleBoxItemRenderer implements IIngredientRenderer<ItemStack> {
         }
         if (x != 0 || z != 0) {
             tooltip.add(new TranslationTextComponent("tooltip.mythicbotany.rune_offset", x, z).mergeStyle(TextFormatting.GOLD));
-            tooltip.add(new TranslationTextComponent("tooltip.mythicbotany.rune_keep").mergeStyle(TextFormatting.DARK_GREEN));
         } else {
             tooltip.add(new TranslationTextComponent("tooltip.mythicbotany.rune_master").mergeStyle(TextFormatting.GOLD));
+        }
+        if (consume) {
             tooltip.add(new TranslationTextComponent("tooltip.mythicbotany.rune_consume").mergeStyle(TextFormatting.DARK_RED));
+        } else {
+            tooltip.add(new TranslationTextComponent("tooltip.mythicbotany.rune_keep").mergeStyle(TextFormatting.DARK_GREEN));
         }
         return tooltip;
     }

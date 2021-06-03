@@ -2,11 +2,16 @@ package mythicbotany.rune;
 
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import io.github.noeppi_noeppi.libx.mod.registration.BlockTE;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.TorchBlock;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -15,6 +20,8 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
@@ -80,5 +87,25 @@ public class BlockRuneHolder<T extends TileRuneHolder> extends BlockTE<T> {
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(@Nonnull BlockState state, @Nonnull IBlockReader world, @Nonnull BlockPos pos, @Nonnull ISelectionContext ctx) {
         return SHAPE;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isValidPosition(@Nonnull BlockState state, @Nonnull IWorldReader world, @Nonnull BlockPos pos) {
+        return hasEnoughSolidSide(world, pos.down(), Direction.UP);
+    }
+    
+    @Nonnull
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState updatePostPlacement(@Nonnull BlockState state, @Nonnull Direction facing, @Nonnull BlockState facingState, @Nonnull IWorld world, @Nonnull BlockPos currentPos, @Nonnull BlockPos facingPos) {
+        return facing == Direction.DOWN && !this.isValidPosition(state, world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+    }
+    
+    @Nonnull
+    @Override
+    @SuppressWarnings("deprecation")
+    public PushReaction getPushReaction(@Nonnull BlockState state) {
+        return PushReaction.DESTROY;
     }
 }

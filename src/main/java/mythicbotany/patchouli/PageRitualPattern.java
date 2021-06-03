@@ -25,14 +25,14 @@ public class PageRitualPattern extends PageRuneRitualBase {
         RenderSystem.enableBlend();
         AbstractGui.blit(matrixStack, 0, 9, 0, 0, 116, 116, 256, 256);
         if (recipe != null) {
-            addRune(matrixStack, recipe.getCenterRune(), 0, 0, mouseX, mouseY);
+            addRune(matrixStack, recipe.getCenterRune(), 0, 0, true, mouseX, mouseY);
             for (RuneRitualRecipe.RunePosition rune : recipe.getRunes()) {
-                addRune(matrixStack, rune.getRune(), rune.getX(), rune.getZ(), mouseX, mouseY);
+                addRune(matrixStack, rune.getRune(), rune.getX(), rune.getZ(), rune.isConsumed(), mouseX, mouseY);
             }
         }
     }
 
-    private void addRune(MatrixStack matrixStack, Ingredient rune, int x, int z, int mouseX, int mouseY) {
+    private void addRune(MatrixStack matrixStack, Ingredient rune, int x, int z, boolean consume, int mouseX, int mouseY) {
         int realX = 3 + (10 * (x + 5));
         int realY = 12 + (10 * ((-z) + 5));
         ItemStack[] stacks = rune.getMatchingStacks();
@@ -48,7 +48,7 @@ public class PageRitualPattern extends PageRuneRitualBase {
             matrixStack.pop();
             if (parent.isMouseInRelativeRange(mouseX, mouseY, realX, realY, 10, 10)) {
                 parent.setTooltipStack(stack);
-                boolean keep = x != 0 || z != 0;
+                boolean keep = (x != 0 || z != 0) && !consume;
                 String text1 = keep ? I18n.format("tooltip.mythicbotany.rune_offset", x, z) : I18n.format("tooltip.mythicbotany.rune_master");
                 int color1 = TextFormatting.GOLD.getColor() == null ? 0x000000 : TextFormatting.GOLD.getColor();
 

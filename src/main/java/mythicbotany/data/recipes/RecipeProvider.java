@@ -64,7 +64,7 @@ public class RecipeProvider extends RecipeProviderBase {
                 .key('n', ModItems.alfsteelNugget)
                 .key('g', Items.GHAST_TEAR)
                 .key('p', vazkii.botania.common.block.ModBlocks.naturaPylon)
-                .patternLine(" n ")
+                .patternLine(" g ")
                 .patternLine("npn")
                 .patternLine(" g ")
                 .setGroup(MythicBotany.getInstance().modid + ":alfsteel_pylon")

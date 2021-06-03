@@ -52,100 +52,136 @@ public class RuneRitualRecipeBuilder {
         this.centerRune = centerRune;
     }
 
-    public RuneRitualRecipeBuilder rune(IItemProvider rune, int x, int z) {
-        return rune(Ingredient.fromItems(rune), x, z);
+    public RuneRitualRecipeBuilder rune(IItemProvider rune, int x, int z, boolean consume) {
+        return rune(Ingredient.fromItems(rune), x, z, consume);
     }
 
-    public RuneRitualRecipeBuilder rune(ITag<Item> rune, int x, int z) {
-        return rune(Ingredient.fromTag(rune), x, z);
+    public RuneRitualRecipeBuilder rune(ITag<Item> rune, int x, int z, boolean consume) {
+        return rune(Ingredient.fromTag(rune), x, z, consume);
     }
 
-    public RuneRitualRecipeBuilder rune(Ingredient rune, int x, int z) {
+    public RuneRitualRecipeBuilder rune(Ingredient rune, int x, int z, boolean consume) {
         if (x < -5 || x > 5 || z < -5 || z > 5) {
             throw new IllegalStateException("Rune positions should not be more than 5 blocks away frm the master rune holder: (" + x + "," + z + ")");
         }
-        this.runes.add(new RuneRitualRecipe.RunePosition(rune, x, z));
+        this.runes.add(new RuneRitualRecipe.RunePosition(rune, x, z, consume));
         return this;
     }
 
-    public RuneRitualRecipeBuilder rune4(IItemProvider rune, int x, int z) {
+    public RuneRitualRecipeBuilder rune4(IItemProvider rune, int x, int z, boolean consume) {
         if (x == 0) {
-            rune(rune, 0, -z);
-            rune(rune, 0, z);
-            rune(rune, -z, 0);
-            rune(rune, z, 0);
+            rune(rune, 0, -z, consume);
+            rune(rune, 0, z, consume);
+            rune(rune, -z, 0, consume);
+            rune(rune, z, 0, consume);
         } else if (z == 0) {
-            rune(rune, -x, 0);
-            rune(rune, x, 0);
-            rune(rune, 0, -x);
-            rune(rune, 0, x);
+            rune(rune, -x, 0, consume);
+            rune(rune, x, 0, consume);
+            rune(rune, 0, -x, consume);
+            rune(rune, 0, x, consume);
         } else {
-            rune(rune, -x, -z);
-            rune(rune, -x, z);
-            rune(rune, x, -z);
-            rune(rune, x, z);
+            rune(rune, -x, -z, consume);
+            rune(rune, -x, z, consume);
+            rune(rune, x, -z, consume);
+            rune(rune, x, z, consume);
         }
         return this;
     }
 
-    public RuneRitualRecipeBuilder rune4(ITag<Item> rune, int x, int z) {
+    public RuneRitualRecipeBuilder rune4(ITag<Item> rune, int x, int z, boolean consume) {
         if (x == 0) {
-            rune(rune, 0, -z);
-            rune(rune, 0, z);
-            rune(rune, -z, 0);
-            rune(rune, z, 0);
+            rune(rune, 0, -z, consume);
+            rune(rune, 0, z, consume);
+            rune(rune, -z, 0, consume);
+            rune(rune, z, 0, consume);
         } else if (z == 0) {
-            rune(rune, -x, 0);
-            rune(rune, x, 0);
-            rune(rune, 0, -x);
-            rune(rune, 0, x);
+            rune(rune, -x, 0, consume);
+            rune(rune, x, 0, consume);
+            rune(rune, 0, -x, consume);
+            rune(rune, 0, x, consume);
         } else {
-            rune(rune, -x, -z);
-            rune(rune, -x, z);
-            rune(rune, x, -z);
-            rune(rune, x, z);
+            rune(rune, -x, -z, consume);
+            rune(rune, -x, z, consume);
+            rune(rune, x, -z, consume);
+            rune(rune, x, z, consume);
         }
         return this;
     }
 
-    public RuneRitualRecipeBuilder rune4(Ingredient rune, int x, int z) {
+    public RuneRitualRecipeBuilder rune4(Ingredient rune, int x, int z, boolean consume) {
         if (x == 0) {
-            rune(rune, 0, -z);
-            rune(rune, 0, z);
-            rune(rune, -z, 0);
-            rune(rune, z, 0);
+            rune(rune, 0, -z, consume);
+            rune(rune, 0, z, consume);
+            rune(rune, -z, 0, consume);
+            rune(rune, z, 0, consume);
         } else if (z == 0) {
-            rune(rune, -x, 0);
-            rune(rune, x, 0);
-            rune(rune, 0, -x);
-            rune(rune, 0, x);
+            rune(rune, -x, 0, consume);
+            rune(rune, x, 0, consume);
+            rune(rune, 0, -x, consume);
+            rune(rune, 0, x, consume);
         } else {
-            rune(rune, -x, -z);
-            rune(rune, -x, z);
-            rune(rune, x, -z);
-            rune(rune, x, z);
+            rune(rune, -x, -z, consume);
+            rune(rune, -x, z, consume);
+            rune(rune, x, -z, consume);
+            rune(rune, x, z, consume);
         }
         return this;
     }
     
-    public RuneRitualRecipeBuilder rune2(IItemProvider rune, int x, int z) {
-        rune(rune, -x, -z);
-        rune(rune, x, z);
+    public RuneRitualRecipeBuilder rune2(IItemProvider rune, int x, int z, boolean consume) {
+        rune(rune, -x, -z, consume);
+        rune(rune, x, z, consume);
         return this;
+    }
+
+    public RuneRitualRecipeBuilder rune2(ITag<Item> rune, int x, int z, boolean consume) {
+        rune(rune, -x, -z, consume);
+        rune(rune, x, z, consume);
+        return this;
+    }
+
+    public RuneRitualRecipeBuilder rune2(Ingredient rune, int x, int z, boolean consume) {
+        rune(rune, -x, -z, consume);
+        rune(rune, x, z, consume);
+        return this;
+    }
+
+    public RuneRitualRecipeBuilder rune(IItemProvider rune, int x, int z) {
+        return rune(rune, x, z, false);
+    }
+
+    public RuneRitualRecipeBuilder rune(ITag<Item> rune, int x, int z) {
+        return rune(rune, x, z, false);
+    }
+
+    public RuneRitualRecipeBuilder rune(Ingredient rune, int x, int z) {
+        return rune(rune, x, z, false);
+    }
+
+    public RuneRitualRecipeBuilder rune4(IItemProvider rune, int x, int z) {
+        return rune4(rune, x, z, false);
+    }
+
+    public RuneRitualRecipeBuilder rune4(ITag<Item> rune, int x, int z) {
+        return rune4(rune, x, z, false);
+    }
+
+    public RuneRitualRecipeBuilder rune4(Ingredient rune, int x, int z) {
+        return rune4(rune, x, z, false);
+    }
+
+    public RuneRitualRecipeBuilder rune2(IItemProvider rune, int x, int z) {
+        return rune2(rune, x, z, false);
     }
 
     public RuneRitualRecipeBuilder rune2(ITag<Item> rune, int x, int z) {
-        rune(rune, -x, -z);
-        rune(rune, x, z);
-        return this;
+        return rune2(rune, x, z, false);
     }
 
     public RuneRitualRecipeBuilder rune2(Ingredient rune, int x, int z) {
-        rune(rune, -x, -z);
-        rune(rune, x, z);
-        return this;
+        return rune2(rune, x, z, false);
     }
-
+    
     public RuneRitualRecipeBuilder mana(int manaCost) {
         this.manaCost = manaCost;
         return this;
@@ -247,6 +283,7 @@ public class RuneRitualRecipeBuilder {
                 obj.add("rune", rune.getRune().serialize());
                 obj.addProperty("x", rune.getX());
                 obj.addProperty("z", rune.getZ());
+                obj.addProperty("consume", rune.isConsumed());
                 return obj;
             }).forEach(runesJson::add);
             json.add("runes", runesJson);

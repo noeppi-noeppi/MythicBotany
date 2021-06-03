@@ -72,6 +72,7 @@ public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IW
                 ItemEntity entity = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, copy);
                 entity.setMotion(0, 0, 0);
                 entity.setThrowerId(player.getUniqueID());
+                entity.setPickupDelay(40);
                 world.addEntity(entity);
                 return ActionResultType.SUCCESS;
             } else {

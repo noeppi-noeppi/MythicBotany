@@ -49,6 +49,11 @@ public class TileAlfsteelPylon extends TileEntityMana implements ITickableTileEn
                         mana -= manaCost;
                         stack = repairable.repairOneTick(stack);
                         item.setItem(stack);
+                        if (stack.getDamage() > 0) {
+                            MythicBotany.getNetwork().setItemMagnetImmune(item);
+                        } else {
+                            MythicBotany.getNetwork().removeItemMagnetImmune(item);
+                        }
                         markDirty();
                         MythicBotany.getNetwork().instance.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new PylonSerializer.PylonMessage(world.getDimensionKey().getRegistryName(), pos));
                     }
