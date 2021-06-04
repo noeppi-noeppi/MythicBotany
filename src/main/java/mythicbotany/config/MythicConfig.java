@@ -78,7 +78,6 @@ public class MythicConfig {
         public static float jump_modifier = 0.025f;
     }
     
-    
     public static class mjoellnir {
         
         @Config({
@@ -121,4 +120,7 @@ public class MythicConfig {
         @IntRange(min = 0)
         public static int ranged_cooldown = 120;
     }
+    
+    @Config("Whether rituals and infusions that are cancelled will drop solidified mana that can be used to get the mana back.")
+    public static boolean solidified_mana = true;
 }

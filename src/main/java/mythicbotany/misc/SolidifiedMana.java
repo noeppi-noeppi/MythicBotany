@@ -1,6 +1,7 @@
 package mythicbotany.misc;
 
 import mythicbotany.ModItems;
+import mythicbotany.config.MythicConfig;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
@@ -97,14 +98,16 @@ public class SolidifiedMana extends Item implements IManaItem, IManaTooltipDispl
     }
     
     public static void dropMana(World world, double x, double y, double z, int mana) {
-        int manaLeft = mana;
-        while (manaLeft > 0) {
-            int manaForStack = Math.min(manaLeft, 200000);
-            manaLeft -= manaForStack;
-            ItemStack stack = new ItemStack(ModItems.solidifiedMana);
-            stack.getOrCreateTag().putInt("Mana", manaForStack);
-            ItemEntity ie = new ItemEntity(world, x, y, z, stack);
-            world.addEntity(ie);
+        if (MythicConfig.solidified_mana) {
+            int manaLeft = mana;
+            while (manaLeft > 0) {
+                int manaForStack = Math.min(manaLeft, 200000);
+                manaLeft -= manaForStack;
+                ItemStack stack = new ItemStack(ModItems.solidifiedMana);
+                stack.getOrCreateTag().putInt("Mana", manaForStack);
+                ItemEntity ie = new ItemEntity(world, x, y, z, stack);
+                world.addEntity(ie);
+            }
         }
     }
 }
