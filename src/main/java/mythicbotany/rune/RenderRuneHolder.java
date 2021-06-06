@@ -38,7 +38,7 @@ public class RenderRuneHolder extends TileEntityRenderer<TileRuneHolder> {
             matrixStack.rotate(vec.rotation((float) (floatProgress * Math.PI)));
         }
         //noinspection deprecation
-        double rot = (Registry.ITEM.getId(stack.getItem()) % 2 == 0 ? 0.04 : -0.04) * (ClientTickHandler.ticksInGame + partialTicks + (7 * current.getX() + 31 * current.getZ() + Math.floorMod(current.getX(), current.getZ())));
+        double rot = (Registry.ITEM.getId(stack.getItem()) % 2 == 0 ? 0.04 : -0.04) * (ClientTickHandler.ticksInGame + partialTicks + (7 * current.getX() + 31 * current.getZ() + (current.getZ() == 0 ? 87 : Math.floorMod(current.getX(), current.getZ()))));
         matrixStack.rotate(Vector3f.YP.rotationDegrees(31 * current.getX() + 7 * current.getZ()));
         matrixStack.rotate(Vector3f.XP.rotationDegrees((float) (10 * Math.sin(rot))));
         matrixStack.rotate(Vector3f.ZP.rotationDegrees((float) (10 * Math.cos(rot))));
