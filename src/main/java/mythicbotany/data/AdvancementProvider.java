@@ -8,11 +8,18 @@ import mythicbotany.ModItems;
 import mythicbotany.advancement.AlfRepairTrigger;
 import mythicbotany.advancement.MjoellnirTrigger;
 import mythicbotany.alfheim.Alfheim;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import vazkii.botania.common.lib.ModTags;
+
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class AdvancementProvider extends AdvancementProviderBase {
 
@@ -24,6 +31,33 @@ public class AdvancementProvider extends AdvancementProviderBase {
     public void setup() {
         root().display(wandIcon())
                 .task(items(ModTags.Items.INGOTS_TERRASTEEL));
+        
+        // This is a horrible hack, will change in 1.17
+        try {
+            ResourceLocation rl = new ResourceLocation(mod.modid, mod.modid + "/root");
+            Field mapField = AdvancementProviderBase.class.getDeclaredField("advancements");
+            mapField.setAccessible(true);
+            //noinspection unchecked
+            Map<ResourceLocation, Supplier<Advancement>> map = (Map<ResourceLocation, Supplier<Advancement>>) mapField.get(this);
+            Supplier<Advancement> oldRoot = map.get(rl);
+            Supplier<Advancement> newRoot = () -> {
+                Advancement adv = oldRoot.get();
+                if (adv.getDisplay() == null) throw new RuntimeException("Nul display on root");
+                DisplayInfo display = new DisplayInfo(
+                        adv.getDisplay().getIcon(), adv.getDisplay().getTitle(), adv.getDisplay().getDescription(),
+                        new ResourceLocation(mod.modid, "textures/block/alfsteel_block.png"),
+                        adv.getDisplay().getFrame(), adv.getDisplay().shouldShowToast(),
+                        adv.getDisplay().shouldAnnounceToChat(), adv.getDisplay().isHidden()
+                );
+                return new Advancement(adv.getId(), adv.getParent(), display, adv.getRewards(), adv.getCriteria(), adv.getRequirements());
+            };
+            map.put(rl, newRoot);
+            Field rootSupplierField = AdvancementProviderBase.class.getDeclaredField("rootSupplier");
+            rootSupplierField.setAccessible(true);
+            rootSupplierField.set(this, newRoot);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
                 
         advancement("all_runes").display(ModItems.joetunheimRune)
                 .tasks(itemTasks(

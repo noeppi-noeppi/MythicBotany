@@ -45,11 +45,6 @@ import java.util.*;
 
 public class EventListener {
 
-    public static final Set<Item> NO_EXPIRE = ImmutableSet.of(
-            ModItems.manaRingGreatest,
-            ModItems.alfsteelPick
-    );
-
     @Nullable
     public static LivingEntity lightningImmuneEntity = null;
     
@@ -67,16 +62,6 @@ public class EventListener {
                 if (!event.getEntityLiving().isPotionActive(Effects.SLOWNESS)) {
                     event.getEntityLiving().addPotionEffect(new EffectInstance(Effects.SLOWNESS, 20, 99));
                 }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void itemExpire(ItemExpireEvent event) {
-        ItemStack stack = event.getEntityItem().getItem();
-        if (!stack.isEmpty()) {
-            if (NO_EXPIRE.contains(stack.getItem())) {
-                event.setCanceled(true);
             }
         }
     }

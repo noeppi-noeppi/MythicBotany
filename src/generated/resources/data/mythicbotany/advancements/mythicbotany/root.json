@@ -13,7 +13,8 @@
     "frame": "task",
     "show_toast": false,
     "announce_to_chat": false,
-    "hidden": false
+    "hidden": false,
+    "background": "mythicbotany:textures/block/alfsteel_block.png"
   },
   "criteria": {
     "inventory_changed": {

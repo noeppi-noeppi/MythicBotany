@@ -89,6 +89,12 @@ public class MythicConfig {
         })
         public static MjoellnirHoldRequirement requirement = MjoellnirHoldRequirement.EFFECT;
         
+        @Config({
+                "What is required for a player that holds the ring of thor to hold mjoellnir.",
+                "If a player holds the ring of thor, this OR `mjoellnir.requirement` must be met."
+        })
+        public static MjoellnirHoldRequirement requirement_thor = MjoellnirHoldRequirement.NOTHING;
+        
         @Config("The base damage for melee attacks.")
         @FloatRange(min = 1)
         public static float base_damage_melee = 25;

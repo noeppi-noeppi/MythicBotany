@@ -13,7 +13,7 @@ public class GreatestManaRing extends ItemManaRing {
     }
 
     public int getMaxMana(ItemStack stack) {
-        return MAX_MANA;
+        return MAX_MANA * stack.getCount();
     }
 
     @Override

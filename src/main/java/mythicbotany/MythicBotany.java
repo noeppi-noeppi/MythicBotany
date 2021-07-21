@@ -15,6 +15,7 @@ import mythicbotany.patchouli.PageRitualInfo;
 import mythicbotany.patchouli.PageRitualPattern;
 import mythicbotany.pylon.PylonRepairables;
 import mythicbotany.rune.RuneRitualRecipe;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -112,6 +113,7 @@ public class MythicBotany extends ModXRegistration {
 
     private void sendIMC(final InterModEnqueueEvent event) {
         InterModComms.sendTo("curios", "register_type", () -> SlotTypePreset.RING.getMessageBuilder().size(3).build());
+        InterModComms.sendTo("apotheosis", "set_ench_hard_cap", () -> new EnchantmentData(ModMisc.hammerMobility, 5));
     }
 
     public void serverStart(FMLServerStartingEvent event) {

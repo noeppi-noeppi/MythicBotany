@@ -16,7 +16,6 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.*;
@@ -32,6 +31,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import vazkii.botania.common.item.relic.ItemThorRing;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -52,7 +52,7 @@ public class BlockMjoellnir extends Block implements Registerable {
 
     public BlockMjoellnir(Properties properties, net.minecraft.item.Item.Properties itemProperties) {
         super(properties);
-        this.item = new ItemMjoellnir(this, itemProperties.group(MythicBotany.getInstance().tab));
+        this.item = new ItemMjoellnir(this, itemProperties.group(MythicBotany.getInstance().tab).isImmuneToFire());
         //noinspection ConstantConditions
         this.teType = new TileEntityType<>(() -> new TileMjoellnir(getTileType()), ImmutableSet.of(this), null);
         this.entityType = EntityType.Builder.<EntityMjoellnir>create(EntityMjoellnir::new, EntityClassification.MISC).size(0.6f, 0.9f).trackingRange(20).build(MythicBotany.getInstance().modid + "_mjoellnir");
@@ -174,7 +174,8 @@ public class BlockMjoellnir extends Block implements Registerable {
     }
 
     public static boolean canHold(PlayerEntity player) {
-        return player.isCreative() || player.isSpectator() || MythicConfig.mjoellnir.requirement.test(player);
+        return player.isCreative() || player.isSpectator() || MythicConfig.mjoellnir.requirement.test(player)
+                || (!ItemThorRing.getThorRing(player).isEmpty() && MythicConfig.mjoellnir.requirement_thor.test(player));
     }
 
     public static boolean putInInventory(PlayerEntity player, ItemStack stack, int hotbarSlot) {

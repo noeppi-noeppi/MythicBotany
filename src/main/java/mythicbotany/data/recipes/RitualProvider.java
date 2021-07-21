@@ -27,7 +27,7 @@ public class RitualProvider extends RecipeProviderBase {
     protected void registerRecipes(@Nonnull Consumer<IFinishedRecipe> consumer) {
         
         RuneRitualRecipeBuilder.runeRitual(ModTags.Items.RUNES_MANA)
-                .rune4(ModTags.Items.RUNES_PRIDE, -2, -2)
+                .rune4(ModTags.Items.RUNES_GREED, 2, 2)
                 .rune2(ModItems.alfheimRune, 3, 0)
                 .rune2(ModTags.Items.RUNES_WATER, 0, 3)
                 .input(Ingredient.fromStacks(new ItemStack(ModItems.cursedAndwariRing), new ItemStack(ModItems.andwariRing)))

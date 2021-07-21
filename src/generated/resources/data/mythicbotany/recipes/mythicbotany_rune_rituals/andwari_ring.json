@@ -7,23 +7,15 @@
   "runes": [
     {
       "rune": {
-        "tag": "botania:runes/pride"
+        "tag": "botania:runes/greed"
       },
-      "x": 2,
-      "z": 2,
-      "consume": false
-    },
-    {
-      "rune": {
-        "tag": "botania:runes/pride"
-      },
-      "x": 2,
+      "x": -2,
       "z": -2,
       "consume": false
     },
     {
       "rune": {
-        "tag": "botania:runes/pride"
+        "tag": "botania:runes/greed"
       },
       "x": -2,
       "z": 2,
@@ -31,10 +23,18 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/pride"
+        "tag": "botania:runes/greed"
       },
-      "x": -2,
+      "x": 2,
       "z": -2,
+      "consume": false
+    },
+    {
+      "rune": {
+        "tag": "botania:runes/greed"
+      },
+      "x": 2,
+      "z": 2,
       "consume": false
     },
     {
