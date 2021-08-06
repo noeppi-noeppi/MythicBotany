@@ -2,6 +2,7 @@ package mythicbotany.functionalflora;
 
 import com.google.common.collect.ImmutableSet;
 import io.github.noeppi_noeppi.libx.LibX;
+import mythicbotany.compat.CauldronCompat;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -114,9 +115,10 @@ public class Aquapanthus extends FunctionalFlowerBase {
         }
     }
 
-    private boolean canFill(BlockState state, TileEntity te) {
-        if ((state.getBlock() == Blocks.CAULDRON && state.get(CauldronBlock.LEVEL) < 3)
-                || (te instanceof IPetalApothecary && ((IPetalApothecary) te).getFluid() == IPetalApothecary.State.EMPTY)) {
+    private boolean canFill(BlockState state, @Nullable TileEntity te) {
+        if (state.getBlock() == Blocks.CAULDRON && state.get(CauldronBlock.LEVEL) < 3 && CauldronCompat.canFill(state, te)) {
+            return true;
+        } else if (te instanceof IPetalApothecary && ((IPetalApothecary) te).getFluid() == IPetalApothecary.State.EMPTY) {
             return true;
         } else if ((FILLING_SLOW_IDS.contains(state.getBlock().getRegistryName())
                 || FILLING_FAST_IDS.contains(state.getBlock().getRegistryName()))

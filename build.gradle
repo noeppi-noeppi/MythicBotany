@@ -14,16 +14,18 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.16.3-1.0.63')
+    annotationProcessor fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.16.3-1.0.76')
 
     compileOnly fg.deobf('mezz.jei:jei-1.16.4:7.6.0.58:api')
-    compile fg.deobf('vazkii.botania:Botania:1.16.4-413')
+    compile fg.deobf('vazkii.botania:Botania:1.16.5-419')
     compile fg.deobf('vazkii.patchouli:Patchouli:1.16.4-51')
-    compile fg.deobf('top.theillusivec4.curios:curios-forge:1.16.4-4.0.3.0')
-    compile fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.16.3-1.0.63')
+    compile fg.deobf('top.theillusivec4.curios:curios-forge:1.16.4-4.0.3.5')
+    compile fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.16.3-1.0.76')
     
     runtimeOnly fg.deobf('curse.maven:ex-nihilo-sequentia-400012:3227779')
     runtimeOnly fg.deobf('curse.maven:ex-compressum-241967:3226248')
+    runtimeOnly fg.deobf('curse.maven:inspirations-284007:3414517')
+    runtimeOnly fg.deobf('curse.maven:mantle-74924:3389377')
     runtimeOnly fg.deobf('mezz.jei:jei-1.16.4:7.6.0.58')
     
 //    runtimeOnly fg.deobf('curse.maven:endergetic-291509:3154938')
