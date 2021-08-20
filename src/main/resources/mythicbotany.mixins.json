@@ -4,9 +4,8 @@
   "refmap": "mythicbotany.refmap.json",
   "package": "mythicbotany.mixin",
   "minVersion": "0.8",
-  "client": [],
+  "client": [
+    "MixinWorldRenderer"],
   "server": [],
-  "mixins": [
-    "MixinWorldRenderer"
-  ]
+  "mixins": []
 }
