@@ -58,7 +58,7 @@ public class AlfheimBiomeManager {
     public static RegistryKey<Biome> generate(INoiseRandom noiseRandom, int x, int y) {
 		if (!RARE.isEmpty() && noiseRandom.random(20) == 10) {
             return RARE.get(noiseRandom.random(RARE.size()));
-		} else if (!UNCOMMON.isEmpty() && noiseRandom.random(5) == 2) {
+		} else if (!UNCOMMON.isEmpty() && noiseRandom.random(3) == 1) {
 		    return UNCOMMON.get(noiseRandom.random(UNCOMMON.size()));
 		} else {
 		    return COMMON.get(noiseRandom.random(COMMON.size()));
