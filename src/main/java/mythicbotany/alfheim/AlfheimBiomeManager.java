@@ -7,6 +7,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.INoiseRandom;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AlfheimBiomeManager {
@@ -21,6 +22,7 @@ public class AlfheimBiomeManager {
     
     public static void addCommonBiome(RegistryKey<Biome> biome) {
         COMMON.add(biome);
+        Collections.sort(COMMON);
     }
 
     public static void addUncommonBiome(ResourceLocation biome) {
@@ -29,6 +31,7 @@ public class AlfheimBiomeManager {
     
     public static void addUncommonBiome(RegistryKey<Biome> biome) {
         UNCOMMON.add(biome);
+        Collections.sort(UNCOMMON);
     }
 
     public static void addRareBiome(ResourceLocation biome) {
@@ -37,6 +40,7 @@ public class AlfheimBiomeManager {
     
     public static void addRareBiome(RegistryKey<Biome> biome) {
         RARE.add(biome);
+        Collections.sort(RARE);
     }
     
     public static void checkBiomes(Registry<Biome> biomeRegistry) {
