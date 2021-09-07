@@ -99,6 +99,8 @@ public class MythicBotany extends ModXRegistration {
 
             RuneRitualRecipe.registerSpecialInput(WanderingTraderRuneInput.INSTANCE);
             RuneRitualRecipe.registerSpecialOutput(MjoellnirRuneOutput.INSTANCE);
+            
+            Alfheim.setupBiomes();
         });
     }
 

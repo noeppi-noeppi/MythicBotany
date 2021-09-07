@@ -27,6 +27,14 @@ public class Alfheim {
         Registry.register(Registry.BIOME_PROVIDER_CODEC, new ResourceLocation(MythicBotany.getInstance().modid, "alfheim_biomes"), AlfheimBiomeProvider.CODEC);
     }
     
+    public static void setupBiomes() {
+        AlfheimBiomeManager.addCommonBiome(alfheimPlains.getRegistryName());
+        AlfheimBiomeManager.addCommonBiome(alfheimHills.getRegistryName());
+        AlfheimBiomeManager.addCommonBiome(dreamwoodForest.getRegistryName());
+        AlfheimBiomeManager.addCommonBiome(alfheimLakes.getRegistryName());
+        AlfheimBiomeManager.addRareBiome(goldenFields.getRegistryName());
+    }
+    
     public static final Biome alfheimPlains = alfheimBiome()
             .depth(0.025f)
             .scale(0.05f)
