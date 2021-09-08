@@ -1,16 +1,20 @@
 package mythicbotany.alfheim;
 
+import mythicbotany.MythicBotany;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.INoiseRandom;
+import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class AlfheimBiomeManager {
+    
+    public static final BiomeDictionary.Type ALFHEIM = BiomeDictionary.Type.getType(MythicBotany.getInstance() + "_alfheim");
     
     private static final List<RegistryKey<Biome>> COMMON = new ArrayList<>();
     private static final List<RegistryKey<Biome>> UNCOMMON = new ArrayList<>();
@@ -22,6 +26,7 @@ public class AlfheimBiomeManager {
     
     public static void addCommonBiome(RegistryKey<Biome> biome) {
         COMMON.add(biome);
+        BiomeDictionary.addTypes(biome, ALFHEIM);
         Collections.sort(COMMON);
     }
 
@@ -31,6 +36,7 @@ public class AlfheimBiomeManager {
     
     public static void addUncommonBiome(RegistryKey<Biome> biome) {
         UNCOMMON.add(biome);
+        BiomeDictionary.addTypes(biome, ALFHEIM);
         Collections.sort(UNCOMMON);
     }
 
@@ -40,6 +46,7 @@ public class AlfheimBiomeManager {
     
     public static void addRareBiome(RegistryKey<Biome> biome) {
         RARE.add(biome);
+        BiomeDictionary.addTypes(biome, ALFHEIM);
         Collections.sort(RARE);
     }
     

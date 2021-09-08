@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Features;
+import net.minecraftforge.common.BiomeDictionary;
 
 import static mythicbotany.alfheim.AlfheimBiomes.AlfBiomeType.GOLDEN;
 import static mythicbotany.alfheim.AlfheimBiomes.AlfBiomeType.GRASSY;
