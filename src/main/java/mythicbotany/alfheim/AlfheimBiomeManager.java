@@ -44,13 +44,13 @@ public class AlfheimBiomeManager {
     }
     
     public static void checkBiomes(Registry<Biome> biomeRegistry) {
-        COMMON.stream().filter(key -> !biomeRegistry.containsKey(key.getLocation())).findFirst().ifPresent(key -> {
+        COMMON.stream().filter(key -> !biomeRegistry.getOptional(key.getLocation()).isPresent()).findFirst().ifPresent(key -> {
             throw new IllegalStateException("Alfheim Biome not registered: " + key.getLocation() + "");
         });
-        UNCOMMON.stream().filter(key -> !biomeRegistry.containsKey(key.getLocation())).findFirst().ifPresent(key -> {
+        UNCOMMON.stream().filter(key -> !biomeRegistry.getOptional(key.getLocation()).isPresent()).findFirst().ifPresent(key -> {
             throw new IllegalStateException("Alfheim Biome not registered: " + key.getLocation() + "");
         });
-        RARE.stream().filter(key -> !biomeRegistry.containsKey(key.getLocation())).findFirst().ifPresent(key -> {
+        RARE.stream().filter(key -> !biomeRegistry.getOptional(key.getLocation()).isPresent()).findFirst().ifPresent(key -> {
             throw new IllegalStateException("Alfheim Biome not registered: " + key.getLocation() + "");
         });
     }
