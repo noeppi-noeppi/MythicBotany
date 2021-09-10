@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.carver.ConfiguredCarvers;
+import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraftforge.common.world.MobSpawnInfoBuilder;
 
 import java.util.function.UnaryOperator;
@@ -40,13 +41,35 @@ public class AlfheimBiomes {
                 .withSkyColor(getSkyColorWithTemperatureModifier(0.9f));
     }
 
-    public static BiomeGenerationSettings.Builder alfheimGen(AlfBiomeType type) {
+    public static BiomeGenerationSettings.Builder alfheimGen(ConfiguredSurfaceBuilder<?> surface) {
+        return alfheimGen(new AlfBiomeConfig() {
+            
+            @Override
+            public BiomeGenerationSettings.Builder applySurface(BiomeGenerationSettings.Builder builder) {
+                return builder.withSurfaceBuilder(surface);
+            }
+
+            @Override
+            public BiomeGenerationSettings.Builder applyCarver(BiomeGenerationSettings.Builder builder) {
+                return builder;
+            }
+
+            @Override
+            public BiomeGenerationSettings.Builder applyFeature(BiomeGenerationSettings.Builder builder) {
+                return builder;
+            }
+        });
+    }
+    
+    public static BiomeGenerationSettings.Builder alfheimGen(AlfBiomeConfig type) {
         BiomeGenerationSettings.Builder builder = new BiomeGenerationSettings.Builder();
         builder = type.applySurface(builder);
-        builder = builder.withCarver(GenerationStage.Carving.AIR, ConfiguredCarvers.CAVE)
+        builder = builder
+                .withCarver(GenerationStage.Carving.AIR, ConfiguredCarvers.CAVE)
                 .withCarver(GenerationStage.Carving.AIR, ConfiguredCarvers.CANYON);
         builder = type.applyCarver(builder);
-        builder = builder.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_FOREST_STONE)
+        builder = builder
+                .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_FOREST_STONE)
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_MOUNTAIN_STONE)
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_FUNGAL_STONE)
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_SWAMP_STONE)
@@ -60,7 +83,13 @@ public class AlfheimBiomes {
         return builder;
     }
 
-    public enum AlfBiomeType {
+    public interface AlfBiomeConfig {
+        BiomeGenerationSettings.Builder applySurface(BiomeGenerationSettings.Builder builder);
+        BiomeGenerationSettings.Builder applyCarver(BiomeGenerationSettings.Builder builder);
+        BiomeGenerationSettings.Builder applyFeature(BiomeGenerationSettings.Builder builder);
+    }
+    
+    public enum AlfBiomeType implements AlfBiomeConfig {
         GRASSY(
                 builder -> builder.withSurfaceBuilder(AlfheimFeatures.GRASS_SURFACE),
                 null,
