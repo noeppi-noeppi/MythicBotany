@@ -62,11 +62,13 @@ public class MythicBotany extends ModXRegistration {
         addRegistrationHandler(Alfheim::register);
         addRegistrationHandler(AlfheimFeatures::register);
 
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(DataGenerators::gatherData);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::sendIMC);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModEntities::createAttributes);
+
         MinecraftForge.EVENT_BUS.addListener(this::serverStart);
         MinecraftForge.EVENT_BUS.addListener(this::datapacksReloaded);
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(DataGenerators::gatherData);
 
         MinecraftForge.EVENT_BUS.register(new EventListener());
         //noinspection CodeBlock2Expr

@@ -110,7 +110,7 @@ public class AlfPixie extends CreatureEntity {
     }
 
     public static AttributeModifierMap entityAttributes() {
-        return MobEntity.getDefaultAttributes()
+        return MobEntity.registerAttributes()
                 .createMutableAttribute(Attributes.MAX_HEALTH, 4)
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 3)
                 .create();
