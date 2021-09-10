@@ -6,11 +6,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.INoiseRandom;
+import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import net.minecraftforge.common.BiomeDictionary;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class AlfheimBiomeManager {
     
@@ -19,6 +19,7 @@ public class AlfheimBiomeManager {
     private static final List<RegistryKey<Biome>> COMMON = new ArrayList<>();
     private static final List<RegistryKey<Biome>> UNCOMMON = new ArrayList<>();
     private static final List<RegistryKey<Biome>> RARE = new ArrayList<>();
+    private static final Map<Structure<?>, StructureSeparationSettings> STRUCTURES = new HashMap<>();
     
     public static void addCommonBiome(ResourceLocation biome) {
         addCommonBiome(RegistryKey.getOrCreateKey(Registry.BIOME_KEY, biome));
@@ -50,6 +51,10 @@ public class AlfheimBiomeManager {
         Collections.sort(RARE);
     }
     
+    public static void addStructure(Structure<?> structure, StructureSeparationSettings settings) {
+        STRUCTURES.put(structure, settings);
+    }
+    
     public static void checkBiomes(Registry<Biome> biomeRegistry) {
         COMMON.stream().filter(key -> !biomeRegistry.getOptional(key.getLocation()).isPresent()).findFirst().ifPresent(key -> {
             throw new IllegalStateException("Alfheim Biome not registered: " + key.getLocation() + "");
@@ -71,4 +76,8 @@ public class AlfheimBiomeManager {
 		    return COMMON.get(noiseRandom.random(COMMON.size()));
         }
 	}
+	
+	public static Map<Structure<?>, StructureSeparationSettings> structureMap() {
+        return Collections.unmodifiableMap(STRUCTURES);
+    }
 }

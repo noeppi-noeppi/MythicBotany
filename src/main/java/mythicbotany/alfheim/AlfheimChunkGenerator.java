@@ -32,9 +32,6 @@ public class AlfheimChunkGenerator {
     }
     
     private static DimensionStructuresSettings structures(DimensionStructuresSettings parent) {
-        return new DimensionStructuresSettings(Optional.ofNullable(parent.getSpreadSettings()), ImmutableMap.<Structure<?>, StructureSeparationSettings>builder()
-                .put(AlfheimWorldGen.andwariCave, new StructureSeparationSettings(28, 8, 438))
-                .build()
-        );
+        return new DimensionStructuresSettings(Optional.ofNullable(parent.getSpreadSettings()), AlfheimBiomeManager.structureMap());
     }
 }

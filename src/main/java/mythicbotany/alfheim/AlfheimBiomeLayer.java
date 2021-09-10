@@ -16,7 +16,7 @@ public class AlfheimBiomeLayer implements IAreaTransformer0 {
     }
     
     @Override
-	public int apply(@Nonnull INoiseRandom noiseRandom, int x, int y) {
+    public int apply(@Nonnull INoiseRandom noiseRandom, int x, int y) {
         return ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getID(AlfheimBiomeManager.generate(noiseRandom, x, y).getLocation());
-	}
+    }
 }

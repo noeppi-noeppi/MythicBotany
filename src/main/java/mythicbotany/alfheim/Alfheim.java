@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Features;
+import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import net.minecraftforge.common.BiomeDictionary;
 
 import static mythicbotany.alfheim.AlfheimBiomes.AlfBiomeType.GOLDEN;
@@ -34,6 +35,8 @@ public class Alfheim {
         AlfheimBiomeManager.addCommonBiome(dreamwoodForest.getRegistryName());
         AlfheimBiomeManager.addCommonBiome(alfheimLakes.getRegistryName());
         AlfheimBiomeManager.addRareBiome(goldenFields.getRegistryName());
+        
+        AlfheimBiomeManager.addStructure(AlfheimWorldGen.andwariCave, new StructureSeparationSettings(28, 8, 438));
     }
     
     public static final Biome alfheimPlains = alfheimBiome()
