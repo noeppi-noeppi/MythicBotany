@@ -1,0 +1,43 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "modid": "feywild",
+          "type": "forge:mod_loaded"
+        }
+      ],
+      "recipe": {
+        "type": "botania:petal_apothecary",
+        "output": {
+          "item": "mythicbotany:feysythia"
+        },
+        "ingredients": [
+          {
+            "tag": "botania:petals/yellow"
+          },
+          {
+            "tag": "botania:petals/yellow"
+          },
+          {
+            "tag": "botania:petals/purple"
+          },
+          {
+            "item": "mythicbotany:dream_cherry"
+          }
+        ]
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:true"
+        }
+      ],
+      "recipe": {
+        "type": "mythicbotany:empty"
+      }
+    }
+  ]
+}

@@ -8,8 +8,8 @@ import vazkii.botania.common.block.ModBlocks;
 
 public class Raindeletia extends FunctionalFlowerBase {
 
-    public Raindeletia(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn, 0x1E1CD8, true);
+    public Raindeletia(TileEntityType<?> tileEntityType) {
+        super(tileEntityType, 0x1E1CD8, true);
     }
 
     @Override

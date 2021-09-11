@@ -37,7 +37,7 @@ public class RitualProvider extends RecipeProviderBase {
         
         RuneRitualRecipeBuilder.runeRitual(ModItems.fimbultyrTablet)
                 .rune4(ModTags.Items.RUNES_WRATH, 5, 0)
-                .rune4(ModTags.Items.RUNES_GREED, 4, 4)
+                .rune4(ModTags.Items.RUNES_PRIDE, 4, 4)
                 .rune(ModTags.Items.RUNES_AIR, -3, 2)
                 .rune(ModTags.Items.RUNES_AIR, 3, 2)
                 .rune(ModTags.Items.RUNES_AIR, -2, 3)

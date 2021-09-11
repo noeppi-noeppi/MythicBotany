@@ -69,7 +69,6 @@ public class MythicBotany extends ModXRegistration {
         MinecraftForge.EVENT_BUS.addListener(this::serverStart);
         MinecraftForge.EVENT_BUS.addListener(this::datapacksReloaded);
 
-
         MinecraftForge.EVENT_BUS.register(new EventListener());
         //noinspection CodeBlock2Expr
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {

@@ -48,16 +48,16 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
     protected transient int redstoneIn = 0;
     protected transient boolean didWork;
 
-    public FunctionalFlowerBase(TileEntityType<?> tileEntityTypeIn, int color, boolean isGenerating) {
-        super(tileEntityTypeIn);
+    public FunctionalFlowerBase(TileEntityType<?> tileEntityType, int color, boolean isGenerating) {
+        super(tileEntityType);
         this.color = color;
         this.maxMana = DEFAULT_MAX_MANA;
         this.maxTransfer = isGenerating ? DEFAULT_MAX_TRANSFER : Integer.MAX_VALUE;
         this.isGenerating = isGenerating;
     }
 
-    public FunctionalFlowerBase(TileEntityType<?> tileEntityTypeIn, int color, int maxMana, int maxTransfer, boolean isGenerating) {
-        super(tileEntityTypeIn);
+    public FunctionalFlowerBase(TileEntityType<?> tileEntityType, int color, int maxMana, int maxTransfer, boolean isGenerating) {
+        super(tileEntityType);
         this.color = color;
         this.maxMana = maxMana;
         this.maxTransfer = maxTransfer;

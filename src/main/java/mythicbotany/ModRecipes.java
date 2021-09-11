@@ -17,5 +17,6 @@ public class ModRecipes {
     public static void register() {
         MythicBotany.getInstance().register(INFUSER.toString(), INFUSER_SERIALIZER);
         MythicBotany.getInstance().register(RUNE_RITUAL.toString(), RUNE_RITUAL_SERIALIZER);
+        MythicBotany.getInstance().register(EmptyRecipe.ID.getPath(), EmptyRecipe.Serializer.INSTANCE);
     }
 }

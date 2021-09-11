@@ -3,6 +3,7 @@ package mythicbotany.data.recipes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import mythicbotany.ModBlocks;
+import mythicbotany.ModItems;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
@@ -17,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import vazkii.botania.common.core.helper.ItemNBTHelper;
 import vazkii.botania.common.crafting.ModRecipeTypes;
-import vazkii.botania.common.item.ModItems;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -79,15 +79,18 @@ public class PetalProvider extends RecipeProvider {
 		Ingredient runeNidavellir = Ingredient.fromItems(mythicbotany.ModItems.nidavellirRune);
 		Ingredient runeHelheim = Ingredient.fromItems(mythicbotany.ModItems.helheimRune);
 
-		Ingredient redstoneRoot = Ingredient.fromItems(ModItems.redstoneRoot);
-		Ingredient pixieDust = Ingredient.fromItems(ModItems.pixieDust);
-		Ingredient gaiaSpirit = Ingredient.fromItems(ModItems.lifeEssence);
+		Ingredient redstoneRoot = Ingredient.fromItems(vazkii.botania.common.item.ModItems.redstoneRoot);
+		Ingredient pixieDust = Ingredient.fromItems(vazkii.botania.common.item.ModItems.pixieDust);
+		Ingredient gaiaSpirit = Ingredient.fromItems(vazkii.botania.common.item.ModItems.lifeEssence);
 
 		consumer.accept(make(ModBlocks.exoblaze, yellow, yellow, gray, lightGray, runeFire, Ingredient.fromItems(Items.BLAZE_POWDER)));
 		consumer.accept(make(ModBlocks.witherAconite, black, black, runePride, Ingredient.fromItems(Blocks.WITHER_ROSE)));
 		consumer.accept(make(ModBlocks.aquapanthus, blue, blue, lightBlue, green, cyan));
 		consumer.accept(make(ModBlocks.hellebore, red, red, purple, cyan, runeFire));
 		consumer.accept(make(ModBlocks.raindeletia, lightBlue, blue, magenta, white, runeWater));
+		consumer.accept(make(ModBlocks.petrunia, red, red, orange, brown, Ingredient.fromItems(ModItems.gjallarHornFull), Ingredient.fromItems(vazkii.botania.common.item.ModItems.phantomInk)));
+
+		RecipeUtil.forMod("feywild", consumer).accept(make(ModBlocks.feysythia, yellow, yellow, purple, Ingredient.fromItems(ModItems.dreamCherry)));
 	}
 
 	private static Ingredient tagIngrBotania(String tag) {

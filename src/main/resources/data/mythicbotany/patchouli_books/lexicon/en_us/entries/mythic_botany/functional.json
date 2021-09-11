@@ -18,6 +18,11 @@
       "type": "botania:petal_apothecary",
       "recipe": "mythicbotany:petal_apothecary/hellebore",
       "text": "lexicon.mythicbotany.functional.page3"
+    },
+    {
+      "type": "botania:petal_apothecary",
+      "recipe": "mythicbotany:petal_apothecary/petrunia",
+      "text": "lexicon.mythicbotany.functional.page4"
     }
   ]
 }

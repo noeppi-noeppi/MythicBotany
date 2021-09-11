@@ -14,8 +14,8 @@ public class Exoblaze extends FunctionalFlowerBase {
 
     private transient int tickToNextCheck = 0;
 
-    public Exoblaze(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn, 0xFFFF22, false);
+    public Exoblaze(TileEntityType<?> tileEntityType) {
+        super(tileEntityType, 0xFFFF22, false);
     }
 
     @Override

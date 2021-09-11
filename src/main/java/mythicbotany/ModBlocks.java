@@ -40,6 +40,8 @@ public class ModBlocks {
     public static final BlockFunctionalFlower<Aquapanthus> aquapanthus = new BlockFunctionalFlower<>(MythicBotany.getInstance(), Aquapanthus.class, Properties.create(Material.PLANTS), false);
     public static final BlockFunctionalFlower<Hellebore> hellebore = new BlockFunctionalFlower<>(MythicBotany.getInstance(), Hellebore.class, Properties.create(Material.PLANTS), false);
     public static final BlockFunctionalFlower<Raindeletia> raindeletia = new BlockFunctionalFlower<>(MythicBotany.getInstance(), Raindeletia.class, Properties.create(Material.PLANTS), true);
+    public static final BlockFunctionalFlower<Feysythia> feysythia = new BlockFunctionalFlower<>(MythicBotany.getInstance(), Feysythia.class, Properties.create(Material.PLANTS), true);
+    public static final BlockFunctionalFlower<Petrunia> petrunia = new BlockFunctionalFlower<>(MythicBotany.getInstance(), Petrunia.class, Properties.create(Material.PLANTS), false);
     public static final BlockTE<TileYggdrasilBranch> yggdrasilBranch = new BlockYggdrasilBranch(MythicBotany.getInstance(), Properties.create(Material.WOOD).hardnessAndResistance(4).sound(SoundType.WOOD));
     public static final BlockTE<TileRuneHolder> runeHolder = new BlockRuneHolder<>(MythicBotany.getInstance(), TileRuneHolder.class, Properties.create(Material.IRON).hardnessAndResistance(3).sound(SoundType.METAL));
     public static final BlockTE<TileMasterRuneHolder> masterRuneHolder = new BlockMasterRuneHolder(MythicBotany.getInstance(), Properties.create(Material.IRON).hardnessAndResistance(3).sound(SoundType.METAL));

@@ -11,6 +11,7 @@ repositories {
     maven { url = 'https://maven.theillusivec4.top/' }
     maven { url = 'https://maven.melanx.de/' }
     maven { url = 'https://www.cursemaven.com' }
+    maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 }
 
 dependencies {
@@ -26,6 +27,8 @@ dependencies {
     runtimeOnly fg.deobf('curse.maven:ex-compressum-241967:3226248')
     runtimeOnly fg.deobf('curse.maven:inspirations-284007:3414517')
     runtimeOnly fg.deobf('curse.maven:mantle-74924:3389377')
+    runtimeOnly fg.deobf('curse.maven:feywild-484377:3455423')
+    runtimeOnly fg.deobf("software.bernie.geckolib:geckolib-forge-1.16.5:3.0.41")
     runtimeOnly fg.deobf('mezz.jei:jei-1.16.4:7.6.0.58')
     
 //    runtimeOnly fg.deobf('curse.maven:endergetic-291509:3154938')

@@ -16,8 +16,8 @@ public class WitherAconite extends FunctionalFlowerBase {
 
     public static final int DEFAULT_MANA_PER_STAR = 2000000;
 
-    public WitherAconite(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn, 0x333333, DEFAULT_MANA_PER_STAR / 500, DEFAULT_MANA_PER_STAR / 2000, true);
+    public WitherAconite(TileEntityType<?> tileEntityType) {
+        super(tileEntityType, 0x333333, DEFAULT_MANA_PER_STAR / 500, DEFAULT_MANA_PER_STAR / 2000, true);
     }
 
     @Override

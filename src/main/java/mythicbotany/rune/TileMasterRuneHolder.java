@@ -28,9 +28,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.*;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
@@ -41,6 +39,8 @@ import vazkii.botania.client.fx.WispParticleData;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -195,14 +195,22 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
     }
 
     public void tryStartRitual(PlayerEntity player) {
+        tryStartRitual(
+                msg -> player.sendMessage(msg, player.getUniqueID()),
+                mana -> ManaItemHandler.instance().requestManaExact(new ItemStack(Items.COBBLESTONE), player, mana, false),
+                mana -> ManaItemHandler.instance().requestManaExact(new ItemStack(Items.COBBLESTONE), player, mana, true)
+        );
+    }
+    
+    public void tryStartRitual(Consumer<ITextComponent> messages, Function<Integer, Boolean> manaTest, Consumer<Integer> manaRequest) {
         if (recipe != null) {
-            player.sendMessage(new TranslationTextComponent("message.mythicbotany.ritual_running").mergeStyle(TextFormatting.GRAY), player.getUniqueID());
+            messages.accept(new TranslationTextComponent("message.mythicbotany.ritual_running").mergeStyle(TextFormatting.GRAY));
         } else {
             Pair<RuneRitualRecipe, Integer> recipe = findRecipe();
             if (recipe == null) {
-                player.sendMessage(new TranslationTextComponent("message.mythicbotany.ritual_wrong_shape").mergeStyle(TextFormatting.GRAY), player.getUniqueID());
+                messages.accept(new TranslationTextComponent("message.mythicbotany.ritual_wrong_shape").mergeStyle(TextFormatting.GRAY));
             } else {
-                tryStart(recipe.getLeft(), recipe.getRight(), player);
+                tryStart(recipe.getLeft(), recipe.getRight(), messages, manaTest, manaRequest);
             }
         }
     }
@@ -234,13 +242,13 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
 
         return Stream.of(Pair.of(recipe, transformId));
     }
-
-    private void tryStart(RuneRitualRecipe recipe, int transform, PlayerEntity player) {
+    
+    private void tryStart(RuneRitualRecipe recipe, int transform, Consumer<ITextComponent> messages, Function<Integer, Boolean> manaTest, Consumer<Integer> manaRequest) {
         if (recipe.getMana() > 0) {
             // We need to give a stack here or the request will always fail. The stack may not be empty.
             // So we just pass a piece of cobblestone.
-            if (!ManaItemHandler.instance().requestManaExact(new ItemStack(Items.COBBLESTONE), player, recipe.getMana(), false)) {
-                player.sendMessage(new TranslationTextComponent("message.mythicbotany.ritual_less_mana").mergeStyle(TextFormatting.GRAY), player.getUniqueID());
+            if (!manaTest.apply(recipe.getMana())) {
+                messages.accept(new TranslationTextComponent("message.mythicbotany.ritual_less_mana").mergeStyle(TextFormatting.GRAY));
                 return;
             }
         }
@@ -261,7 +269,7 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
                     continue ingredientLoop;
                 }
             }
-            player.sendMessage(new TranslationTextComponent("message.mythicbotany.ritual_wrong_items").mergeStyle(TextFormatting.GRAY), player.getUniqueID());
+            messages.accept(new TranslationTextComponent("message.mythicbotany.ritual_wrong_items").mergeStyle(TextFormatting.GRAY));
             return;
         }
 
@@ -270,13 +278,13 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
             Either<IFormattableTextComponent, CompoundNBT> result = recipe.getSpecialInput().apply(world, pos, recipe);
             Optional<IFormattableTextComponent> tc = result.left();
             if (tc.isPresent()) {
-                player.sendMessage(tc.get().mergeStyle(TextFormatting.GRAY), player.getUniqueID());
+                messages.accept(tc.get().mergeStyle(TextFormatting.GRAY));
                 return;
             }
             result.ifRight(nbt -> specialNbt = nbt);
         }
-
-        ManaItemHandler.instance().requestManaExact(new ItemStack(Items.COBBLESTONE), player, recipe.getMana(), true);
+        
+        manaRequest.accept(recipe.getMana());
         for (MutableTriple<ItemEntity, ItemStack, Integer> triple : stacks) {
             ItemStack stack = triple.getMiddle();
             stack.setCount(triple.getRight());

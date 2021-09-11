@@ -1,0 +1,26 @@
+{
+  "type": "botania:petal_apothecary",
+  "output": {
+    "item": "mythicbotany:petrunia"
+  },
+  "ingredients": [
+    {
+      "tag": "botania:petals/red"
+    },
+    {
+      "tag": "botania:petals/red"
+    },
+    {
+      "tag": "botania:petals/orange"
+    },
+    {
+      "tag": "botania:petals/brown"
+    },
+    {
+      "item": "mythicbotany:gjallar_horn_full"
+    },
+    {
+      "item": "botania:phantom_ink"
+    }
+  ]
+}

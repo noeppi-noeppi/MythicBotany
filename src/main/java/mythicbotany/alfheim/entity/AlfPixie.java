@@ -113,6 +113,7 @@ public class AlfPixie extends CreatureEntity {
         return MobEntity.registerAttributes()
                 .createMutableAttribute(Attributes.MAX_HEALTH, 4)
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 3)
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 32)
                 .create();
     }
 

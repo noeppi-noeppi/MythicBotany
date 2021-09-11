@@ -16,8 +16,8 @@ public class Hellebore extends FunctionalFlowerBase {
 
     public static final int MANA_PER_ENTITY_AND_SECOND = 150;
 
-    public Hellebore(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn, 0xCD3EBB, false);
+    public Hellebore(TileEntityType<?> tileEntityType) {
+        super(tileEntityType, 0xCD3EBB, false);
     }
 
     @Override

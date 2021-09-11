@@ -52,8 +52,8 @@ public class Aquapanthus extends FunctionalFlowerBase {
     private BlockPos currentlyFilling = null;
     private int fillingSince = 0;
 
-    public Aquapanthus(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn, 0x4444FF, false);
+    public Aquapanthus(TileEntityType<?> tileEntityType) {
+        super(tileEntityType, 0x4444FF, false);
     }
 
     @Override

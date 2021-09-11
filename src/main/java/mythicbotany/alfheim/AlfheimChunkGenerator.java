@@ -1,6 +1,5 @@
 package mythicbotany.alfheim;
 
-import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.noeppi_noeppi.libx.world.WorldSeedHolder;
@@ -9,19 +8,17 @@ import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.NoiseChunkGenerator;
-import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
-import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import vazkii.botania.common.block.ModBlocks;
 
 import java.util.Optional;
 
 public class AlfheimChunkGenerator {
 
-    public static final Codec<NoiseChunkGenerator> CODEC = RecordCodecBuilder.create((p_236091_0_) -> p_236091_0_.group(
+    public static final Codec<NoiseChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BiomeProvider.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeProvider),
-            WorldSeedHolder.CODEC.fieldOf("seed").forGetter((p_236093_0_) -> p_236093_0_.seed)
-    ).apply(p_236091_0_, p_236091_0_.stable((b, s) -> new NoiseChunkGenerator(b, s, AlfheimChunkGenerator::settings))));
+            WorldSeedHolder.CODEC.fieldOf("seed").forGetter(generator -> generator.seed)
+    ).apply(instance, instance.stable((b, s) -> new NoiseChunkGenerator(b, s, AlfheimChunkGenerator::settings))));
 
     private static DimensionSettings settings() {
         DimensionSettings defaultSettings = DimensionSettings.getDefaultDimensionSettings();
