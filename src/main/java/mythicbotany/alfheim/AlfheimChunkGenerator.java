@@ -17,7 +17,7 @@ public class AlfheimChunkGenerator {
 
     public static final Codec<NoiseChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BiomeProvider.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeProvider),
-            WorldSeedHolder.CODEC.fieldOf("seed").forGetter(generator -> generator.seed)
+            Codec.LONG.fieldOf("seed").orElseGet(WorldSeedHolder::getSeed).forGetter(generator -> generator.seed)
     ).apply(instance, instance.stable((b, s) -> new NoiseChunkGenerator(b, s, AlfheimChunkGenerator::settings))));
 
     private static DimensionSettings settings() {

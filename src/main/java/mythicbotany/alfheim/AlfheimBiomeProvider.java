@@ -27,7 +27,7 @@ import java.util.function.LongFunction;
 public class AlfheimBiomeProvider extends BiomeProvider {
 
     public static final Codec<AlfheimBiomeProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                    WorldSeedHolder.CODEC.fieldOf("seed").forGetter(provider -> provider.seed),
+                    Codec.LONG.fieldOf("seed").orElseGet(WorldSeedHolder::getSeed).forGetter(provider -> provider.seed),
                     RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(provider -> provider.biomeRegistry)
             ).apply(instance, instance.stable(AlfheimBiomeProvider::new)));
 
