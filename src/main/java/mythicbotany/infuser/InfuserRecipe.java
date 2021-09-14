@@ -114,7 +114,7 @@ public class InfuserRecipe implements IInfuserRecipe {
                 if (recipe instanceof IInfuserRecipe) {
                     ItemStack stack = ((IInfuserRecipe) recipe).result(inputs);
                     if (!stack.isEmpty())
-                        return Pair.of((IInfuserRecipe) recipe, stack);
+                        return Pair.of((IInfuserRecipe) recipe, stack.copy());
                 }
             }
         }
@@ -122,6 +122,7 @@ public class InfuserRecipe implements IInfuserRecipe {
     }
 
     public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<InfuserRecipe> {
+        
         @Nonnull
         @Override
         public InfuserRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {

@@ -114,7 +114,7 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
                     if (progress >= recipe.getTicks()) {
                         getInventory().setStackInSlot(0, ItemStack.EMPTY);
                         for (ItemStack result : recipe.getOutputs()) {
-                            ItemEntity ie = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, result);
+                            ItemEntity ie = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, result.copy());
                             ie.setPickupDelay(40);
                             ie.setGlowing(true);
                             world.addEntity(ie);
