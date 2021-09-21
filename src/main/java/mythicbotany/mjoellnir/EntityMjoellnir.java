@@ -193,7 +193,8 @@ public class EntityMjoellnir extends ProjectileEntity {
             Vector3d motion = getMotion();
             Vector3d position = getPositionVec();
             Vector3d returnVec = new Vector3d(returnPoint.x - position.x, returnPoint.y - position.y, returnPoint.z - position.z).normalize().mul(0.6, 0.6, 0.6);
-            double loyalty = (1 + 0.07 * EnchantmentHelper.getEnchantmentLevel(Enchantments.LOYALTY, stack));
+            // clamp because some mods think, it's a good idea to over enchant stuff on any type of tool they don't know about
+            double loyalty = 1 + (0.07 * MathHelper.clamp(EnchantmentHelper.getEnchantmentLevel(Enchantments.LOYALTY, stack), 0, 3));
             Vector3d newMotion = new Vector3d(((3 * motion.x) + returnVec.x) / 4, ((3 * motion.y) + returnVec.y) / 4, ((3 * motion.z) + returnVec.z) / 4).mul(loyalty, loyalty, loyalty);
             setMotion(newMotion);
         }
