@@ -1,10 +1,8 @@
 package mythicbotany.alfheim;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.noeppi_noeppi.libx.world.WorldSeedHolder;
-import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
@@ -20,8 +18,6 @@ import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 
 import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Objects;
 import java.util.function.LongFunction;
 
 public class AlfheimBiomeProvider extends BiomeProvider {
@@ -31,25 +27,12 @@ public class AlfheimBiomeProvider extends BiomeProvider {
                     RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(provider -> provider.biomeRegistry)
             ).apply(instance, instance.stable(AlfheimBiomeProvider::new)));
 
-    private static final List<Biome> biomes = ImmutableList.of(
-            Alfheim.alfheimPlains,
-            Alfheim.alfheimHills,
-            Alfheim.dreamwoodForest,
-            Alfheim.goldenFields,
-            Alfheim.alfheimLakes
-    );
-
     private final Layer genBiomes;
     public final long seed;
     public final Registry<Biome> biomeRegistry;
 
     public AlfheimBiomeProvider(long seed, Registry<Biome> biomeRegistry) {
-        super(biomes.stream().map(b -> () -> biomeRegistry.getOrThrow(
-                RegistryKey.getOrCreateKey(
-                        Registry.BIOME_KEY,
-                        Objects.requireNonNull(b.getRegistryName(), "Biome not registered.")
-                )
-        )));
+        super(AlfheimBiomeManager.allBiomes().map(biomeId -> () -> biomeRegistry.getOrThrow(biomeId)));
         this.seed = seed;
         this.biomeRegistry = biomeRegistry;
         IAreaFactory<LazyArea> areaFactory = createAreaFactory(biomeRegistry, seedModifier -> new LazyAreaLayerContext(25, seed, seedModifier), seed);

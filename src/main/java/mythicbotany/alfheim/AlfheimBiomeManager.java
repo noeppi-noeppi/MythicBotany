@@ -11,6 +11,7 @@ import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class AlfheimBiomeManager {
     
@@ -76,6 +77,14 @@ public class AlfheimBiomeManager {
 		    return COMMON.get(noiseRandom.random(COMMON.size()));
         }
 	}
+    
+    public static Stream<RegistryKey<Biome>> allBiomes() {
+        Set<RegistryKey<Biome>> set = new HashSet<>();
+        set.addAll(COMMON);
+        set.addAll(UNCOMMON);
+        set.addAll(RARE);
+        return set.stream().sorted();
+    }
 	
 	public static Map<Structure<?>, StructureSeparationSettings> structureMap() {
         return Collections.unmodifiableMap(STRUCTURES);
