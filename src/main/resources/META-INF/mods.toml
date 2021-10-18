@@ -7,7 +7,8 @@ issueTrackerURL="http://placeholder.invalid"
 modId="mythicbotany"
 version="${file.jarVersion}"
 displayName="MythicBotany"
-displayURL="http://placeholder.invalid"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/mythicbotany"
+updateJSONURL="https://assets.melanx.de/updates/mythicbotany.json"
 authors="noeppi_noeppi, Contributors: MelanX"
 description='''
 Dive deeper into the world of botania.
