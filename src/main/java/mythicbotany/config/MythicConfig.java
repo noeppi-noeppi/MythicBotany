@@ -131,23 +131,23 @@ public class MythicConfig {
         
         @Group("Spawn configuration for the alf pixie.")
         public static class pixies {
-            @Config public static int weight;
-            @Config public static int min;
-            @Config public static int max;
+            @Config public static int weight = 50;
+            @Config public static int min = 4;
+            @Config public static int max = 10;
         }
 
         @Group("Spawn configuration for the withes in alfheim.")
         public static class witch {
-            @Config public static int weight;
-            @Config public static int min;
-            @Config public static int max;
+            @Config public static int weight = 10;
+            @Config public static int min = 1;
+            @Config public static int max = 2;
         }
         
         @Group("Spawn configuration for the illusioner in alfheim.")
         public static class illusioner {
-            @Config public static int weight;
-            @Config public static int min;
-            @Config public static int max;
+            @Config public static int weight = 5;
+            @Config public static int min = 1;
+            @Config public static int max = 1;
         }
     }
     
