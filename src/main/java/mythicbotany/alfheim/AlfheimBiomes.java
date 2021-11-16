@@ -1,6 +1,7 @@
 package mythicbotany.alfheim;
 
 import mythicbotany.ModEntities;
+import mythicbotany.config.MythicConfig;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.biome.*;
@@ -28,9 +29,9 @@ public class AlfheimBiomes {
                 .withCreatureSpawnProbability(0.4f);
         DefaultBiomeFeatures.withPassiveMobs(builder);
                 return builder
-                        .withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntities.alfPixie, 50, 4, 10))
-                        .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.WITCH, 10, 1, 2))
-                        .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ILLUSIONER, 5, 1, 1));
+                        .withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntities.alfPixie, MythicConfig.spawns.pixies.weight, MythicConfig.spawns.pixies.min, MythicConfig.spawns.pixies.max))
+                        .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.WITCH, MythicConfig.spawns.witch.weight, MythicConfig.spawns.witch.min, MythicConfig.spawns.witch.max))
+                        .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ILLUSIONER, MythicConfig.spawns.illusioner.weight, MythicConfig.spawns.illusioner.min, MythicConfig.spawns.illusioner.max));
     }
 
     public static BiomeAmbience.Builder alfheimAmbience() {

@@ -127,6 +127,30 @@ public class MythicConfig {
         public static int ranged_cooldown = 120;
     }
     
+    public static class spawns {
+        
+        @Group("Spawn configuration for the alf pixie.")
+        public static class pixies {
+            @Config public static int weight;
+            @Config public static int min;
+            @Config public static int max;
+        }
+
+        @Group("Spawn configuration for the withes in alfheim.")
+        public static class witch {
+            @Config public static int weight;
+            @Config public static int min;
+            @Config public static int max;
+        }
+        
+        @Group("Spawn configuration for the illusioner in alfheim.")
+        public static class illusioner {
+            @Config public static int weight;
+            @Config public static int min;
+            @Config public static int max;
+        }
+    }
+    
     @Config("Whether rituals and infusions that are cancelled will drop solidified mana that can be used to get the mana back.")
     public static boolean solidified_mana = true;
 }
