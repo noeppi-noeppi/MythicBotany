@@ -5,6 +5,9 @@ import mythicbotany.infuser.InfuserRecipe;
 import mythicbotany.rune.RuneRitualRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.util.registry.Registry;
+
+import java.util.Objects;
 
 public class ModRecipes {
 
@@ -15,8 +18,8 @@ public class ModRecipes {
     public static final IRecipeSerializer<RuneRitualRecipe> RUNE_RITUAL_SERIALIZER = new RuneRitualRecipe.Serializer();
 
     public static void register() {
-        MythicBotany.getInstance().register(INFUSER.toString(), INFUSER_SERIALIZER);
-        MythicBotany.getInstance().register(RUNE_RITUAL.toString(), RUNE_RITUAL_SERIALIZER);
+        MythicBotany.getInstance().register(Objects.requireNonNull(Registry.RECIPE_TYPE.getKey(INFUSER)).getPath(), INFUSER_SERIALIZER);
+        MythicBotany.getInstance().register(Objects.requireNonNull(Registry.RECIPE_TYPE.getKey(RUNE_RITUAL)).getPath(), RUNE_RITUAL_SERIALIZER);
         MythicBotany.getInstance().register(EmptyRecipe.ID.getPath(), EmptyRecipe.Serializer.INSTANCE);
     }
 }
