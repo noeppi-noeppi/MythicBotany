@@ -3,13 +3,13 @@ package mythicbotany.network;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import io.github.noeppi_noeppi.libx.network.NetworkX;
 import mythicbotany.network.ParticleSerializer.ParticleMessage;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.PacketDistributor;
 
 public class MythicNetwork extends NetworkX {
 
@@ -18,8 +18,8 @@ public class MythicNetwork extends NetworkX {
     }
 
     @Override
-    protected String getProtocolVersion() {
-        return "4";
+    protected Protocol getProtocol() {
+        return Protocol.of("5");
     }
 
     @Override
@@ -33,55 +33,55 @@ public class MythicNetwork extends NetworkX {
         register(new AlfSwordLeftClickSerializer(), () -> AlfSwordLeftClickHandler::handle, NetworkDirection.PLAY_TO_SERVER);
     }
 
-    public void spawnParticle(World world, BasicParticleType particle, int amount, double x, double y, double z, double xm, double ym, double zm, double xd, double yd, double zd) {
-        spawnParticle(world, particle, amount, x, y, z, xm, ym, zm, xd, yd, zd, false);
+    public void spawnParticle(Level level, SimpleParticleType particle, int amount, double x, double y, double z, double xm, double ym, double zm, double xd, double yd, double zd) {
+        spawnParticle(level, particle, amount, x, y, z, xm, ym, zm, xd, yd, zd, false);
     }
 
-    public void spawnParticle(World world, BasicParticleType particle, int amount, double x, double y, double z, double xm, double ym, double zm, double xd, double yd, double zd, boolean randomizePosition) {
-        if (world.isRemote) {
+    public void spawnParticle(Level level, SimpleParticleType particle, int amount, double x, double y, double z, double xm, double ym, double zm, double xd, double yd, double zd, boolean randomizePosition) {
+        if (level.isClientSide) {
             for (int i = 0; i < amount; i++) {
                 if (randomizePosition) {
-                    world.addParticle(particle,
-                            x + (world.rand.nextDouble() * 2 * xd) - xd,
-                            y + (world.rand.nextDouble() * 2 * yd) - yd,
-                            z + (world.rand.nextDouble() * 2 * zd) - zd,
+                    level.addParticle(particle,
+                            x + (level.random.nextDouble() * 2 * xd) - xd,
+                            y + (level.random.nextDouble() * 2 * yd) - yd,
+                            z + (level.random.nextDouble() * 2 * zd) - zd,
                             xm, ym, zm);
                 } else {
-                    world.addParticle(particle, x, y, z,
-                            xm + (world.rand.nextDouble() * 2 * xd) - xd,
-                            ym + (world.rand.nextDouble() * 2 * yd) - yd,
-                            zm + (world.rand.nextDouble() * 2 * zd) - zd);
+                    level.addParticle(particle, x, y, z,
+                            xm + (level.random.nextDouble() * 2 * xd) - xd,
+                            ym + (level.random.nextDouble() * 2 * yd) - yd,
+                            zm + (level.random.nextDouble() * 2 * zd) - zd);
                 }
             }
         } else {
-            instance.send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(x, y, z, 100, world.getDimensionKey())),
-                    new ParticleMessage(particle.getRegistryName(), world.getDimensionKey().getRegistryName(), x, y, z, amount, xm, ym, zm, xd, yd, zd, randomizePosition));
+            channel.send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(x, y, z, 100, level.dimension())),
+                    new ParticleMessage(particle.getRegistryName(), level.dimension().getRegistryName(), x, y, z, amount, xm, ym, zm, xd, yd, zd, randomizePosition));
         }
     }
 
-    public void spawnInfusionParticles(World world, BlockPos pos, double progress, int fromColor, int toColor) {
-        if (!world.isRemote) {
-           instance.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), new InfusionSerializer.InfusionMessage(pos.getX(), pos.getY(), pos.getZ(), world.getDimensionKey().getRegistryName(), progress, fromColor, toColor));
+    public void spawnInfusionParticles(Level level, BlockPos pos, double progress, int fromColor, int toColor) {
+        if (!level.isClientSide) {
+            channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(pos)), new InfusionSerializer.InfusionMessage(pos.getX(), pos.getY(), pos.getZ(), level.dimension().getRegistryName(), progress, fromColor, toColor));
         }
     }
     
-    public void updatePortalTime(ServerPlayerEntity player, int portalTime) {
-        if (!player.getEntityWorld().isRemote) {
-            instance.send(PacketDistributor.PLAYER.with(() -> player), new UpdatePortalTimeSerializer.UpdatePortalTimeMessage(portalTime));
+    public void updatePortalTime(ServerPlayer player, int portalTime) {
+        if (!player.getCommandSenderWorld().isClientSide) {
+            channel.send(PacketDistributor.PLAYER.with(() -> player), new UpdatePortalTimeSerializer.UpdatePortalTimeMessage(portalTime));
         }
     }
     
     public void setItemMagnetImmune(ItemEntity ie) {
-        if (!ie.world.isRemote && !ie.getPersistentData().getBoolean("PreventRemoteMovement")) {
+        if (!ie.level.isClientSide && !ie.getPersistentData().getBoolean("PreventRemoteMovement")) {
             ie.getPersistentData().putBoolean("PreventRemoteMovement", true);
-            instance.send(PacketDistributor.TRACKING_ENTITY.with(() -> ie), new ItemMagnetImmunitySerializer.ItemMagnetImmunityMessage(ie.getEntityId(), true, ie.getPosX(), ie.getPosY(), ie.getPosZ()));
+            channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ie), new ItemMagnetImmunitySerializer.ItemMagnetImmunityMessage(ie.getId(), true, ie.getX(), ie.getY(), ie.getZ()));
         }
     }
     
     public void removeItemMagnetImmune(ItemEntity ie) {
-        if (!ie.world.isRemote && ie.getPersistentData().getBoolean("PreventRemoteMovement")) {
+        if (!ie.level.isClientSide && ie.getPersistentData().getBoolean("PreventRemoteMovement")) {
             ie.getPersistentData().putBoolean("PreventRemoteMovement", false);
-            instance.send(PacketDistributor.TRACKING_ENTITY.with(() -> ie), new ItemMagnetImmunitySerializer.ItemMagnetImmunityMessage(ie.getEntityId(), false, ie.getPosX(), ie.getPosY(), ie.getPosZ()));
+            channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ie), new ItemMagnetImmunitySerializer.ItemMagnetImmunityMessage(ie.getId(), false, ie.getX(), ie.getY(), ie.getZ()));
         }
     }
 }

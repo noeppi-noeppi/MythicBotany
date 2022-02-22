@@ -1,11 +1,11 @@
 package mythicbotany.patchouli;
 
 import com.google.gson.annotations.SerializedName;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.resources.ResourceLocation;
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
 import vazkii.patchouli.api.IVariable;
@@ -31,9 +31,9 @@ public class MultipleInputsComponent implements ICustomComponent {
     }
 
     private List<Ingredient> makeIngredients() {
-        AtomicReference<IRecipe<?>> recipe = new AtomicReference<>(null);
+        AtomicReference<Recipe<?>> recipe = new AtomicReference<>(null);
         //noinspection ConstantConditions
-        Minecraft.getInstance().world.getRecipeManager().getRecipe(new ResourceLocation(recipeName)).ifPresent(recipe::set);
+        Minecraft.getInstance().level.getRecipeManager().byKey(new ResourceLocation(recipeName)).ifPresent(recipe::set);
         if (recipe.get() == null) {
             throw new RuntimeException("Missing recipe: " + this.recipeName);
         } else {
@@ -41,10 +41,10 @@ public class MultipleInputsComponent implements ICustomComponent {
         }
     }
 
-    public void render(@Nonnull MatrixStack matrixStack, @Nonnull IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
+    public void render(@Nonnull PoseStack poseStack, @Nonnull IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
         int widthHalf = (20 * ingredients.size()) / 2;
         for (int i = 0; i < ingredients.size(); i++) {
-            context.renderIngredient(matrixStack, this.x - widthHalf + 9 + (20 * i), this.y, mouseX, mouseY, ingredients.get(i));
+            context.renderIngredient(poseStack, this.x - widthHalf + 9 + (20 * i), this.y, mouseX, mouseY, ingredients.get(i));
         }
     }
 

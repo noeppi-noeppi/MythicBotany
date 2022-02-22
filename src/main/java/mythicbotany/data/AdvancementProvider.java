@@ -1,5 +1,6 @@
 package mythicbotany.data;
 
+import io.github.noeppi_noeppi.libx.annotation.data.Datagen;
 import io.github.noeppi_noeppi.libx.data.provider.AdvancementProviderBase;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import mythicbotany.ModBlocks;
@@ -8,19 +9,13 @@ import mythicbotany.ModItems;
 import mythicbotany.advancement.AlfRepairTrigger;
 import mythicbotany.advancement.MjoellnirTrigger;
 import mythicbotany.alfheim.Alfheim;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.advancements.criterion.ItemPredicate;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import vazkii.botania.common.lib.ModTags;
 
-import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.function.Supplier;
-
+@Datagen
 public class AdvancementProvider extends AdvancementProviderBase {
 
     public AdvancementProvider(ModX mod, DataGenerator generator) {
@@ -30,45 +25,27 @@ public class AdvancementProvider extends AdvancementProviderBase {
     @Override
     public void setup() {
         root().display(wandIcon())
+                .background(mod.resource("textures/block/alfsteel_block.png"))
                 .task(items(ModTags.Items.INGOTS_TERRASTEEL));
-        
-        // This is a horrible hack, will change in 1.17
-        try {
-            ResourceLocation rl = new ResourceLocation(mod.modid, mod.modid + "/root");
-            Field mapField = AdvancementProviderBase.class.getDeclaredField("advancements");
-            mapField.setAccessible(true);
-            //noinspection unchecked
-            Map<ResourceLocation, Supplier<Advancement>> map = (Map<ResourceLocation, Supplier<Advancement>>) mapField.get(this);
-            Supplier<Advancement> oldRoot = map.get(rl);
-            Supplier<Advancement> newRoot = () -> {
-                Advancement adv = oldRoot.get();
-                if (adv.getDisplay() == null) throw new RuntimeException("Nul display on root");
-                DisplayInfo display = new DisplayInfo(
-                        adv.getDisplay().getIcon(), adv.getDisplay().getTitle(), adv.getDisplay().getDescription(),
-                        new ResourceLocation(mod.modid, "textures/block/alfsteel_block.png"),
-                        adv.getDisplay().getFrame(), adv.getDisplay().shouldShowToast(),
-                        adv.getDisplay().shouldAnnounceToChat(), adv.getDisplay().isHidden()
-                );
-                return new Advancement(adv.getId(), adv.getParent(), display, adv.getRewards(), adv.getCriteria(), adv.getRequirements());
-            };
-            map.put(rl, newRoot);
-            Field rootSupplierField = AdvancementProviderBase.class.getDeclaredField("rootSupplier");
-            rootSupplierField.setAccessible(true);
-            rootSupplierField.set(this, newRoot);
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e);
-        }
                 
         advancement("all_runes").display(ModItems.joetunheimRune)
                 .tasks(itemTasks(
-                        ModTags.Items.RUNES_AIR, ModTags.Items.RUNES_AUTUMN, ModTags.Items.RUNES_EARTH,
-                        ModTags.Items.RUNES_ENVY, ModTags.Items.RUNES_FIRE, ModTags.Items.RUNES_GLUTTONY,
-                        ModTags.Items.RUNES_GREED, ModTags.Items.RUNES_LUST, ModTags.Items.RUNES_MANA,
-                        ModTags.Items.RUNES_PRIDE, ModTags.Items.RUNES_SLOTH, ModTags.Items.RUNES_SPRING,
-                        ModTags.Items.RUNES_SUMMER, ModTags.Items.RUNES_WATER, ModTags.Items.RUNES_WINTER,
-                        ModTags.Items.RUNES_WRATH
-                ))
-                .tasks(itemTasks(
+                        vazkii.botania.common.item.ModItems.runeAir,
+                        vazkii.botania.common.item.ModItems.runeAutumn,
+                        vazkii.botania.common.item.ModItems.runeEarth,
+                        vazkii.botania.common.item.ModItems.runeEnvy,
+                        vazkii.botania.common.item.ModItems.runeFire,
+                        vazkii.botania.common.item.ModItems.runeGluttony,
+                        vazkii.botania.common.item.ModItems.runeGreed,
+                        vazkii.botania.common.item.ModItems.runeLust,
+                        vazkii.botania.common.item.ModItems.runeMana,
+                        vazkii.botania.common.item.ModItems.runePride,
+                        vazkii.botania.common.item.ModItems.runeSloth,
+                        vazkii.botania.common.item.ModItems.runeSpring,
+                        vazkii.botania.common.item.ModItems.runeSummer,
+                        vazkii.botania.common.item.ModItems.runeWater,
+                        vazkii.botania.common.item.ModItems.runeWinter,
+                        vazkii.botania.common.item.ModItems.runeWrath,
                         ModItems.asgardRune, ModItems.vanaheimRune, ModItems.alfheimRune,
                         ModItems.midgardRune, ModItems.joetunheimRune, ModItems.muspelheimRune,
                         ModItems.niflheimRune, ModItems.nidavellirRune, ModItems.helheimRune

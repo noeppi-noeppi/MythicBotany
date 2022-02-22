@@ -2,34 +2,33 @@ package mythicbotany.rune;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Either;
-import io.github.noeppi_noeppi.libx.util.BoundingBoxUtils;
+import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
 import io.github.noeppi_noeppi.libx.util.NBTX;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModItems;
 import mythicbotany.ModRecipes;
 import mythicbotany.misc.SolidifiedMana;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.*;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import vazkii.botania.api.mana.ManaItemHandler;
@@ -41,10 +40,14 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTileEntity {
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+
+public class TileMasterRuneHolder extends TileRuneHolder implements TickableBlock {
 
     private static final ResourceLocation MISSIGNO = new ResourceLocation("minecraft", "missingno");
     private static final Map<Item, Integer> RUNE_COLORS = ImmutableMap.<Item, Integer>builder()
@@ -78,59 +81,59 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
     private int progress;
     private int transformId;
     private List<ItemStack> consumedStacks = new ArrayList<>();
-    private CompoundNBT specialNbt = new CompoundNBT();
+    private CompoundTag specialNbt = new CompoundTag();
 
-    public TileMasterRuneHolder(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn);
+    public TileMasterRuneHolder(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
     @Override
     public void tick() {
-        if (world == null) {
+        if (level == null) {
             return;
         }
         if (recipeId != null) {
             if (recipe == null || !recipeId.equals(recipe.getId())) {
-                IRecipe<?> foundRecipe = world.getRecipeManager().getRecipe(recipeId).orElse(null);
+                Recipe<?> foundRecipe = level.getRecipeManager().byKey(recipeId).orElse(null);
                 if (foundRecipe instanceof RuneRitualRecipe) {
                     recipe = (RuneRitualRecipe) foundRecipe;
                     recipeId = recipe.getId();
-                    markDirty();
-                    markDispatchable();
+                    setChanged();
+                    setDispatchable();
                 } else {
                     recipeId = null;
                 }
             }
         }
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             if (recipe != null) {
                 if (!recipeValid(recipe, transformId)) {
                     cancelRecipe();
                 } else {
                     if (progress == 0) {
-                        markDispatchable();
+                        setDispatchable();
                     }
                     progress += 1;
                     if (progress >= recipe.getTicks()) {
                         getInventory().setStackInSlot(0, ItemStack.EMPTY);
                         for (ItemStack result : recipe.getOutputs()) {
-                            ItemEntity ie = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, result.copy());
-                            ie.setPickupDelay(40);
-                            ie.setGlowing(true);
-                            world.addEntity(ie);
+                            ItemEntity ie = new ItemEntity(level, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, result.copy());
+                            ie.setPickUpDelay(40);
+                            ie.setGlowingTag(true);
+                            level.addFreshEntity(ie);
                         }
 
                         for (RuneRitualRecipe.RunePosition rune : recipe.getRunes()) {
-                            BlockPos runePos = pos.add(rune.getX(transformId), 0, rune.getZ(transformId));
-                            BlockState state = Objects.requireNonNull(world).getBlockState(runePos);
+                            BlockPos runePos = worldPosition.offset(rune.getX(transformId), 0, rune.getZ(transformId));
+                            BlockState state = Objects.requireNonNull(level).getBlockState(runePos);
                             if (state.getBlock() == ModBlocks.runeHolder) {
-                                TileRuneHolder tile = ModBlocks.runeHolder.getTile(world, runePos);
+                                TileRuneHolder tile = ModBlocks.runeHolder.getBlockEntity(level, runePos);
                                 tile.setTarget(null, 0, true);
                                 ItemStack runeStack = tile.getInventory().getStackInSlot(0);
                                 tile.getInventory().setStackInSlot(0, ItemStack.EMPTY);
                                 if (!rune.isConsumed() && !runeStack.isEmpty()) {
-                                    ItemEntity ie = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, runeStack);
-                                    world.addEntity(ie);
+                                    ItemEntity ie = new ItemEntity(level, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, runeStack);
+                                    level.addFreshEntity(ie);
                                 }
                             }
                         }
@@ -141,17 +144,17 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
                         transformId = 0;
                         List<ItemStack> consumedStacksCops = consumedStacks;
                         consumedStacks = new ArrayList<>();
-                        specialNbt = new CompoundNBT();
+                        specialNbt = new CompoundTag();
 
                         if (recipeCopy.getSpecialOutput() != null) {
-                            recipeCopy.getSpecialOutput().apply(world, pos, consumedStacksCops);
+                            recipeCopy.getSpecialOutput().apply(level, worldPosition, consumedStacksCops);
                         }
-                        markDispatchable();
+                        setDispatchable();
                     } else {
-                        updatePatterns(recipe, transformId, progress / (double) recipe.getTicks(), false);
+                        updabePatterns(recipe, transformId, progress / (double) recipe.getTicks(), false);
                     }
                 }
-                markDirty();
+                setChanged();
             } else {
                 recipeId = null;
                 progress = 0;
@@ -159,32 +162,32 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
                 if (!consumedStacks.isEmpty()) {
                     consumedStacks = new ArrayList<>();
                 }
-                specialNbt = new CompoundNBT();
-                markDirty();
-                markDispatchable();
+                specialNbt = new CompoundTag();
+                setChanged();
+                setDispatchable();
             }
         } else {
             if (recipe != null) {
                 if (progress < recipe.getTicks() && progress > 0) {
                     progress += 1;
                     double progressScaled = progress / (double) recipe.getTicks();
-                    updatePatterns(recipe, transformId, progressScaled, false);
+                    updabePatterns(recipe, transformId, progressScaled, false);
                     if (progress == recipe.getTicks() - 1) {
-                        world.addParticle(ParticleTypes.FLASH, pos.getX() + 0.5, pos.getY() + 0.45, pos.getZ() + 0.5, 0, 0, 0);
+                        level.addParticle(ParticleTypes.FLASH, worldPosition.getX() + 0.5, worldPosition.getY() + 0.45, worldPosition.getZ() + 0.5, 0, 0, 0);
                     } else if (progress < recipe.getTicks() - 2) {
                         progressScaled = Math.max(0, (progress - 2) / (double) recipe.getTicks());
                         for (RuneRitualRecipe.RunePosition rune : recipe.getRunes()) {
-                            TileEntity runeHolderTE = world.getTileEntity(pos.add(rune.getX(transformId), 0, rune.getZ(transformId)));
-                            if (runeHolderTE instanceof TileRuneHolder) {
-                                ItemStack stack = ((TileRuneHolder) runeHolderTE).getInventory().getStackInSlot(0);
+                            BlockEntity runeHolderBE = level.getBlockEntity(worldPosition.offset(rune.getX(transformId), 0, rune.getZ(transformId)));
+                            if (runeHolderBE instanceof TileRuneHolder) {
+                                ItemStack stack = ((TileRuneHolder) runeHolderBE).getInventory().getStackInSlot(0);
                                 if (!stack.isEmpty()) {
                                     double x = rune.getX(transformId) * (1 - progressScaled);
                                     double y = Math.sin(progressScaled * Math.PI);
                                     double z = rune.getZ(transformId) * (1 - progressScaled);
-                                    double xr = (world.rand.nextDouble() * 0.6) - 0.3;
-                                    double yr = (world.rand.nextDouble() * 0.6) - 0.3;
-                                    double zr = (world.rand.nextDouble() * 0.6) - 0.3;
-                                    world.addParticle(getParticle(stack.getItem()), pos.getX() + 0.5 + x + xr, pos.getY() + 0.25 + y + yr, pos.getZ() + 0.5 + z + zr, 0, 0, 0);
+                                    double xr = (level.random.nextDouble() * 0.6) - 0.3;
+                                    double yr = (level.random.nextDouble() * 0.6) - 0.3;
+                                    double zr = (level.random.nextDouble() * 0.6) - 0.3;
+                                    level.addParticle(getParticle(stack.getItem()), worldPosition.getX() + 0.5 + x + xr, worldPosition.getY() + 0.25 + y + yr, worldPosition.getZ() + 0.5 + z + zr, 0, 0, 0);
                                 }
                             }
                         }
@@ -194,33 +197,33 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
         }
     }
 
-    public void tryStartRitual(PlayerEntity player) {
+    public void tryStartRitual(Player player) {
         tryStartRitual(
-                msg -> player.sendMessage(msg, player.getUniqueID()),
+                msg -> player.sendMessage(msg, player.getUUID()),
                 mana -> ManaItemHandler.instance().requestManaExact(new ItemStack(Items.COBBLESTONE), player, mana, false),
                 mana -> ManaItemHandler.instance().requestManaExact(new ItemStack(Items.COBBLESTONE), player, mana, true)
         );
     }
     
-    public void tryStartRitual(Consumer<ITextComponent> messages, Function<Integer, Boolean> manaTest, Consumer<Integer> manaRequest) {
+    public void tryStartRitual(Consumer<Component> messages, Function<Integer, Boolean> manaBest, Consumer<Integer> manaRequest) {
         if (recipe != null) {
-            messages.accept(new TranslationTextComponent("message.mythicbotany.ritual_running").mergeStyle(TextFormatting.GRAY));
+            messages.accept(new TranslatableComponent("message.mythicbotany.ritual_running").withStyle(ChatFormatting.GRAY));
         } else {
             Pair<RuneRitualRecipe, Integer> recipe = findRecipe();
             if (recipe == null) {
-                messages.accept(new TranslationTextComponent("message.mythicbotany.ritual_wrong_shape").mergeStyle(TextFormatting.GRAY));
+                messages.accept(new TranslatableComponent("message.mythicbotany.ritual_wrong_shape").withStyle(ChatFormatting.GRAY));
             } else {
-                tryStart(recipe.getLeft(), recipe.getRight(), messages, manaTest, manaRequest);
+                tryStart(recipe.getLeft(), recipe.getRight(), messages, manaBest, manaRequest);
             }
         }
     }
 
     @Nullable
     private Pair<RuneRitualRecipe, Integer> findRecipe() {
-        if (world == null || pos == null) {
+        if (level == null) {
             return null;
         }
-        return world.getRecipeManager().getRecipesForType(ModRecipes.RUNE_RITUAL).stream()
+        return level.getRecipeManager().getAllRecipesFor(ModRecipes.RUNE_RITUAL).stream()
                 .flatMap(this::recipeMatches)
                 .findFirst().orElse(null);
     }
@@ -243,20 +246,21 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
         return Stream.of(Pair.of(recipe, transformId));
     }
     
-    private void tryStart(RuneRitualRecipe recipe, int transform, Consumer<ITextComponent> messages, Function<Integer, Boolean> manaTest, Consumer<Integer> manaRequest) {
+    private void tryStart(RuneRitualRecipe recipe, int transform, Consumer<Component> messages, Function<Integer, Boolean> manaBest, Consumer<Integer> manaRequest) {
         if (recipe.getMana() > 0) {
             // We need to give a stack here or the request will always fail. The stack may not be empty.
             // So we just pass a piece of cobblestone.
-            if (!manaTest.apply(recipe.getMana())) {
-                messages.accept(new TranslationTextComponent("message.mythicbotany.ritual_less_mana").mergeStyle(TextFormatting.GRAY));
+            if (!manaBest.apply(recipe.getMana())) {
+                messages.accept(new TranslatableComponent("message.mythicbotany.ritual_less_mana").withStyle(ChatFormatting.GRAY));
                 return;
             }
         }
-        List<ItemEntity> inputs = Objects.requireNonNull(world).getEntitiesWithinAABB(EntityType.ITEM, BoundingBoxUtils.expand(new Vector3d(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5), 2), e -> true);
+        Vec3 center = new Vec3(worldPosition.getX() + 0.5, worldPosition.getY(), worldPosition.getZ() + 0.5);
+        AABB aabb = new AABB(center, center).inflate(2);
+        List<ItemEntity> inputs = Objects.requireNonNull(level).getEntities(EntityType.ITEM, aabb, e -> true);
         List<MutableTriple<ItemEntity, ItemStack, Integer>> stacks = inputs.stream()
                 .map(e -> MutableTriple.of(e, e.getItem(), e.getItem().getCount()))
-                .filter(t -> !t.getMiddle().isEmpty())
-                .collect(Collectors.toList());
+                .filter(t -> !t.getMiddle().isEmpty()).toList();
         List<ItemStack> consumedStacks = new ArrayList<>();
         ingredientLoop:
         for (Ingredient ingr : recipe.getInputs()) {
@@ -269,16 +273,16 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
                     continue ingredientLoop;
                 }
             }
-            messages.accept(new TranslationTextComponent("message.mythicbotany.ritual_wrong_items").mergeStyle(TextFormatting.GRAY));
+            messages.accept(new TranslatableComponent("message.mythicbotany.ritual_wrong_items").withStyle(ChatFormatting.GRAY));
             return;
         }
 
         // Special input must be the last as check and apply is in one method here. After this we apply everything
         if (recipe.getSpecialInput() != null) {
-            Either<IFormattableTextComponent, CompoundNBT> result = recipe.getSpecialInput().apply(world, pos, recipe);
-            Optional<IFormattableTextComponent> tc = result.left();
+            Either<MutableComponent, CompoundTag> result = recipe.getSpecialInput().apply(level, worldPosition, recipe);
+            Optional<MutableComponent> tc = result.left();
             if (tc.isPresent()) {
-                messages.accept(tc.get().mergeStyle(TextFormatting.GRAY));
+                messages.accept(tc.get().withStyle(ChatFormatting.GRAY));
                 return;
             }
             result.ifRight(nbt -> specialNbt = nbt);
@@ -296,18 +300,18 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
         this.transformId = transform;
         this.consumedStacks = consumedStacks;
         
-        markDirty();
-        markDispatchable();
+        setChanged();
+        setDispatchable();
     }
 
     private boolean runePatternMatches(RuneRitualRecipe recipe, int idx) {
         for (RuneRitualRecipe.RunePosition rune : recipe.getRunes()) {
-            BlockPos runePos = pos.add(rune.getX(idx), 0, rune.getZ(idx));
-            BlockState state = Objects.requireNonNull(world).getBlockState(runePos);
+            BlockPos runePos = worldPosition.offset(rune.getX(idx), 0, rune.getZ(idx));
+            BlockState state = Objects.requireNonNull(level).getBlockState(runePos);
             if (state.getBlock() != ModBlocks.runeHolder) {
                 return false;
             }
-            TileRuneHolder tile = ModBlocks.runeHolder.getTile(world, runePos);
+            TileRuneHolder tile = ModBlocks.runeHolder.getBlockEntity(level, runePos);
             if (!rune.getRune().test(tile.getInventory().getStackInSlot(0))) {
                 return false;
             }
@@ -315,38 +319,38 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
         return true;
     }
 
-    private void updatePatterns(RuneRitualRecipe recipe, int transformId, double progress, boolean sync) {
+    private void updabePatterns(RuneRitualRecipe recipe, int transformId, double progress, boolean sync) {
         if (transformId < 0 || transformId >= 8) transformId = 0;
-        setTarget(pos, 0, sync);
+        setTarget(worldPosition, 0, sync);
         for (RuneRitualRecipe.RunePosition rune : recipe.getRunes()) {
-            BlockPos runePos = pos.add(rune.getX(transformId), 0, rune.getZ(transformId));
-            BlockState state = Objects.requireNonNull(world).getBlockState(runePos);
+            BlockPos runePos = worldPosition.offset(rune.getX(transformId), 0, rune.getZ(transformId));
+            BlockState state = Objects.requireNonNull(level).getBlockState(runePos);
             if (state.getBlock() == ModBlocks.runeHolder) {
-                TileRuneHolder tile = ModBlocks.runeHolder.getTile(world, runePos);
-                tile.setTarget(progress == 0 ? null : pos, progress, sync);
+                TileRuneHolder tile = ModBlocks.runeHolder.getBlockEntity(level, runePos);
+                tile.setTarget(progress == 0 ? null : worldPosition, progress, sync);
             }
         }
     }
 
     public void cancelRecipe() {
-        if (world != null && recipe != null) {
-            updatePatterns(recipe, transformId, 0, true);
+        if (level != null && recipe != null) {
+            updabePatterns(recipe, transformId, 0, true);
             for (ItemStack stack : consumedStacks) {
-                ItemEntity ie = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
-                world.addEntity(ie);
+                ItemEntity ie = new ItemEntity(level, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, stack);
+                level.addFreshEntity(ie);
             }
             if (recipe.getSpecialInput() != null) {
-                recipe.getSpecialInput().cancel(world, pos, recipe, specialNbt);
+                recipe.getSpecialInput().cancel(level, worldPosition, recipe, specialNbt);
             }
-            SolidifiedMana.dropMana(world, pos, recipe.getMana());
+            SolidifiedMana.dropMana(level, worldPosition, recipe.getMana());
             recipe = null;
             recipeId = null;
             progress = 0;
             transformId = 0;
             consumedStacks = new ArrayList<>();
-            specialNbt = new CompoundNBT();
-            markDirty();
-            markDispatchable();
+            specialNbt = new CompoundTag();
+            setChanged();
+            setDispatchable();
         }
     }
 
@@ -356,12 +360,12 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
         }
         if (transformId < 0 || transformId >= 8) transformId = 0;
         for (RuneRitualRecipe.RunePosition rune : recipe.getRunes()) {
-            BlockPos runePos = pos.add(rune.getX(transformId), 0, rune.getZ(transformId));
-            BlockState state = Objects.requireNonNull(world).getBlockState(runePos);
+            BlockPos runePos = worldPosition.offset(rune.getX(transformId), 0, rune.getZ(transformId));
+            BlockState state = Objects.requireNonNull(level).getBlockState(runePos);
             if (state.getBlock() != ModBlocks.runeHolder) {
                 return false;
             }
-            TileRuneHolder tile = ModBlocks.runeHolder.getTile(world, runePos);
+            TileRuneHolder tile = ModBlocks.runeHolder.getBlockEntity(level, runePos);
             if (!rune.getRune().test(tile.getInventory().getStackInSlot(0))) {
                 return false;
             }
@@ -370,17 +374,17 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
     }
 
     @Override
-    public void read(@Nonnull BlockState state, @Nonnull CompoundNBT nbt) {
-        super.read(state, nbt);
+    public void load(@Nonnull CompoundTag nbt) {
+        super.load(nbt);
         ResourceLocation id = NBTX.getRL(nbt, "recipe", MISSIGNO);
         recipeId = id == MISSIGNO ? null : id;
         progress = nbt.getInt("progress");
         transformId = nbt.getInt("transform");
-        if (nbt.contains("Consumed", Constants.NBT.TAG_LIST)) {
-            ListNBT consumed = nbt.getList("Consumed", Constants.NBT.TAG_COMPOUND);
+        if (nbt.contains("Consumed", Tag.TAG_LIST)) {
+            ListTag consumed = nbt.getList("Consumed", Tag.TAG_COMPOUND);
             consumedStacks = new ArrayList<>();
             for (int i = 0; i < consumed.size(); i++) {
-                ItemStack stack = ItemStack.read(consumed.getCompound(i));
+                ItemStack stack = ItemStack.of(consumed.getCompound(i));
                 if (!stack.isEmpty()) {
                     consumedStacks.add(stack);
                 }
@@ -391,27 +395,26 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
         specialNbt = nbt.getCompound("SpecialInputData").copy();
     }
 
-    @Nonnull
     @Override
-    public CompoundNBT write(@Nonnull CompoundNBT nbt) {
+    public void saveAdditional(@Nonnull CompoundTag nbt) {
+        super.saveAdditional(nbt);
         NBTX.putRL(nbt, "recipe", recipe == null ? MISSIGNO : recipe.getId());
         nbt.putInt("progress", progress);
         nbt.putInt("transform", transformId);
-        ListNBT consumed = new ListNBT();
+        ListTag consumed = new ListTag();
         for (ItemStack stack : consumedStacks) {
             consumed.add(stack.serializeNBT());
         }
         nbt.put("Consumed", consumed);
         nbt.put("SpecialInputData", specialNbt.copy());
-        return super.write(nbt);
     }
 
     @Nonnull
     @Override
-    public CompoundNBT getUpdateTag() {
-        CompoundNBT nbt = super.getUpdateTag();
+    public CompoundTag getUpdateTag() {
+        CompoundTag nbt = super.getUpdateTag();
         //noinspection ConstantConditions
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             NBTX.putRL(nbt, "recipe", recipe == null ? MISSIGNO : recipe.getId());
             nbt.putInt("progress", progress);
             nbt.putInt("transform", transformId);
@@ -420,10 +423,10 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
     }
 
     @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT nbt) {
-        super.handleUpdateTag(state, nbt);
+    public void handleUpdateTag(CompoundTag nbt) {
+        super.handleUpdateTag(nbt);
         //noinspection ConstantConditions
-        if (world.isRemote) {
+        if (level.isClientSide) {
             ResourceLocation id = NBTX.getRL(nbt, "recipe", MISSIGNO);
             recipeId = id == MISSIGNO ? null : id;
             progress = nbt.getInt("progress");
@@ -431,9 +434,9 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
         }
     }
     
-    private IParticleData getParticle(Item rune) {
+    private ParticleOptions getParticle(Item rune) {
         if (rune == ModItems.fimbultyrTablet) {
-            return new ItemParticleData(ParticleTypes.ITEM, new ItemStack(Items.GOLD_BLOCK));
+            return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.GOLD_BLOCK));
         } else if (rune == vazkii.botania.common.item.ModItems.runeMana) {
             return WispParticleData.wisp(0.2f, 0, 0, 1, 0.3f);
         } else if (rune == vazkii.botania.common.item.ModItems.runeFire) {
@@ -441,7 +444,7 @@ public class TileMasterRuneHolder extends TileRuneHolder implements ITickableTil
         } else if (rune == vazkii.botania.common.item.ModItems.runeAir) {
             return ParticleTypes.CLOUD;
         } else if (rune == vazkii.botania.common.item.ModItems.runeEarth) {
-            return new ItemParticleData(ParticleTypes.ITEM, new ItemStack(Items.DIRT));
+            return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.DIRT));
         } else if (rune == vazkii.botania.common.item.ModItems.runeWater) {
             return ParticleTypes.DOLPHIN;
         } else {

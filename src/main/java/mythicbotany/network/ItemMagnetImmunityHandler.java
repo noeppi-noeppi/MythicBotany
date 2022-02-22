@@ -1,9 +1,9 @@
 package mythicbotany.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -11,12 +11,12 @@ public class ItemMagnetImmunityHandler {
     
     public static void handle(ItemMagnetImmunitySerializer.ItemMagnetImmunityMessage msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            World world = Minecraft.getInstance().world;
-            if (world != null) {
-                Entity entity = world.getEntityByID(msg.entityId);
+            Level level = Minecraft.getInstance().level;
+            if (level != null) {
+                Entity entity = level.getEntity(msg.entityId);
                 if (entity != null) {
                     entity.getPersistentData().putBoolean("PreventRemoteMovement", true);
-                    entity.setPosition(msg.x, msg.y, msg.z);
+                    entity.setPos(msg.x, msg.y, msg.z);
                 }
             }
         });

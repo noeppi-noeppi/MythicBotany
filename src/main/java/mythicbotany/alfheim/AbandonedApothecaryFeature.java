@@ -1,15 +1,15 @@
 package mythicbotany.alfheim;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import vazkii.botania.api.item.IPetalApothecary;
 import vazkii.botania.common.block.BlockAltar;
 import vazkii.botania.common.block.ModBlocks;
@@ -20,19 +20,19 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 
-public class AbandonedApothecaryFeature extends Feature<NoFeatureConfig> {
+public class AbandonedApothecaryFeature extends Feature<NoneFeatureConfiguration> {
 
     private static final List<BlockState> STATES = ImmutableList.of(
-            ModBlocks.defaultAltar.getDefaultState(),
-            ModBlocks.forestAltar.getDefaultState(),
-            ModBlocks.plainsAltar.getDefaultState(),
-            ModBlocks.mountainAltar.getDefaultState(),
-            ModBlocks.fungalAltar.getDefaultState(),
-            ModBlocks.swampAltar.getDefaultState(),
-            ModBlocks.desertAltar.getDefaultState(),
-            ModBlocks.taigaAltar.getDefaultState(),
-            ModBlocks.mesaAltar.getDefaultState(),
-            ModBlocks.mossyAltar.getDefaultState()
+            ModBlocks.defaultAltar.defaultBlockState(),
+            ModBlocks.forestAltar.defaultBlockState(),
+            ModBlocks.plainsAltar.defaultBlockState(),
+            ModBlocks.mountainAltar.defaultBlockState(),
+            ModBlocks.fungalAltar.defaultBlockState(),
+            ModBlocks.swampAltar.defaultBlockState(),
+            ModBlocks.desertAltar.defaultBlockState(),
+            ModBlocks.taigaAltar.defaultBlockState(),
+            ModBlocks.mesaAltar.defaultBlockState(),
+            ModBlocks.mossyAltar.defaultBlockState()
     );
 
     private static final List<Item> PETALS = ImmutableList.of(
@@ -46,37 +46,37 @@ public class AbandonedApothecaryFeature extends Feature<NoFeatureConfig> {
 
 
     public AbandonedApothecaryFeature() {
-        super(NoFeatureConfig.CODEC);
+        super(NoneFeatureConfiguration.CODEC);
     }
 
     @Override
-    public boolean generate(@Nonnull ISeedReader world, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos pos, @Nonnull NoFeatureConfig config) {
+    public boolean place(@Nonnull WorldGenLevel level, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos pos, @Nonnull NoneFeatureConfiguration config) {
         if (rand.nextInt(6) == 0) {
-            return tryGenerate(world, generator, rand, new BlockPos(pos.getX() + rand.nextInt(16), 0, pos.getZ() + rand.nextInt(16)));
+            return tryGenerate(level, generator, rand, new BlockPos(pos.getX() + rand.nextInt(16), 0, pos.getZ() + rand.nextInt(16)));
         } else {
             return false;
         }
     }
 
-    private boolean tryGenerate(@Nonnull ISeedReader world, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos hor) {
-        BlockPos pos = AlfheimWorldGen.highestFreeBlock(world, hor, AlfheimWorldGen::passReplaceableAndLeaves);
+    private boolean tryGenerate(@Nonnull WorldGenLevel level, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos hor) {
+        BlockPos pos = AlfheimWorldGen.highestFreeBlock(level, hor, AlfheimWorldGen::passReplaceableAndLeaves);
         //noinspection deprecation
-        if (world.getBlockState(pos.down()).isSolid() && world.getBlockState(pos.up()).isAir()) {
+        if (level.getBlockState(pos.below()).canOcclude() && level.getBlockState(pos.above()).isAir()) {
             BlockState state = STATES.get(rand.nextInt(STATES.size()));
             if (rand.nextInt(30) == 0) {
-                return world.setBlockState(pos, state.with(BlockAltar.FLUID, IPetalApothecary.State.LAVA), 2);
+                return level.setBlock(pos, state.setValue(BlockAltar.FLUID, IPetalApothecary.State.LAVA), 2);
             } else if (rand.nextInt(4) != 0) {
-                if (!world.setBlockState(pos, state.with(BlockAltar.FLUID, IPetalApothecary.State.WATER), 2)) {
+                if (!level.setBlock(pos, state.setValue(BlockAltar.FLUID, IPetalApothecary.State.WATER), 2)) {
                     return false;
                 }
                 try {
-                    TileEntity te = world.getTileEntity(pos);
+                    BlockEntity te = level.getBlockEntity(pos);
                     if (te instanceof TileAltar) {
-                        te.setPos(pos);
-                        te.cachedBlockState = state.with(BlockAltar.FLUID, IPetalApothecary.State.WATER);
+                        te.setPosition(pos);
+                        te.blockState = state.setValue(BlockAltar.FLUID, IPetalApothecary.State.WATER);
                         int petals = rand.nextInt(5);
                         for (int i = 0; i < petals; i++) {
-                            ((TileAltar) te).getItemHandler().setInventorySlotContents(i, new ItemStack(PETALS.get(rand.nextInt(PETALS.size()))));
+                            ((TileAltar) te).getItemHandler().setItem(i, new ItemStack(PETALS.get(rand.nextInt(PETALS.size()))));
                         }
                     }
                 } catch (Exception e) {
@@ -84,7 +84,7 @@ public class AbandonedApothecaryFeature extends Feature<NoFeatureConfig> {
                 }
                 return true;
             } else {
-                return world.setBlockState(pos, state.with(BlockAltar.FLUID, IPetalApothecary.State.EMPTY), 2);
+                return level.setBlock(pos, state.setValue(BlockAltar.FLUID, IPetalApothecary.State.EMPTY), 2);
             }
         } else {
             return false;

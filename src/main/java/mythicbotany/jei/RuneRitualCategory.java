@@ -1,6 +1,6 @@
 package mythicbotany.jei;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -10,12 +10,14 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.rune.RuneRitualRecipe;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.tuple.Pair;
-import vazkii.botania.client.core.handler.HUDHandler;
+import vazkii.botania.client.gui.HUDHandler;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public class RuneRitualCategory implements IRecipeCategory<RuneRitualRecipe> {
 
     private final IDrawable background;
     private final IDrawable slot;
-    private final String localizedName;
+    private final Component localizedName;
     private final IDrawable icon;
 
     private final Map<ResourceLocation, Pair<Integer, Integer>> inputOutputSizes = new HashMap<>();
@@ -36,8 +38,8 @@ public class RuneRitualCategory implements IRecipeCategory<RuneRitualRecipe> {
     public RuneRitualCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createDrawable(new ResourceLocation(MythicBotany.getInstance().modid, "textures/gui/jei_ritual.png"), 0, 0, 136, 196);
         this.slot = guiHelper.getSlotDrawable();
-        this.localizedName = I18n.format("tooltip.mythicbotany.rune_ritual");
-        this.icon = guiHelper.createDrawableIngredient(new ItemStack(ModItems.fimbultyrTablet));
+        this.localizedName = new TranslatableComponent("tooltip.mythicbotany.rune_ritual");
+        this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModItems.fimbultyrTablet));
     }
 
     @Nonnull
@@ -54,7 +56,7 @@ public class RuneRitualCategory implements IRecipeCategory<RuneRitualRecipe> {
 
     @Nonnull
     @Override
-    public String getTitle() {
+    public Component getTitle() {
         return localizedName;
     }
 
@@ -116,22 +118,22 @@ public class RuneRitualCategory implements IRecipeCategory<RuneRitualRecipe> {
         layout.getItemStacks().set(ii);
     }
 
-    public void draw(RuneRitualRecipe recipe, @Nonnull MatrixStack matrixStack, double mouseX, double mouseY) {
+    public void draw(RuneRitualRecipe recipe, @Nonnull PoseStack poseStack, double mouseX, double mouseY) {
         if (inputOutputSizes.containsKey(recipe.getId())) {
             Pair<Integer, Integer> sizes = inputOutputSizes.get(recipe.getId());
             
             int startInX = 68 - (sizes.getLeft() * 9);
             for (int i = 0; i < sizes.getLeft(); i++) {
-                slot.draw(matrixStack, startInX + (i * 18), 137);
+                slot.draw(poseStack, startInX + (i * 18), 137);
             }
             
             int startOutX = 68 - (sizes.getRight() * 9);
             for (int i = 0; i < sizes.getRight(); i++) {
-                slot.draw(matrixStack, startOutX + (i * 18), 169);
+                slot.draw(poseStack, startOutX + (i * 18), 169);
             }
         }
         if (recipe.getMana() > 0) {
-            HUDHandler.renderManaBar(matrixStack, 17, 189, 0x0000FF, 0.75f, recipe.getMana(), 1000000);
+            HUDHandler.renderManaBar(poseStack, 17, 189, 0x0000FF, 0.75f, recipe.getMana(), 1000000);
         }
     }
 

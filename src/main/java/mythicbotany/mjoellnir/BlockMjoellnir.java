@@ -1,156 +1,132 @@
 package mythicbotany.mjoellnir;
 
 import com.google.common.collect.ImmutableSet;
+import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
+import io.github.noeppi_noeppi.libx.mod.ModX;
 import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
 import mythicbotany.config.MythicConfig;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import vazkii.botania.common.item.relic.ItemThorRing;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class BlockMjoellnir extends Block implements Registerable {
+public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerable {
 
-    public static final VoxelShape SHAPE = VoxelShapes.or(
-            makeCuboidShape(0, 0, 3, 16, 9, 13),
-            makeCuboidShape(7, 9, 7, 9, 22, 9)
+    public static final VoxelShape SHAPE = Shapes.or(
+            box(0, 0, 3, 16, 9, 13),
+            box(7, 9, 7, 9, 22, 9)
     );
+    
+    private final EntityType<Mjoellnir> entityType;
 
-    private final Item item;
-    private final TileEntityType<TileMjoellnir> teType;
-    private final EntityType<EntityMjoellnir> entityType;
-
-    public BlockMjoellnir(Properties properties, net.minecraft.item.Item.Properties itemProperties) {
-        super(properties);
-        this.item = new ItemMjoellnir(this, itemProperties.group(MythicBotany.getInstance().tab).isImmuneToFire());
-        //noinspection ConstantConditions
-        this.teType = new TileEntityType<>(() -> new TileMjoellnir(getTileType()), ImmutableSet.of(this), null);
-        this.entityType = EntityType.Builder.<EntityMjoellnir>create(EntityMjoellnir::new, EntityClassification.MISC).size(0.6f, 0.9f).trackingRange(20).build(MythicBotany.getInstance().modid + "_mjoellnir");
+    public BlockMjoellnir(ModX mod, Properties properties, Item.Properties itemProperties) {
+        super(mod, TileMjoellnir.class, properties, itemProperties);
+        this.entityType = EntityType.Builder.<Mjoellnir>of(Mjoellnir::new, MobCategory.MISC).sized(0.6f, 0.9f).clientTrackingRange(20).build(MythicBotany.getInstance().modid + "_mjoellnir");
     }
 
-    public TileEntityType<TileMjoellnir> getTileType() {
-        return teType;
-    }
-
-    public EntityType<EntityMjoellnir> getEntityType() {
+    public EntityType<Mjoellnir> getEntityType() {
         return entityType;
     }
 
     @Override
-    public Set<Object> getAdditionalRegisters() {
-        return ImmutableSet.of(item, teType, entityType);
+    public Set<Object> getAdditionalRegisters(ResourceLocation id) {
+        return ImmutableSet.builder().addAll(super.getAdditionalRegisters(id)).add(this.entityType).build();
     }
 
     @Override
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        RenderTypeLookup.setRenderLayer(this, RenderType.getCutout());
-        ClientRegistry.bindTileEntityRenderer(teType, RenderMjoellnir::new);
-        RenderingRegistry.registerEntityRenderingHandler(entityType, RenderEntityMjoellnir::new);
+        ItemBlockRenderTypes.setRenderLayer(this, RenderType.cutout());
+        BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderMjoellnir());
+        EntityRenderers.register(entityType, RenderEntityMjoellnir::new);
     }
 
     @Nonnull
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType onBlockActivated(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand hand, @Nonnull BlockRayTraceResult hit) {
-        if (!world.isRemote) {
+    public InteractionResult use(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult hit) {
+        if (!level.isClientSide) {
             if (canHold(player)) {
-                TileMjoellnir tile = getTile(world, pos);
+                TileMjoellnir tile = getBlockEntity(level, pos);
                 if (putInInventory(player, tile.getStack().copy(), getHotbarSlot(player, hand))) {
-                    world.setBlockState(pos, state.getFluidState().getBlockState(), 3);
+                    level.setBlock(pos, state.getFluidState().createLegacyBlock(), 3);
                 } else {
-                    return ActionResultType.FAIL;
+                    return InteractionResult.FAIL;
                 }
             } else {
-                player.sendMessage(new TranslationTextComponent("message.mythicbotany.mjoellnir_heavy_pick").mergeStyle(TextFormatting.GRAY), player.getUniqueID());
+                player.sendMessage(new TranslatableComponent("message.mythicbotany.mjoellnir_heavy_pick").withStyle(ChatFormatting.GRAY), player.getUUID());
             }
         }
-        return ActionResultType.successOrConsume(world.isRemote);
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Nonnull
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(@Nonnull BlockState state, @Nonnull IBlockReader world, @Nonnull BlockPos pos, @Nonnull ISelectionContext ctx) {
+    public VoxelShape getShape(@Nonnull BlockState state, @Nonnull BlockGetter level, @Nonnull BlockPos pos, @Nonnull CollisionContext context) {
         return SHAPE;
     }
 
     @Nonnull
     @Override
     @SuppressWarnings("deprecation")
-    public BlockRenderType getRenderType(@Nonnull BlockState state) {
-        return BlockRenderType.ENTITYBLOCK_ANIMATED;
-    }
-
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
-    @Nullable
-    public TileMjoellnir createTileEntity(BlockState state, IBlockReader world) {
-        return this.teType.create();
-    }
-
-    private static TileMjoellnir getTile(World world, BlockPos pos) {
-        TileEntity te = world.getTileEntity(pos);
-        if (te instanceof TileMjoellnir) {
-            return (TileMjoellnir) te;
-        } else {
-            throw new IllegalStateException("expected a tile entity of type TileMjoellnir, got " + te);
-        }
-    }
-
-    public static boolean placeInWorld(ItemStack stack, World world, BlockPos pos) {
-        return placeInWorld(stack, world, pos, true);
+    public RenderShape getRenderShape(@Nonnull BlockState state) {
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
     
-    public static boolean placeInWorld(ItemStack stack, World world, BlockPos pos, boolean dropOld) {
-        BlockState state = world.getBlockState(pos);
-        float hardness = state.getBlockHardness(world, pos);
+    public static boolean placeInWorld(ItemStack stack, Level level, BlockPos pos) {
+        return placeInWorld(stack, level, pos, true);
+    }
+    
+    public static boolean placeInWorld(ItemStack stack, Level level, BlockPos pos, boolean dropOld) {
+        BlockState state = level.getBlockState(pos);
+        float hardness = state.getDestroySpeed(level, pos);
         if (state.getBlock() != ModBlocks.mjoellnir && ((hardness >= 0 && hardness <= 60) || state.getMaterial().isReplaceable())) {
             List<ItemStack> drops = null;
-            if (dropOld && world instanceof ServerWorld) {
-                drops = Block.getDrops(state, (ServerWorld) world, pos, world.getTileEntity(pos));
+            if (dropOld && level instanceof ServerLevel) {
+                drops = Block.getDrops(state, (ServerLevel) level, pos, level.getBlockEntity(pos));
             }
-            if (world.setBlockState(pos, ModBlocks.mjoellnir.getDefaultState(), 11)) {
+            if (level.setBlock(pos, ModBlocks.mjoellnir.defaultBlockState(), 11)) {
                 if (drops != null) {
                     drops.forEach(drop -> {
-                        ItemEntity ie = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop.copy());
-                        world.addEntity(ie);
+                        ItemEntity ie = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), drop.copy());
+                        level.addFreshEntity(ie);
                     });
                 }
-                getTile(world, pos).setStack(stack.copy());
-                if (!world.isRemote) {
-                    world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1, 1);
+                ModBlocks.mjoellnir.getBlockEntity(level, pos).setStack(stack.copy());
+                if (!level.isClientSide) {
+                    level.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 1, 1);
                 }
                 return true;
             } else {
@@ -161,49 +137,49 @@ public class BlockMjoellnir extends Block implements Registerable {
         }
     }
 
-    public static void putInWorld(ItemStack stack, World world, BlockPos pos) {
-        putInWorld(stack, world, pos, true);
+    public static void putInWorld(ItemStack stack, Level level, BlockPos pos) {
+        putInWorld(stack, level, pos, true);
     }
     
-    public static void putInWorld(ItemStack stack, World world, BlockPos pos, boolean dropOldOnReplace) {
-        if (!placeInWorld(stack, world, pos, dropOldOnReplace)) {
-            ItemEntity ie = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack.copy());
+    public static void putInWorld(ItemStack stack, Level level, BlockPos pos, boolean dropOldOnReplace) {
+        if (!placeInWorld(stack, level, pos, dropOldOnReplace)) {
+            ItemEntity ie = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack.copy());
             ie.setInvulnerable(true);
-            world.addEntity(ie);
+            level.addFreshEntity(ie);
         }
     }
 
-    public static boolean canHold(PlayerEntity player) {
+    public static boolean canHold(Player player) {
         return player.isCreative() || player.isSpectator() || MythicConfig.mjoellnir.requirement.test(player)
                 || (!ItemThorRing.getThorRing(player).isEmpty() && MythicConfig.mjoellnir.requirement_thor.test(player));
     }
 
-    public static boolean putInInventory(PlayerEntity player, ItemStack stack, int hotbarSlot) {
+    public static boolean putInInventory(Player player, ItemStack stack, int hotbarSlot) {
         boolean inserted = false;
         if (hotbarSlot < 9) {
-            ItemStack current = player.inventory.getStackInSlot(hotbarSlot);
+            ItemStack current = player.getInventory().getItem(hotbarSlot);
             if (current.isEmpty()) {
-                player.inventory.setInventorySlotContents(hotbarSlot, stack);
+                player.getInventory().setItem(hotbarSlot, stack);
                 inserted = true;
             }
         } else if (hotbarSlot == 9) {
-            ItemStack current = player.inventory.offHandInventory.get(0);
+            ItemStack current = player.getInventory().offhand.get(0);
             if (current.isEmpty()) {
-                player.inventory.offHandInventory.set(0, stack);
+                player.getInventory().offhand.set(0, stack);
                 inserted = true;
             }
         }
         if (!inserted) {
-            int slot = player.inventory.getFirstEmptyStack();
+            int slot = player.getInventory().getFreeSlot();
             if (slot >= 0) {
-                player.inventory.setInventorySlotContents(slot, stack);
+                player.getInventory().setItem(slot, stack);
                 inserted = true;
             }
         }
         return inserted;
     }
 
-    public static int getHotbarSlot(PlayerEntity player, Hand hand) {
-        return hand == Hand.MAIN_HAND ? player.inventory.currentItem : 9;
+    public static int getHotbarSlot(Player player, InteractionHand hand) {
+        return hand == InteractionHand.MAIN_HAND ? player.getInventory().selected : 9;
     }
 }

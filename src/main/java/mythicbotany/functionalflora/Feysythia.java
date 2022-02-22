@@ -2,12 +2,15 @@ package mythicbotany.functionalflora;
 
 import com.google.common.collect.ImmutableList;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.util.Mth;
 
 import java.util.List;
 
@@ -21,15 +24,15 @@ public class Feysythia extends FunctionalFlowerBase {
             new ResourceLocation("feywild", "brilliant_fey_gem")
     );
     
-    public Feysythia(TileEntityType<?> tileEntityType) {
-        super(tileEntityType, 0x45FFAC, true);
+    public Feysythia(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state, 0x45FFAC, true);
     }
 
     @Override
     protected void tickFlower() {
         //noinspection ConstantConditions
-        if (!world.isRemote && mana <= 0) {
-            List<ItemEntity> items = world.getEntitiesWithinAABB(ItemEntity.class, new AxisAlignedBB(pos.add(-1, -1, -1), pos.add(2, 2, 2)));
+        if (!level.isClientSide && mana <= 0) {
+            List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, new AABB(worldPosition.offset(-1, -1, -1), worldPosition.offset(2, 2, 2)));
             for (ItemEntity ie : items) {
                 ItemStack stack = ie.getItem();
                 if (!stack.isEmpty()) {
@@ -42,11 +45,11 @@ public class Feysythia extends FunctionalFlowerBase {
                     if (level > 0) {
                         stack.shrink(1);
                         if (stack.isEmpty()) {
-                            ie.remove();
+                            ie.remove(Entity.RemovalReason.DISCARDED);
                         } else {
                             ie.setItem(stack);
                         }
-                        mana = MathHelper.clamp((int) Math.ceil(Math.sqrt(level * 1.3) * 263), 0, maxMana);
+                        mana = Mth.clamp((int) Math.ceil(Math.sqrt(level * 1.3) * 263), 0, maxMana);
                         didWork = true;
                     }
                 }

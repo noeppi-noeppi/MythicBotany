@@ -3,12 +3,12 @@ package mythicbotany.loot;
 import com.google.gson.JsonObject;
 import mythicbotany.ModItems;
 import mythicbotany.alftools.AlfsteelPick;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 import vazkii.botania.common.lib.ModTags;
@@ -18,14 +18,14 @@ import java.util.List;
 
 public class AlfsteelDisposeModifier extends LootModifier {
 
-    private AlfsteelDisposeModifier(ILootCondition[] conditions) {
+    private AlfsteelDisposeModifier(LootItemCondition[] conditions) {
         super(conditions);
     }
 
     @Nonnull
     protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
-        Entity entity = context.get(LootParameters.THIS_ENTITY);
-        ItemStack tool = context.get(LootParameters.TOOL);
+        Entity entity = context.getParamOrNull(LootContextParams.THIS_ENTITY);
+        ItemStack tool = context.getParamOrNull(LootContextParams.TOOL);
         if (entity != null && tool != null && !tool.isEmpty()) {
             filterDisposable(generatedLoot, entity, tool);
         }
@@ -34,7 +34,7 @@ public class AlfsteelDisposeModifier extends LootModifier {
 
     public static void filterDisposable(List<ItemStack> drops, Entity entity, ItemStack stack) {
         if (!stack.isEmpty() && stack.getItem() == ModItems.alfsteelPick && AlfsteelPick.isTipped(stack)) {
-            drops.removeIf((loot) -> !loot.isEmpty() && (ModTags.Items.DISPOSABLE.contains(loot.getItem()) || ModTags.Items.SEMI_DISPOSABLE.contains(loot.getItem()) && !entity.isSneaking()));
+            drops.removeIf((loot) -> !loot.isEmpty() && (ModTags.Items.DISPOSABLE.contains(loot.getItem()) || ModTags.Items.SEMI_DISPOSABLE.contains(loot.getItem()) && !entity.isShiftKeyDown()));
         }
     }
 
@@ -46,7 +46,7 @@ public class AlfsteelDisposeModifier extends LootModifier {
 
         }
 
-        public AlfsteelDisposeModifier read(ResourceLocation location, JsonObject object, ILootCondition[] conditions) {
+        public AlfsteelDisposeModifier read(ResourceLocation location, JsonObject object, LootItemCondition[] conditions) {
             return new AlfsteelDisposeModifier(conditions);
         }
 

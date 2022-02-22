@@ -1,15 +1,15 @@
 package mythicbotany.infuser;
 
 import mythicbotany.ModRecipes;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public interface IInfuserRecipe extends IRecipe<IInventory> {
+public interface IInfuserRecipe extends Recipe<Container> {
 
     int getManaUsage();
 
@@ -19,18 +19,18 @@ public interface IInfuserRecipe extends IRecipe<IInventory> {
 
     @Nonnull
     @Override
-    default IRecipeType<?> getType() {
+    default RecipeType<?> getType() {
         return ModRecipes.INFUSER;
     }
 
     @Nonnull
     @Override
-    default ItemStack getCraftingResult(@Nonnull IInventory inv) {
+    default ItemStack assemble(@Nonnull Container inv) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    default boolean canFit(int width, int height) {
+    default boolean canCraftInDimensions(int width, int height) {
         return false;
     }
 

@@ -1,8 +1,8 @@
 package mythicbotany.misc;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.Random;
 
@@ -38,7 +38,7 @@ public class Andwari {
             if (random.nextBoolean()) {
                 int amount = random.nextInt(3);
                 for (int i = 0; i < amount; i++) {
-                    stack = EnchantmentHelper.addRandomEnchantment(random, stack, 2 + random.nextInt(18), false);
+                    stack = EnchantmentHelper.enchantItem(random, stack, 2 + random.nextInt(18), false);
                 }
             }
             return stack;

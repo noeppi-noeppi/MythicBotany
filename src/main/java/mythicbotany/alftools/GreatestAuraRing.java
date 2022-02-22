@@ -1,21 +1,20 @@
 package mythicbotany.alftools;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import vazkii.botania.api.mana.IManaGivingItem;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.equipment.bauble.ItemBauble;
 
-public class GreatestAuraRing extends ItemBauble implements IManaGivingItem {
+public class GreatestAuraRing extends ItemBauble {
 
-    public GreatestAuraRing(Properties props) {
-        super(props);
+    public GreatestAuraRing(Properties properties) {
+        super(properties);
     }
 
-    public void onWornTick(ItemStack stack, LivingEntity player) {
-        if (!player.world.isRemote && player instanceof PlayerEntity) {
-            ManaItemHandler.instance().dispatchManaExact(stack, (PlayerEntity)player, 4, true);
+    public void onWornTick(ItemStack stack, LivingEntity living) {
+        if (!living.level.isClientSide && living instanceof Player player) {
+            ManaItemHandler.instance().dispatchManaExact(stack, player, 10, true);
         }
     }
 }

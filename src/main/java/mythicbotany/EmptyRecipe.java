@@ -1,27 +1,28 @@
 package mythicbotany;
 
 import com.google.gson.JsonObject;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 // Backport of LibX EmptyRecipe for 1.17
-public class EmptyRecipe implements IRecipe<IInventory> {
+public class EmptyRecipe implements Recipe<Container> {
+    // TODO remove
     
     public static final ResourceLocation ID = new ResourceLocation(MythicBotany.getInstance().modid, "empty");
-    public static final IRecipeType<EmptyRecipe> TYPE = IRecipeType.register(ID.toString());
+    public static final RecipeType<EmptyRecipe> TYPE = RecipeType.register(ID.toString());
     
     private final ResourceLocation id;
 
@@ -30,24 +31,24 @@ public class EmptyRecipe implements IRecipe<IInventory> {
     }
 
     @Override
-    public boolean matches(@Nonnull IInventory inv, @Nonnull World level) {
+    public boolean matches(@Nonnull Container inv, @Nonnull Level level) {
         return false;
     }
 
     @Nonnull
     @Override
-    public ItemStack getCraftingResult(@Nonnull IInventory inv) {
+    public ItemStack assemble(@Nonnull Container inv) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return false;
     }
 
     @Nonnull
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return ItemStack.EMPTY;
     }
 
@@ -59,20 +60,20 @@ public class EmptyRecipe implements IRecipe<IInventory> {
 
     @Nonnull
     @Override
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return Serializer.INSTANCE;
     }
 
     @Nonnull
     @Override
-    public IRecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return TYPE;
     }
 
     @Nonnull
     @Override
-    public NonNullList<ItemStack> getRemainingItems(@Nonnull IInventory inv) {
-        return NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+    public NonNullList<ItemStack> getRemainingItems(@Nonnull Container inv) {
+        return NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
     }
 
     @Nonnull
@@ -81,7 +82,7 @@ public class EmptyRecipe implements IRecipe<IInventory> {
         return NonNullList.create();
     }
     
-    public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<EmptyRecipe> {
+    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<EmptyRecipe> {
 
         public static final Serializer INSTANCE = new Serializer();
         
@@ -91,52 +92,52 @@ public class EmptyRecipe implements IRecipe<IInventory> {
         
         @Nonnull
         @Override
-        public EmptyRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
+        public EmptyRecipe fromJson(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
             return new EmptyRecipe(recipeId);
         }
 
         @Nullable
         @Override
-        public EmptyRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull PacketBuffer buffer) {
+        public EmptyRecipe fromNetwork(@Nonnull ResourceLocation recipeId, @Nonnull FriendlyByteBuf buffer) {
             return new EmptyRecipe(recipeId);
         }
 
         @Override
-        public void write(@Nonnull PacketBuffer buffer, @Nonnull EmptyRecipe recipe) {
+        public void toNetwork(@Nonnull FriendlyByteBuf buffer, @Nonnull EmptyRecipe recipe) {
             //
         }
     }
     
-    public static IFinishedRecipe empty(ResourceLocation id) {
+    public static FinishedRecipe empty(ResourceLocation id) {
         
-        return new IFinishedRecipe() {
+        return new FinishedRecipe() {
 
             @Override
-            public void serialize(@Nonnull JsonObject json) {
+            public void serializeRecipeData(@Nonnull JsonObject json) {
                 //
             }
 
             @Nonnull
             @Override
-            public ResourceLocation getID() {
+            public ResourceLocation getId() {
                 return id;
             }
 
             @Nonnull
             @Override
-            public IRecipeSerializer<?> getSerializer() {
+            public RecipeSerializer<?> getType() {
                 return Serializer.INSTANCE;
             }
 
             @Nullable
             @Override
-            public JsonObject getAdvancementJson() {
+            public JsonObject serializeAdvancement() {
                 return null;
             }
 
             @Nullable
             @Override
-            public ResourceLocation getAdvancementID() {
+            public ResourceLocation getAdvancementId() {
                 return null;
             }
         };

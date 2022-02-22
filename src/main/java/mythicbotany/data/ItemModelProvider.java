@@ -1,15 +1,17 @@
 package mythicbotany.data;
 
+import io.github.noeppi_noeppi.libx.annotation.data.Datagen;
 import io.github.noeppi_noeppi.libx.data.provider.ItemModelProviderBase;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModItems;
 import mythicbotany.functionalflora.base.BlockFunctionalFlower;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.BlockItem;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
+@Datagen
 public class ItemModelProvider extends ItemModelProviderBase {
 
 	public ItemModelProvider(ModX mod, DataGenerator generator, ExistingFileHelper fileHelper) {

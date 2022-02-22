@@ -2,124 +2,122 @@ package mythicbotany.alfheim.entity;
 
 import mythicbotany.ModEntities;
 import mythicbotany.alfheim.AlfheimWorldGen;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.EndermanEntity;
-import net.minecraft.entity.monster.EndermiteEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Endermite;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import vazkii.botania.client.fx.SparkleParticleData;
 
 import javax.annotation.Nonnull;
 import java.util.EnumSet;
 import java.util.Random;
 
-public class AlfPixie extends CreatureEntity {
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 
-    public AlfPixie(@Nonnull World world) {
-        this(ModEntities.alfPixie, world);
+public class AlfPixie extends PathfinderMob {
+
+    public AlfPixie(@Nonnull Level level) {
+        this(ModEntities.alfPixie, level);
     }
 
-    public AlfPixie(EntityType<AlfPixie> type, World world) {
-        super(type, world);
-        this.experienceValue = 3;
-        this.moveController = new MoveHelperController(this);
+    public AlfPixie(EntityType<AlfPixie> type, Level level) {
+        super(type, level);
+        this.xpReward = 3;
+        this.moveControl = new MoveHelperController(this);
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(5, new RandomFlyGoal(this));
         this.goalSelector.addGoal(7, new LookAroundGoal(this));
-        this.goalSelector.addGoal(12, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, EndermanEntity.class, 0, true, false, entity -> true));
-        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, EndermiteEntity.class, 0, true, false, entity -> true));
+        this.goalSelector.addGoal(12, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, EnderMan.class, 0, true, false, entity -> true));
+        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Endermite.class, 0, true, false, entity -> true));
         this.initExtraAI();
     }
 
     protected void initExtraAI() {
-        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
     }
 
-    public int getMaxSpawnedInChunk() {
+    public int getMaxSpawnClusterSize() {
         return 7;
     }
 
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote && this.isAlive()) {
-            if (this.ticksExisted % 10 == 0 && this.deathTime == 0) {
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide && this.isAlive()) {
+            if (this.tickCount % 10 == 0 && this.deathTime == 0) {
                 this.heal(1);
             }
         }
-        if (world.isRemote) {
+        if (level.isClientSide) {
             for (int i = 0; i < 4; i++) {
                 SparkleParticleData data = SparkleParticleData.sparkle(0.1F + (float) Math.random() * 0.25f, 1, 0.25f, 0.9f, 12);
-                world.addParticle(data, getPosX() + (Math.random() - 0.5) * 0.25,
-                        getPosY() + 0.5 + (Math.random() - 0.5) * 0.25,
-                        getPosZ() + (Math.random() - 0.5) * 0.25,
+                level.addParticle(data, getX() + (Math.random() - 0.5) * 0.25,
+                        getY() + 0.5 + (Math.random() - 0.5) * 0.25,
+                        getZ() + (Math.random() - 0.5) * 0.25,
                         0, 0, 0);
             }
         }
     }
 
-    public boolean isOnLadder() {
+    public boolean onClimbable() {
         return false;
     }
 
     @Override
-    public void travel(@Nonnull Vector3d vec) {
+    public void travel(@Nonnull Vec3 travelVector) {
         if (this.isInWater()) {
-            this.moveRelative(0.02f, vec);
-            this.move(MoverType.SELF, this.getMotion());
-            this.setMotion(this.getMotion().scale(0.8));
+            this.moveRelative(0.02f, travelVector);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.8));
         } else if (this.isInLava()) {
-            this.moveRelative(0.02f, vec);
-            this.move(MoverType.SELF, this.getMotion());
-            this.setMotion(this.getMotion().scale(0.5));
+            this.moveRelative(0.02f, travelVector);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.5));
         } else {
-            BlockPos ground = new BlockPos(this.getPosX(), this.getPosY() - 1, this.getPosZ());
-            float slipperiness = 0.91f;
-            if (this.onGround) {
-                slipperiness = this.world.getBlockState(ground).getSlipperiness(this.world, ground, this) * 0.91f;
-            }
-
-            float groundModifier = (19 / 3f) / (slipperiness * slipperiness * slipperiness);
-            slipperiness = 0.91F;
-            if (this.onGround) {
-                slipperiness = this.world.getBlockState(ground).getSlipperiness(this.world, ground, this) * 0.91f;
-            }
-
-            this.moveRelative(this.onGround ? 0.1F * groundModifier : 0.02F, vec);
-            this.move(MoverType.SELF, this.getMotion());
-            this.setMotion(this.getMotion().scale(slipperiness));
+            float groundModifier = (19 / 3f) / 0.753571f;
+            this.moveRelative(this.onGround ? 0.1F * groundModifier : 0.02f, travelVector);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.91f));
         }
     }
 
     @Override
-    public boolean onLivingFall(float p_225503_1_, float p_225503_2_) {
-        return false;
+    protected int calculateFallDamage(float distance, float damageMultiplier) {
+        return 0;
     }
 
-    public static AttributeModifierMap entityAttributes() {
-        return MobEntity.registerAttributes()
-                .createMutableAttribute(Attributes.MAX_HEALTH, 4)
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 3)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 32)
-                .create();
+    public static AttributeSupplier entityAttributes() {
+        return Mob.createLivingAttributes()
+                .add(Attributes.MAX_HEALTH, 4)
+                .add(Attributes.ATTACK_DAMAGE, 3)
+                .add(Attributes.FOLLOW_RANGE, 32)
+                .build();
     }
 
-    public static boolean canSpawnAt(EntityType<AlfPixie> type, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
-        //noinspection deprecation
-        return world.getBlockState(pos).isAir(world, pos);
+    public static boolean canSpawnAt(EntityType<AlfPixie> type, LevelAccessor level, MobSpawnType reason, BlockPos pos, Random random) {
+        return level.getBlockState(pos).isAir();
     }
 
     private static class LookAroundGoal extends Goal {
@@ -128,32 +126,31 @@ public class AlfPixie extends CreatureEntity {
 
         public LookAroundGoal(AlfPixie entity) {
             this.entity = entity;
-            this.setMutexFlags(EnumSet.of(Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Goal.Flag.LOOK));
         }
 
-        public boolean shouldExecute() {
+        public boolean canUse() {
             return true;
         }
 
         public void tick() {
-            if (this.entity.getAttackTarget() == null) {
-                Vector3d motion = this.entity.getMotion();
-                this.entity.rotationYaw = -((float) MathHelper.atan2(motion.x, motion.z)) * ((float) (180 / Math.PI));
-                this.entity.renderYawOffset = this.entity.rotationYaw;
+            if (this.entity.getTarget() == null) {
+                Vec3 motion = this.entity.getDeltaMovement();
+                this.entity.setYRot(-((float) Mth.atan2(motion.x, motion.z)) * ((float) (180 / Math.PI)));
+                this.entity.yBodyRot = this.entity.getYRot();
             } else {
-                LivingEntity target = this.entity.getAttackTarget();
-                if (target.getDistanceSq(this.entity) < 64 * 64) {
-                    double xd = target.getPosX() - this.entity.getPosX();
-                    double zd = target.getPosZ() - this.entity.getPosZ();
-                    this.entity.rotationYaw = -((float) MathHelper.atan2(xd, zd)) * ((float) (180 / Math.PI));
-                    this.entity.renderYawOffset = this.entity.rotationYaw;
+                LivingEntity target = this.entity.getTarget();
+                if (target.distanceToSqr(this.entity) < 64 * 64) {
+                    double xd = target.getX() - this.entity.getX();
+                    double zd = target.getZ() - this.entity.getZ();
+                    this.entity.setYRot(-((float) Mth.atan2(xd, zd)) * ((float) (180 / Math.PI)));
+                    this.entity.yBodyRot = this.entity.getYRot();
                 }
             }
-
         }
     }
 
-    private static class MoveHelperController extends MovementController {
+    private static class MoveHelperController extends MoveControl {
 
         private final AlfPixie entity;
         private int cooldown;
@@ -164,26 +161,26 @@ public class AlfPixie extends CreatureEntity {
         }
 
         public void tick() {
-            if (this.action == MovementController.Action.MOVE_TO) {
+            if (this.operation == MoveControl.Operation.MOVE_TO) {
                 if (this.cooldown-- <= 0) {
-                    this.cooldown += this.entity.getRNG().nextInt(5) + 2;
-                    Vector3d motion = new Vector3d(this.posX - this.entity.getPosX(), this.posY - this.entity.getPosY(), this.posZ - this.entity.getPosZ());
+                    this.cooldown += this.entity.getRandom().nextInt(5) + 2;
+                    Vec3 motion = new Vec3(this.wantedX - this.entity.getX(), this.wantedY - this.entity.getY(), this.wantedZ - this.entity.getZ());
                     double d0 = motion.length();
                     motion = motion.normalize();
-                    if (this.checkNoCollision(motion, MathHelper.ceil(d0))) {
-                        this.entity.setMotion(this.entity.getMotion().add(motion.scale(0.1)));
+                    if (this.checkNoCollision(motion, Mth.ceil(d0))) {
+                        this.entity.setDeltaMovement(this.entity.getDeltaMovement().add(motion.scale(0.1)));
                     } else {
-                        this.action = MovementController.Action.WAIT;
+                        this.operation = MoveControl.Operation.WAIT;
                     }
                 }
             }
         }
 
-        private boolean checkNoCollision(Vector3d p_220673_1_, int p_220673_2_) {
-            AxisAlignedBB aabb = this.entity.getBoundingBox();
+        private boolean checkNoCollision(Vec3 p_220673_1_, int p_220673_2_) {
+            AABB aabb = this.entity.getBoundingBox();
             for (int i = 1; i < p_220673_2_; ++i) {
-                aabb = aabb.offset(p_220673_1_);
-                if (!this.entity.world.hasNoCollisions(this.entity, aabb)) {
+                aabb = aabb.move(p_220673_1_);
+                if (!this.entity.level.noCollision(this.entity, aabb)) {
                     return false;
                 }
             }
@@ -197,39 +194,39 @@ public class AlfPixie extends CreatureEntity {
 
         public RandomFlyGoal(AlfPixie entity) {
             this.entity = entity;
-            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
-        public boolean shouldExecute() {
-            MovementController controller = this.entity.getMoveHelper();
-            if (!controller.isUpdating()) {
+        public boolean canUse() {
+            MoveControl controller = this.entity.getMoveControl();
+            if (!controller.hasWanted()) {
                 return true;
             } else {
-                double xd = controller.getX() - this.entity.getPosX();
-                double yd = controller.getY() - this.entity.getPosY();
-                double zd = controller.getZ() - this.entity.getPosZ();
+                double xd = controller.getWantedX() - this.entity.getX();
+                double yd = controller.getWantedY() - this.entity.getY();
+                double zd = controller.getWantedZ() - this.entity.getZ();
                 double m = xd * xd + yd * yd + zd * zd;
                 return m < 1 || m > 60 * 60;
             }
         }
 
-        public boolean shouldContinueExecuting() {
+        public boolean canContinueToUse() {
             return false;
         }
 
-        public void startExecuting() {
+        public void start() {
             int aboveGround = 0;
-            BlockPos.Mutable mpos = entity.getPosition().down().toMutable();
-            while (mpos.getY() > 0 && AlfheimWorldGen.passReplaceableAndDreamwood(entity.world.getBlockState(mpos))) {
+            BlockPos.MutableBlockPos mpos = entity.blockPosition().below().mutable();
+            while (mpos.getY() > 0 && AlfheimWorldGen.passReplaceableAndDreamwood(entity.level.getBlockState(mpos))) {
                 mpos.move(Direction.DOWN);
                 aboveGround += 1;
                 if (aboveGround >= 10) break;
             }
-            Random random = this.entity.getRNG();
-            double x = this.entity.getPosX() + ((random.nextDouble() * 2) - 1) * 16;
-            double y = this.entity.getPosY() + (((random.nextDouble() * 2) - 1) * 16) - (2 * (aboveGround - 5));
-            double z = this.entity.getPosZ() + ((random.nextDouble() * 2) - 1) * 16;
-            this.entity.getMoveHelper().setMoveTo(x, y, z, 0.8);
+            Random random = this.entity.getRandom();
+            double x = this.entity.getX() + ((random.nextDouble() * 2) - 1) * 16;
+            double y = this.entity.getY() + (((random.nextDouble() * 2) - 1) * 16) - (2 * (aboveGround - 5));
+            double z = this.entity.getZ() + ((random.nextDouble() * 2) - 1) * 16;
+            this.entity.getMoveControl().setWantedPosition(x, y, z, 0.8);
         }
     }
 }

@@ -1,9 +1,10 @@
 package mythicbotany.alfheim.entity;
 
 import mythicbotany.MythicBotany;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import vazkii.botania.client.model.ModModelLayers;
 
 import javax.annotation.Nonnull;
 
@@ -11,14 +12,13 @@ public class AlfPixieRender extends MobRenderer<AlfPixie, AlfPixieModel> {
     
     private static final ResourceLocation TEXTURE = new ResourceLocation(MythicBotany.getInstance().modid, "textures/entity/alf_pixie.png");
 
-    public AlfPixieRender(EntityRendererManager renderManager) {
-        super(renderManager, new AlfPixieModel(), 0);
+    public AlfPixieRender(EntityRendererProvider.Context context) {
+        super(context, new AlfPixieModel(context.bakeLayer(ModModelLayers.PIXIE)), 0);
     }
-
-
+    
     @Nonnull
     @Override
-    public ResourceLocation getEntityTexture(@Nonnull AlfPixie entity) {
+    public ResourceLocation getTextureLocation(@Nonnull AlfPixie entity) {
         return TEXTURE;
     }
 }

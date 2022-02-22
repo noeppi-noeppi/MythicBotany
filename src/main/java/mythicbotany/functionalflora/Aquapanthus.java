@@ -2,24 +2,23 @@ package mythicbotany.functionalflora;
 
 import com.google.common.collect.ImmutableSet;
 import io.github.noeppi_noeppi.libx.LibX;
-import mythicbotany.compat.CauldronCompat;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CauldronBlock;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import vazkii.botania.api.item.IPetalApothecary;
+import vazkii.botania.api.block.IPetalApothecary;
 import vazkii.botania.api.subtile.RadiusDescriptor;
 import vazkii.botania.client.fx.WispParticleData;
 
@@ -52,18 +51,18 @@ public class Aquapanthus extends FunctionalFlowerBase {
     private BlockPos currentlyFilling = null;
     private int fillingSince = 0;
 
-    public Aquapanthus(TileEntityType<?> tileEntityType) {
-        super(tileEntityType, 0x4444FF, false);
+    public Aquapanthus(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state, 0x4444FF, false);
     }
 
     @Override
     protected void tickFlower() {
         //noinspection ConstantConditions
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             if (currentlyFilling != null) {
                 if (mana >= MANA_PER_TICK) {
                     if (fill()) {
-                        mana = MathHelper.clamp(mana - MANA_PER_TICK, 0, maxMana);
+                        mana = Mth.clamp(mana - MANA_PER_TICK, 0, maxMana);
                         didWork = true;
                         fillingSince += 1;
                     } else {
@@ -71,8 +70,8 @@ public class Aquapanthus extends FunctionalFlowerBase {
                         currentlyFilling = null;
                     }
                 }
-                LibX.getNetwork().updateTE(world, pos);
-                markDirty();
+                LibX.getNetwork().updateBE(level, worldPosition);
+                setChanged();
             } else {
                 if (tickToNextCheck > 0) {
                     tickToNextCheck -= 1;
@@ -80,16 +79,16 @@ public class Aquapanthus extends FunctionalFlowerBase {
                 }
                 tickToNextCheck = MAX_TICK_TO_NEXT_CHECK;
 
-                BlockPos basePos = pos.toImmutable();
+                BlockPos basePos = worldPosition.immutable();
                 outer: for (int xd = -3; xd <= 3; xd++) {
                     for (int zd = -3; zd <= 3; zd++) {
-                        BlockPos pos = basePos.add(xd, 0, zd);
-                        BlockState state = world.getBlockState(pos);
-                        TileEntity te = world.getTileEntity(pos);
+                        BlockPos pos = basePos.offset(xd, 0, zd);
+                        BlockState state = level.getBlockState(pos);
+                        BlockEntity te = level.getBlockEntity(pos);
                         if (canFill(state, te)) {
                             currentlyFilling = pos;
                             fillingSince = 0;
-                            markDirty();
+                            setChanged();
                             break outer;
                         }
                     }
@@ -99,24 +98,24 @@ public class Aquapanthus extends FunctionalFlowerBase {
             if (currentlyFilling != null && fillingSince > 0) {
                 double progress = fillingSince / (double) TICKS_TO_FILL;
 
-                double x = ((currentlyFilling.getX() - pos.getX()) * progress) + pos.getX() + 0.5;
-                double y = pos.getY() + (1.5 * Math.sin(progress * Math.PI));
-                double z = ((currentlyFilling.getZ() - pos.getZ()) * progress) + pos.getZ() + 0.5;
+                double x = ((currentlyFilling.getX() - worldPosition.getX()) * progress) + worldPosition.getX() + 0.5;
+                double y = worldPosition.getY() + (1.5 * Math.sin(progress * Math.PI));
+                double z = ((currentlyFilling.getZ() - worldPosition.getZ()) * progress) + worldPosition.getZ() + 0.5;
 
-                double xd = ((currentlyFilling.getX() - pos.getX()) * progress) / 10;
+                double xd = ((currentlyFilling.getX() - worldPosition.getX()) * progress) / 10;
                 double yd = Math.sin(progress * Math.PI) / 10;
-                double zd = ((currentlyFilling.getZ() - pos.getZ()) * progress) / 10;
+                double zd = ((currentlyFilling.getZ() - worldPosition.getZ()) * progress) / 10;
 
                 WispParticleData data = WispParticleData.wisp(0.85F, 0.1f, 0.1f, 1, 0.25F);
-                world.addParticle(data, x, y, z, xd, yd, zd);
+                level.addParticle(data, x, y, z, xd, yd, zd);
                 data = WispParticleData.wisp((float) Math.random() * 0.1F + 0.1F, 0.2f, 0.2f, 1, 0.9F);
-                world.addParticle(data, x, y, z, (float) (Math.random() - 0.5) * 0.05F, (float) (Math.random() - 0.5) * 0.05F, (float) (Math.random() - 0.5) * 0.05F);
+                level.addParticle(data, x, y, z, (float) (Math.random() - 0.5) * 0.05F, (float) (Math.random() - 0.5) * 0.05F, (float) (Math.random() - 0.5) * 0.05F);
             }
         }
     }
 
-    private boolean canFill(BlockState state, @Nullable TileEntity te) {
-        if (state.getBlock() == Blocks.CAULDRON && state.get(CauldronBlock.LEVEL) < 3 && CauldronCompat.canFill(state, te)) {
+    private boolean canFill(BlockState state, @Nullable BlockEntity te) {
+        if (state.getBlock() == Blocks.CAULDRON || (state.getBlock() == Blocks.WATER_CAULDRON && state.getValue(LayeredCauldronBlock.LEVEL) < 3)) {
             return true;
         } else if (te instanceof IPetalApothecary && ((IPetalApothecary) te).getFluid() == IPetalApothecary.State.EMPTY) {
             return true;
@@ -145,26 +144,25 @@ public class Aquapanthus extends FunctionalFlowerBase {
     
     private boolean fill() {
         //noinspection ConstantConditions
-        BlockState state = world.getBlockState(currentlyFilling);
-        TileEntity te = world.getTileEntity(currentlyFilling);
-        if ((state.getBlock() == Blocks.CAULDRON && state.get(CauldronBlock.LEVEL) < 3)
-                || (te instanceof IPetalApothecary && ((IPetalApothecary) te).getFluid() == IPetalApothecary.State.EMPTY)) {
+        BlockState state = level.getBlockState(currentlyFilling);
+        BlockEntity be = level.getBlockEntity(currentlyFilling);
+        if (state.getBlock() == Blocks.CAULDRON || (state.getBlock() == Blocks.WATER_CAULDRON && state.getValue(LayeredCauldronBlock.LEVEL) < 3) || (be instanceof IPetalApothecary && ((IPetalApothecary) be).getFluid() == IPetalApothecary.State.EMPTY)) {
             if (fillingSince >= TICKS_TO_FILL) {
                 if (state.getBlock() == Blocks.CAULDRON) {
-                    world.setBlockState(currentlyFilling, state.with(CauldronBlock.LEVEL, MathHelper.clamp(state.get(CauldronBlock.LEVEL) + 1, 0, 3)));
-                } else if (te instanceof IPetalApothecary) {
-                    ((IPetalApothecary) te).setFluid(IPetalApothecary.State.WATER);
-                    te.markDirty();
+                    level.setBlockAndUpdate(currentlyFilling, Blocks.WATER_CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 1));
+                } else if (state.getBlock() == Blocks.WATER_CAULDRON) {
+                    level.setBlockAndUpdate(currentlyFilling, state.setValue(LayeredCauldronBlock.LEVEL, Mth.clamp(state.getValue(LayeredCauldronBlock.LEVEL) + 1, 0, 3)));
+                } else if (be instanceof IPetalApothecary) {
+                    ((IPetalApothecary) be).setFluid(IPetalApothecary.State.WATER);
+                    be.setChanged();
                 }
                 return false;
             }
             return true;
-        } else if ((FILLING_SLOW_IDS.contains(state.getBlock().getRegistryName())
-                || FILLING_FAST_IDS.contains(state.getBlock().getRegistryName()))
-                && te != null) {
+        } else if ((FILLING_SLOW_IDS.contains(state.getBlock().getRegistryName()) || FILLING_FAST_IDS.contains(state.getBlock().getRegistryName())) && be != null) {
             if (fillingSince >= TICKS_TO_FILL) {
                 //noinspection ConstantConditions
-                IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP).orElse(null);
+                IFluidHandler handler = be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP).orElse(null);
                 //noinspection ConstantConditions
                 if (handler != null) {
                     if (FILLING_FAST_IDS.contains(state.getBlock().getRegistryName())) {
@@ -172,11 +170,11 @@ public class Aquapanthus extends FunctionalFlowerBase {
                     } else {
                         handler.fill(new FluidStack(Fluids.WATER, (FluidAttributes.BUCKET_VOLUME / 3) + 1), IFluidHandler.FluidAction.EXECUTE);
                     }
-                    te.markDirty();
+                    be.setChanged();
                 }
                 return false;
             } else {
-                return canFill(state, te);
+                return canFill(state, be);
             }
         } else {
             return false;
@@ -185,43 +183,42 @@ public class Aquapanthus extends FunctionalFlowerBase {
 
     @Override
     public RadiusDescriptor getRadius() {
-        return new RadiusDescriptor.Square(pos, 3);
+        return new RadiusDescriptor.Square(worldPosition, 3);
     }
 
     @Override
-    public void read(@Nonnull BlockState stateIn, @Nonnull CompoundNBT nbtIn) {
-        super.read(stateIn, nbtIn);
-        if (nbtIn.contains("waterFilling")) {
-            CompoundNBT fillingTag = nbtIn.getCompound("waterFilling");
+    public void load(@Nonnull CompoundTag nbt) {
+        super.load(nbt);
+        if (nbt.contains("waterFilling")) {
+            CompoundTag fillingTag = nbt.getCompound("waterFilling");
             currentlyFilling = new BlockPos(fillingTag.getInt("x"), fillingTag.getInt("y"), fillingTag.getInt("z"));
         } else {
             currentlyFilling = null;
         }
-        fillingSince = nbtIn.getInt("filling_since");
+        fillingSince = nbt.getInt("filling_since");
     }
 
-    @Nonnull
     @Override
-    public CompoundNBT write(@Nonnull CompoundNBT compound) {
+    public void saveAdditional(@Nonnull CompoundTag nbt) {
+        super.saveAdditional(nbt);
         if (currentlyFilling != null) {
-            CompoundNBT fillingTag = new CompoundNBT();
+            CompoundTag fillingTag = new CompoundTag();
             fillingTag.putInt("x", currentlyFilling.getX());
             fillingTag.putInt("y", currentlyFilling.getY());
             fillingTag.putInt("z", currentlyFilling.getZ());
-            compound.put("waterFilling", fillingTag);
-            compound.putInt("filling_since", fillingSince);
+            nbt.put("waterFilling", fillingTag);
+            nbt.putInt("filling_since", fillingSince);
         }
-        return super.write(compound);
     }
 
     @Nonnull
     @Override
-    public CompoundNBT getUpdateTag() {
-        CompoundNBT updateTag = super.getUpdateTag();
+    public CompoundTag getUpdateTag() {
+        CompoundTag updateTag = super.getUpdateTag();
         //noinspection ConstantConditions
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             if (currentlyFilling != null) {
-                CompoundNBT fillingTag = new CompoundNBT();
+                CompoundTag fillingTag = new CompoundTag();
                 fillingTag.putInt("x", currentlyFilling.getX());
                 fillingTag.putInt("y", currentlyFilling.getY());
                 fillingTag.putInt("z", currentlyFilling.getZ());
@@ -233,17 +230,17 @@ public class Aquapanthus extends FunctionalFlowerBase {
     }
 
     @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+    public void handleUpdateTag(CompoundTag tag) {
         //noinspection ConstantConditions
-        if (world.isRemote) {
+        if (level.isClientSide) {
             if (tag.contains("waterFilling")) {
-                CompoundNBT fillingTag = tag.getCompound("waterFilling");
+                CompoundTag fillingTag = tag.getCompound("waterFilling");
                 currentlyFilling = new BlockPos(fillingTag.getInt("x"), fillingTag.getInt("y"), fillingTag.getInt("z"));
             } else {
                 currentlyFilling = null;
             }
             fillingSince = tag.getInt("filling_since");
         }
-        super.handleUpdateTag(state, tag);
+        super.handleUpdateTag(tag);
     }
 }

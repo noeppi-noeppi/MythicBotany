@@ -1,13 +1,12 @@
 package mythicbotany;
 
-import io.github.noeppi_noeppi.libx.event.DatapacksReloadedEvent;
 import io.github.noeppi_noeppi.libx.mod.registration.ModXRegistration;
+import io.github.noeppi_noeppi.libx.mod.registration.RegistrationBuilder;
 import mythicbotany.advancement.ModCriteria;
 import mythicbotany.alfheim.Alfheim;
 import mythicbotany.alfheim.AlfheimFeatures;
 import mythicbotany.alfheim.teleporter.AlfheimPortalHandler;
 import mythicbotany.config.ClientConfig;
-import mythicbotany.data.DataGenerators;
 import mythicbotany.kvasir.WanderingTraderRuneInput;
 import mythicbotany.mjoellnir.MjoellnirRuneOutput;
 import mythicbotany.network.MythicNetwork;
@@ -15,12 +14,14 @@ import mythicbotany.patchouli.PageRitualInfo;
 import mythicbotany.patchouli.PageRitualPattern;
 import mythicbotany.pylon.PylonRepairables;
 import mythicbotany.rune.RuneRitualRecipe;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.OnDatapackSyncEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
@@ -30,7 +31,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import top.theillusivec4.curios.api.SlotTypePreset;
 import vazkii.patchouli.client.book.ClientBookRegistry;
@@ -44,10 +44,10 @@ public class MythicBotany extends ModXRegistration {
     private static MythicNetwork network;
 
     public MythicBotany() {
-        super("mythicbotany", new ItemGroup("mythicbotany") {
+        super(new CreativeModeTab("mythicbotany") {
             @Nonnull
             @Override
-            public ItemStack createIcon() {
+            public ItemStack makeIcon() {
                 return new ItemStack(ModItems.alfsteelSword);
             }
         });
@@ -62,7 +62,6 @@ public class MythicBotany extends ModXRegistration {
         addRegistrationHandler(Alfheim::register);
         addRegistrationHandler(AlfheimFeatures::register);
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(DataGenerators::gatherData);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::sendIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ModEntities::createAttributes);
 
@@ -85,6 +84,11 @@ public class MythicBotany extends ModXRegistration {
     @Nonnull
     public static MythicNetwork getNetwork() {
         return network;
+    }
+
+    @Override
+    protected void initRegistration(RegistrationBuilder builder) {
+        builder.setVersion(1);
     }
 
     @Override
@@ -116,14 +120,14 @@ public class MythicBotany extends ModXRegistration {
 
     private void sendIMC(final InterModEnqueueEvent event) {
         InterModComms.sendTo("curios", "register_type", () -> SlotTypePreset.RING.getMessageBuilder().size(3).build());
-        InterModComms.sendTo("apotheosis", "set_ench_hard_cap", () -> new EnchantmentData(ModMisc.hammerMobility, 5));
+        InterModComms.sendTo("apotheosis", "set_ench_hard_cap", () -> new EnchantmentInstance(ModMisc.hammerMobility, 5));
     }
 
-    public void serverStart(FMLServerStartingEvent event) {
+    public void serverStart(ServerStartingEvent event) {
         RecipeRemover.removeRecipes(event.getServer().getRecipeManager());
     }
     
-    public void datapacksReloaded(DatapacksReloadedEvent event) {
-        RecipeRemover.removeRecipes(event.getServer().getRecipeManager());
+    public void datapacksReloaded(OnDatapackSyncEvent event) {
+        RecipeRemover.removeRecipes(event.getPlayerList().getServer().getRecipeManager());
     }
 }

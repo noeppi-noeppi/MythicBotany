@@ -1,8 +1,8 @@
 package mythicbotany.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkEvent;
 import vazkii.botania.client.fx.WispParticleData;
 
 import java.util.function.Supplier;
@@ -11,9 +11,9 @@ public class InfusionHandler {
 
     public static void handle(InfusionSerializer.InfusionMessage msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            World world = Minecraft.getInstance().world;
+            Level level = Minecraft.getInstance().level;
             //noinspection ConstantConditions
-            if (world == null && !msg.dimension.equals(world.getDimensionKey().getRegistryName()))
+            if (level == null && !msg.dimension.equals(level.dimension().getRegistryName()))
                 return;
 
             int ticks = (int) (100.0 * msg.progress);
@@ -45,14 +45,14 @@ public class InfusionHandler {
                         fromB + ((toB - fromB) * (float) msg.progress)
                 };
                 WispParticleData data = WispParticleData.wisp(0.85F, colorsfx[0], colorsfx[1], colorsfx[2], 0.25F);
-                world.addParticle(data, x, y, z, 0, (float) (-g * 0.05), 0);
+                level.addParticle(data, x, y, z, 0, (float) (-g * 0.05), 0);
                 data = WispParticleData.wisp((float) Math.random() * 0.1F + 0.1F, colorsfx[0], colorsfx[1], colorsfx[2], 0.9F);
-                world.addParticle(data, x, y, z, (float) (Math.random() - 0.5) * 0.05F, (float) (Math.random() - 0.5) * 0.05F, (float) (Math.random() - 0.5) * 0.05F);
+                level.addParticle(data, x, y, z, (float) (Math.random() - 0.5) * 0.05F, (float) (Math.random() - 0.5) * 0.05F, (float) (Math.random() - 0.5) * 0.05F);
 
                 if (ticks == 100) {
                     for (int j = 0; j < 15; j++) {
                         data = WispParticleData.wisp((float) Math.random() * 0.15F + 0.15F, colorsfx[0], colorsfx[1], colorsfx[2]);
-                        world.addParticle(data, msg.x + 0.5, msg.y + 0.5, msg.z + 0.5, (float) (Math.random() - 0.5F) * 0.125F, (float) (Math.random() - 0.5F) * 0.125F, (float) (Math.random() - 0.5F) * 0.125F);
+                        level.addParticle(data, msg.x + 0.5, msg.y + 0.5, msg.z + 0.5, (float) (Math.random() - 0.5F) * 0.125F, (float) (Math.random() - 0.5F) * 0.125F, (float) (Math.random() - 0.5F) * 0.125F);
                     }
                 }
             }

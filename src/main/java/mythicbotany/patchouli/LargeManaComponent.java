@@ -1,13 +1,13 @@
 package mythicbotany.patchouli;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import vazkii.botania.client.core.handler.HUDHandler;
+import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import vazkii.botania.client.gui.HUDHandler;
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
 import vazkii.patchouli.api.IVariable;
@@ -31,18 +31,18 @@ public class LargeManaComponent implements ICustomComponent {
         this.y = componentY;
     }
 
-    public void render(@Nonnull MatrixStack matrixStack, IComponentRenderContext ctx, float partialTicks, int mouseX, int mouseY) {
-        FontRenderer font = Minecraft.getInstance().fontRenderer;
-        IFormattableTextComponent manaUsage = (new TranslationTextComponent("botaniamisc.manaUsage")).setStyle(ctx.getFont());
+    public void render(@Nonnull PoseStack poseStack, IComponentRenderContext ctx, float partialTicks, int mouseX, int mouseY) {
+        Font font = Minecraft.getInstance().font;
+        MutableComponent manaUsage = (new TranslatableComponent("botaniamisc.manaUsage")).setStyle(ctx.getFont());
         //noinspection IntegerDivisionInFloatingPointContext
-        font.drawText(matrixStack, manaUsage, this.x + 51 - font.getStringPropertyWidth(manaUsage) / 2, this.y, 0x66000000);
+        font.draw(poseStack, manaUsage, this.x + 51 - font.width(manaUsage) / 2, this.y, 0x66000000);
         
         float ratio = ctx.isAreaHovered(mouseX, mouseY, this.x, this.y - 2, 102, 25) ? 1 : 0.25f;
 
-        HUDHandler.renderManaBar(matrixStack, this.x, this.y + 10, 0x00CCFF, 0.75F, this.manaValues[ctx.getTicksInBook() / 20 % this.manaValues.length], Math.round(1000000 / ratio));
-        IFormattableTextComponent ratioTc = (new TranslationTextComponent("tooltip.mythicbotany.reverse_ratio", new StringTextComponent(floatToString(ratio)).mergeStyle(TextFormatting.BLUE))).setStyle(ctx.getFont());
+        HUDHandler.renderManaBar(poseStack, this.x, this.y + 10, 0x00CCFF, 0.75F, this.manaValues[ctx.getTicksInBook() / 20 % this.manaValues.length], Math.round(1000000 / ratio));
+        MutableComponent ratioTc = (new TranslatableComponent("tooltip.mythicbotany.reverse_ratio", new TextComponent(floatToString(ratio)).withStyle(ChatFormatting.BLUE))).setStyle(ctx.getFont());
         //noinspection IntegerDivisionInFloatingPointContext
-        font.drawText(matrixStack, ratioTc, this.x + 51 - font.getStringPropertyWidth(ratioTc) / 2, this.y + 15, 0x777777);
+        font.draw(poseStack, ratioTc, this.x + 51 - font.width(ratioTc) / 2, this.y + 15, 0x777777);
     }
 
     public void onVariablesAvailable(UnaryOperator<IVariable> lookup) {

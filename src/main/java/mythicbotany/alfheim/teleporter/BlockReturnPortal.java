@@ -2,21 +2,21 @@ package mythicbotany.alfheim.teleporter;
 
 import com.google.common.collect.ImmutableSet;
 import io.github.noeppi_noeppi.libx.mod.ModX;
-import io.github.noeppi_noeppi.libx.mod.registration.BlockTE;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
+import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 import javax.annotation.Nonnull;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class BlockReturnPortal extends BlockTE<TileReturnPortal> {
+public class BlockReturnPortal extends BlockBE<TileReturnPortal> {
 
     public BlockReturnPortal(ModX mod, Properties properties) {
         super(mod, TileReturnPortal.class, properties);
@@ -27,10 +27,8 @@ public class BlockReturnPortal extends BlockTE<TileReturnPortal> {
     }
 
     @Override
-    public Set<Object> getAdditionalRegisters() {
-        // We remove the item here so there's no item registered.
-        //noinspection UnstableApiUsage
-        return super.getAdditionalRegisters().stream()
+    public Set<Object> getAdditionalRegisters(ResourceLocation id) {
+        return super.getAdditionalRegisters(id).stream()
                 .filter(o -> !(o instanceof BlockItem))
                 .collect(ImmutableSet.toImmutableSet());
     }
@@ -38,13 +36,13 @@ public class BlockReturnPortal extends BlockTE<TileReturnPortal> {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        ClientRegistry.bindTileEntityRenderer(getTileType(), RenderReturnPortal::new);
+        BlockEntityRenderers.register(getBlockEntityType(), mgr -> new RenderReturnPortal());
     }
     
     @Nonnull
     @Override
     @SuppressWarnings("deprecation")
-    public BlockRenderType getRenderType(@Nonnull BlockState state) {
-        return BlockRenderType.ENTITYBLOCK_ANIMATED;
+    public RenderShape getRenderShape(@Nonnull BlockState state) {
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 }

@@ -6,20 +6,25 @@ import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.pylon.PylonRepairable;
 import mythicbotany.network.AlfSwordLeftClickSerializer;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import vazkii.botania.common.entity.EntityManaBurst;
+import vazkii.botania.common.handler.ModSounds;
 import vazkii.botania.common.item.equipment.tool.terrasteel.ItemTerraSword;
 import vazkii.botania.common.lib.ModTags;
 
 import javax.annotation.Nonnull;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
 
@@ -27,17 +32,17 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
     private final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
     public AlfsteelSword(Properties props) {
-        super(props.maxDamage(4600));
-        MinecraftForge.EVENT_BUS.addListener(this::leftClick);
+        super(props.durability(4600));
+        MinecraftForge.EVENT_BUS.addListener(this::onLeftClick);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", getAttackDamage(), AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", 2.4, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", getDamage(), AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", 2.4, AttributeModifier.Operation.ADDITION));
         this.attributeModifiers = builder.build();
     }
 
-    private void leftClick(PlayerInteractEvent.LeftClickEmpty evt) {
+    private void onLeftClick(PlayerInteractEvent.LeftClickEmpty evt) {
         if (!evt.getItemStack().isEmpty() && evt.getItemStack().getItem() == this) {
-            MythicBotany.getNetwork().instance.sendToServer(new AlfSwordLeftClickSerializer.AlfSwordLeftClickMessage());
+            MythicBotany.getNetwork().channel.sendToServer(new AlfSwordLeftClickSerializer.AlfSwordLeftClickMessage());
         }
     }
 
@@ -47,37 +52,24 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
     }
 
     @Override
-    public EntityManaBurst getBurst(PlayerEntity player, ItemStack stack) {
-        EntityManaBurst burst = super.getBurst(player, stack);
-        if (burst != null) {
-            burst.setColor(0xF79100);
-            burst.setMana(getManaPerDamage());
-            burst.setStartingMana(getManaPerDamage());
-            burst.setMinManaLoss(20);
-            burst.setManaLossPerTick(2.0F);
-        }
-        return burst;
-    }
-
-    @Override
-    public float getAttackDamage() {
+    public float getDamage() {
         return 12;
     }
 
     @Nonnull
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(@Nonnull EquipmentSlotType equipmentSlot) {
-        return equipmentSlot == EquipmentSlotType.MAINHAND ? this.attributeModifiers : super.getAttributeModifiers(equipmentSlot);
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@Nonnull EquipmentSlot equipmentSlot) {
+        return equipmentSlot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getDefaultAttributeModifiers(equipmentSlot);
     }
 
     @Override
-    public boolean getIsRepairable(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
-        return repair.getItem() == ModItems.alfsteelIngot || (!Ingredient.fromTag(ModTags.Items.INGOTS_TERRASTEEL).test(repair) && super.getIsRepairable(toRepair, repair));
+    public boolean isValidRepairItem(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
+        return repair.getItem() == ModItems.alfsteelIngot || (!Ingredient.of(ModTags.Items.INGOTS_TERRASTEEL).test(repair) && super.isValidRepairItem(toRepair, repair));
     }
 
     @Override
     public boolean canRepairPylon(ItemStack stack) {
-        return stack.getDamage() > 0;
+        return stack.getDamageValue() > 0;
     }
 
     @Override
@@ -87,7 +79,26 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
 
     @Override
     public ItemStack repairOneTick(ItemStack stack) {
-        stack.setDamage(Math.max(0, stack.getDamage() - 5));
+        stack.setDamageValue(Math.max(0, stack.getDamageValue() - 5));
         return stack;
+    }
+
+    public EntityManaBurst getAlfBurst(Player player, ItemStack stack) {
+        EntityManaBurst burst = ItemTerraSword.getBurst(player, stack);
+        burst.setColor(0xF79100);
+        burst.setMana(getManaPerDamage());
+        burst.setStartingMana(getManaPerDamage());
+        burst.setMinManaLoss(20);
+        burst.setManaLossPerTick(2.0F);
+        return burst;
+    }
+    
+    public void trySpawnAlfBurst(Player player) {
+        if (!player.getMainHandItem().isEmpty() && player.getMainHandItem().is(vazkii.botania.common.item.ModItems.terraSword) && player.getAttackStrengthScale(0) == 1) {
+            EntityManaBurst burst = getAlfBurst(player, player.getMainHandItem());
+            player.level.addFreshEntity(burst);
+            player.getMainHandItem().hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+            player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.terraBlade, SoundSource.PLAYERS, 1, 1);
+        }
     }
 }

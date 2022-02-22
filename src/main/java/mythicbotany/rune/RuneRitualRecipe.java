@@ -4,15 +4,15 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mythicbotany.ModRecipes;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RuneRitualRecipe implements IRecipe<IInventory> {
+public class RuneRitualRecipe implements Recipe<Container> {
 
     public static final int DEFAULT_TICKS = 200;
     
@@ -72,24 +72,24 @@ public class RuneRitualRecipe implements IRecipe<IInventory> {
     }
 
     @Override
-    public boolean matches(@Nonnull IInventory inv, @Nonnull World world) {
+    public boolean matches(@Nonnull Container inv, @Nonnull Level level) {
         return false;
     }
 
     @Nonnull
     @Override
-    public ItemStack getCraftingResult(@Nonnull IInventory inv) {
-        return getRecipeOutput();
+    public ItemStack assemble(@Nonnull Container inv) {
+        return getResultItem();
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return false;
     }
 
     @Nonnull
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         if (this.outputs.size() == 1) {
             return this.outputs.get(0);
         }
@@ -104,13 +104,13 @@ public class RuneRitualRecipe implements IRecipe<IInventory> {
 
     @Nonnull
     @Override
-    public IRecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return ModRecipes.RUNE_RITUAL;
     }
 
     @Nonnull
     @Override
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return ModRecipes.RUNE_RITUAL_SERIALIZER;
     }
 
@@ -215,15 +215,15 @@ public class RuneRitualRecipe implements IRecipe<IInventory> {
         }
     }
 
-    public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<RuneRitualRecipe> {
+    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<RuneRitualRecipe> {
 
         @Nonnull
         @Override
-        public RuneRitualRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
-            Ingredient centerRune = Ingredient.deserialize(json.get("center"));
+        public RuneRitualRecipe fromJson(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
+            Ingredient centerRune = Ingredient.fromJson(json.get("center"));
             ImmutableList.Builder<RunePosition> runes = ImmutableList.builder();
             for (JsonElement elem : json.get("runes").getAsJsonArray()) {
-                Ingredient rune = Ingredient.deserialize(elem.getAsJsonObject().get("rune"));
+                Ingredient rune = Ingredient.fromJson(elem.getAsJsonObject().get("rune"));
                 int x = elem.getAsJsonObject().get("x").getAsInt();
                 int z = elem.getAsJsonObject().get("z").getAsInt();
                 boolean consume = elem.getAsJsonObject().has("consume") && elem.getAsJsonObject().get("consume").getAsBoolean();
@@ -236,7 +236,7 @@ public class RuneRitualRecipe implements IRecipe<IInventory> {
             ImmutableList.Builder<Ingredient> inputs = ImmutableList.builder();
             if (json.has("inputs")) {
                 for (JsonElement elem : json.get("inputs").getAsJsonArray()) {
-                    inputs.add(Ingredient.deserialize(elem));
+                    inputs.add(Ingredient.fromJson(elem));
                 }
             }
 
@@ -270,12 +270,12 @@ public class RuneRitualRecipe implements IRecipe<IInventory> {
 
         @Nullable
         @Override
-        public RuneRitualRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull PacketBuffer buffer) {
-            Ingredient centerRune = Ingredient.read(buffer);
+        public RuneRitualRecipe fromNetwork(@Nonnull ResourceLocation recipeId, @Nonnull FriendlyByteBuf buffer) {
+            Ingredient centerRune = Ingredient.fromNetwork(buffer);
             int size = buffer.readVarInt();
             ImmutableList.Builder<RunePosition> runes = ImmutableList.builder();
             for (int i = 0; i < size; i++) {
-                Ingredient rune = Ingredient.read(buffer);
+                Ingredient rune = Ingredient.fromNetwork(buffer);
                 int x = buffer.readVarInt();
                 int z = buffer.readVarInt();
                 boolean consume = buffer.readBoolean();
@@ -288,13 +288,13 @@ public class RuneRitualRecipe implements IRecipe<IInventory> {
             size = buffer.readVarInt();
             ImmutableList.Builder<Ingredient> inputs = ImmutableList.builder();
             for (int i = 0; i < size; i++) {
-                inputs.add(Ingredient.read(buffer));
+                inputs.add(Ingredient.fromNetwork(buffer));
             }
 
             size = buffer.readVarInt();
             ImmutableList.Builder<ItemStack> outputs = ImmutableList.builder();
             for (int i = 0; i < size; i++) {
-                outputs.add(buffer.readItemStack());
+                outputs.add(buffer.readItem());
             }
 
             ResourceLocation specialInputId = null;
@@ -326,12 +326,12 @@ public class RuneRitualRecipe implements IRecipe<IInventory> {
         }
 
         @Override
-        public void write(@Nonnull PacketBuffer buffer, @Nonnull RuneRitualRecipe recipe) {
-            recipe.getCenterRune().write(buffer);
+        public void toNetwork(@Nonnull FriendlyByteBuf buffer, @Nonnull RuneRitualRecipe recipe) {
+            recipe.getCenterRune().toNetwork(buffer);
             
             buffer.writeVarInt(recipe.getRunes().size());
             for (RunePosition rune : recipe.getRunes()) {
-                rune.getRune().write(buffer);
+                rune.getRune().toNetwork(buffer);
                 buffer.writeVarInt(rune.getX());
                 buffer.writeVarInt(rune.getZ());
                 buffer.writeBoolean(rune.isConsumed());
@@ -342,12 +342,12 @@ public class RuneRitualRecipe implements IRecipe<IInventory> {
 
             buffer.writeVarInt(recipe.getInputs().size());
             for (Ingredient input : recipe.getInputs()) {
-                input.write(buffer);
+                input.toNetwork(buffer);
             }
 
             buffer.writeVarInt(recipe.getOutputs().size());
             for (ItemStack output : recipe.getOutputs()) {
-                buffer.writeItemStack(output);
+                buffer.writeItem(output);
             }
             
             if (recipe.getSpecialInput() != null) {

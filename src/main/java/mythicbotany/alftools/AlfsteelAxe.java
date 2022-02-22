@@ -4,18 +4,18 @@ import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.pylon.PylonRepairable;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.botania.common.item.equipment.tool.terrasteel.ItemTerraAxe;
@@ -30,53 +30,53 @@ public class AlfsteelAxe extends ItemTerraAxe implements PylonRepairable, Regist
     public static final int ITEM_COLLECT_RANGE = 8;
 
     public AlfsteelAxe(Properties props) {
-        super(props.maxDamage(4600));
+        super(props.durability(4600));
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        defer.accept(() -> ItemModelsProperties.registerProperty(ModItems.alfsteelAxe, new ResourceLocation(MythicBotany.getInstance().modid, "active"), (stack, world, entity) -> entity instanceof PlayerEntity && !shouldBreak((PlayerEntity) entity) ? 0 : 1));
+        defer.accept(() -> ItemProperties.register(ModItems.alfsteelAxe, MythicBotany.getInstance().resource("active"), (stack, world, entity, seed) -> entity instanceof Player && !shouldBreak((Player) entity) ? 0 : 1));
     }
 
     @Nonnull
     @Override
-    public ActionResultType onItemUse(ItemUseContext ctx) {
-        PlayerEntity player = ctx.getPlayer();
+    public InteractionResult useOn(UseOnContext ctx) {
+        Player player = ctx.getPlayer();
         if (player != null) {
-            if (!player.isSneaking()) {
-                return super.onItemUse(ctx);
+            if (!player.isShiftKeyDown()) {
+                return super.useOn(ctx);
             }
         }
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     @Nonnull
     @Override
-    public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, PlayerEntity player, @Nonnull Hand hand) {
-        double x = player.getPosX();
-        double y = player.getPosY();
-        double z = player.getPosZ();
-        if (!world.isRemote) {
-            ItemStack stack = player.getHeldItem(hand);
-            stack.damageItem(1, player, _x -> {});
-            player.setHeldItem(hand, stack);
+    public InteractionResultHolder<ItemStack> use(@Nonnull Level level, Player player, @Nonnull InteractionHand hand) {
+        double x = player.getX();
+        double y = player.getY();
+        double z = player.getZ();
+        if (!level.isClientSide) {
+            ItemStack stack = player.getItemInHand(hand);
+            stack.hurtAndBreak(1, player, _x -> {});
+            player.setItemInHand(hand, stack);
         }
-        List<ItemEntity> items = world.getEntitiesWithinAABB(ItemEntity.class, new AxisAlignedBB(x - ITEM_COLLECT_RANGE, y - ITEM_COLLECT_RANGE, z - ITEM_COLLECT_RANGE, x + ITEM_COLLECT_RANGE, y + ITEM_COLLECT_RANGE, z + ITEM_COLLECT_RANGE));
+        List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, new AABB(x - ITEM_COLLECT_RANGE, y - ITEM_COLLECT_RANGE, z - ITEM_COLLECT_RANGE, x + ITEM_COLLECT_RANGE, y + ITEM_COLLECT_RANGE, z + ITEM_COLLECT_RANGE));
         for (ItemEntity item : items) {
-            item.setLocationAndAngles(x + world.rand.nextFloat() - 0.5f, y + world.rand.nextFloat(), z + world.rand.nextFloat() - 0.5f, item.rotationYaw, item.rotationPitch);
+            item.moveTo(x + level.random.nextFloat() - 0.5f, y + level.random.nextFloat(), z + level.random.nextFloat() - 0.5f, item.getYRot(), item.getXRot());
         }
-        return ActionResult.resultSuccess(player.getHeldItem(hand));
+        return InteractionResultHolder.success(player.getItemInHand(hand));
     }
 
     @Override
-    public boolean getIsRepairable(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
-        return repair.getItem() == ModItems.alfsteelIngot || (!Ingredient.fromTag(ModTags.Items.INGOTS_TERRASTEEL).test(repair) && super.getIsRepairable(toRepair, repair));
+    public boolean isValidRepairItem(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
+        return repair.getItem() == ModItems.alfsteelIngot || (!Ingredient.of(ModTags.Items.INGOTS_TERRASTEEL).test(repair) && super.isValidRepairItem(toRepair, repair));
     }
 
     @Override
     public boolean canRepairPylon(ItemStack stack) {
-        return stack.getDamage() > 0;
+        return stack.getDamageValue() > 0;
     }
 
     @Override
@@ -86,7 +86,7 @@ public class AlfsteelAxe extends ItemTerraAxe implements PylonRepairable, Regist
 
     @Override
     public ItemStack repairOneTick(ItemStack stack) {
-        stack.setDamage(Math.max(0, stack.getDamage() - 5));
+        stack.setDamageValue(Math.max(0, stack.getDamageValue() - 5));
         return stack;
     }
 }

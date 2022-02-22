@@ -1,10 +1,11 @@
 package mythicbotany.functionalflora;
 
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
-import net.minecraft.tileentity.BrewingStandTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import vazkii.botania.api.subtile.RadiusDescriptor;
 
 public class Exoblaze extends FunctionalFlowerBase {
@@ -14,33 +15,33 @@ public class Exoblaze extends FunctionalFlowerBase {
 
     private transient int tickToNextCheck = 0;
 
-    public Exoblaze(TileEntityType<?> tileEntityType) {
-        super(tileEntityType, 0xFFFF22, false);
+    public Exoblaze(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state, 0xFFFF22, false);
     }
 
     @Override
     protected void tickFlower() {
         //noinspection ConstantConditions
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             if (tickToNextCheck > 0) {
                 tickToNextCheck -= 1;
                 return;
             }
             tickToNextCheck = MAX_TICK_TO_NEXT_CHECK;
-            BlockPos basePos = pos.toImmutable();
+            BlockPos basePos = worldPosition.immutable();
             outer:
             for (int xd = -3; xd <= 3; xd++) {
                 for (int yd = -1; yd <= 1; yd++) {
                     for (int zd = -3; zd <= 3; zd++) {
                         if (mana < MANA_PER_BREW)
                             break outer;
-                        TileEntity te = world.getTileEntity(basePos.add(xd, yd, zd));
-                        if (te instanceof BrewingStandTileEntity && ((BrewingStandTileEntity) te).fuel < 20) {
+                        BlockEntity te = level.getBlockEntity(basePos.offset(xd, yd, zd));
+                        if (te instanceof BrewingStandBlockEntity && ((BrewingStandBlockEntity) te).fuel < 20) {
                             mana -= MANA_PER_BREW;
-                            ((BrewingStandTileEntity) te).fuel += 1;
+                            ((BrewingStandBlockEntity) te).fuel += 1;
                             didWork = true;
-                            markDirty();
-                            te.markDirty();
+                            setChanged();
+                            te.setChanged();
                         }
                     }
                 }
@@ -50,6 +51,6 @@ public class Exoblaze extends FunctionalFlowerBase {
 
     @Override
     public RadiusDescriptor getRadius() {
-        return new RadiusDescriptor.Square(pos, 3);
+        return new RadiusDescriptor.Square(worldPosition, 3);
     }
 }

@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableList;
 import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
 import mythicbotany.rune.SpecialRuneOutput;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
 
@@ -20,8 +20,8 @@ public class MjoellnirRuneOutput extends SpecialRuneOutput {
     }
 
     @Override
-    public void apply(World world, BlockPos center, List<ItemStack> consumedStacks) {
-        BlockMjoellnir.putInWorld(new ItemStack(ModBlocks.mjoellnir), world, center, false);
+    public void apply(Level level, BlockPos center, List<ItemStack> consumedStacks) {
+        BlockMjoellnir.putInWorld(new ItemStack(ModBlocks.mjoellnir), level, center, false);
     }
 
     @Override

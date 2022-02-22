@@ -1,8 +1,10 @@
 package mythicbotany.alftools;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import vazkii.botania.common.item.equipment.bauble.ItemManaRing;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class GreatestManaRing extends ItemManaRing {
 
@@ -17,7 +19,7 @@ public class GreatestManaRing extends ItemManaRing {
     }
 
     @Override
-    public int getEntityLifespan(ItemStack itemStack, World world) {
+    public int getEntityLifespan(ItemStack itemStack, Level level) {
         return Integer.MAX_VALUE;
     }
 }

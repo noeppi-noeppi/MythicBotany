@@ -1,9 +1,9 @@
 package mythicbotany.network;
 
 import io.github.noeppi_noeppi.libx.network.PacketSerializer;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 
 public class PylonSerializer implements PacketSerializer<PylonSerializer.PylonMessage> {
 
@@ -13,13 +13,13 @@ public class PylonSerializer implements PacketSerializer<PylonSerializer.PylonMe
     }
 
     @Override
-    public void encode(PylonMessage msg, PacketBuffer buffer) {
+    public void encode(PylonMessage msg, FriendlyByteBuf buffer) {
         buffer.writeResourceLocation(msg.dimension);
         buffer.writeBlockPos(msg.pos);
     }
 
     @Override
-    public PylonMessage decode(PacketBuffer buffer) {
+    public PylonMessage decode(FriendlyByteBuf buffer) {
         PylonMessage msg = new PylonMessage();
         msg.dimension = buffer.readResourceLocation();
         msg.pos = buffer.readBlockPos();

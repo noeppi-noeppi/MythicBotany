@@ -1,32 +1,50 @@
 package mythicbotany.functionalflora.base;
 
-import io.github.noeppi_noeppi.libx.mod.registration.TileEntityBase;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import com.mojang.blaze3d.vertex.PoseStack;
+import io.github.noeppi_noeppi.libx.LibX;
+import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
+import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.api.BotaniaAPI;
+import vazkii.botania.api.BotaniaAPIClient;
+import vazkii.botania.api.BotaniaForgeCapabilities;
+import vazkii.botania.api.BotaniaForgeClientCapabilities;
+import vazkii.botania.api.block.IWandBindable;
+import vazkii.botania.api.block.IWandHUD;
+import vazkii.botania.api.block.IWandable;
 import vazkii.botania.api.internal.IManaNetwork;
 import vazkii.botania.api.mana.IManaCollector;
 import vazkii.botania.api.mana.IManaPool;
 import vazkii.botania.api.subtile.RadiusDescriptor;
-import vazkii.botania.api.wand.IWandBindable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public abstract class FunctionalFlowerBase extends TileEntityBase implements ITickableTileEntity, IWandBindable {
+@OnlyIn(value = Dist.CLIENT, _interface = IWandHUD.class)
+public abstract class FunctionalFlowerBase extends BlockEntityBase implements TickableBlock, IWandBindable, IWandable, IWandHUD {
 
+    public static final ResourceLocation POOL_ID = new ResourceLocation("botania", "mana_pool");
+    public static final ResourceLocation SPREADER_ID = new ResourceLocation("botania", "mana_spreader");
+    
     public static final int DEFAULT_MAX_MANA = 300;
     public static final int DEFAULT_MAX_TRANSFER = 30;
 
@@ -48,20 +66,33 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
     protected transient int redstoneIn = 0;
     protected transient boolean didWork;
 
-    public FunctionalFlowerBase(TileEntityType<?> tileEntityType, int color, boolean isGenerating) {
-        super(tileEntityType);
+    public FunctionalFlowerBase(BlockEntityType<?> type, BlockPos pos, BlockState state, int color, boolean isGenerating) {
+        super(type, pos, state);
         this.color = color;
         this.maxMana = DEFAULT_MAX_MANA;
         this.maxTransfer = isGenerating ? DEFAULT_MAX_TRANSFER : Integer.MAX_VALUE;
         this.isGenerating = isGenerating;
     }
 
-    public FunctionalFlowerBase(TileEntityType<?> tileEntityType, int color, int maxMana, int maxTransfer, boolean isGenerating) {
-        super(tileEntityType);
+    public FunctionalFlowerBase(BlockEntityType<?> type, BlockPos pos, BlockState state, int color, int maxMana, int maxTransfer, boolean isGenerating) {
+        super(type, pos, state);
         this.color = color;
         this.maxMana = maxMana;
         this.maxTransfer = maxTransfer;
         this.isGenerating = isGenerating;
+    }
+
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if (cap == BotaniaForgeCapabilities.WANDABLE) {
+            return LazyOptional.of(() -> this).cast();
+        } else {
+            return DistExecutor.unsafeRunForDist(
+                    () -> () -> cap == BotaniaForgeClientCapabilities.WAND_HUD ? LazyOptional.of(() -> this).cast() : super.getCapability(cap, side),
+                    () -> () -> super.getCapability(cap, side)
+            );
+        }
     }
 
     @Override
@@ -69,19 +100,19 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
         boolean prevFloating = floating;
         floating = this.getBlockState().getBlock() instanceof BlockFloatingFunctionalFlower<?>;
         if (prevFloating != floating)
-            markDirty();
+            setChanged();
 
         this.linkPool();
 
         //noinspection ConstantConditions
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             if (isGenerating) {
                 if (spreaderTile != null) {
                     if (mana > 0) {
                         int manaTransfer = Math.min(maxTransfer, Math.min(mana, spreaderTile.getMaxMana() - spreaderTile.getCurrentMana()));
                         spreaderTile.receiveMana(manaTransfer);
-                        mana = MathHelper.clamp(mana - manaTransfer, 0, maxMana);
-                        markDirty();
+                        mana = Mth.clamp(mana - manaTransfer, 0, maxMana);
+                        setChanged();
                         markPoolDirty();
                     }
                 }
@@ -90,8 +121,8 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
                     if (mana < maxMana) {
                         int manaTransfer = Math.min(maxTransfer, Math.min(maxMana - mana, poolTile.getCurrentMana()));
                         poolTile.receiveMana(-manaTransfer);
-                        mana = MathHelper.clamp(mana + manaTransfer, 0, maxMana);
-                        markDirty();
+                        mana = Mth.clamp(mana + manaTransfer, 0, maxMana);
+                        setChanged();
                         markPoolDirty();
                     }
                 }
@@ -99,7 +130,7 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
 
             redstoneIn = 0;
             for (Direction dir : Direction.values()) {
-                int redstonePower = world.getRedstonePower(this.getPos().offset(dir), dir);
+                int redstonePower = level.getSignal(this.getBlockPos().relative(dir), dir);
                 redstoneIn = Math.max(redstonePower, redstoneIn);
             }
         }
@@ -109,14 +140,14 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
         didWork = false;
         tickFlower();
 
-        if (world.isRemote) {
+        if (level.isClientSide) {
             if (didWork)
                 particleChance = 3 * particleChance;
             float red = (float) (color >> 16 & 0xFF) / 255.0f;
             float green = (float) (color >> 8 & 0xFF) / 255.0f;
             float blue = (float) (color & 255) / 255.0f;
             if (Math.random() > particleChance) {
-                BotaniaAPI.instance().sparkleFX(this.getWorld(), (double) this.getPos().getX() + 0.3D + Math.random() * 0.5D, (double) this.getPos().getY() + 0.5D + Math.random() * 0.5D, (double) this.getPos().getZ() + 0.3D + Math.random() * 0.5D, red, green, blue, (float) Math.random(), 5);
+                BotaniaAPI.instance().sparkleFX(this.getLevel(), (double) this.getBlockPos().getX() + 0.3D + Math.random() * 0.5D, (double) this.getBlockPos().getY() + 0.5D + Math.random() * 0.5D, (double) this.getBlockPos().getZ() + 0.3D + Math.random() * 0.5D, red, green, blue, (float) Math.random(), 5);
             }
         }
     }
@@ -124,28 +155,28 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
     protected abstract void tickFlower();
 
     @Override
-    public boolean canSelect(PlayerEntity player, ItemStack stack, BlockPos pos, Direction direction) {
+    public boolean canSelect(Player player, ItemStack stack, BlockPos pos, Direction direction) {
         return true;
     }
 
     @Override
-    public boolean bindTo(PlayerEntity player, ItemStack stack, BlockPos pos, Direction direction) {
+    public boolean bindTo(Player player, ItemStack stack, BlockPos pos, Direction direction) {
         int range = 10;
         range = range * range;
-        double dist = pos.distanceSq(this.getPos());
+        double dist = pos.distSqr(this.getBlockPos());
         if ((double) range >= dist) {
-            TileEntity tile = player.world.getTileEntity(pos);
+            BlockEntity tile = player.level.getBlockEntity(pos);
             if (isGenerating && tile instanceof IManaCollector) {
-                this.pool = tile.getPos();
+                this.pool = tile.getBlockPos();
                 this.spreaderTile = (IManaCollector) tile;
                 this.poolTile = null;
-                markDirty();
+                setChanged();
                 return true;
             } else if (!isGenerating && tile instanceof IManaPool) {
-                this.pool = tile.getPos();
+                this.pool = tile.getBlockPos();
                 this.poolTile = (IManaPool) tile;
                 this.spreaderTile = null;
-                markDirty();
+                setChanged();
                 return true;
             }
         }
@@ -161,23 +192,22 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
 
     public void linkPool() {
         Object theTileObj = isGenerating ? spreaderTile : poolTile;
-        TileEntity theTile;
-        if (!(theTileObj instanceof TileEntity)) {
+        BlockEntity theTile;
+        if (!(theTileObj instanceof BlockEntity)) {
             theTile = null;
         } else {
-            theTile = (TileEntity) theTileObj;
+            theTile = (BlockEntity) theTileObj;
         }
         //noinspection ConstantConditions
-        if ((pool != null && theTile == null) || pool != null && !pool.equals(theTile.getPos()) || (pool != null && world.getTileEntity(pool) != theTile)) {
+        if ((pool != null && theTile == null) || pool != null && !pool.equals(theTile.getBlockPos()) || (pool != null && level.getBlockEntity(pool) != theTile)) {
             // tile is outdated. Update it
             //noinspection ConstantConditions
-            TileEntity te = world.getTileEntity(pool);
+            BlockEntity te = level.getBlockEntity(pool);
             if (isGenerating) {
+                poolTile = null;
                 if (!(te instanceof IManaCollector)) {
-                    poolTile = null;
                     spreaderTile = null;
                 } else {
-                    poolTile = null;
                     spreaderTile = (IManaCollector) te;
                 }
             } else {
@@ -193,77 +223,76 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
         if (pool == null) {
             if (isGenerating) {
                 IManaNetwork network = BotaniaAPI.instance().getManaNetworkInstance();
-                int size = network.getAllCollectorsInWorld(this.getWorld()).size();
-                if (BotaniaAPI.instance().shouldForceCheck() || size != this.sizeLastCheck) {
-                    TileEntity te = network.getClosestCollector(this.getPos(), this.getWorld(), 10);
+                int size = network.getAllCollectorsInWorld(this.getLevel()).size();
+                if (size != this.sizeLastCheck) {
+                    BlockEntity te = network.getClosestCollector(this.getBlockPos(), this.getLevel(), 10);
                     if (te instanceof IManaCollector) {
-                        pool = te.getPos();
+                        pool = te.getBlockPos();
                         poolTile = null;
                         spreaderTile = (IManaCollector) te;
-                        markDirty();
+                        setChanged();
                     }
                     this.sizeLastCheck = size;
                 }
             } else {
                 IManaNetwork network = BotaniaAPI.instance().getManaNetworkInstance();
-                int size = network.getAllPoolsInWorld(this.getWorld()).size();
-                if (BotaniaAPI.instance().shouldForceCheck() || size != this.sizeLastCheck) {
-                    TileEntity te = network.getClosestPool(this.getPos(), this.getWorld(), 10);
+                int size = network.getAllPoolsInWorld(this.getLevel()).size();
+                if (size != this.sizeLastCheck) {
+                    BlockEntity te = network.getClosestPool(this.getBlockPos(), this.getLevel(), 10);
                     if (te instanceof IManaPool) {
-                        pool = te.getPos();
+                        pool = te.getBlockPos();
                         poolTile = (IManaPool) te;
                         spreaderTile = null;
-                        markDirty();
+                        setChanged();
                     }
                     this.sizeLastCheck = size;
                 }
             }
         }
 
-        this.markDirty();
+        this.setChanged();
     }
 
     @Override
-    public void read(@Nonnull BlockState stateIn, @Nonnull CompoundNBT nbtIn) {
-        super.read(stateIn, nbtIn);
-        if (nbtIn.contains("mana", Constants.NBT.TAG_INT)) {
-            this.mana = MathHelper.clamp(nbtIn.getInt("mana"), 0, maxMana);
+    public void load(@Nonnull CompoundTag nbt) {
+        super.load(nbt);
+        if (nbt.contains("mana", Tag.TAG_INT)) {
+            this.mana = Mth.clamp(nbt.getInt("mana"), 0, maxMana);
         } else {
             this.mana = 0;
         }
-        if (nbtIn.contains("pool")) {
-            CompoundNBT poolTag = nbtIn.getCompound("pool");
+        if (nbt.contains("pool")) {
+            CompoundTag poolTag = nbt.getCompound("pool");
             pool = new BlockPos(poolTag.getInt("x"), poolTag.getInt("y"), poolTag.getInt("z"));
         } else {
             pool = null;
         }
-        floating = nbtIn.getBoolean("floating");
+        floating = nbt.getBoolean("floating");
     }
 
     @Override
-    @Nonnull
-    public CompoundNBT write(@Nonnull CompoundNBT compound) {
-        compound.putInt("mana", MathHelper.clamp(mana, 0, maxMana));
+    public void saveAdditional(@Nonnull CompoundTag compound) {
+        super.saveAdditional(compound);
+        compound.putInt("mana", Mth.clamp(mana, 0, maxMana));
         if (pool != null) {
-            CompoundNBT poolTag = new CompoundNBT();
+            CompoundTag poolTag = new CompoundTag();
             poolTag.putInt("x", pool.getX());
             poolTag.putInt("y", pool.getY());
             poolTag.putInt("z", pool.getZ());
             compound.put("pool", poolTag);
         }
         compound.putBoolean("floating", floating);
-        return super.write(compound);
     }
 
     @Nonnull
     @Override
-    public CompoundNBT getUpdateTag() {
-        CompoundNBT tag = super.getUpdateTag();
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = super.getUpdateTag();
         //noinspection ConstantConditions
-        if (!world.isRemote) {
-            tag.putInt("mana", MathHelper.clamp(mana, 0, maxMana));
+        if (!level.isClientSide) {
+            tag.putInt("mana", Mth.clamp(mana, 0, maxMana));
             if (pool != null) {
-                CompoundNBT poolTag = new CompoundNBT();
+                CompoundTag poolTag = new CompoundTag();
                 poolTag.putInt("x", pool.getX());
                 poolTag.putInt("y", pool.getY());
                 poolTag.putInt("z", pool.getZ());
@@ -275,27 +304,26 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
     }
 
     @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+    public void handleUpdateTag(CompoundTag nbt) {
         //noinspection ConstantConditions
-        if (world.isRemote) {
-            mana = MathHelper.clamp(tag.getInt("mana"), 0, maxMana);
-            if (tag.contains("pool")) {
-                CompoundNBT poolTag = tag.getCompound("pool");
+        if (level.isClientSide) {
+            mana = Mth.clamp(nbt.getInt("mana"), 0, maxMana);
+            if (nbt.contains("pool")) {
+                CompoundTag poolTag = nbt.getCompound("pool");
                 pool = new BlockPos(poolTag.getInt("x"), poolTag.getInt("y"), poolTag.getInt("z"));
             } else {
                 pool = null;
             }
-            floating = tag.getBoolean("floating");
+            floating = nbt.getBoolean("floating");
         }
     }
 
     public boolean isValidBinding() {
         Object theTileObj = isGenerating ? spreaderTile : poolTile;
-        if (!(theTileObj instanceof TileEntity))
+        if (!(theTileObj instanceof BlockEntity theTile))
             return false;
-        TileEntity theTile = (TileEntity) theTileObj;
         // noinspection ConstantConditions,deprecation,deprecation
-        return pool != null && theTile != null && theTile.hasWorld() && !theTile.isRemoved() && world.isBlockLoaded(theTile.getPos()) && getWorld().getTileEntity(pool) == theTile;
+        return pool != null && theTile != null && theTile.hasLevel() && !theTile.isRemoved() && level.hasChunkAt(theTile.getBlockPos()) && getLevel().getBlockEntity(pool) == theTile;
     }
 
     public int getCurrentMana() {
@@ -308,7 +336,7 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
 
     public void setFloating(boolean floating) {
         this.floating = floating;
-        markDirty();
+        setChanged();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -317,16 +345,31 @@ public abstract class FunctionalFlowerBase extends TileEntityBase implements ITi
     }
 
     @Override
-    public AxisAlignedBB getRenderBoundingBox() {
+    public AABB getRenderBoundingBox() {
         return INFINITE_EXTENT_AABB;
     }
 
-    private void markPoolDirty() {
-        if (poolTile instanceof TileEntity) {
-            ((TileEntity) poolTile).markDirty();
+    @Override
+    public boolean onUsedByWand(@Nullable Player player, ItemStack stack, Direction side) {
+        if (this.level != null && this.level.isClientSide) {
+            LibX.getNetwork().requestBE(level, this.worldPosition);
         }
-        if (spreaderTile instanceof TileEntity) {
-            ((TileEntity) spreaderTile).markDirty();
+        return true;
+    }
+    
+    @Override
+    public void renderHUD(PoseStack poseStack, Minecraft minecraft) {
+        if (this.level == null) return;
+        String name = I18n.get(this.blockState.getBlock().getDescriptionId());
+        BotaniaAPIClient.instance().drawComplexManaHUD(poseStack, this.color, this.getCurrentMana(), this.maxMana, name, new ItemStack(ForgeRegistries.ITEMS.getValue(isGenerating ? SPREADER_ID : POOL_ID)), this.isValidBinding());
+    }
+    
+    private void markPoolDirty() {
+        if (poolTile instanceof BlockEntity) {
+            ((BlockEntity) poolTile).setChanged();
+        }
+        if (spreaderTile instanceof BlockEntity) {
+            ((BlockEntity) spreaderTile).setChanged();
         }
     }
 }

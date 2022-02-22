@@ -1,8 +1,8 @@
 package mythicbotany.network;
 
 import io.github.noeppi_noeppi.libx.network.PacketSerializer;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
 public class ParticleSerializer implements PacketSerializer<ParticleSerializer.ParticleMessage> {
 
@@ -12,7 +12,7 @@ public class ParticleSerializer implements PacketSerializer<ParticleSerializer.P
     }
 
     @Override
-    public void encode(ParticleMessage msg, PacketBuffer buf) {
+    public void encode(ParticleMessage msg, FriendlyByteBuf buf) {
         buf.writeResourceLocation(msg.particleId);
         buf.writeResourceLocation(msg.dimension);
         buf.writeDouble(msg.x);
@@ -29,7 +29,7 @@ public class ParticleSerializer implements PacketSerializer<ParticleSerializer.P
     }
 
     @Override
-    public ParticleMessage decode(PacketBuffer buf) {
+    public ParticleMessage decode(FriendlyByteBuf buf) {
         ParticleMessage msg = new ParticleMessage();
         msg.particleId = buf.readResourceLocation();
         msg.dimension = buf.readResourceLocation();

@@ -1,106 +1,98 @@
 package mythicbotany.pylon;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import io.github.noeppi_noeppi.libx.LibX;
+import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
 import io.github.noeppi_noeppi.libx.mod.ModX;
-import io.github.noeppi_noeppi.libx.mod.registration.BlockTE;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import io.github.noeppi_noeppi.libx.render.ItemStackRenderer;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import vazkii.botania.api.BotaniaAPIClient;
-import vazkii.botania.api.wand.IWandHUD;
-import vazkii.botania.api.wand.IWandable;
+import net.minecraftforge.client.IItemRenderProperties;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
-public class BlockAlfsteelPylon extends BlockTE<TileAlfsteelPylon> implements IWandHUD, IWandable {
+public class BlockAlfsteelPylon extends BlockBE<TileAlfsteelPylon> {
 
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 21.0D, 14.0D);
+    private static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 21.0D, 14.0D);
 
     public BlockAlfsteelPylon(ModX mod, Properties properties) {
-        super(mod, TileAlfsteelPylon.class, properties, new Item.Properties().setISTER(() -> RenderAlfsteelPylon.TEISR::new));
+        super(mod, TileAlfsteelPylon.class, properties);
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        ClientRegistry.bindTileEntityRenderer(getTileType(), RenderAlfsteelPylon::new);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    public VoxelShape getShape(@Nonnull BlockState state, @Nonnull IBlockReader world, @Nonnull BlockPos pos, @Nonnull ISelectionContext ctx) {
-        return SHAPE;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    public BlockRenderType getRenderType(@Nonnull BlockState state) {
-        return BlockRenderType.ENTITYBLOCK_ANIMATED;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    @Override
-    public ActionResultType onBlockActivated(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand hand, @Nonnull BlockRayTraceResult hit) {
-        if (!world.isRemote) {
-            ItemStack stack = player.getHeldItem(hand);
-            PylonRepairable repairable = PylonRepairables.getRepairInfo(stack);
-            if (stack.getCount() == 1 && repairable != null && repairable.canRepairPylon(stack)) {
-                ItemStack copy = stack.copy();
-                player.setHeldItem(hand, ItemStack.EMPTY);
-                ItemEntity entity = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, copy);
-                entity.setMotion(0, 0, 0);
-                entity.setThrowerId(player.getUniqueID());
-                entity.setPickupDelay(40);
-                world.addEntity(entity);
-                return ActionResultType.SUCCESS;
-            } else {
-                return super.onBlockActivated(state, world, pos, player, hand, hit);
-            }
-        } else {
-            return super.onBlockActivated(state, world, pos, player, hand, hit);
-        }
+        BlockEntityRenderers.register(getBlockEntityType(), RenderAlfsteelPylon::new);
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void renderHUD(MatrixStack matrixStack, Minecraft minecraft, World world, BlockPos pos) {
-        TileAlfsteelPylon te = getTile(world, pos);
-        int color = 0xEE7C00;
-        BotaniaAPIClient.instance().drawSimpleManaHUD(matrixStack, color, te.getCurrentMana(), TileAlfsteelPylon.MAX_MANA, "Alfsteel Pylon");
+    public void initializeItemClient(@Nonnull Consumer<IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties() {
+            
+            @Override
+            public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+                // TODO maybe this can use ItemStackRenderer?
+                return new RenderAlfsteelPylon.ItemRenderer();
+            }
+        });
+    }
+    
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(@Nonnull BlockState state, @Nonnull BlockGetter level, @Nonnull BlockPos pos, @Nonnull CollisionContext context) {
+        return SHAPE;
     }
 
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public RenderShape getRenderShape(@Nonnull BlockState state) {
+        return RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Nonnull
     @Override
-    public boolean onUsedByWand(PlayerEntity player, ItemStack stack, World world, BlockPos pos, Direction side) {
-        if (world.isRemote) {
-            LibX.getNetwork().requestTE(world, pos);
+    public InteractionResult use(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult hit) {
+        if (!level.isClientSide) {
+            ItemStack stack = player.getItemInHand(hand);
+            PylonRepairable repairable = PylonRepairables.getRepairInfo(stack);
+            if (stack.getCount() == 1 && repairable != null && repairable.canRepairPylon(stack)) {
+                ItemStack copy = stack.copy();
+                player.setItemInHand(hand, ItemStack.EMPTY);
+                ItemEntity entity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, copy);
+                entity.setDeltaMovement(0, 0, 0);
+                entity.setThrower(player.getUUID());
+                entity.setPickUpDelay(40);
+                level.addFreshEntity(entity);
+                return InteractionResult.SUCCESS;
+            } else {
+                return super.use(state, level, pos, player, hand, hit);
+            }
+        } else {
+            return super.use(state, level, pos, player, hand, hit);
         }
-        return true;
     }
 
     @Override
-    public float getEnchantPowerBonus(BlockState state, IWorldReader world, BlockPos pos) {
+    public float getEnchantPowerBonus(BlockState state, LevelReader level, BlockPos pos) {
         return 15;
     }
 }

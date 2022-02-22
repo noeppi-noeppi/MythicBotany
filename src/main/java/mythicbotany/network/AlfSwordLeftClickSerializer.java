@@ -1,7 +1,7 @@
 package mythicbotany.network;
 
 import io.github.noeppi_noeppi.libx.network.PacketSerializer;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class AlfSwordLeftClickSerializer implements PacketSerializer<AlfSwordLeftClickSerializer.AlfSwordLeftClickMessage> {
 
@@ -11,12 +11,12 @@ public class AlfSwordLeftClickSerializer implements PacketSerializer<AlfSwordLef
     }
 
     @Override
-    public void encode(AlfSwordLeftClickMessage msg, PacketBuffer buffer) {
+    public void encode(AlfSwordLeftClickMessage msg, FriendlyByteBuf buffer) {
         //
     }
 
     @Override
-    public AlfSwordLeftClickMessage decode(PacketBuffer buffer) {
+    public AlfSwordLeftClickMessage decode(FriendlyByteBuf buffer) {
         return new AlfSwordLeftClickMessage();
     }
 

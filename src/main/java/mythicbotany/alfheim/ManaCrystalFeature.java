@@ -1,54 +1,54 @@
 package mythicbotany.alfheim;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.block.tile.mana.TilePool;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-public class ManaCrystalFeature extends Feature<NoFeatureConfig> {
+public class ManaCrystalFeature extends Feature<NoneFeatureConfiguration> {
 
     public ManaCrystalFeature() {
-        super(NoFeatureConfig.CODEC);
+        super(NoneFeatureConfiguration.CODEC);
     }
 
     @Override
-    public boolean generate(@Nonnull ISeedReader world, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos pos, @Nonnull NoFeatureConfig config) {
+    public boolean place(@Nonnull WorldGenLevel level, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos pos, @Nonnull NoneFeatureConfiguration config) {
         boolean success = false;
         for (int i = 0; i < 1; i++) {
-            if (tryGenerate(world, generator, rand, new BlockPos(pos.getX() + rand.nextInt(16), 0, pos.getZ() + rand.nextInt(16)))) {
+            if (tryGenerate(level, generator, rand, new BlockPos(pos.getX() + rand.nextInt(16), 0, pos.getZ() + rand.nextInt(16)))) {
                 success = true;
             }
         }
         return success;
     }
 
-    private boolean tryGenerate(@Nonnull ISeedReader world, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos hor) {
+    private boolean tryGenerate(@Nonnull WorldGenLevel level, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos hor) {
         if (rand.nextInt(2) == 0) {
-            BlockPos pos = AlfheimWorldGen.highestFreeBlock(world, hor, AlfheimWorldGen::passReplaceableAndLeaves);
-            if (pos.getY() >= 84 && world.getBlockState(pos.down()).isSolid()
-                    && world.getBlockState(pos.down().north()).isSolid()
-                    && world.getBlockState(pos.down().south()).isSolid()
-                    && world.getBlockState(pos.down().east()).isSolid()
-                    && world.getBlockState(pos.down().west()).isSolid()) {
-                if (!world.setBlockState(pos, ModBlocks.dilutedPool.getDefaultState(), 2)) {
+            BlockPos pos = AlfheimWorldGen.highestFreeBlock(level, hor, AlfheimWorldGen::passReplaceableAndLeaves);
+            if (pos.getY() >= 84 && level.getBlockState(pos.below()).canOcclude()
+                    && level.getBlockState(pos.below().north()).canOcclude()
+                    && level.getBlockState(pos.below().south()).canOcclude()
+                    && level.getBlockState(pos.below().east()).canOcclude()
+                    && level.getBlockState(pos.below().west()).canOcclude()) {
+                if (!level.setBlock(pos, ModBlocks.dilutedPool.defaultBlockState(), 2)) {
                     return false;
                 }
                 try {
-                    TileEntity te = world.getTileEntity(pos);
+                    BlockEntity te = level.getBlockEntity(pos);
                     if (te instanceof TilePool) {
-                        te.setPos(pos);
-                        te.cachedBlockState = ModBlocks.dilutedPool.getDefaultState();
-                        CompoundNBT nbt = new CompoundNBT();
+                        te.setPosition(pos);
+                        te.blockState = ModBlocks.dilutedPool.defaultBlockState();
+                        CompoundTag nbt = new CompoundTag();
                         nbt.putInt("manaCap", 10000);
                         nbt.putInt("mana", 0);
                         ((TilePool) te).readPacketNBT(nbt);
@@ -57,17 +57,17 @@ public class ManaCrystalFeature extends Feature<NoFeatureConfig> {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                BlockState bifrost = ModBlocks.bifrostPerm.getDefaultState();
+                BlockState bifrost = ModBlocks.bifrostPerm.defaultBlockState();
                 int mainHeight = 5 + rand.nextInt(5);
                 for (int i = 2; i < mainHeight; i++) {
-                    world.setBlockState(pos.up(i), bifrost, 2);
+                    level.setBlock(pos.above(i), bifrost, 2);
                 }
                 for (Direction dir : Direction.values()) {
                     if (dir.getAxis() != Direction.Axis.Y) {
-                        BlockPos base = pos.offset(dir);
+                        BlockPos base = pos.relative(dir);
                         int height = 2 + rand.nextInt(mainHeight - 4);
                         for (int i = 0; i < height; i++) {
-                            world.setBlockState(base.up(i), bifrost, 2);
+                            level.setBlock(base.above(i), bifrost, 2);
                         }
                     }
                 }

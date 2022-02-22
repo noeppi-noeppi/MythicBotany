@@ -1,17 +1,17 @@
 package mythicbotany.rune;
 
 import io.github.noeppi_noeppi.libx.inventory.BaseItemStackHandler;
-import io.github.noeppi_noeppi.libx.inventory.ItemStackHandlerWrapper;
-import io.github.noeppi_noeppi.libx.mod.registration.TileEntityBase;
+import io.github.noeppi_noeppi.libx.capability.ItemCapabilities;
+import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
 import io.github.noeppi_noeppi.libx.util.NBTX;
 import mythicbotany.ModItemTags;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -20,23 +20,25 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileRuneHolder extends TileEntityBase {
+public class TileRuneHolder extends BlockEntityBase {
 
-    private final BaseItemStackHandler inventory;
-    private final LazyOptional<IItemHandlerModifiable> itemCap;
+    private final BaseItemStackHandler inventory = BaseItemStackHandler.builder(1)
+            .contentsChanged(() -> {
+                this.setChanged();
+                this.setDispatchable();
+            })
+            .validator(stack -> ModItemTags.RITUAL_RUNES.contains(stack.getItem()), 1)
+            .defaultSlotLimit(1)
+            .build();
+            
+    private final LazyOptional<IItemHandlerModifiable> itemCap = ItemCapabilities.create(() -> this.inventory).cast();
 
     @Nullable
     private BlockPos target;
     private double floatProgress;
     
-    public TileRuneHolder(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn);
-        inventory = new BaseItemStackHandler(1, slot -> {
-            this.markDirty();
-            this.markDispatchable();
-        }, (slot, stack) -> ModItemTags.RITUAL_RUNES.contains(stack.getItem()));
-        inventory.setDefaultSlotLimit(1);
-        itemCap = ItemStackHandlerWrapper.createLazy(() -> inventory);
+    public TileRuneHolder(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
     @Nonnull
@@ -51,30 +53,29 @@ public class TileRuneHolder extends TileEntityBase {
     }
 
     @Override
-    public void read(@Nonnull BlockState state, @Nonnull CompoundNBT nbt) {
-        super.read(state, nbt);
+    public void load(@Nonnull CompoundTag nbt) {
+        super.load(nbt);
         inventory.deserializeNBT(nbt.getCompound("Inventory"));
         target = NBTX.getPos(nbt, "TargetPos");
         floatProgress = nbt.getDouble("FloatProgress");
     }
 
-    @Nonnull
     @Override
-    public CompoundNBT write(@Nonnull CompoundNBT nbt) {
+    public void saveAdditional(@Nonnull CompoundTag nbt) {
+        super.saveAdditional(nbt);
         nbt.put("Inventory", inventory.serializeNBT());
         if (this.target != null) {
             NBTX.putPos(nbt, "TargetPos", target);
             nbt.putDouble("FloatProgress", floatProgress);
         }
-        return super.write(nbt);
     }
 
     @Nonnull
     @Override
-    public CompoundNBT getUpdateTag() {
-        CompoundNBT nbt = super.getUpdateTag();
+    public CompoundTag getUpdateTag() {
+        CompoundTag nbt = super.getUpdateTag();
         //noinspection ConstantConditions
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             nbt.put("Inventory", inventory.serializeNBT());
             if (this.target != null) {
                 NBTX.putPos(nbt, "TargetPos", target);
@@ -85,10 +86,10 @@ public class TileRuneHolder extends TileEntityBase {
     }
 
     @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT nbt) {
-        super.handleUpdateTag(state, nbt);
+    public void handleUpdateTag(CompoundTag nbt) {
+        super.handleUpdateTag(nbt);
         //noinspection ConstantConditions
-        if (world.isRemote) {
+        if (level.isClientSide) {
             inventory.deserializeNBT(nbt.getCompound("Inventory"));
             target = NBTX.getPos(nbt, "TargetPos");
             floatProgress = nbt.getDouble("FloatProgress");
@@ -107,23 +108,23 @@ public class TileRuneHolder extends TileEntityBase {
     public void setTarget(@Nullable BlockPos target, double floatProgress, boolean sync) {
         this.target = target;
         if (target != null) {
-            this.floatProgress = MathHelper.clamp(floatProgress, 0, 1);
+            this.floatProgress = Mth.clamp(floatProgress, 0, 1);
         } else {
             this.floatProgress = 0;
         }
-        markDirty();
+        setChanged();
         if (sync) {
-            markDispatchable();
+            setDispatchable();
         }
     }
 
     @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        AxisAlignedBB aabb = super.getRenderBoundingBox();
+    public AABB getRenderBoundingBox() {
+        AABB aabb = super.getRenderBoundingBox();
         if (target != null) {
             // If the rune is floating to a target, we need to expand the render
             // aabb to include that target or runes will sometimes not render.
-            return aabb.expand(target.getX() - pos.getX(), 0, target.getZ() - pos.getZ()).grow(1);
+            return aabb.expandTowards(target.getX() - worldPosition.getX(), 0, target.getZ() - worldPosition.getZ()).inflate(1);
         } else {
             return aabb;
         }

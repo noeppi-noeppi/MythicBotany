@@ -1,8 +1,8 @@
 package mythicbotany.network;
 
 import io.github.noeppi_noeppi.libx.network.PacketSerializer;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
 public class InfusionSerializer implements PacketSerializer<InfusionSerializer.InfusionMessage> {
 
@@ -12,7 +12,7 @@ public class InfusionSerializer implements PacketSerializer<InfusionSerializer.I
     }
 
     @Override
-    public void encode(InfusionMessage msg, PacketBuffer buf) {
+    public void encode(InfusionMessage msg, FriendlyByteBuf buf) {
         buf.writeInt(msg.x);
         buf.writeInt(msg.y);
         buf.writeInt(msg.z);
@@ -23,7 +23,7 @@ public class InfusionSerializer implements PacketSerializer<InfusionSerializer.I
     }
 
     @Override
-    public InfusionMessage decode(PacketBuffer buf) {
+    public InfusionMessage decode(FriendlyByteBuf buf) {
         InfusionMessage msg = new InfusionMessage();
         msg.x = buf.readInt();
         msg.y = buf.readInt();

@@ -1,23 +1,23 @@
 package mythicbotany.mimir;
 
+import io.github.noeppi_noeppi.libx.base.ItemBase;
 import io.github.noeppi_noeppi.libx.mod.ModX;
-import io.github.noeppi_noeppi.libx.mod.registration.ItemBase;
 import mythicbotany.ModItems;
 import mythicbotany.MythicPlayerData;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.DrinkHelper;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 
@@ -28,20 +28,19 @@ public class FullGjallarHorn extends ItemBase {
     }
 
     @Nonnull
-    public ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull LivingEntity living) {
-        if (living instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) living;
-            if (player instanceof ServerPlayerEntity) {
-                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity) player, stack);
+    public ItemStack finishUsingItem(@Nonnull ItemStack stack, @Nonnull Level level, @Nonnull LivingEntity living) {
+        if (living instanceof Player player) {
+            if (player instanceof ServerPlayer) {
+                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, stack);
             }
-            player.addStat(Stats.ITEM_USED.get(this));
-            if (!world.isRemote) {
-                CompoundNBT nbt = MythicPlayerData.getData(player);
+            player.awardStat(Stats.ITEM_USED.get(this));
+            if (!level.isClientSide) {
+                CompoundTag nbt = MythicPlayerData.getData(player);
                 if (nbt.getBoolean("MimirKnowledge")) {
-                    player.sendMessage(new TranslationTextComponent("message.mythicbotany.mimir_known").mergeStyle(TextFormatting.GRAY), player.getUniqueID());
+                    player.sendMessage(new TranslatableComponent("message.mythicbotany.mimir_known").withStyle(ChatFormatting.GRAY), player.getUUID());
                 } else {
                     nbt.putBoolean("MimirKnowledge", true);
-                    player.sendMessage(new TranslationTextComponent("message.mythicbotany.mimir_knowledge").mergeStyle(TextFormatting.GRAY), player.getUniqueID());
+                    player.sendMessage(new TranslatableComponent("message.mythicbotany.mimir_knowledge").withStyle(ChatFormatting.GRAY), player.getUUID());
                 }
             }
             if (!player.isCreative()) {
@@ -49,7 +48,7 @@ public class FullGjallarHorn extends ItemBase {
                 if (stack.isEmpty()) {
                     return new ItemStack(ModItems.gjallarHornEmpty);
                 } else {
-                    player.inventory.addItemStackToInventory(new ItemStack(ModItems.gjallarHornEmpty));
+                    player.getInventory().add(new ItemStack(ModItems.gjallarHornEmpty));
                 }
             }
         }
@@ -61,12 +60,12 @@ public class FullGjallarHorn extends ItemBase {
     }
 
     @Nonnull
-    public UseAction getUseAction(@Nonnull ItemStack stack) {
-        return UseAction.DRINK;
+    public UseAnim getUseAnimation(@Nonnull ItemStack stack) {
+        return UseAnim.DRINK;
     }
 
     @Nonnull
-    public ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, @Nonnull PlayerEntity playerIn, @Nonnull Hand hand) {
-        return DrinkHelper.startDrinking(worldIn, playerIn, hand);
+    public InteractionResultHolder<ItemStack> use(@Nonnull Level level, @Nonnull Player player, @Nonnull InteractionHand hand) {
+        return ItemUtils.startUsingInstantly(level, player, hand);
     }
 }

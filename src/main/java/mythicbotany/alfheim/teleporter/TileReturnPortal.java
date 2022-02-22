@@ -1,39 +1,40 @@
 package mythicbotany.alfheim.teleporter;
 
-import io.github.noeppi_noeppi.libx.mod.registration.TileEntityBase;
+import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
+import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
 import mythicbotany.alfheim.Alfheim;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import vazkii.botania.common.block.ModBlocks;
 
 import java.util.List;
 
-public class TileReturnPortal extends TileEntityBase implements ITickableTileEntity {
+public class TileReturnPortal extends BlockEntityBase implements TickableBlock {
 
-    public TileReturnPortal(TileEntityType<?> teType) {
-        super(teType);
+    public TileReturnPortal(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
     @Override
     public void tick() {
-        if (world != null && pos != null && !world.isRemote) {
-            if (!validPortal(world, pos)) {
-                world.setBlockState(pos, Blocks.AIR.getDefaultState());
+        if (level != null && !level.isClientSide) {
+            if (!validPortal(level, worldPosition)) {
+                level.setBlockAndUpdate(worldPosition, Blocks.AIR.defaultBlockState());
                 return;
             }
-            if (AlfheimPortalHandler.shouldCheck(world)) {
-                List<PlayerEntity> playersInPortal = world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1));
-                for (PlayerEntity player : playersInPortal) {
-                    if (player instanceof ServerPlayerEntity) {
-                        if (AlfheimPortalHandler.setInPortal(world, player)) {
-                            AlfheimTeleporter.teleportToOverworld((ServerPlayerEntity) player, pos);
+            if (AlfheimPortalHandler.shouldCheck(level)) {
+                List<Player> playersInPortal = level.getEntitiesOfClass(Player.class, new AABB(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), worldPosition.getX() + 1, worldPosition.getY() + 1, worldPosition.getZ() + 1));
+                for (Player player : playersInPortal) {
+                    if (player instanceof ServerPlayer) {
+                        if (AlfheimPortalHandler.setInPortal(level, player)) {
+                            AlfheimTeleporter.teleportToOverworld((ServerPlayer) player, worldPosition);
                         }
                     }
                 }
@@ -41,9 +42,9 @@ public class TileReturnPortal extends TileEntityBase implements ITickableTileEnt
         }
     }
 
-    public static boolean validPortal(World world, BlockPos pos) {
+    public static boolean validPortal(Level level, BlockPos pos) {
         // Only allow return portals in alfheim.
-        if (!Alfheim.DIMENSION.equals(world.getDimensionKey())) {
+        if (!Alfheim.DIMENSION.equals(level.dimension())) {
             return false;
         }
         Boolean isDreamwood = null;
@@ -52,7 +53,7 @@ public class TileReturnPortal extends TileEntityBase implements ITickableTileEnt
                 if (x != 0 || z != 0) {
                     Block required1 = x == 0 || z == 0 ? ModBlocks.livingwoodGlimmering : ModBlocks.livingwood;
                     Block required2 = x == 0 || z == 0 ? ModBlocks.dreamwoodGlimmering : ModBlocks.dreamwood;
-                    Block actual = world.getBlockState(pos.add(x, 0, z)).getBlock();
+                    Block actual = level.getBlockState(pos.offset(x, 0, z)).getBlock();
                     if (isDreamwood == null) {
                         if (actual == required1) {
                             isDreamwood = false;

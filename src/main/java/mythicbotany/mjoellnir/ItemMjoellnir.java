@@ -4,28 +4,32 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import mythicbotany.ModMisc;
 import mythicbotany.config.MythicConfig;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
+
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 
 public class ItemMjoellnir extends BlockItem {
     
@@ -35,77 +39,76 @@ public class ItemMjoellnir extends BlockItem {
 
     @Nonnull
     @Override
-    public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull PlayerEntity player, @Nonnull Hand hand) {
-        if (!player.isSneaking()) {
-            throwHammer(world, player, hand);
+    public InteractionResultHolder<ItemStack> use(@Nonnull Level level, @Nonnull Player player, @Nonnull InteractionHand hand) {
+        if (!player.isShiftKeyDown()) {
+            throwHammer(level, player, hand);
             if (MythicConfig.mjoellnir.ranged_cooldown > 0) {
-                player.getCooldownTracker().setCooldown(this, MythicConfig.mjoellnir.ranged_cooldown);
+                player.getCooldowns().addCooldown(this, MythicConfig.mjoellnir.ranged_cooldown);
             }
-            return ActionResult.successOrConsume(player.getHeldItem(hand), world.isRemote);
+            return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide);
         } else {
-            return super.onItemRightClick(world, player, hand);
+            return super.use(level, player, hand);
         }
     }
 
     @Nonnull
     @Override
-    public ActionResultType onItemUse(@Nonnull ItemUseContext context) {
+    public InteractionResult useOn(@Nonnull UseOnContext context) {
         // the hammer can only be placed with shift
-        if (context.getPlayer() != null && context.getPlayer().isSneaking()) {
-            return super.onItemUse(context);
+        if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown()) {
+            return super.useOn(context);
         } else {
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
     }
 
     @Override
-    protected boolean placeBlock(BlockItemUseContext ctx, @Nonnull BlockState state) {
-        return BlockMjoellnir.placeInWorld(ctx.getItem(), ctx.getWorld(), ctx.getPos());
+    protected boolean placeBlock(BlockPlaceContext context, @Nonnull BlockState state) {
+        return BlockMjoellnir.placeInWorld(context.getItemInHand(), context.getLevel(), context.getClickedPos());
     }
 
     @Override
-    public void inventoryTick(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull Entity entity, int itemSlot, boolean isSelected) {
-        if (!world.isRemote && entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
+    public void inventoryTick(@Nonnull ItemStack stack, @Nonnull Level level, @Nonnull Entity entity, int itemSlot, boolean isSelected) {
+        if (!level.isClientSide && entity instanceof Player player) {
             if (!BlockMjoellnir.canHold(player)) {
-                BlockMjoellnir.putInWorld(stack.copy(), world, player.getPosition());
+                BlockMjoellnir.putInWorld(stack.copy(), level, player.blockPosition());
                 stack.shrink(stack.getCount());
-                player.sendMessage(new TranslationTextComponent("message.mythicbotany.mjoellnir_heavy_drop").mergeStyle(TextFormatting.GRAY), player.getUniqueID());
+                player.sendMessage(new TranslatableComponent("message.mythicbotany.mjoellnir_heavy_drop").withStyle(ChatFormatting.GRAY), player.getUUID());
             }
         }
     }
 
-    private void throwHammer(World world, PlayerEntity player, Hand hand) {
-        if (!world.isRemote) {
-            ItemStack hammer = player.getHeldItem(hand).copy();
-            player.setHeldItem(hand, ItemStack.EMPTY);
-            EntityMjoellnir projectile = new EntityMjoellnir(world);
-            projectile.setPosition(player.getPosX(), player.getPosYEye(), player.getPosZ());
+    private void throwHammer(Level level, Player player, InteractionHand hand) {
+        if (!level.isClientSide) {
+            ItemStack hammer = player.getItemInHand(hand).copy();
+            player.setItemInHand(hand, ItemStack.EMPTY);
+            Mjoellnir projectile = new Mjoellnir(level);
+            projectile.setPos(player.getX(), player.getEyeY(), player.getZ());
             projectile.setStack(hammer);
             projectile.setThrower(player);
-            projectile.setThrowPos(player.getPositionVec());
-            projectile.setHotbarSlot(BlockMjoellnir.getHotbarSlot(player, hand));
-            projectile.setMotion(player.getLookVec().mul(1.2, 1.2, 1.2));
-            world.addEntity(projectile);
+            projectile.setThrowPos(player.position());
+            projectile.setHotBarSlot(BlockMjoellnir.getHotbarSlot(player, hand));
+            projectile.setDeltaMovement(player.getLookAngle().multiply(1.2, 1.2, 1.2));
+            level.addFreshEntity(projectile);
         }
     }
 
     @Override
-    public int getEntityLifespan(ItemStack itemStack, World world) {
+    public int getEntityLifespan(ItemStack itemStack, Level level) {
         return Integer.MAX_VALUE;
     }
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return (enchantment.type == EnchantmentType.WEAPON || enchantment.type == ModMisc.MJOELLNIR_ENCHANTS
-                || enchantment == Enchantments.POWER || enchantment == Enchantments.PUNCH
-                || enchantment == Enchantments.FLAME || enchantment == Enchantments.LOYALTY)
-                && enchantment != Enchantments.SWEEPING && enchantment != Enchantments.SMITE
+        return (enchantment.category == EnchantmentCategory.WEAPON || enchantment.category == ModMisc.MJOELLNIR_ENCHANTS
+                || enchantment == Enchantments.POWER_ARROWS || enchantment == Enchantments.PUNCH_ARROWS
+                || enchantment == Enchantments.FLAMING_ARROWS || enchantment == Enchantments.LOYALTY)
+                && enchantment != Enchantments.SWEEPING_EDGE && enchantment != Enchantments.SMITE
                 && enchantment != Enchantments.BANE_OF_ARTHROPODS;
     }
 
     @Override
-    public int getItemEnchantability() {
+    public int getEnchantmentValue() {
         return 1;
     }
 
@@ -116,13 +119,13 @@ public class ItemMjoellnir extends BlockItem {
 
     @Nonnull
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        if (slot == EquipmentSlotType.MAINHAND) {
-            float dmgModifier = EnchantmentHelper.getModifierForCreature(stack, CreatureAttribute.UNDEFINED);
-            float speedModifier = MythicConfig.mjoellnir.attack_speed_multiplier * EnchantmentHelper.getEnchantmentLevel(ModMisc.hammerMobility, stack);
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        if (slot == EquipmentSlot.MAINHAND) {
+            float dmgModifier = EnchantmentHelper.getDamageBonus(stack, MobType.UNDEFINED);
+            float speedModifier = MythicConfig.mjoellnir.attack_speed_multiplier * EnchantmentHelper.getItemEnchantmentLevel(ModMisc.hammerMobility, stack);
                 ImmutableMultimap.Builder<Attribute, AttributeModifier> attributeBuilder = ImmutableMultimap.builder();
-                attributeBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "mjoellnir_damage_modifier", (MythicConfig.mjoellnir.base_damage_melee - 1) + ((MythicConfig.mjoellnir.enchantment_multiplier - 1) * dmgModifier), AttributeModifier.Operation.ADDITION));
-                attributeBuilder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "mjoellnir_attack_speed_modifier", MythicConfig.mjoellnir.base_attack_speed + speedModifier, AttributeModifier.Operation.ADDITION));
+                attributeBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "mjoellnir_damage_modifier", (MythicConfig.mjoellnir.base_damage_melee - 1) + ((MythicConfig.mjoellnir.enchantment_multiplier - 1) * dmgModifier), AttributeModifier.Operation.ADDITION));
+                attributeBuilder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "mjoellnir_attack_speed_modifier", MythicConfig.mjoellnir.base_attack_speed + speedModifier, AttributeModifier.Operation.ADDITION));
                 return attributeBuilder.build();
         } else {
             return super.getAttributeModifiers(slot, stack);

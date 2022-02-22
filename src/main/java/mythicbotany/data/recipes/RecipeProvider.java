@@ -1,176 +1,187 @@
 package mythicbotany.data.recipes;
 
+import io.github.noeppi_noeppi.libx.annotation.data.Datagen;
 import io.github.noeppi_noeppi.libx.data.provider.recipe.RecipeProviderBase;
+import io.github.noeppi_noeppi.libx.data.provider.recipe.SmeltingExtension;
+import io.github.noeppi_noeppi.libx.data.provider.recipe.SmithingExtension;
+import io.github.noeppi_noeppi.libx.data.provider.recipe.crafting.CompressionExtension;
+import io.github.noeppi_noeppi.libx.data.provider.recipe.crafting.CraftingExtension;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
+import mythicbotany.data.recipes.extension.*;
 import mythicbotany.functionalflora.base.BlockFloatingFunctionalFlower;
+import mythicbotany.kvasir.WanderingTraderRuneInput;
+import mythicbotany.mjoellnir.MjoellnirRuneOutput;
 import mythicbotany.wand.RecipeDreamwoodWand;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.ShapedRecipeBuilder;
-import net.minecraft.data.ShapelessRecipeBuilder;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Items;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.common.lib.ModTags;
 import vazkii.botania.data.recipes.WrapperResult;
 
-import javax.annotation.Nonnull;
-import java.util.function.Consumer;
+import java.util.Objects;
 
-public class RecipeProvider extends RecipeProviderBase {
+@Datagen
+public class RecipeProvider extends RecipeProviderBase implements CraftingExtension, CompressionExtension, SmeltingExtension, SmithingExtension, PetalExtension, ManaInfusionExtension, RuneExtension, ElvenTradeExtension, InfuserExtension, RuneRitualExtension {
 
     public RecipeProvider(ModX mod, DataGenerator generator) {
         super(mod, generator);
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
-    protected void registerRecipes(@Nonnull Consumer<IFinishedRecipe> consumer) {
-        makeFloatingFlowerRecipes(consumer);
-
-        makeBlockItemNugget(consumer, ModBlocks.alfsteelBlock, ModItems.alfsteelIngot, ModItems.alfsteelNugget);
-        makeRing(consumer, ModItems.fireRing, vazkii.botania.common.item.ModItems.elementium, ModItems.muspelheimRune);
-        makeRing(consumer, ModItems.iceRing, vazkii.botania.common.item.ModItems.elementium, ModItems.niflheimRune);
-
-        ShapedRecipeBuilder.shapedRecipe(ModBlocks.manaInfuser)
-                .key('e', ModTags.Items.INGOTS_ELEMENTIUM)
-                .key('d', vazkii.botania.common.block.ModBlocks.dreamwoodGlimmering)
-                .key('a', ModItems.asgardRune)
-                .key('w', ModTags.Items.RUNES_SPRING)
-                .key('x', ModTags.Items.RUNES_SUMMER)
-                .key('y', ModTags.Items.RUNES_AUTUMN)
-                .key('z', ModTags.Items.RUNES_WINTER)
-                .patternLine("eee")
-                .patternLine("wdz")
-                .patternLine("xay")
-                .setGroup(MythicBotany.getInstance().modid + ":infuser")
-                .addCriterion("has_item", hasItem(ModItems.asgardRune))
-                .build(consumer);
-
-        ShapelessRecipeBuilder.shapelessRecipe(ModItems.alfsteelArmorUpgrade)
-                .addIngredient(ModItems.alfsteelIngot, 2)
-                .addIngredient(ModTags.Items.DUSTS_MANA)
-                .setGroup(ModItems.alfsteelArmorUpgrade.getRegistryName().toString())
-                .addCriterion("has_item", hasItem(ModItems.alfsteelIngot))
-                .build(consumer);
-
-        ShapedRecipeBuilder.shapedRecipe(ModBlocks.alfsteelPylon)
-                .key('n', ModItems.alfsteelNugget)
-                .key('g', Items.GHAST_TEAR)
-                .key('p', vazkii.botania.common.block.ModBlocks.naturaPylon)
-                .patternLine(" g ")
-                .patternLine("npn")
-                .patternLine(" g ")
-                .setGroup(MythicBotany.getInstance().modid + ":alfsteel_pylon")
-                .addCriterion("has_item", hasItem(vazkii.botania.common.block.ModBlocks.naturaPylon))
-                .build(consumer);
-
-        ShapedRecipeBuilder.shapedRecipe(vazkii.botania.common.block.ModBlocks.gaiaPylon)
-                .key('d', vazkii.botania.common.item.ModItems.pixieDust)
-                .key('e', ModTags.Items.INGOTS_ELEMENTIUM)
-                .key('p', ModBlocks.alfsteelPylon)
-                .patternLine(" d ")
-                .patternLine("epe")
-                .patternLine(" d ")
-                .setGroup(MythicBotany.getInstance().modid + ":modified_gaia_pylon_with_alfsteel")
-                .addCriterion("has_item", hasItem(ModBlocks.alfsteelPylon))
-                .build(consumer, MythicBotany.getInstance().modid + ":modified_gaia_pylon_with_alfsteel");
-
-        ShapedRecipeBuilder.shapedRecipe(ModBlocks.manaCollector)
-                .key('d', vazkii.botania.common.block.ModBlocks.dreamwoodGlimmering)
-                .key('g', vazkii.botania.common.item.ModItems.gaiaIngot)
-                .key('p', vazkii.botania.common.item.ModItems.pixieDust)
-                .key('m', ModItems.vanaheimRune)
-                .patternLine("dgd")
-                .patternLine("dpd")
-                .patternLine("dmd")
-                .setGroup(MythicBotany.getInstance().modid + ":mana_collector")
-                .addCriterion("has_item", hasItem(vazkii.botania.common.item.ModItems.gaiaIngot))
-                .build(consumer);
-
-        ShapedRecipeBuilder.shapedRecipe(ModItems.dreamwoodTwigWand)
-                .key('p', ModTags.Items.PETALS)
-                .key('t', vazkii.botania.common.item.ModItems.dreamwoodTwig)
-                .patternLine(" pt")
-                .patternLine(" tp")
-                .patternLine("t  ")
-                .setGroup(ModItems.dreamwoodTwigWand.getRegistryName().toString())
-                .addCriterion("has_item", hasItem(ModTags.Items.PETALS))
-                .build(WrapperResult.ofType(RecipeDreamwoodWand.SERIALIZER, consumer));
+    protected void setup() {
+        makeFloatingFlowerRecipes();
+        makeDreamwoodWandRecipe();
         
-        ShapedRecipeBuilder.shapedRecipe(ModBlocks.yggdrasilBranch)
-                .key('l', ModTags.Items.LIVINGWOOD)
-                .key('t', ModTags.Items.NUGGETS_TERRASTEEL)
-                .patternLine("lll")
-                .patternLine("ttt")
-                .patternLine("lll")
-                .setGroup(ModBlocks.yggdrasilBranch.getRegistryName().toString())
-                .addCriterion("has_item0", hasItem(ModTags.Items.LIVINGWOOD))
-                .addCriterion("has_item1", hasItem(ModTags.Items.NUGGETS_TERRASTEEL))
-                .build(consumer);
+        doubleCompress(ModItems.alfsteelNugget, ModItems.alfsteelIngot, ModBlocks.alfsteelBlock, true);
+        shaped(ModItems.fireRing, "re ", "e e", " e ", 'r', ModItems.muspelheimRune, 'e', ModTags.Items.INGOTS_ELEMENTIUM);
+        shaped(ModItems.iceRing, "re ", "e e", " e ", 'r', ModItems.niflheimRune, 'e', ModTags.Items.INGOTS_ELEMENTIUM);
         
-        ShapedRecipeBuilder.shapedRecipe(ModBlocks.runeHolder)
-                .key('i', Tags.Items.INGOTS_IRON)
-                .key('p', ModTags.Items.DUSTS_MANA)
-                .patternLine(" i ")
-                .patternLine("ipi")
-                .setGroup(ModBlocks.runeHolder.getRegistryName().toString())
-                .addCriterion("has_item0", hasItem(Tags.Items.INGOTS_IRON))
-                .addCriterion("has_item1", hasItem(ModTags.Items.DUSTS_MANA))
-                .build(consumer);
+        shaped(ModBlocks.manaInfuser, "eee", "wdz", "xay",
+                'e', ModTags.Items.INGOTS_ELEMENTIUM,
+                'd', ModTags.Items.DREAMWOOD_LOGS_GLIMMERING,
+                'a', ModItems.asgardRune,
+                'w', vazkii.botania.common.item.ModItems.runeSpring,
+                'x', vazkii.botania.common.item.ModItems.runeSummer,
+                'y', vazkii.botania.common.item.ModItems.runeAutumn,
+                'z',vazkii.botania.common.item.ModItems.runeWinter
+        );
         
-        ShapedRecipeBuilder.shapedRecipe(ModBlocks.masterRuneHolder)
-                .key('e', Tags.Items.GEMS_EMERALD)
-                .key('p', ModTags.Items.DUSTS_MANA)
-                .patternLine(" e ")
-                .patternLine("epe")
-                .setGroup(ModBlocks.runeHolder.getRegistryName().toString())
-                .addCriterion("has_item0", hasItem(Tags.Items.GEMS_EMERALD))
-                .addCriterion("has_item1", hasItem(ModTags.Items.DUSTS_MANA))
-                .build(consumer);
+        shaped(ModBlocks.alfsteelPylon, " g ", "npn", " g ", 'p', vazkii.botania.common.block.ModBlocks.naturaPylon, 'n', ModItems.alfsteelNugget, 'g', Items.GHAST_TEAR);
+        shaped(vazkii.botania.common.block.ModBlocks.gaiaPylon, " d ", "epe", " d ", 'p', ModBlocks.alfsteelPylon, 'e', ModTags.Items.INGOTS_ELEMENTIUM, 'p', vazkii.botania.common.item.ModItems.pixieDust);
+        shaped(ModBlocks.manaCollector, "dgd", "dpd", "dmd", 'd', ModTags.Items.DREAMWOOD_LOGS_GLIMMERING, 'g', vazkii.botania.common.item.ModItems.gaiaIngot, 'p', vazkii.botania.common.item.ModItems.pixieDust, 'm', ModItems.vanaheimRune);
+        shaped(ModBlocks.yggdrasilBranch, "lll", "ttt", "lll", 'l', ModTags.Items.LIVINGWOOD_LOGS, 't', ModTags.Items.NUGGETS_TERRASTEEL);
+        shaped(ModBlocks.runeHolder, " w ", "wdw", 'w', Tags.Items.INGOTS_IRON, 'd', ModTags.Items.DUSTS_MANA);
+        shaped(ModBlocks.masterRuneHolder, " w ", "wdw", 'w', Tags.Items.INGOTS_IRON, 'd', ModTags.Items.DUSTS_MANA);
+        shapeless(ModItems.kvasirMead, ModItems.kvasirBlood, Items.HONEY_BOTTLE);
+
+        blasting(ModBlocks.elementiumOre, vazkii.botania.common.item.ModItems.elementium, 0.7f, 200);
+        blasting(ModBlocks.dragonstoneOre, vazkii.botania.common.item.ModItems.dragonstone, 0.7f, 200);
+
+        smithing(vazkii.botania.common.item.ModItems.terraSword, ModItems.alfsteelIngot, ModItems.alfsteelSword);
+        smithing(vazkii.botania.common.item.ModItems.terraPick, ModItems.alfsteelIngot, ModItems.alfsteelPick);
+        smithing(vazkii.botania.common.item.ModItems.terraAxe, ModItems.alfsteelIngot, ModItems.alfsteelAxe);
+        smithing(vazkii.botania.common.item.ModItems.terrasteelHelm, ModItems.alfsteelIngot, ModItems.alfsteelHelmet);
+        smithing(vazkii.botania.common.item.ModItems.terrasteelChest, ModItems.alfsteelIngot, ModItems.alfsteelChestplate);
+        smithing(vazkii.botania.common.item.ModItems.terrasteelLegs, ModItems.alfsteelIngot, ModItems.alfsteelLeggings);
+        smithing(vazkii.botania.common.item.ModItems.terrasteelBoots, ModItems.alfsteelIngot, ModItems.alfsteelBoots);
+        smithing(vazkii.botania.common.item.ModItems.manaRingGreater, ModItems.alfsteelIngot, ModItems.manaRingGreatest);
+        smithing(vazkii.botania.common.item.ModItems.auraRingGreater, ModItems.alfsteelIngot, ModItems.auraRingGreatest);
+
+        petalApothecary(ModBlocks.exoblaze, petal(DyeColor.YELLOW), petal(DyeColor.YELLOW), petal(DyeColor.GRAY), petal(DyeColor.LIGHT_GRAY), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire), Ingredient.of(Items.BLAZE_POWDER));
+        petalApothecary(ModBlocks.witherAconite, petal(DyeColor.BLACK), petal(DyeColor.BLACK), Ingredient.of(vazkii.botania.common.item.ModItems.runePride), Ingredient.of(Blocks.WITHER_ROSE));
+        petalApothecary(ModBlocks.aquapanthus, petal(DyeColor.BLUE), petal(DyeColor.BLUE), petal(DyeColor.LIGHT_BLUE), petal(DyeColor.GREEN), petal(DyeColor.CYAN));
+        petalApothecary(ModBlocks.hellebore, petal(DyeColor.RED), petal(DyeColor.RED), petal(DyeColor.PURPLE), petal(DyeColor.CYAN), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire));
+        petalApothecary(ModBlocks.raindeletia, petal(DyeColor.LIGHT_BLUE), petal(DyeColor.BLUE), petal(DyeColor.MAGENTA), petal(DyeColor.WHITE), Ingredient.of(vazkii.botania.common.item.ModItems.runeWater));
+        petalApothecary(ModBlocks.petrunia, petal(DyeColor.RED), petal(DyeColor.RED), petal(DyeColor.ORANGE), petal(DyeColor.BROWN), Ingredient.of(ModItems.gjallarHornFull), Ingredient.of(vazkii.botania.common.item.ModItems.phantomInk));
+
+        manaInfusion(vazkii.botania.common.item.ModItems.grassHorn, ModItems.gjallarHornEmpty, 20000);
+
+        runeAltar(ModItems.midgardRune, 16000, Ingredient.of(ModTags.Items.INGOTS_MANASTEEL), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeSpring), Ingredient.of(vazkii.botania.common.item.ModItems.runeGreed), Ingredient.of(Blocks.GRASS_BLOCK));
+        runeAltar(ModItems.alfheimRune, 16000, Ingredient.of(ModTags.Items.INGOTS_ELEMENTIUM), Ingredient.of(vazkii.botania.common.item.ModItems.runeAir), Ingredient.of(vazkii.botania.common.item.ModItems.runeSummer), Ingredient.of(vazkii.botania.common.item.ModItems.runeLust), Ingredient.of(Blocks.ACACIA_LEAVES, Blocks.BIRCH_LEAVES, Blocks.DARK_OAK_LEAVES, Blocks.JUNGLE_LEAVES, Blocks.OAK_LEAVES, Blocks.SPRUCE_LEAVES));
+        runeAltar(ModItems.muspelheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_NETHER_BRICK), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire), Ingredient.of(vazkii.botania.common.item.ModItems.runeSummer), Ingredient.of(vazkii.botania.common.item.ModItems.runeWrath), Ingredient.of(Blocks.MAGMA_BLOCK));
+        runeAltar(ModItems.niflheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_IRON), Ingredient.of(vazkii.botania.common.item.ModItems.runeWater), Ingredient.of(vazkii.botania.common.item.ModItems.runeWinter), Ingredient.of(vazkii.botania.common.item.ModItems.runeWrath), Ingredient.of(Blocks.BLUE_ICE));
+        runeAltar(ModItems.asgardRune, 16000, Ingredient.of(Tags.Items.INGOTS_NETHERITE), Ingredient.of(vazkii.botania.common.item.ModItems.runeAir), Ingredient.of(vazkii.botania.common.item.ModItems.runeAutumn), Ingredient.of(vazkii.botania.common.item.ModItems.runePride), Ingredient.of(vazkii.botania.common.item.ModItems.rainbowRod));
+        runeAltar(ModItems.vanaheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_NETHERITE), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeSpring), Ingredient.of(vazkii.botania.common.item.ModItems.runePride), Ingredient.of(vazkii.botania.common.block.ModBlocks.alfPortal));
+        runeAltar(ModItems.helheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire), Ingredient.of(vazkii.botania.common.item.ModItems.runeAutumn), Ingredient.of(vazkii.botania.common.item.ModItems.runeEnvy), Ingredient.of(Items.SKELETON_SKULL, Items.WITHER_SKELETON_SKULL, Items.CREEPER_HEAD, Items.DRAGON_HEAD, Items.ZOMBIE_HEAD));
+        runeAltar(ModItems.nidavellirRune, 16000, Ingredient.of(Tags.Items.INGOTS_COPPER), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeWinter), Ingredient.of(vazkii.botania.common.item.ModItems.runeSloth), Ingredient.of(Blocks.IRON_BLOCK));
+        runeAltar(ModItems.joetunheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_BRICK), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeAutumn), Ingredient.of(vazkii.botania.common.item.ModItems.runeGluttony), Ingredient.of(Blocks.BLACKSTONE));
+
+        elvenTrade(ModBlocks.dreamwoodLeaves, Ingredient.of(ItemTags.LEAVES));
         
-        ShapelessRecipeBuilder.shapelessRecipe(ModItems.kvasirMead)
-                .addIngredient(ModItems.kvasirBlood)
-                .addIngredient(Items.HONEY_BOTTLE)
-                .setGroup(ModItems.kvasirMead.getRegistryName().toString())
-                .addCriterion("has_item0", hasItem(ModItems.kvasirBlood))
-                .addCriterion("has_item1", hasItem(Items.HONEY_BOTTLE))
-                .build(consumer);
+        infuser(vazkii.botania.common.item.ModItems.terrasteel)
+                .addIngredient(ModTags.Items.INGOTS_MANASTEEL)
+                .addIngredient(vazkii.botania.common.item.ModItems.manaPearl)
+                .addIngredient(ModTags.Items.GEMS_MANA_DIAMOND)
+                .setManaCost(500000)
+                .setColors(0x0000FF, 0x00FF00)
+                .build();
+        
+        infuser(ModItems.alfsteelIngot)
+                .addIngredient(ModTags.Items.INGOTS_ELEMENTIUM)
+                .addIngredient(ModTags.Items.GEMS_DRAGONSTONE)
+                .addIngredient(vazkii.botania.common.item.ModItems.pixieDust)
+                .setManaCost(2000000)
+                .setColors(0xFF008D, 0xFF9600)
+                .build();
+        
+        runeRitual(vazkii.botania.common.item.ModItems.runeMana)
+                .rune4(vazkii.botania.common.item.ModItems.runeGreed, 2, 2)
+                .rune2(ModItems.alfheimRune, 3, 0)
+                .rune2(vazkii.botania.common.item.ModItems.runeGreed, 0, 3)
+                .input(Ingredient.of(new ItemStack(ModItems.cursedAndwariRing), new ItemStack(ModItems.andwariRing)))
+                .input(vazkii.botania.common.item.ModItems.manaweaveCloth)
+                .output(new ItemStack(ModItems.andwariRing))
+                .build();
+
+        runeRitual(ModItems.fimbultyrTablet)
+                .rune4(vazkii.botania.common.item.ModItems.runeWrath, 5, 0)
+                .rune4(vazkii.botania.common.item.ModItems.runePride, 4, 4)
+                .rune(vazkii.botania.common.item.ModItems.runeAir, -3, 2)
+                .rune(vazkii.botania.common.item.ModItems.runeAir, 3, 2)
+                .rune(vazkii.botania.common.item.ModItems.runeAir, -2, 3)
+                .rune(vazkii.botania.common.item.ModItems.runeAir, 2, 3)
+                .rune(vazkii.botania.common.item.ModItems.runeEarth, -3, -2)
+                .rune(vazkii.botania.common.item.ModItems.runeEarth, 3, -2)
+                .rune(vazkii.botania.common.item.ModItems.runeEarth, -2, -3)
+                .rune(vazkii.botania.common.item.ModItems.runeEarth, 2, -3)
+                .rune2(ModItems.nidavellirRune, 2, 0)
+                .rune(ModItems.asgardRune, 0, 2)
+                .rune(ModItems.joetunheimRune, 0, -2)
+                .input(Items.POLISHED_ANDESITE)
+                .input(Tags.Items.INGOTS_GOLD)
+                .input(vazkii.botania.common.item.ModItems.goldenSeeds)
+                .input(vazkii.botania.common.item.ModItems.redString)
+                .input(vazkii.botania.common.item.ModItems.tinyPlanet)
+                .special(MjoellnirRuneOutput.INSTANCE)
+                .mana(500000)
+                .build();
+
+        runeRitual(ModItems.fimbultyrTablet)
+                .rune2(ModItems.midgardRune, 2, 2)
+                .rune2(ModItems.helheimRune, -2, 2)
+                .rune2(vazkii.botania.common.item.ModItems.runeSummer, 1, 3)
+                .rune2(vazkii.botania.common.item.ModItems.runeSummer, 3, 1)
+                .rune2(vazkii.botania.common.item.ModItems.runeFire, -1, 3)
+                .rune2(vazkii.botania.common.item.ModItems.runeFire, -3, 1)
+                .input(vazkii.botania.common.item.ModItems.enderDagger)
+                .input(ModItems.alfsteelNugget)
+                .input(vazkii.botania.common.item.ModItems.vial)
+                .special(WanderingTraderRuneInput.INSTANCE)
+                .output(ModItems.kvasirBlood)
+                .mana(20000)
+                .build();
     }
 
-    private void makeRing(Consumer<IFinishedRecipe> consumer, IItemProvider ring, IItemProvider material, IItemProvider gem) {
-        //noinspection ConstantConditions
-        ShapedRecipeBuilder.shapedRecipe(ring)
-                .key('m', material)
-                .key('g', gem)
-                .patternLine("gm ")
-                .patternLine("m m")
-                .patternLine(" m ")
-                .setGroup(ring.asItem().getRegistryName().toString())
-                .addCriterion("has_item", hasItem(gem))
-                .build(consumer);
-    }
-
-    private void makeFloatingFlowerRecipes(Consumer<IFinishedRecipe> consumer) {
+    private void makeFloatingFlowerRecipes() {
         //noinspection deprecation
         ForgeRegistries.ITEMS.getValues().stream()
-                .filter(i -> MythicBotany.getInstance().modid.equals(Registry.ITEM.getKey(i).getNamespace()))
-                .filter(i -> i instanceof BlockItem)
-                .filter(i -> ((BlockItem) i).getBlock() instanceof BlockFloatingFunctionalFlower<?>)
-                .forEach(i -> {
-                    //noinspection ConstantConditions
-                    ShapelessRecipeBuilder.shapelessRecipe(i)
-                            .addIngredient(ModTags.Items.FLOATING_FLOWERS)
-                            .addIngredient(((BlockFloatingFunctionalFlower<?>) ((BlockItem) i).getBlock()).getNonFloatingBlock())
-                            .setGroup(i.getRegistryName().toString())
-                            .addCriterion("has_item", hasItem(((BlockFloatingFunctionalFlower<?>) ((BlockItem) i).getBlock()).getNonFloatingBlock()))
-                            .build(consumer);
-                });
+                .filter(item -> MythicBotany.getInstance().modid.equals(Registry.ITEM.getKey(item).getNamespace()))
+                .filter(item -> item instanceof BlockItem)
+                .filter(item -> ((BlockItem) item).getBlock() instanceof BlockFloatingFunctionalFlower<?>)
+                .forEach(item -> this.shapeless(item, ModTags.Items.FLOATING_FLOWERS, ((BlockFloatingFunctionalFlower<?>) ((BlockItem) item).getBlock()).getNonFloatingBlock()));
+    }
+    
+    private void makeDreamwoodWandRecipe() {
+        ShapedRecipeBuilder.shaped(ModItems.dreamwoodTwigWand)
+                .define('p', ModTags.Items.PETALS)
+                .define('t', vazkii.botania.common.item.ModItems.dreamwoodTwig)
+                .pattern(" pt")
+                .pattern(" tp")
+                .pattern("t  ")
+                .group(Objects.requireNonNull(ModItems.dreamwoodTwigWand.getRegistryName()).toString())
+                .unlockedBy("has_item", has(ModTags.Items.PETALS))
+                .save(WrapperResult.ofType(RecipeDreamwoodWand.SERIALIZER, this.consumer()));
     }
 }

@@ -1,6 +1,6 @@
 package mythicbotany.jei;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -11,18 +11,18 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
 import mythicbotany.infuser.IInfuserRecipe;
-import net.minecraft.block.Blocks;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector2f;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import vazkii.botania.client.core.handler.HUDHandler;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import vazkii.botania.client.gui.HUDHandler;
 import vazkii.botania.client.integration.jei.PetalApothecaryRecipeCategory;
 import vazkii.botania.client.integration.jei.TerraPlateDrawable;
 
@@ -38,18 +38,18 @@ public class InfusionCategory implements IRecipeCategory<IInfuserRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MythicBotany.getInstance().modid, "jei_category_infusion");
 
     private final IDrawable background;
-    private final String localizedName;
+    private final Component localizedName;
     private final IDrawable overlay;
     private final IDrawable icon;
     private final IDrawable infuserPlate;
 
     public InfusionCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createBlankDrawable(114, 141);
-        this.localizedName = I18n.format("block.mythicbotany.mana_infuser");
+        this.localizedName = new TranslatableComponent("block.mythicbotany.mana_infuser");
         this.overlay = guiHelper.createDrawable(new ResourceLocation("botania","textures/gui/terrasteel_jei_overlay.png"), 42, 29, 64, 64);
-        this.icon = guiHelper.createDrawableIngredient(new ItemStack(ModBlocks.manaInfuser));
-        IDrawable shimmerrock = guiHelper.createDrawableIngredient(new ItemStack(vazkii.botania.common.block.ModBlocks.shimmerrock));
-        this.infuserPlate = new TerraPlateDrawable(shimmerrock, shimmerrock, guiHelper.createDrawableIngredient(new ItemStack(Blocks.GOLD_BLOCK)));
+        this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModBlocks.manaInfuser));
+        IDrawable shimmerrock = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(vazkii.botania.common.block.ModBlocks.shimmerrock));
+        this.infuserPlate = new TerraPlateDrawable(shimmerrock, shimmerrock, guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(Blocks.GOLD_BLOCK)));
     }
 
     @Nonnull
@@ -66,7 +66,7 @@ public class InfusionCategory implements IRecipeCategory<IInfuserRecipe> {
 
     @Nonnull
     @Override
-    public String getTitle() {
+    public Component getTitle() {
         return localizedName;
     }
 
@@ -86,10 +86,10 @@ public class InfusionCategory implements IRecipeCategory<IInfuserRecipe> {
     public void setIngredients(@Nonnull IInfuserRecipe recipe, @Nonnull IIngredients ii) {
         List<List<ItemStack>> list = new ArrayList<>();
         for (Ingredient ingredient : recipe.getIngredients()) {
-            list.add(Arrays.asList(ingredient.getMatchingStacks()));
+            list.add(Arrays.asList(ingredient.getItems()));
         }
         ii.setInputLists(VanillaTypes.ITEM, list);
-        ii.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+        ii.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
     }
 
     @Override
@@ -97,8 +97,8 @@ public class InfusionCategory implements IRecipeCategory<IInfuserRecipe> {
         layout.getItemStacks().init(0, false, 48, 37);
         layout.getItemStacks().set(0, ii.getOutputs(VanillaTypes.ITEM).get(0));
         double angle = 360 / (double) ii.getInputs(VanillaTypes.ITEM).size();
-        Vector2f point = new Vector2f(48, 5);
-        Vector2f center = new Vector2f(48, 37);
+        Vec2 point = new Vec2(48, 5);
+        Vec2 center = new Vec2(48, 37);
         for (int i = 1; i <= ii.getInputs(VanillaTypes.ITEM).size(); i++) {
             layout.getItemStacks().init(i, true, Math.round(point.x), Math.round(point.y));
             layout.getItemStacks().set(i, ii.getInputs(VanillaTypes.ITEM).get(i - 1));
@@ -108,18 +108,15 @@ public class InfusionCategory implements IRecipeCategory<IInfuserRecipe> {
         layout.getItemStacks().set(ii.getInputs(VanillaTypes.ITEM).size() + 1, new ItemStack(ModBlocks.manaInfuser));
     }
 
-    @SuppressWarnings("deprecation")
-    public void draw(IInfuserRecipe recipe, @Nonnull MatrixStack matrixStack, double mouseX, double mouseY) {
-        RenderSystem.enableAlphaTest();
+    public void draw(IInfuserRecipe recipe, @Nonnull PoseStack poseStack, double mouseX, double mouseY) {
         RenderSystem.enableBlend();
-        this.overlay.draw(matrixStack, 25, 14);
-        HUDHandler.renderManaBar(matrixStack, 6, 126, 0x0000FF, 0.75f, recipe.getManaUsage(), 4000000);
-        this.infuserPlate.draw(matrixStack, 35, 92);
+        this.overlay.draw(poseStack, 25, 14);
+        HUDHandler.renderManaBar(poseStack, 6, 126, 0x0000FF, 0.75f, recipe.getManaUsage(), 4000000);
+        this.infuserPlate.draw(poseStack, 35, 92);
         RenderSystem.disableBlend();
-        RenderSystem.disableAlphaTest();
-        IFormattableTextComponent manaAmount = new StringTextComponent(BigDecimal.valueOf(recipe.getManaUsage() / 1000000d).setScale(2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()).mergeStyle(TextFormatting.BLUE);
-        IFormattableTextComponent tc = new TranslationTextComponent("tooltip.mythicbotany.cost_pools", manaAmount);
+        MutableComponent manaAmount = new TextComponent(BigDecimal.valueOf(recipe.getManaUsage() / 1000000d).setScale(2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()).withStyle(ChatFormatting.BLUE);
+        MutableComponent tc = new TranslatableComponent("tooltip.mythicbotany.cost_pools", manaAmount);
         //noinspection IntegerDivisionInFloatingPointContext
-        Minecraft.getInstance().fontRenderer.drawText(matrixStack, tc, 57 - (Minecraft.getInstance().fontRenderer.getStringPropertyWidth(tc) / 2), 133, 0x000000);
+        Minecraft.getInstance().font.draw(poseStack, tc, 57 - (Minecraft.getInstance().font.width(tc) / 2), 133, 0x000000);
     }
 }

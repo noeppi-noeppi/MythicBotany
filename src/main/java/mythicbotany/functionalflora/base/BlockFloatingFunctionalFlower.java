@@ -1,52 +1,36 @@
 package mythicbotany.functionalflora.base;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import io.github.noeppi_noeppi.libx.LibX;
+import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
 import io.github.noeppi_noeppi.libx.mod.ModX;
-import io.github.noeppi_noeppi.libx.mod.registration.BlockBase;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.botania.api.BotaniaAPIClient;
-import vazkii.botania.api.wand.IWandHUD;
-import vazkii.botania.api.wand.IWandable;
-import vazkii.botania.common.core.handler.ConfigHandler;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import vazkii.botania.xplat.BotaniaConfig;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static mythicbotany.functionalflora.base.BlockFunctionalFlower.POOL_ID;
-import static mythicbotany.functionalflora.base.BlockFunctionalFlower.SPREADER_ID;
+public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> extends BlockBE<T> {
 
-public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> extends BlockBase implements IWandHUD, IWandable {
-
-    private static final VoxelShape SHAPE = makeCuboidShape(1.6D, 1.6D, 1.6D, 14.4D, 14.4D, 14.4D);
+    private static final VoxelShape SHAPE = box(1.6D, 1.6D, 1.6D, 14.4D, 14.4D, 14.4D);
 
     private final BlockFunctionalFlower<T> nonFloatingBlock;
 
-    public BlockFloatingFunctionalFlower(ModX mod, BlockFunctionalFlower<T> nonFloatingBlock) {
-        super(mod, Properties.create(Material.PLANTS).setOpaque((state, world, pos) -> false)
-                .zeroHardnessAndResistance().sound(SoundType.PLANT));
+    public BlockFloatingFunctionalFlower(ModX mod, Class<T> beClass, BlockFunctionalFlower<T> nonFloatingBlock) {
+        super(mod, beClass, Properties.of(Material.PLANT).isRedstoneConductor((state, world, pos) -> false)
+                .instabreak().sound(SoundType.GRASS));
         this.nonFloatingBlock = nonFloatingBlock;
     }
 
@@ -54,61 +38,23 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
         return nonFloatingBlock;
     }
 
-    @SuppressWarnings("deprecation")
     @Nonnull
     @Override
-    public VoxelShape getShape(@Nonnull BlockState state, @Nonnull IBlockReader world, @Nonnull BlockPos pos, @Nonnull ISelectionContext ctx) {
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(@Nonnull BlockState state, @Nonnull BlockGetter level, @Nonnull BlockPos pos, @Nonnull CollisionContext context) {
         return SHAPE;
     }
-
+    
     @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public T createTileEntity(BlockState state, IBlockReader world) {
-        T te = nonFloatingBlock.getTileType().create();
-        if (te != null)
-            te.setFloating(true);
-        return te;
-    }
-
-    public T getTile(World world, BlockPos pos) {
-        return nonFloatingBlock.getTile(world, pos);
-    }
-
-    public TileEntityType<T> getTileType() {
-        return nonFloatingBlock.getTileType();
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void renderHUD(MatrixStack matrixStack, Minecraft minecraft, World world, BlockPos pos) {
-        FunctionalFlowerBase te = getTile(world, pos);
-        String name = I18n.format(getNonFloatingBlock().getTranslationKey());
-        BotaniaAPIClient.instance().drawComplexManaHUD(matrixStack, te.color, te.getCurrentMana(), te.maxMana, name, new ItemStack(ForgeRegistries.ITEMS.getValue(getNonFloatingBlock().isGenerating ? SPREADER_ID : POOL_ID)), te.isValidBinding());
-    }
-
-    @Override
-    public boolean onUsedByWand(PlayerEntity player, ItemStack stack, World world, BlockPos pos, Direction side) {
-        if (world.isRemote) {
-            LibX.getNetwork().requestTE(world, pos);
-        }
-        return true;
-    }
-
     @SuppressWarnings("deprecation")
-    @Override
-    public boolean hasComparatorInputOverride(@Nonnull BlockState state) {
+    public boolean hasAnalogOutputSignal(@Nonnull BlockState state) {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public int getComparatorInputOverride(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos) {
-        FunctionalFlowerBase te = getTile(world, pos);
+    @SuppressWarnings("deprecation")
+    public int getAnalogOutputSignal(@Nonnull BlockState blockState, @Nonnull Level level, @Nonnull BlockPos pos) {
+        FunctionalFlowerBase te = getBlockEntity(level, pos);
         if (te.getCurrentMana() > 0) {
             return 1 + (int) ((te.getCurrentMana() / (double) te.maxMana) * 14);
         } else {
@@ -116,34 +62,34 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
         }
     }
 
-    public boolean propagatesSkylightDown(BlockState state, @Nonnull IBlockReader reader, @Nonnull BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, @Nonnull BlockGetter reader, @Nonnull BlockPos pos) {
         return state.getFluidState().isEmpty();
     }
 
     @Override
-    public void addInformation(@Nonnull ItemStack stack, @Nullable IBlockReader world, @Nonnull List<ITextComponent> list, @Nonnull ITooltipFlag flag) {
-        super.addInformation(stack, world, list, flag);
+    public void appendHoverText(@Nonnull ItemStack stack, @Nullable BlockGetter level, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
         if (getNonFloatingBlock().isGenerating) {
-            list.add(new TranslationTextComponent("botania.flowerType.generating").mergeStyle(TextFormatting.BLUE, TextFormatting.ITALIC));
+            tooltip.add(new TranslatableComponent("botania.flowerType.generating").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
 
         } else {
-            list.add(new TranslationTextComponent("botania.flowerType.functional").mergeStyle(TextFormatting.BLUE, TextFormatting.ITALIC));
+            tooltip.add(new TranslatableComponent("botania.flowerType.functional").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
 
         }
         //noinspection ConstantConditions
-        list.add(new TranslationTextComponent("block." + mod.modid + "." + this.getNonFloatingBlock().getRegistryName().getPath() + ".description").mergeStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
+        tooltip.add(new TranslatableComponent("block." + mod.modid + "." + this.getNonFloatingBlock().getRegistryName().getPath() + ".description").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isTransparent(@Nonnull BlockState state) {
+    public boolean useShapeForLightOcclusion(@Nonnull BlockState state) {
         return true;
     }
 
     @Nonnull
     @SuppressWarnings("deprecation")
     @Override
-    public BlockRenderType getRenderType(@Nonnull BlockState state) {
-        return ConfigHandler.CLIENT.staticFloaters.get() ? BlockRenderType.MODEL : BlockRenderType.ENTITYBLOCK_ANIMATED;
+    public RenderShape getRenderShape(@Nonnull BlockState state) {
+        return BotaniaConfig.client().staticFloaters() ? RenderShape.MODEL : RenderShape.ENTITYBLOCK_ANIMATED;
     }
 }

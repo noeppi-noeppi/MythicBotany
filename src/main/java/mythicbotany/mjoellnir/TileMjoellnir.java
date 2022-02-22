@@ -1,21 +1,22 @@
 package mythicbotany.mjoellnir;
 
-import io.github.noeppi_noeppi.libx.mod.registration.TileEntityBase;
+import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
 import mythicbotany.ModBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import javax.annotation.Nonnull;
 
-public class TileMjoellnir extends TileEntityBase {
+public class TileMjoellnir extends BlockEntityBase {
 
     private ItemStack stack;
     
-    public TileMjoellnir(TileEntityType<?> teType) {
-        super(teType);
+    public TileMjoellnir(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
         stack = new ItemStack(ModBlocks.mjoellnir);
     }
 
@@ -25,42 +26,41 @@ public class TileMjoellnir extends TileEntityBase {
 
     public void setStack(ItemStack stack) {
         this.stack = stack;
-        markDirty();
-        markDispatchable();
+        setChanged();
+        setDispatchable();
     }
 
     @Override
-    public void read(@Nonnull BlockState state, @Nonnull CompoundNBT nbt) {
-        super.read(state, nbt);
-        if (nbt.contains("hammer", Constants.NBT.TAG_COMPOUND)) {
-            stack = ItemStack.read(nbt.getCompound("hammer"));
+    public void load(@Nonnull CompoundTag nbt) {
+        super.load(nbt);
+        if (nbt.contains("hammer", Tag.TAG_COMPOUND)) {
+            stack = ItemStack.of(nbt.getCompound("hammer"));
         } else {
             stack = new ItemStack(ModBlocks.mjoellnir);
         }
     }
 
-    @Nonnull
     @Override
-    public CompoundNBT write(@Nonnull CompoundNBT nbt) {
-        nbt.put("hammer", stack.write(new CompoundNBT()));
-        return super.write(nbt);
+    public void saveAdditional(@Nonnull CompoundTag nbt) {
+        super.saveAdditional(nbt);
+        nbt.put("hammer", stack.save(new CompoundTag()));
     }
 
     @Nonnull
     @Override
-    public CompoundNBT getUpdateTag() {
-        CompoundNBT nbt = super.getUpdateTag();
-        if (world != null && !world.isRemote) {
-            nbt.put("hammer", stack.write(new CompoundNBT()));
+    public CompoundTag getUpdateTag() {
+        CompoundTag nbt = super.getUpdateTag();
+        if (level != null && !level.isClientSide) {
+            nbt.put("hammer", stack.save(new CompoundTag()));
         }
         return nbt;
     }
 
     @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT nbt) {
-        super.handleUpdateTag(state, nbt);
-        if (nbt.contains("hammer", Constants.NBT.TAG_COMPOUND)) {
-            stack = ItemStack.read(nbt.getCompound("hammer"));
+    public void handleUpdateTag(CompoundTag nbt) {
+        super.handleUpdateTag(nbt);
+        if (nbt.contains("hammer", Tag.TAG_COMPOUND)) {
+            stack = ItemStack.of(nbt.getCompound("hammer"));
         } else {
             stack = new ItemStack(ModBlocks.mjoellnir);
         }

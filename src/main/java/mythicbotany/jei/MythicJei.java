@@ -10,11 +10,11 @@ import mythicbotany.ModBlocks;
 import mythicbotany.ModRecipes;
 import mythicbotany.MythicBotany;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -43,11 +43,11 @@ public class MythicJei implements IModPlugin {
 
     @Override
     public void registerRecipes(@Nonnull IRecipeRegistration registration) {
-        ClientWorld world = Minecraft.getInstance().world;
-        RecipeManager recipes = Objects.requireNonNull(world).getRecipeManager();
+        ClientLevel level = Minecraft.getInstance().level;
+        RecipeManager recipes = Objects.requireNonNull(level).getRecipeManager();
 
-        registration.addRecipes(recipes.getRecipesForType(ModRecipes.INFUSER), InfusionCategory.UID);
-        registration.addRecipes(recipes.getRecipesForType(ModRecipes.RUNE_RITUAL), RuneRitualCategory.UID);
+        registration.addRecipes(recipes.getAllRecipesFor(ModRecipes.INFUSER), InfusionCategory.UID);
+        registration.addRecipes(recipes.getAllRecipesFor(ModRecipes.RUNE_RITUAL), RuneRitualCategory.UID);
     }
 
     @Override

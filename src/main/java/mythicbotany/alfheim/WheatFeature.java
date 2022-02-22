@@ -1,51 +1,51 @@
 package mythicbotany.alfheim;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-public class WheatFeature extends Feature<NoFeatureConfig> {
+public class WheatFeature extends Feature<NoneFeatureConfiguration> {
 
     public WheatFeature() {
-        super(NoFeatureConfig.CODEC);
+        super(NoneFeatureConfiguration.CODEC);
     }
 
     @Override
-    public boolean generate(@Nonnull ISeedReader world, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos pos, @Nonnull NoFeatureConfig config) {
+    public boolean place(@Nonnull WorldGenLevel level, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos pos, @Nonnull NoneFeatureConfiguration config) {
         boolean success = false;
         for (int i = 0; i < 3; i++) {
-            if (tryGenerate(world, generator, rand, new BlockPos(pos.getX() + rand.nextInt(16), 0, pos.getZ() + rand.nextInt(16)))) {
+            if (tryGenerate(level, generator, rand, new BlockPos(pos.getX() + rand.nextInt(16), 0, pos.getZ() + rand.nextInt(16)))) {
                 success = true;
             }
         }
         return success;
     }
 
-    private boolean tryGenerate(@Nonnull ISeedReader world, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos hor) {
+    private boolean tryGenerate(@Nonnull WorldGenLevel level, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos hor) {
         for (int i = 0; i < 5; i++) {
             int length = rand.nextInt(5);
-            BlockPos.Mutable mpos = hor.toMutable();
+            BlockPos.MutableBlockPos mpos = hor.mutable();
             for (int j = 0; j < length; j++) {
-                tryPlace(world, mpos);
-                mpos.move(Direction.byHorizontalIndex(rand.nextInt(4)));
+                tryPlace(level, mpos);
+                mpos.move(Direction.from2DDataValue(rand.nextInt(4)));
             }
         }
         return true;
     }
 
-    private void tryPlace(@Nonnull ISeedReader world, BlockPos hor) {
-        BlockPos pos = AlfheimWorldGen.highestFreeBlock(world, hor, AlfheimWorldGen::passReplaceableNoCrops);
-        if (world.getBlockState(pos.down()).isSolid()) {
-            world.setBlockState(pos.down(), Blocks.FARMLAND.getDefaultState(), 2);
-            world.setBlockState(pos, Blocks.WHEAT.getDefaultState().with(BlockStateProperties.AGE_0_7, 7), 2);
+    private void tryPlace(@Nonnull WorldGenLevel level, BlockPos hor) {
+        BlockPos pos = AlfheimWorldGen.highestFreeBlock(level, hor, AlfheimWorldGen::passReplaceableNoCrops);
+        if (level.getBlockState(pos.below()).canOcclude()) {
+            level.setBlock(pos.below(), Blocks.FARMLAND.defaultBlockState(), 2);
+            level.setBlock(pos, Blocks.WHEAT.defaultBlockState().setValue(BlockStateProperties.AGE_7, 7), 2);
         }
     }
 }

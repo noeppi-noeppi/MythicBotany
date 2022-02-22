@@ -1,112 +1,101 @@
 package mythicbotany.pylon;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
+import io.github.noeppi_noeppi.libx.render.ClientTickHandler;
+import io.github.noeppi_noeppi.libx.util.LazyValue;
 import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
-import vazkii.botania.client.core.handler.ClientTickHandler;
-import vazkii.botania.client.core.helper.ShaderHelper;
-import vazkii.botania.client.core.helper.ShaderWrappedRenderLayer;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import vazkii.botania.client.core.helper.RenderHelper;
 import vazkii.botania.client.model.IPylonModel;
+import vazkii.botania.client.model.ModModelLayers;
 import vazkii.botania.client.model.ModelPylonNatura;
-import vazkii.botania.mixin.AccessorRenderState;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class RenderAlfsteelPylon extends TileEntityRenderer<TileAlfsteelPylon> {
+public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylon> {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(MythicBotany.getInstance().modid, "textures/model/pylon_alfsteel.png");
-    public static final RenderType PYLON_GLOW = initFieldPylonGlow(false);
-    public static final RenderType PYLON_GLOW_ITEM = initFieldPylonGlow(true);
+    
+    private final ModelPylonNatura model;
+    private ItemTransforms.TransformType forceTransform = ItemTransforms.TransformType.NONE;
 
-    private static RenderType initFieldPylonGlow(boolean forItem) {
-        RenderType.State.Builder glState = RenderType.State.getBuilder().texture(new RenderState.TextureState(TEXTURE, false, false)).transparency(AccessorRenderState.getTranslucentTransparency()).diffuseLighting(new RenderState.DiffuseLightingState(true)).alpha(new RenderState.AlphaState(0.0F)).cull(new RenderState.CullState(false)).lightmap(new RenderState.LightmapState(true));
-        if (forItem)
-            glState = glState.target(AccessorRenderState.getItemEntityTarget());
-        RenderType layer = RenderType.makeType(MythicBotany.getInstance().modid  + ":alfsteel_pylon_glow" + (forItem ? "_item" : ""), DefaultVertexFormats.ENTITY, 7, 128, glState.build(false));
-        return ShaderHelper.useShaders() ? new ShaderWrappedRenderLayer(ShaderHelper.BotaniaShader.PYLON_GLOW, null, layer) : layer;
+    public RenderAlfsteelPylon(BlockEntityRendererProvider.Context ctx) {
+        this.model = new ModelPylonNatura(ctx.bakeLayer(ModModelLayers.PYLON_NATURA));
+    }
+    
+    public void render(@Nonnull TileAlfsteelPylon blockEntity, float partialTicks, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+        doRender(blockEntity, partialTicks, matrixStack, buffer, combinedLight, combinedOverlay);
     }
 
-    private final ModelPylonNatura model = new ModelPylonNatura();
-    private ItemCameraTransforms.TransformType forceTransform = ItemCameraTransforms.TransformType.NONE;
+    public void doRender(@Nullable TileAlfsteelPylon pylon, float pticks, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
+        boolean direct = pylon == null && (forceTransform == ItemTransforms.TransformType.GUI || forceTransform.firstPerson());
+        RenderType glow = direct ? RenderHelper.NATURA_PYLON_GLOW_DIRECT : RenderHelper.NATURA_PYLON_GLOW;
 
-    public RenderAlfsteelPylon(TileEntityRendererDispatcher manager) {
-        super(manager);
-    }
-
-    public void render(@Nonnull TileAlfsteelPylon pylon, float partialTicks, @Nonnull MatrixStack ms, @Nonnull IRenderTypeBuffer buffer, int light, int overlay) {
-        doRender(pylon, partialTicks, ms, buffer, light, overlay);
-    }
-
-    public void doRender(@Nullable TileAlfsteelPylon pylon, float pticks, MatrixStack ms, IRenderTypeBuffer buffers, int light, int overlay) {
-        boolean direct = pylon == null && (forceTransform == ItemCameraTransforms.TransformType.GUI || forceTransform.isFirstPerson());
-        RenderType glow = direct ? PYLON_GLOW_ITEM : PYLON_GLOW;
-
-        ms.push();
+        poseStack.pushPose();
         float worldTime = (float) ClientTickHandler.ticksInGame + pticks;
-        worldTime += pylon == null ? 0.0F : (float) (new Random(pylon.getPos().hashCode())).nextInt(360);
-        ms.translate(0.0D, pylon == null ? 1.35D : 1.5D, 0.0D);
-        ms.scale(1.0F, -1.0F, -1.0F);
-        ms.push();
-        ms.translate(0.5D, 0.0D, -0.5D);
+        worldTime += pylon == null ? 0.0F : (float) (new Random(pylon.getBlockPos().hashCode())).nextInt(360);
+        poseStack.translate(0.0D, pylon == null ? 1.35D : 1.5D, 0.0D);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+        poseStack.pushPose();
+        poseStack.translate(0.5D, 0.0D, -0.5D);
         if (pylon != null) {
-            ms.rotate(Vector3f.YP.rotationDegrees(worldTime * 1.5F));
+            poseStack.mulPose(Vector3f.YP.rotationDegrees(worldTime * 1.5F));
         }
 
-        RenderType layer = RenderType.getEntityTranslucent(TEXTURE);
-        IVertexBuilder buffer = buffers.getBuffer(layer);
-        ((IPylonModel) model).renderRing(ms, buffer, light, overlay);
+        RenderType layer = RenderType.entityTranslucent(TEXTURE);
+        VertexConsumer vertex = buffer.getBuffer(layer);
+        ((IPylonModel) model).renderRing(poseStack, vertex, light, overlay);
         if (pylon != null) {
-            ms.translate(0.0D, Math.sin((double) worldTime / 20.0D) / 20.0D - 0.025D, 0.0D);
+            poseStack.translate(0.0D, Math.sin((double) worldTime / 20.0D) / 20.0D - 0.025D, 0.0D);
         }
 
-        ms.pop();
-        ms.push();
+        poseStack.popPose();
+        poseStack.pushPose();
         if (pylon != null) {
-            ms.translate(0.0D, Math.sin((double) worldTime / 20.0D) / 17.5D, 0.0D);
+            poseStack.translate(0.0D, Math.sin((double) worldTime / 20.0D) / 17.5D, 0.0D);
         }
 
-        ms.translate(0.5D, 0.0D, -0.5D);
+        poseStack.translate(0.5D, 0.0D, -0.5D);
         if (pylon != null) {
-            ms.rotate(Vector3f.YP.rotationDegrees(-worldTime));
+            poseStack.mulPose(Vector3f.YP.rotationDegrees(-worldTime));
         }
 
-        buffer = buffers.getBuffer(glow);
-        ((IPylonModel) model).renderCrystal(ms, buffer, light, overlay);
-        ms.pop();
-        ms.pop();
+        vertex = buffer.getBuffer(glow);
+        ((IPylonModel) model).renderCrystal(poseStack, vertex, light, overlay);
+        poseStack.popPose();
+        poseStack.popPose();
     }
 
-    public static class TEISR extends ItemStackTileEntityRenderer {
+    public static class ItemRenderer extends BlockEntityWithoutLevelRenderer {
 
-        private static final LazyValue<TileAlfsteelPylon> DUMMY = new LazyValue<>(() -> new TileAlfsteelPylon(ModBlocks.alfsteelPylon.getTileType()));
+        private static final LazyValue<TileAlfsteelPylon> DUMMY = new LazyValue<>(() -> new TileAlfsteelPylon(ModBlocks.alfsteelPylon.getBlockEntityType(), BlockPos.ZERO, ModBlocks.alfsteelPylon.defaultBlockState()));
 
-        public TEISR() {
-
+        public ItemRenderer() {
+            super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
         }
         
         @Override
-        public void render(ItemStack stack, @Nonnull ItemCameraTransforms.TransformType type, @Nonnull MatrixStack ms, @Nonnull IRenderTypeBuffer buffer, int light, int overlay) {
-            if (Block.getBlockFromItem(stack.getItem()) instanceof BlockAlfsteelPylon) {
-                TileEntityRenderer<TileAlfsteelPylon> r = TileEntityRendererDispatcher.instance.getRenderer(DUMMY.getValue());
+        public void renderByItem(ItemStack stack, @Nonnull ItemTransforms.TransformType type, @Nonnull PoseStack ms, @Nonnull MultiBufferSource buffer, int light, int overlay) {
+            if (Block.byItem(stack.getItem()) instanceof BlockAlfsteelPylon) {
+                BlockEntityRenderer<TileAlfsteelPylon> renderer = this.blockEntityRenderDispatcher.getRenderer(DUMMY.get());
                 //noinspection ConstantConditions
-                ((RenderAlfsteelPylon) r).forceTransform = type;
-                ((RenderAlfsteelPylon) r).doRender(null, 0f, ms, buffer, light, overlay);
+                ((RenderAlfsteelPylon) renderer).forceTransform = type;
+                ((RenderAlfsteelPylon) renderer).doRender(null, 0f, ms, buffer, light, overlay);
             }
         }
     }

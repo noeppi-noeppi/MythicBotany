@@ -1,7 +1,7 @@
 package mythicbotany.network;
 
 import mythicbotany.alfheim.teleporter.AlfheimPortalHandler;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 

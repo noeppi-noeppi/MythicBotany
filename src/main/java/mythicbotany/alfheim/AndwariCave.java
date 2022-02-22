@@ -3,102 +3,102 @@ package mythicbotany.alfheim;
 import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import io.github.noeppi_noeppi.libx.util.NBTX;
 import mythicbotany.MythicBotany;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.registry.DynamicRegistries;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructureStart;
-import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
-import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.Consumer;
 
-public class AndwariCave extends Structure<NoFeatureConfig> implements Registerable {
+public class AndwariCave extends StructureFeature<NoneFeatureConfiguration> implements Registerable {
 
     private static final ResourceLocation TEMPLATE = new ResourceLocation(MythicBotany.getInstance().modid, "andwari_cave");
     
     public AndwariCave() {
-        super(NoFeatureConfig.CODEC);
+        super(NoneFeatureConfiguration.CODEC);
     }
 
     @Override
     public void registerCommon(ResourceLocation id, Consumer<Runnable> defer) {
-        defer.accept(() -> Structure.NAME_STRUCTURE_BIMAP.put(id.toString(), this));
+        defer.accept(() -> StructureFeature.STRUCTURES_REGISTRY.put(id.toString(), this));
     }
 
     @Nonnull
-    public Structure.IStartFactory<NoFeatureConfig> getStartFactory() {
+    public StructureFeature.StructureStartFactory<NoneFeatureConfiguration> getStartFactory() {
         return Start::new;
     }
 
     @Nonnull
     @Override
-    public GenerationStage.Decoration getDecorationStage() {
-        return GenerationStage.Decoration.SURFACE_STRUCTURES;
+    public GenerationStep.Decoration step() {
+        return GenerationStep.Decoration.SURFACE_STRUCTURES;
     }
     
-    public static class Start extends StructureStart<NoFeatureConfig> {
+    public static class Start extends StructureStart<NoneFeatureConfiguration> {
         
-        public Start(Structure<NoFeatureConfig> structure, int x, int z, MutableBoundingBox box, int refCount, long seed) {
+        public Start(StructureFeature<NoneFeatureConfiguration> structure, int x, int z, BoundingBox box, int refCount, long seed) {
             super(structure, x, z, box, refCount, seed);
         }
 
         @Override
-        public void addStructurePieces(@Nonnull DynamicRegistries registries, @Nonnull ChunkGenerator generator, @Nonnull TemplateManager templates, int chunkX, int chunkZ, @Nonnull Biome biome, @Nonnull NoFeatureConfig config) {
-            int x = (chunkX * 16) + rand.nextInt(16) - 8;
-            int z = (chunkZ * 16) + rand.nextInt(16) - 8;
-            Piece piece = new Piece(templates, new BlockPos(chunkX * 16, generator.getHeight(x, z, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES) - 7, z), Rotation.randomRotation(rand));
-            this.components.add(piece);
-            this.recalculateStructureSize();
+        public void generatePieces(@Nonnull RegistryAccess registries, @Nonnull ChunkGenerator generator, @Nonnull StructureManager templates, int chunkX, int chunkZ, @Nonnull Biome biome, @Nonnull NoneFeatureConfiguration config) {
+            int x = (chunkX * 16) + random.nextInt(16) - 8;
+            int z = (chunkZ * 16) + random.nextInt(16) - 8;
+            Piece piece = new Piece(templates, new BlockPos(chunkX * 16, generator.getBaseHeight(x, z, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES) - 7, z), Rotation.getRandom(random));
+            this.pieces.add(piece);
+            this.calculateBoundingBox();
         }
     }
     
     public static class Piece extends TemplateStructurePiece {
         
-        public Piece(TemplateManager templates, BlockPos pos, Rotation rot) {
+        public Piece(StructureManager templates, BlockPos pos, Rotation rot) {
             super(AlfheimFeatures.ANDWARI_CAVE_PIECE, 0);
-            this.setup(Objects.requireNonNull(templates.getTemplate(TEMPLATE), "Andwari Cave template not found."), pos, (new PlacementSettings()).setRotation(rot).setMirror(Mirror.NONE).addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK));
+            this.setup(Objects.requireNonNull(templates.get(TEMPLATE), "Andwari Cave template not found."), pos, (new StructurePlaceSettings()).setRotation(rot).setMirror(Mirror.NONE).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK));
         }
 
-        public Piece(TemplateManager templates, CompoundNBT nbt) {
+        public Piece(StructureManager templates, CompoundTag nbt) {
             super(AlfheimFeatures.ANDWARI_CAVE_PIECE, nbt);
-            this.setup(Objects.requireNonNull(templates.getTemplate(TEMPLATE), "Andwari Cave template not found."), NBTX.getPos(nbt, "StructurePos", BlockPos.ZERO), (new PlacementSettings()).setRotation(Rotation.values()[nbt.getInt("StructureRotation")]).setMirror(Mirror.NONE).addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK));
+            this.setup(Objects.requireNonNull(templates.get(TEMPLATE), "Andwari Cave template not found."), NBTX.getPos(nbt, "StructurePos", BlockPos.ZERO), (new StructurePlaceSettings()).setRotation(Rotation.values()[nbt.getInt("StructureRotation")]).setMirror(Mirror.NONE).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK));
         }
 
         @Override
-        protected void handleDataMarker(@Nonnull String function, @Nonnull BlockPos pos, @Nonnull IServerWorld world, @Nonnull Random rand, @Nonnull MutableBoundingBox box) {
+        protected void handleDataMarker(@Nonnull String function, @Nonnull BlockPos pos, @Nonnull ServerLevelAccessor level, @Nonnull Random random, @Nonnull BoundingBox sbb) {
             //
         }
 
         @Override
-        protected void readAdditional(@Nonnull CompoundNBT nbt) {
-            super.readAdditional(nbt);
+        protected void addAdditionalSaveData(@Nonnull CompoundTag nbt) {
+            super.addAdditionalSaveData(nbt);
             NBTX.putPos(nbt, "StructurePos", templatePosition);
             nbt.putInt("StructureRotation", placeSettings.getRotation().ordinal());
         }
         
         @Override
-        public boolean generateStructurePiece(@Nonnull ISeedReader world, @Nonnull StructureManager structures, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull MutableBoundingBox box, @Nonnull ChunkPos chunk, @Nonnull BlockPos pos) {
-            this.templatePosition = AlfheimWorldGen.highestFreeBlock(world, this.templatePosition, AlfheimWorldGen::passReplaceableAndLeaves).down(8);
-            return super.generateStructurePiece(world, structures, generator, rand, box, chunk, pos);
+        public boolean postProcess(@Nonnull WorldGenLevel level, @Nonnull StructureFeatureManager structures, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BoundingBox box, @Nonnull ChunkPos chunk, @Nonnull BlockPos pos) {
+            this.templatePosition = AlfheimWorldGen.highestFreeBlock(level, this.templatePosition, AlfheimWorldGen::passReplaceableAndLeaves).below(8);
+            return super.postProcess(level, structures, generator, rand, box, chunk, pos);
         }
     }
 }

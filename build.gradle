@@ -1,36 +1,24 @@
 buildscript {
-    apply from: 'https://raw.githubusercontent.com/noeppi-noeppi/ModUtils/master/buildscript.gradle', to: buildscript
+    apply from: 'https://noeppi-noeppi.github.io/ModUtils/v3/buildscript.gradle', to: buildscript
 }
 
-apply from: 'https://raw.githubusercontent.com/noeppi-noeppi/ModUtils/master/mod.gradle'
+apply from: 'https://noeppi-noeppi.github.io/ModUtils/v3/mod.gradle'
 
 repositories {
     maven { url = 'https://dvs1.progwml6.com/files/maven/' }
-    //maven { url = 'https://modmaven.k-4u.nl' }
     maven { url = 'https://maven.blamejared.com/' }
     maven { url = 'https://maven.theillusivec4.top/' }
     maven { url = 'https://maven.melanx.de/' }
-    maven { url = 'https://www.cursemaven.com' }
-    maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 }
 
 dependencies {
-    annotationProcessor fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.16.3-1.0.76')
+    annotationProcessor fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.18.1-3.1.13')
+    
+    implementation fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.18.1-3.1.13')
+    implementation fg.deobf('vazkii.botania:Botania:1.18.1-428')
+    implementation fg.deobf('vazkii.patchouli:Patchouli:1.18.1-65')
+    implementation fg.deobf('top.theillusivec4.curios:curios-forge:1.18.1-5.0.6.1')
 
-    compileOnly fg.deobf('mezz.jei:jei-1.16.4:7.6.0.58:api')
-    compile fg.deobf('vazkii.botania:Botania:1.16.5-419')
-    compile fg.deobf('vazkii.patchouli:Patchouli:1.16.4-51')
-    compile fg.deobf('top.theillusivec4.curios:curios-forge:1.16.4-4.0.3.5')
-    compile fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.16.3-1.0.76')
-    
-    runtimeOnly fg.deobf('curse.maven:ex-nihilo-sequentia-400012:3227779')
-    runtimeOnly fg.deobf('curse.maven:ex-compressum-241967:3226248')
-    runtimeOnly fg.deobf('curse.maven:inspirations-284007:3414517')
-    runtimeOnly fg.deobf('curse.maven:mantle-74924:3389377')
-    runtimeOnly fg.deobf('curse.maven:feywild-484377:3455423')
-    runtimeOnly fg.deobf("software.bernie.geckolib:geckolib-forge-1.16.5:3.0.41")
-    runtimeOnly fg.deobf('mezz.jei:jei-1.16.4:7.6.0.58')
-    
-//    runtimeOnly fg.deobf('curse.maven:endergetic-291509:3154938')
-//    runtimeOnly fg.deobf('curse.maven:abnormals-core-382216:3233486')
+    compileOnly fg.deobf('mezz.jei:jei-1.18.1:9.2.1.69:api')
+    runtimeOnly fg.deobf('mezz.jei:jei-1.18.1:9.2.1.69')
 }

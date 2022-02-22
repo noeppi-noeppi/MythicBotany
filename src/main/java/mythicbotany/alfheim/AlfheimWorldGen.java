@@ -1,40 +1,40 @@
 package mythicbotany.alfheim;
 
-import io.github.noeppi_noeppi.libx.annotation.RegisterClass;
+import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
 import mythicbotany.ModBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CropsBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
 
 import java.util.function.Predicate;
 
 @RegisterClass(priority = 1) // This should to go before the biomes
 public class AlfheimWorldGen {
 
-    public static final Feature<NoFeatureConfig> motifFlowers = new MotifFlowerFeature();
-    public static final Feature<NoFeatureConfig> manaCrystals = new ManaCrystalFeature();
-    public static final Feature<NoFeatureConfig> abandonedApothecaries = new AbandonedApothecaryFeature();
-    public static final Feature<NoFeatureConfig> wheatFields = new WheatFeature();
+    public static final Feature<NoneFeatureConfiguration> motifFlowers = new MotifFlowerFeature();
+    public static final Feature<NoneFeatureConfiguration> manaCrystals = new ManaCrystalFeature();
+    public static final Feature<NoneFeatureConfiguration> abandonedApothecaries = new AbandonedApothecaryFeature();
+    public static final Feature<NoneFeatureConfiguration> wheatFields = new WheatFeature();
     
-    public static final Structure<NoFeatureConfig> andwariCave = new AndwariCave();
+    public static final StructureFeature<NoneFeatureConfiguration> andwariCave = new AndwariCave();
     
-    public static BlockPos highestFreeBlock(ISeedReader world, BlockPos pos, Predicate<BlockState> passthrough) {
-        BlockPos.Mutable mpos = new BlockPos.Mutable(pos.getX(), world.getHeight() - 1, pos.getZ());
-        while (mpos.getY() > 0 && world.isAirBlock(mpos) && passthrough.test(world.getBlockState(mpos)))
+    public static BlockPos highestFreeBlock(WorldGenLevel level, BlockPos pos, Predicate<BlockState> passthrough) {
+        BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos(pos.getX(), level.getMaxBuildHeight() - 1, pos.getZ());
+        while (mpos.getY() > 0 && level.isEmptyBlock(mpos) && passthrough.test(level.getBlockState(mpos)))
             mpos.move(0, -1, 0);
-        return mpos.toImmutable().up();
+        return mpos.immutable().above();
     }
 
-    public static BlockPos lowestFreeBlock(ISeedReader world, BlockPos pos, Predicate<BlockState> passthrough) {
-        BlockPos.Mutable mpos = new BlockPos.Mutable(pos.getX(), 0, pos.getZ());
-        while (mpos.getY() < world.getHeight() - 1 && (!world.isAirBlock(mpos) || !passthrough.test(world.getBlockState(mpos))))
+    public static BlockPos lowestFreeBlock(WorldGenLevel level, BlockPos pos, Predicate<BlockState> passthrough) {
+        BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos(pos.getX(), 0, pos.getZ());
+        while (mpos.getY() < level.getMaxBuildHeight() - 1 && (!level.isEmptyBlock(mpos) || !passthrough.test(level.getBlockState(mpos))))
             mpos.move(0, 1, 0);
-        return mpos.toImmutable();
+        return mpos.immutable();
     }
 
     public static boolean passReplaceableAndLeaves(BlockState state) {
@@ -46,6 +46,6 @@ public class AlfheimWorldGen {
     }
     
     public static boolean passReplaceableNoCrops(BlockState state) {
-        return ((state.getMaterial().isReplaceable() && state.getMaterial() != Material.WATER && state.getMaterial() != Material.LAVA)) && !(state.getBlock() instanceof CropsBlock);
+        return ((state.getMaterial().isReplaceable() && state.getMaterial() != Material.WATER && state.getMaterial() != Material.LAVA)) && !(state.getBlock() instanceof CropBlock);
     }
 }

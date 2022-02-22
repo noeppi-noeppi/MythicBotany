@@ -1,14 +1,14 @@
 package mythicbotany.jei;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nonnull;
@@ -45,37 +45,37 @@ public class LittleBoxItemRenderer implements IIngredientRenderer<ItemStack> {
         this.consume = (x == 0 && z == 0) || consume;
     }
 
-    public void render(@Nonnull MatrixStack matrixStack, int x, int y, @Nullable ItemStack stack) {
+    public void render(@Nonnull PoseStack poseStack, int x, int y, @Nullable ItemStack stack) {
         if (parent != null) {
-            parent.render(matrixStack, x - 2, y - 2, stack);
+            parent.render(poseStack, x - 2, y - 2, stack);
         }
     }
 
     @Nonnull
-    public List<ITextComponent> getTooltip(@Nonnull ItemStack stack, @Nonnull ITooltipFlag flag) {
-        List<ITextComponent> tooltip = new ArrayList<>();
+    public List<Component> getTooltip(@Nonnull ItemStack stack, @Nonnull TooltipFlag flag) {
+        List<Component> tooltip = new ArrayList<>();
         if (parent != null) {
             tooltip.addAll(parent.getTooltip(stack, flag));
         }
         if (x != 0 || z != 0) {
-            tooltip.add(new TranslationTextComponent("tooltip.mythicbotany.rune_offset", x, z).mergeStyle(TextFormatting.GOLD));
+            tooltip.add(new TranslatableComponent("tooltip.mythicbotany.rune_offset", x, z).withStyle(ChatFormatting.GOLD));
         } else {
-            tooltip.add(new TranslationTextComponent("tooltip.mythicbotany.rune_master").mergeStyle(TextFormatting.GOLD));
+            tooltip.add(new TranslatableComponent("tooltip.mythicbotany.rune_master").withStyle(ChatFormatting.GOLD));
         }
         if (consume) {
-            tooltip.add(new TranslationTextComponent("tooltip.mythicbotany.rune_consume").mergeStyle(TextFormatting.DARK_RED));
+            tooltip.add(new TranslatableComponent("tooltip.mythicbotany.rune_consume").withStyle(ChatFormatting.DARK_RED));
         } else {
-            tooltip.add(new TranslationTextComponent("tooltip.mythicbotany.rune_keep").mergeStyle(TextFormatting.DARK_GREEN));
+            tooltip.add(new TranslatableComponent("tooltip.mythicbotany.rune_keep").withStyle(ChatFormatting.DARK_GREEN));
         }
         return tooltip;
     }
 
     @Nonnull
-    public FontRenderer getFontRenderer(@Nonnull Minecraft mc, @Nonnull ItemStack stack) {
+    public Font getFontRenderer(@Nonnull Minecraft mc, @Nonnull ItemStack stack) {
         if (parent != null) {
             return parent.getFontRenderer(mc, stack);
         } else {
-            return Minecraft.getInstance().fontRenderer;
+            return Minecraft.getInstance().font;
         }
     }
 }

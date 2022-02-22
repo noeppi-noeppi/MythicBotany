@@ -1,23 +1,23 @@
 package mythicbotany;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
 
 public class MythicPlayerData {
     
-    public static CompoundNBT getData(PlayerEntity player) {
-        if (player.getPersistentData().contains("MythicBotanyPlayerInfo", Constants.NBT.TAG_COMPOUND)) {
+    public static CompoundTag getData(Player player) {
+        if (player.getPersistentData().contains("MythicBotanyPlayerInfo", Tag.TAG_COMPOUND)) {
             return player.getPersistentData().getCompound("MythicBotanyPlayerInfo");
         } else {
-            CompoundNBT nbt = new CompoundNBT();
+            CompoundTag nbt = new CompoundTag();
             player.getPersistentData().put("MythicBotanyPlayerInfo", nbt);
             return nbt;
         }
     }
     
-    public static void copy(PlayerEntity source, PlayerEntity target) {
-        if (source.getPersistentData().contains("MythicBotanyPlayerInfo", Constants.NBT.TAG_COMPOUND)) {
+    public static void copy(Player source, Player target) {
+        if (source.getPersistentData().contains("MythicBotanyPlayerInfo", Tag.TAG_COMPOUND)) {
             target.getPersistentData().put("MythicBotanyPlayerInfo", source.getPersistentData().getCompound("MythicBotanyPlayerInfo").copy());
         }
     }

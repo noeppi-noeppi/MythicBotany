@@ -1,5 +1,6 @@
 package mythicbotany.data;
 
+import io.github.noeppi_noeppi.libx.annotation.data.Datagen;
 import io.github.noeppi_noeppi.libx.data.provider.BlockLootProviderBase;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import mythicbotany.ModBlocks;
@@ -7,6 +8,7 @@ import mythicbotany.ModItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.Tags;
 
+@Datagen
 public class BlockLootProvider extends BlockLootProviderBase {
 
 	public BlockLootProvider(ModX mod, DataGenerator generator) {

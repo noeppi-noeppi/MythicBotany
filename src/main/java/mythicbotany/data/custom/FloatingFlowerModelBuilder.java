@@ -3,7 +3,7 @@ package mythicbotany.data.custom;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonObject;
 import mythicbotany.MythicBotany;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;

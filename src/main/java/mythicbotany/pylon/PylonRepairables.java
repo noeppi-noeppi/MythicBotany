@@ -1,8 +1,8 @@
 package mythicbotany.pylon;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -63,18 +63,18 @@ public class PylonRepairables {
 
         @Override
         public int getRepairManaPerTick(ItemStack stack) {
-            return EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0 ? MANA_PER_DURABILITY * DURABILITY_PER_TICK : 0;
+            return EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, stack) > 0 ? MANA_PER_DURABILITY * DURABILITY_PER_TICK : 0;
         }
 
         @Override
         public boolean canRepairPylon(ItemStack stack) {
-            return EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0 && stack.getDamage() > 0;
+            return EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, stack) > 0 && stack.getDamageValue() > 0;
         }
 
         @Override
         public ItemStack repairOneTick(ItemStack stack) {
-            if (EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0 && stack.getDamage() > 0) {
-                stack.setDamage(stack.getDamage() - DURABILITY_PER_TICK);
+            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, stack) > 0 && stack.getDamageValue() > 0) {
+                stack.setDamageValue(stack.getDamageValue() - DURABILITY_PER_TICK);
             }
             return stack;
         }

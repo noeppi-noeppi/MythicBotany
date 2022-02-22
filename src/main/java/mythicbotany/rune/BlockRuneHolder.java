@@ -1,38 +1,36 @@
 package mythicbotany.rune;
 
+import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
 import io.github.noeppi_noeppi.libx.mod.ModX;
-import io.github.noeppi_noeppi.libx.mod.registration.BlockTE;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.TorchBlock;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
-public class BlockRuneHolder<T extends TileRuneHolder> extends BlockTE<T> {
+public class BlockRuneHolder<T extends TileRuneHolder> extends BlockBE<T> {
 
-    public static VoxelShape SHAPE = VoxelShapes.or(
-            makeCuboidShape(6.5, 1, 6.5, 9.5, 3, 9.5),
-            makeCuboidShape(5, 0, 5, 11, 1, 11)
+    public static VoxelShape SHAPE = Shapes.or(
+            box(6.5, 1, 6.5, 9.5, 3, 9.5),
+            box(5, 0, 5, 11, 1, 11)
     );
     
     public BlockRuneHolder(ModX mod, Class<T> tileClass, Properties properties) {
@@ -45,67 +43,67 @@ public class BlockRuneHolder<T extends TileRuneHolder> extends BlockTE<T> {
     
     @Override
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        ClientRegistry.bindTileEntityRenderer(getTileType(), RenderRuneHolder::new);
+        BlockEntityRenderers.register(getBlockEntityType(), mgr -> new RenderRuneHolder());
     }
 
     @Nonnull
     @Override
     @SuppressWarnings("deprecation")
-    public ActionResultType onBlockActivated(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand hand, @Nonnull BlockRayTraceResult hit) {
-        TileRuneHolder tile = getTile(world, pos);
+    public InteractionResult use(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult hit) {
+        TileRuneHolder tile = getBlockEntity(level, pos);
         if (!tile.getInventory().getStackInSlot(0).isEmpty()) {
-            if (!world.isRemote) {
-                ItemStack held = player.getHeldItem(hand);
+            if (!level.isClientSide) {
+                ItemStack held = player.getItemInHand(hand);
                 ItemStack stack = tile.getInventory().getStackInSlot(0);
                 if (held.isEmpty()) {
-                    player.setHeldItem(hand, stack.copy());
-                } else if (ItemStack.areItemsEqual(held, stack) && ItemStack.areItemStackTagsEqual(held, stack)
+                    player.setItemInHand(hand, stack.copy());
+                } else if (ItemStack.isSame(held, stack) && ItemStack.tagMatches(held, stack)
                         && held.getCount() + stack.getCount() <= held.getMaxStackSize()) {
                     held.grow(stack.getCount());
-                    player.setHeldItem(hand, held);
+                    player.setItemInHand(hand, held);
                 } else {
-                    player.inventory.addItemStackToInventory(tile.getInventory().getStackInSlot(0).copy());
+                    player.getInventory().add(tile.getInventory().getStackInSlot(0).copy());
                 }
                 tile.getInventory().setStackInSlot(0, ItemStack.EMPTY);
             }
-            return ActionResultType.successOrConsume(world.isRemote);
-        } else if (tile.getInventory().isItemValid(0, player.getHeldItem(hand)) && player.getHeldItem(hand).getCount() >= 1) {
-            if (!world.isRemote) {
-                ItemStack held = player.getHeldItem(hand);
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        } else if (tile.getInventory().isItemValid(0, player.getItemInHand(hand)) && player.getItemInHand(hand).getCount() >= 1) {
+            if (!level.isClientSide) {
+                ItemStack held = player.getItemInHand(hand);
                 ItemStack stack = held.split(1);
                 tile.getInventory().setStackInSlot(0, stack);
-                player.setHeldItem(hand, held);
+                player.setItemInHand(hand, held);
             }
-            return ActionResultType.successOrConsume(world.isRemote);
+            return InteractionResult.sidedSuccess(level.isClientSide);
         } else {
-            return super.onBlockActivated(state, world, pos, player, hand, hit);
+            return super.use(state, level, pos, player, hand, hit);
         }
     }
     
     @Nonnull
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(@Nonnull BlockState state, @Nonnull IBlockReader world, @Nonnull BlockPos pos, @Nonnull ISelectionContext ctx) {
+    public VoxelShape getShape(@Nonnull BlockState state, @Nonnull BlockGetter level, @Nonnull BlockPos pos, @Nonnull CollisionContext context) {
         return SHAPE;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean isValidPosition(@Nonnull BlockState state, @Nonnull IWorldReader world, @Nonnull BlockPos pos) {
-        return hasEnoughSolidSide(world, pos.down(), Direction.UP);
+    public boolean canSurvive(@Nonnull BlockState state, @Nonnull LevelReader level, @Nonnull BlockPos pos) {
+        return canSupportCenter(level, pos.below(), Direction.UP);
     }
     
     @Nonnull
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updatePostPlacement(@Nonnull BlockState state, @Nonnull Direction facing, @Nonnull BlockState facingState, @Nonnull IWorld world, @Nonnull BlockPos currentPos, @Nonnull BlockPos facingPos) {
-        return facing == Direction.DOWN && !this.isValidPosition(state, world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+    public BlockState updateShape(@Nonnull BlockState state, @Nonnull Direction facing, @Nonnull BlockState facingState, @Nonnull LevelAccessor level, @Nonnull BlockPos currentPos, @Nonnull BlockPos facingPos) {
+        return facing == Direction.DOWN && !this.canSurvive(state, level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
     
     @Nonnull
     @Override
     @SuppressWarnings("deprecation")
-    public PushReaction getPushReaction(@Nonnull BlockState state) {
+    public PushReaction getPistonPushReaction(@Nonnull BlockState state) {
         return PushReaction.DESTROY;
     }
 }

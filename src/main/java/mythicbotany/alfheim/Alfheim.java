@@ -1,16 +1,16 @@
 package mythicbotany.alfheim;
 
-import io.github.noeppi_noeppi.libx.annotation.NoReg;
-import io.github.noeppi_noeppi.libx.annotation.RegisterClass;
+import io.github.noeppi_noeppi.libx.annotation.registration.NoReg;
+import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
 import mythicbotany.MythicBotany;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.Features;
-import net.minecraft.world.gen.settings.StructureSeparationSettings;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.data.worldgen.Features;
+import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
 
 import static mythicbotany.alfheim.AlfheimBiomes.AlfBiomeType.GOLDEN;
 import static mythicbotany.alfheim.AlfheimBiomes.AlfBiomeType.GRASSY;
@@ -21,11 +21,11 @@ import static net.minecraft.world.biome.BiomeMaker.getSkyColorWithTemperatureMod
 public class Alfheim {
     
     @NoReg
-    public static final RegistryKey<World> DIMENSION = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(MythicBotany.getInstance().modid, "alfheim"));
+    public static final ResourceKey<Level> DIMENSION = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(MythicBotany.getInstance().modid, "alfheim"));
 
     public static void register() {
-        Registry.register(Registry.CHUNK_GENERATOR_CODEC, new ResourceLocation(MythicBotany.getInstance().modid, "alfheim_generator"), AlfheimChunkGenerator.CODEC);
-        Registry.register(Registry.BIOME_PROVIDER_CODEC, new ResourceLocation(MythicBotany.getInstance().modid, "alfheim_biomes"), AlfheimBiomeProvider.CODEC);
+        Registry.register(Registry.CHUNK_GENERATOR, new ResourceLocation(MythicBotany.getInstance().modid, "alfheim_generator"), AlfheimChunkGenerator.CODEC);
+        Registry.register(Registry.BIOME_SOURCE, new ResourceLocation(MythicBotany.getInstance().modid, "alfheim_biomes"), AlfheimBiomeProvider.CODEC);
     }
     
     public static void setupBiomes() {
@@ -35,61 +35,61 @@ public class Alfheim {
         AlfheimBiomeManager.addCommonBiome(alfheimLakes.getRegistryName());
         AlfheimBiomeManager.addRareBiome(goldenFields.getRegistryName());
         
-        AlfheimBiomeManager.addStructure(AlfheimWorldGen.andwariCave, new StructureSeparationSettings(28, 8, 438));
+        AlfheimBiomeManager.addStructure(AlfheimWorldGen.andwariCave, new StructureFeatureConfiguration(28, 8, 438));
     }
     
     public static final Biome alfheimPlains = alfheimBiome()
             .depth(0.025f)
             .scale(0.05f)
-            .category(Biome.Category.PLAINS)
-            .withMobSpawnSettings(
+            .biomeCategory(Biome.BiomeCategory.PLAINS)
+            .mobSpawnSettings(
                     alfheimMobs()
                             .build()
-            ).setEffects(
+            ).specialEffects(
                     alfheimAmbience()
                             .build()
-            ).withGenerationSettings(
+            ).generationSettings(
                     alfheimGen(GRASSY)
-                            .withFeature(GenerationStage.Decoration.LAKES, Features.LAKE_WATER)
-                            .withFeature(GenerationStage.Decoration.LAKES, Features.SPRING_WATER)
-                            .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, AlfheimFeatures.TREES_DREAMWOOD_LOOSE)
-                            .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, AlfheimFeatures.MOTIF_FLOWERS)
-                            .withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, AlfheimFeatures.ABANDONED_APOTHECARIES)
+                            .addFeature(GenerationStep.Decoration.LAKES, Features.LAKE_WATER)
+                            .addFeature(GenerationStep.Decoration.LAKES, Features.SPRING_WATER)
+                            .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AlfheimFeatures.TREES_DREAMWOOD_LOOSE)
+                            .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AlfheimFeatures.MOTIF_FLOWERS)
+                            .addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, AlfheimFeatures.ABANDONED_APOTHECARIES)
                             .build()
             ).build();
             
     public static final Biome alfheimHills = alfheimBiome()
             .depth(0.5f)
             .scale(0.2f)
-            .category(Biome.Category.PLAINS)
-            .withMobSpawnSettings(
+            .biomeCategory(Biome.BiomeCategory.PLAINS)
+            .mobSpawnSettings(
                     alfheimMobs()
                             .build()
-            ).setEffects(
+            ).specialEffects(
                     alfheimAmbience()
                             .build()
-            ).withGenerationSettings(
+            ).generationSettings(
                     alfheimGen(GRASSY)
-                            .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, AlfheimFeatures.TREES_DREAMWOOD_LOOSE)
-                            .withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, AlfheimFeatures.MANA_CRYSTALS)
-                            .withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, AlfheimFeatures.ABANDONED_APOTHECARIES)
+                            .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AlfheimFeatures.TREES_DREAMWOOD_LOOSE)
+                            .addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, AlfheimFeatures.MANA_CRYSTALS)
+                            .addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, AlfheimFeatures.ABANDONED_APOTHECARIES)
                             .build()
             ).build();
     
     public static final Biome dreamwoodForest = alfheimBiome()
             .depth(0.1f)
             .scale(0.05f)
-            .category(Biome.Category.FOREST)
-            .withMobSpawnSettings(
+            .biomeCategory(Biome.BiomeCategory.FOREST)
+            .mobSpawnSettings(
                     alfheimMobs()
                             .build()
-            ).setEffects(
+            ).specialEffects(
                     alfheimAmbience()
                             .build()
-            ).withGenerationSettings(
+            ).generationSettings(
                     alfheimGen(GRASSY)
-                            .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, AlfheimFeatures.TREES_DREAMWOOD_DENSE)
-                            .withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, AlfheimFeatures.ABANDONED_APOTHECARIES)
+                            .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AlfheimFeatures.TREES_DREAMWOOD_DENSE)
+                            .addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, AlfheimFeatures.ABANDONED_APOTHECARIES)
                             .build()
             ).build();
     
@@ -98,21 +98,21 @@ public class Alfheim {
             .scale(0.07f)
             .temperature(0.8f)
             .downfall(0.4f)
-            .category(Biome.Category.PLAINS)
-            .withMobSpawnSettings(
+            .biomeCategory(Biome.BiomeCategory.PLAINS)
+            .mobSpawnSettings(
                     alfheimMobs()
                             .build()
-            ).setEffects(
+            ).specialEffects(
                     alfheimAmbience()
-                            .setWaterColor(4566514)
-                            .setWaterFogColor(267827)
-                            .setFogColor(12638463)
-                            .withSkyColor(getSkyColorWithTemperatureModifier(0.8f))
+                            .waterColor(4566514)
+                            .waterFogColor(267827)
+                            .fogColor(12638463)
+                            .skyColor(calculateSkyColor(0.8f))
                             .build()
-            ).withGenerationSettings(
+            ).generationSettings(
                     alfheimGen(GOLDEN)
-                            .withStructure(AlfheimFeatures.ANDWARI_CAVE)
-                            .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.MORE_GOLD_ORE)
+                            .addStructureStart(AlfheimFeatures.ANDWARI_CAVE)
+                            .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AlfheimFeatures.MORE_GOLD_ORE)
                             .build()
             ).build();
 
@@ -121,18 +121,18 @@ public class Alfheim {
             .scale(0.1f)
             .temperature(0.8f)
             .downfall(0.7f)
-            .category(Biome.Category.OCEAN)
-            .withMobSpawnSettings(
+            .biomeCategory(Biome.BiomeCategory.OCEAN)
+            .mobSpawnSettings(
                     alfheimMobs()
                             .build()
-            ).setEffects(
+            ).specialEffects(
                     alfheimAmbience()
-                            .setWaterColor(4566514)
-                            .setWaterFogColor(267827)
-                            .setFogColor(12638463)
-                            .withSkyColor(getSkyColorWithTemperatureModifier(0.8f))
+                            .waterColor(4566514)
+                            .waterFogColor(267827)
+                            .fogColor(12638463)
+                            .skyColor(calculateSkyColor(0.8f))
                             .build()
-            ).withGenerationSettings(
+            ).generationSettings(
                     alfheimGen(GOLDEN)
                             
                             .build()

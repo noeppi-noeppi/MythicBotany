@@ -1,23 +1,23 @@
 package mythicbotany.infuser;
 
 import com.google.common.base.Predicates;
-import io.github.noeppi_noeppi.libx.mod.registration.TileEntityBase;
+import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
+import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
 import mythicbotany.MythicBotany;
 import mythicbotany.misc.SolidifiedMana;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import org.apache.commons.lang3.tuple.Pair;
+import vazkii.botania.api.mana.spark.IManaSpark;
 import vazkii.botania.api.mana.spark.ISparkAttachable;
-import vazkii.botania.api.mana.spark.ISparkEntity;
 import vazkii.botania.common.block.ModBlocks;
 
 import javax.annotation.Nonnull;
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TileManaInfuser extends TileEntityBase implements ISparkAttachable, ITickableTileEntity {
+public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable, TickableBlock {
 
     private int mana;
     private boolean active;
@@ -39,23 +39,23 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
     private transient int fromColor = -1;
     private transient int toColor = -1;
 
-    public TileManaInfuser(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn);
+    public TileManaInfuser(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
     @Override
     public void tick() {
         //noinspection ConstantConditions
-        if (world.isRemote || !hasValidPlatform())
+        if (level.isClientSide || !hasValidPlatform())
             return;
         if (active && recipe != null && mana > 0) {
-            MythicBotany.getNetwork().spawnInfusionParticles(world, pos, mana / (float) recipe.getManaUsage(), recipe.fromColor(), recipe.toColor());
+            MythicBotany.getNetwork().spawnInfusionParticles(level, worldPosition, mana / (float) recipe.getManaUsage(), recipe.fromColor(), recipe.toColor());
         }
         List<ItemEntity> items = getItems();
         List<ItemStack> stacks = items.stream().map(ItemEntity::getItem).collect(Collectors.toList());
         if (active && recipe != null && output != null) {
             if (recipe.result(stacks).isEmpty()) {
-                SolidifiedMana.dropMana(world, pos, mana);
+                SolidifiedMana.dropMana(level, worldPosition, mana);
                 active = false;
                 recipe = null;
                 fromColor = -1;
@@ -63,8 +63,8 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
                 mana = 0;
                 maxMana = 0;
                 output = null;
-                world.updateComparatorOutputLevel(this.pos, this.getBlockState().getBlock());
-                markDirty();
+                level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
+                setChanged();
             } else if (mana >= recipe.getManaUsage()) {
                 active = false;
                 recipe = null;
@@ -72,17 +72,17 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
                 toColor = -1;
                 mana = 0;
                 maxMana = 0;
-                world.updateComparatorOutputLevel(this.pos, this.getBlockState().getBlock());
-                items.forEach(Entity::remove);
-                ItemEntity outItem = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, output);
-                world.addEntity(outItem);
+                level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
+                items.forEach(ie -> ie.remove(Entity.RemovalReason.DISCARDED));
+                ItemEntity outItem = new ItemEntity(level, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, output);
+                level.addFreshEntity(outItem);
                 output = null;
-                markDirty();
+                setChanged();
             } else {
                 items.forEach(ie -> MythicBotany.getNetwork().setItemMagnetImmune(ie));
             }
         } else {
-            Pair<IInfuserRecipe, ItemStack> match = InfuserRecipe.getOutput(this.world, stacks);
+            Pair<IInfuserRecipe, ItemStack> match = InfuserRecipe.getOutput(this.level, stacks);
             if (match != null) {
                 if (!active) {
                     active = true;
@@ -90,17 +90,17 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
                     mana = 0;
                 } else {
                     recipe = match.getLeft();
-                    mana = MathHelper.clamp(mana, 0, recipe.getManaUsage());
+                    mana = Mth.clamp(mana, 0, recipe.getManaUsage());
                 }
                 maxMana = recipe.getManaUsage();
                 fromColor = recipe.fromColor();
                 toColor = recipe.toColor();
                 output = match.getRight();
-                world.updateComparatorOutputLevel(this.pos, this.getBlockState().getBlock());
+                level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
                 items.forEach(ie -> MythicBotany.getNetwork().setItemMagnetImmune(ie));
-                markDirty();
+                setChanged();
             } else if (active || recipe != null || output != null) {
-                SolidifiedMana.dropMana(world, pos, mana);
+                SolidifiedMana.dropMana(level, worldPosition, mana);
                 active = false;
                 recipe = null;
                 fromColor = -1;
@@ -108,39 +108,34 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
                 mana = 0;
                 maxMana = 0;
                 output = null;
-                world.updateComparatorOutputLevel(this.pos, this.getBlockState().getBlock());
-                markDirty();
+                level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
+                setChanged();
             }
         }
     }
 
     private List<ItemEntity> getItems() {
         //noinspection ConstantConditions
-        return this.world.getEntitiesWithinAABB(ItemEntity.class, new AxisAlignedBB(this.pos, this.pos.add(1, 1, 1)));
+        return this.level.getEntitiesOfClass(ItemEntity.class, new AABB(this.worldPosition, this.worldPosition.offset(1, 1, 1)));
     }
 
     private boolean hasValidPlatform() {
-        BlockPos center = pos.down();
+        BlockPos center = worldPosition.below();
         //noinspection ConstantConditions
-        return world.getBlockState(center).getBlock() == ModBlocks.shimmerrock
-                && world.getBlockState(center.north().west()).getBlock() == ModBlocks.shimmerrock
-                && world.getBlockState(center.north().east()).getBlock() == ModBlocks.shimmerrock
-                && world.getBlockState(center.south().west()).getBlock() == ModBlocks.shimmerrock
-                && world.getBlockState(center.south().east()).getBlock() == ModBlocks.shimmerrock
-                && world.getBlockState(center.north()).getBlock() == Blocks.GOLD_BLOCK
-                && world.getBlockState(center.east()).getBlock() == Blocks.GOLD_BLOCK
-                && world.getBlockState(center.south()).getBlock() == Blocks.GOLD_BLOCK
-                && world.getBlockState(center.west()).getBlock() == Blocks.GOLD_BLOCK;
+        return level.getBlockState(center).getBlock() == ModBlocks.shimmerrock
+                && level.getBlockState(center.north().west()).getBlock() == ModBlocks.shimmerrock
+                && level.getBlockState(center.north().east()).getBlock() == ModBlocks.shimmerrock
+                && level.getBlockState(center.south().west()).getBlock() == ModBlocks.shimmerrock
+                && level.getBlockState(center.south().east()).getBlock() == ModBlocks.shimmerrock
+                && level.getBlockState(center.north()).getBlock() == Blocks.GOLD_BLOCK
+                && level.getBlockState(center.east()).getBlock() == Blocks.GOLD_BLOCK
+                && level.getBlockState(center.south()).getBlock() == Blocks.GOLD_BLOCK
+                && level.getBlockState(center.west()).getBlock() == Blocks.GOLD_BLOCK;
     }
 
     @Override
     public boolean canAttachSpark(ItemStack itemStack) {
         return true;
-    }
-
-    @Override
-    public void attachSpark(ISparkEntity iSparkEntity) {
-
     }
 
     @Override
@@ -153,12 +148,12 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
     }
 
     @Override
-    public ISparkEntity getAttachedSpark() {
+    public IManaSpark getAttachedSpark() {
         @SuppressWarnings("ConstantConditions")
-        List<Entity> sparks = this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(this.pos.up(), this.pos.up().add(1, 1, 1)), Predicates.instanceOf(ISparkEntity.class));
+        List<Entity> sparks = this.level.getEntitiesOfClass(Entity.class, new AABB(this.worldPosition.above(), this.worldPosition.above().offset(1, 1, 1)), Predicates.instanceOf(IManaSpark.class));
         if (sparks.size() == 1) {
             Entity e = sparks.get(0);
-            return (ISparkEntity) e;
+            return (IManaSpark) e;
         } else {
             return null;
         }
@@ -181,10 +176,10 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
     @Override
     public void receiveMana(int i) {
         if (recipe != null) {
-            mana = MathHelper.clamp(mana + i, 0, recipe.getManaUsage());
+            mana = Mth.clamp(mana + i, 0, recipe.getManaUsage());
             //noinspection ConstantConditions
-            world.updateComparatorOutputLevel(this.pos, this.getBlockState().getBlock());
-            markDirty();
+            level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
+            setChanged();
         }
     }
 
@@ -199,35 +194,34 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
     }
 
     @Override
-    public void read(@Nonnull BlockState stateIn, @Nonnull CompoundNBT compound) {
-        super.read(stateIn, compound);
-        mana = compound.getInt("mana");
-        if (compound.contains("output")) {
-            output = ItemStack.read(compound.getCompound("output"));
+    public void load(@Nonnull CompoundTag nbt) {
+        super.load(nbt);
+        mana = nbt.getInt("mana");
+        if (nbt.contains("output")) {
+            output = ItemStack.of(nbt.getCompound("output"));
         } else {
             output = null;
         }
-        active = compound.getBoolean("active");
+        active = nbt.getBoolean("active");
     }
 
-    @Nonnull
     @Override
-    public CompoundNBT write(@Nonnull CompoundNBT compound) {
-        compound.putInt("mana", mana);
+    public void saveAdditional(@Nonnull CompoundTag nbt) {
+        super.saveAdditional(nbt);
+        nbt.putInt("mana", mana);
         if (output != null) {
-            compound.put("output", output.write(new CompoundNBT()));
+            nbt.put("output", output.save(new CompoundTag()));
         }
-        compound.putBoolean("active", active);
-        return super.write(compound);
+        nbt.putBoolean("active", active);
     }
 
     @Nonnull
     @Override
-    public CompoundNBT getUpdateTag() {
+    public CompoundTag getUpdateTag() {
         //noinspection ConstantConditions
-        if (world.isRemote)
+        if (level.isClientSide)
             return super.getUpdateTag();
-        CompoundNBT compound = super.getUpdateTag();
+        CompoundTag compound = super.getUpdateTag();
         compound.putInt("mana", mana);
         compound.putInt("max", maxMana);
         if (recipe != null) {
@@ -241,9 +235,9 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
     }
 
     @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+    public void handleUpdateTag(CompoundTag tag) {
         //noinspection ConstantConditions
-        if (!world.isRemote)
+        if (!level.isClientSide)
             return;
         mana = tag.getInt("mana");
         maxMana = tag.getInt("maxMana");
@@ -259,7 +253,7 @@ public class TileManaInfuser extends TileEntityBase implements ISparkAttachable,
         return toColor;
     }
 
-    public double getProgess() {
+    public double getProgress() {
         if (maxMana <= 0) {
             return -1;
         } else {

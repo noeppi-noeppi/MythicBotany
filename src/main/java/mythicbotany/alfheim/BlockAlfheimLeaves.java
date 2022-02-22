@@ -4,22 +4,21 @@ import com.google.common.collect.ImmutableSet;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import mythicbotany.ModBlockTags;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.Item;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.server.level.ServerLevel;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
@@ -32,65 +31,66 @@ public class BlockAlfheimLeaves extends LeavesBlock implements Registerable {
     private final Item item;
 
     public BlockAlfheimLeaves(ModX mod) {
-        this(mod, new net.minecraft.item.Item.Properties());
+        this(mod, new net.minecraft.world.item.Item.Properties());
     }
 
-    public BlockAlfheimLeaves(ModX mod, net.minecraft.item.Item.Properties itemProperties) {
-        super(AbstractBlock.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().harvestTool(ToolType.HOE).sound(SoundType.PLANT).notSolid().setAllowsSpawn((a, b, c, d) -> false).setSuffocates((a, b, c) -> false).setBlocksVision((a, b, c) -> false));
+    public BlockAlfheimLeaves(ModX mod, net.minecraft.world.item.Item.Properties itemProperties) {
+        super(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn((a, b, c, d) -> false).isSuffocating((a, b, c) -> false).isViewBlocking((a, b, c) -> false));
         this.mod = mod;
         if (mod.tab != null) {
-            itemProperties.group(mod.tab);
+            itemProperties.tab(mod.tab);
         }
         this.item = new BlockItem(this, itemProperties);
     }
 
-    public Set<Object> getAdditionalRegisters() {
+    @Override
+    public Set<Object> getAdditionalRegisters(ResourceLocation id) {
         return ImmutableSet.of(this.item);
     }
 
     @Override
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        RenderTypeLookup.setRenderLayer(this, RenderType.getCutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(this, RenderType.cutoutMipped());
     }
 
     @Nonnull
     @Override
-    public BlockState updatePostPlacement(@Nonnull BlockState state, @Nonnull Direction facing, @Nonnull BlockState facingState, @Nonnull IWorld world, @Nonnull BlockPos currentPos, @Nonnull BlockPos facingPos) {
-        int distance = getDistance(facingState) + 1;
-        if (distance != 1 || state.get(DISTANCE) != distance) {
-            world.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
+    public BlockState updateShape(@Nonnull BlockState state, @Nonnull Direction facing, @Nonnull BlockState facingState, @Nonnull LevelAccessor level, @Nonnull BlockPos currentPos, @Nonnull BlockPos facingPos) {
+        int distance = getDistanceAt(facingState) + 1;
+        if (distance != 1 || state.getValue(DISTANCE) != distance) {
+            level.scheduleTick(currentPos, this, 1);
         }
         return state;
     }
 
     @Override
-    public void tick(@Nonnull BlockState state, @Nonnull ServerWorld world, @Nonnull BlockPos pos, @Nonnull Random rand) {
-        world.setBlockState(pos, updateDistance(state, world, pos), 3);
+    public void tick(@Nonnull BlockState state, @Nonnull ServerLevel level, @Nonnull BlockPos pos, @Nonnull Random random) {
+        level.setBlock(pos, updateDistance(state, level, pos), 3);
     }
 
     @Override
-    public BlockState getStateForPlacement(@Nonnull BlockItemUseContext context) {
-        return updateDistance(this.getDefaultState().with(PERSISTENT, true), context.getWorld(), context.getPos());
+    public BlockState getStateForPlacement(@Nonnull BlockPlaceContext context) {
+        return updateDistance(this.defaultBlockState().setValue(PERSISTENT, true), context.getLevel(), context.getClickedPos());
     }
 
-    protected int getDistance(BlockState neighbor) {
+    protected int getDistanceAt(BlockState neighbor) {
         if (ModBlockTags.ALFHEIM_LOGS.contains(neighbor.getBlock())) {
             return 0;
         } else {
-            return neighbor.getBlock() instanceof LeavesBlock ? neighbor.get(DISTANCE) : 7;
+            return neighbor.getBlock() instanceof LeavesBlock ? neighbor.getValue(DISTANCE) : 7;
         }
     }
 
-    protected BlockState updateDistance(BlockState state, IWorld worldIn, BlockPos pos) {
+    protected BlockState updateDistance(BlockState state, LevelAccessor level, BlockPos pos) {
         int distance = 7;
-        BlockPos.Mutable mpos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
         for (Direction dir : Direction.values()) {
-            mpos.setAndMove(pos, dir);
-            distance = Math.min(distance, getDistance(worldIn.getBlockState(mpos)) + 1);
+            mpos.setWithOffset(pos, dir);
+            distance = Math.min(distance, getDistanceAt(level.getBlockState(mpos)) + 1);
             if (distance == 1) {
                 break;
             }
         }
-        return state.with(DISTANCE, distance);
+        return state.setValue(DISTANCE, distance);
     }
 }

@@ -2,12 +2,12 @@ package mythicbotany.alfheim;
 
 import mythicbotany.ModEntities;
 import mythicbotany.config.MythicConfig;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.carver.ConfiguredCarvers;
-import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.data.worldgen.Carvers;
+import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraftforge.common.world.MobSpawnInfoBuilder;
 
 import java.util.function.UnaryOperator;
@@ -19,27 +19,27 @@ public class AlfheimBiomes {
     public static Biome.Builder alfheimBiome() {
         return new Biome.Builder()
                 .temperature(0.9f)
-                .withTemperatureModifier(Biome.TemperatureModifier.NONE)
-                .precipitation(Biome.RainType.RAIN)
+                .temperatureAdjustment(Biome.TemperatureModifier.NONE)
+                .precipitation(Biome.Precipitation.RAIN)
                 .downfall(1);
     }
 
-    public static MobSpawnInfo.Builder alfheimMobs() {
-        MobSpawnInfo.Builder builder = new MobSpawnInfoBuilder(MobSpawnInfo.EMPTY)
-                .withCreatureSpawnProbability(0.4f);
-        DefaultBiomeFeatures.withPassiveMobs(builder);
+    public static MobSpawnSettings.Builder alfheimMobs() {
+        MobSpawnSettings.Builder builder = new MobSpawnInfoBuilder(MobSpawnSettings.EMPTY)
+                .creatureGenerationProbability(0.4f);
+        BiomeDefaultFeatures.farmAnimals(builder);
                 return builder
-                        .withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntities.alfPixie, MythicConfig.spawns.pixies.weight, MythicConfig.spawns.pixies.min, MythicConfig.spawns.pixies.max))
-                        .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.WITCH, MythicConfig.spawns.witch.weight, MythicConfig.spawns.witch.min, MythicConfig.spawns.witch.max))
-                        .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ILLUSIONER, MythicConfig.spawns.illusioner.weight, MythicConfig.spawns.illusioner.min, MythicConfig.spawns.illusioner.max));
+                        .addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(ModEntities.alfPixie, MythicConfig.spawns.pixies.weight, MythicConfig.spawns.pixies.min, MythicConfig.spawns.pixies.max))
+                        .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.WITCH, MythicConfig.spawns.witch.weight, MythicConfig.spawns.witch.min, MythicConfig.spawns.witch.max))
+                        .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ILLUSIONER, MythicConfig.spawns.illusioner.weight, MythicConfig.spawns.illusioner.min, MythicConfig.spawns.illusioner.max));
     }
 
-    public static BiomeAmbience.Builder alfheimAmbience() {
-        return new BiomeAmbience.Builder()
-                .setWaterColor(0x43d5ee)
-                .setWaterFogColor(0x041f33)
-                .setFogColor(0xc0d8ff)
-                .withSkyColor(getSkyColorWithTemperatureModifier(0.9f));
+    public static BiomeSpecialEffects.Builder alfheimAmbience() {
+        return new BiomeSpecialEffects.Builder()
+                .waterColor(0x43d5ee)
+                .waterFogColor(0x041f33)
+                .fogColor(0xc0d8ff)
+                .skyColor(calculateSkyColor(0.9f));
     }
 
     public static BiomeGenerationSettings.Builder alfheimGen(ConfiguredSurfaceBuilder<?> surface) {
@@ -47,7 +47,7 @@ public class AlfheimBiomes {
             
             @Override
             public BiomeGenerationSettings.Builder applySurface(BiomeGenerationSettings.Builder builder) {
-                return builder.withSurfaceBuilder(surface);
+                return builder.surfaceBuilder(surface);
             }
 
             @Override
@@ -66,20 +66,20 @@ public class AlfheimBiomes {
         BiomeGenerationSettings.Builder builder = new BiomeGenerationSettings.Builder();
         builder = type.applySurface(builder);
         builder = builder
-                .withCarver(GenerationStage.Carving.AIR, ConfiguredCarvers.CAVE)
-                .withCarver(GenerationStage.Carving.AIR, ConfiguredCarvers.CANYON);
+                .addCarver(GenerationStep.Carving.AIR, Carvers.CAVE)
+                .addCarver(GenerationStep.Carving.AIR, Carvers.CANYON);
         builder = type.applyCarver(builder);
         builder = builder
-                .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_FOREST_STONE)
-                .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_MOUNTAIN_STONE)
-                .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_FUNGAL_STONE)
-                .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_SWAMP_STONE)
-                .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_DESERT_STONE)
-                .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_TAIGA_STONE)
-                .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_MESA_STONE)
-                .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.ELEMENTIUM_ORE)
-                .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.DRAGONSTONE_ORE)
-                .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, AlfheimFeatures.GOLD_ORE);
+                .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_FOREST_STONE)
+                .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_MOUNTAIN_STONE)
+                .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_FUNGAL_STONE)
+                .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_SWAMP_STONE)
+                .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_DESERT_STONE)
+                .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_TAIGA_STONE)
+                .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AlfheimFeatures.METAMORPHIC_MESA_STONE)
+                .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AlfheimFeatures.ELEMENTIUM_ORE)
+                .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AlfheimFeatures.DRAGONSTONE_ORE)
+                .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AlfheimFeatures.GOLD_ORE);
         builder = type.applyFeature(builder);
         return builder;
     }
@@ -92,16 +92,16 @@ public class AlfheimBiomes {
     
     public enum AlfBiomeType implements AlfBiomeConfig {
         GRASSY(
-                builder -> builder.withSurfaceBuilder(AlfheimFeatures.GRASS_SURFACE),
+                builder -> builder.surfaceBuilder(AlfheimFeatures.GRASS_SURFACE),
                 null,
                 builder -> builder
-                        .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, AlfheimFeatures.ALFHEIM_GRASS)
+                        .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AlfheimFeatures.ALFHEIM_GRASS)
         ),
         GOLDEN(
-                builder -> builder.withSurfaceBuilder(AlfheimFeatures.GOLD_SURFACE),
+                builder -> builder.surfaceBuilder(AlfheimFeatures.GOLD_SURFACE),
                 null,
                 builder -> builder
-                        .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, AlfheimFeatures.WHEAT_FIELDS)
+                        .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AlfheimFeatures.WHEAT_FIELDS)
         );
 
         private final UnaryOperator<BiomeGenerationSettings.Builder> actionSurface;

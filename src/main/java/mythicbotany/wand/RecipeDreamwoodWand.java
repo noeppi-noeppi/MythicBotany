@@ -2,14 +2,14 @@ package mythicbotany.wand;
 
 import com.google.gson.JsonObject;
 import mythicbotany.ModItems;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import vazkii.botania.common.block.decor.BlockModMushroom;
 import vazkii.botania.common.crafting.recipe.TwigWandRecipe;
@@ -20,18 +20,18 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class RecipeDreamwoodWand extends TwigWandRecipe {
-    public static final IRecipeSerializer<RecipeDreamwoodWand> SERIALIZER = new Serializer();
+    public static final RecipeSerializer<RecipeDreamwoodWand> SERIALIZER = new Serializer();
 
     public RecipeDreamwoodWand(ShapedRecipe compose) {
         super(compose);
     }
 
     @Nonnull
-    public ItemStack getCraftingResult(CraftingInventory inv) {
+    public ItemStack assemble(CraftingContainer inv) {
         int first = -1;
 
-        for(int i = 0; i < inv.getSizeInventory(); ++i) {
-            ItemStack stack = inv.getStackInSlot(i);
+        for(int i = 0; i < inv.getContainerSize(); ++i) {
+            ItemStack stack = inv.getItem(i);
             Item item = stack.getItem();
             int colorId;
             if (item instanceof ItemPetal) {
@@ -52,33 +52,33 @@ public class RecipeDreamwoodWand extends TwigWandRecipe {
     }
 
     @Nonnull
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return new ItemStack(ModItems.dreamwoodTwigWand);
     }
 
     @Nonnull
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return SERIALIZER;
     }
 
-    private static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<RecipeDreamwoodWand> {
+    private static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<RecipeDreamwoodWand> {
 
         private Serializer() {
 
         }
 
         @Nonnull
-        public RecipeDreamwoodWand read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
-            return new RecipeDreamwoodWand(CRAFTING_SHAPED.read(recipeId, json));
+        public RecipeDreamwoodWand fromJson(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
+            return new RecipeDreamwoodWand(SHAPED_RECIPE.fromJson(recipeId, json));
         }
 
         @Nullable
-        public RecipeDreamwoodWand read(@Nonnull ResourceLocation recipeId, @Nonnull PacketBuffer buffer) {
-            return new RecipeDreamwoodWand(CRAFTING_SHAPED.read(recipeId, buffer));
+        public RecipeDreamwoodWand fromNetwork(@Nonnull ResourceLocation recipeId, @Nonnull FriendlyByteBuf buffer) {
+            return new RecipeDreamwoodWand(SHAPED_RECIPE.fromNetwork(recipeId, buffer));
         }
 
-        public void write(@Nonnull PacketBuffer buffer, @Nonnull RecipeDreamwoodWand recipe) {
-            TwigWandRecipe.SERIALIZER.write(buffer, recipe);
+        public void toNetwork(@Nonnull FriendlyByteBuf buffer, @Nonnull RecipeDreamwoodWand recipe) {
+            TwigWandRecipe.SERIALIZER.toNetwork(buffer, recipe);
         }
     }
 }

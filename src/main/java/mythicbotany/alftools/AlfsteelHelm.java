@@ -2,24 +2,24 @@ package mythicbotany.alftools;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
+import io.github.noeppi_noeppi.libx.util.LazyValue;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.pylon.PylonRepairable;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,37 +32,35 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.UUID;
 
-// Exactly the same code as AlfsteelArmor.java. We need to subclass ItemTerrasteelHelm
-// to allow the ancient wills to be used with the alfsteel armor.
 public class AlfsteelHelm extends ItemTerrasteelHelm implements PylonRepairable {
 
     private static final float JUMP_FACTOR = 0.025f;
     private static final LazyValue<ItemStack[]> armorSet = new LazyValue<>(() -> new ItemStack[]{new ItemStack(ModItems.alfsteelHelmet), new ItemStack(ModItems.alfsteelChestplate), new ItemStack(ModItems.alfsteelLeggings), new ItemStack(ModItems.alfsteelBoots)});
 
     public AlfsteelHelm(Properties props) {
-        super(props.maxDamage(5200));
+        super(props.durability(5200));
         MinecraftForge.EVENT_BUS.addListener(this::onJump);
     }
 
-    public String getArmorTextureAfterInk(ItemStack stack, EquipmentSlotType slot) {
+    public String getArmorTextureAfterInk(ItemStack stack, EquipmentSlot slot) {
         return MythicBotany.getInstance().modid + ":textures/model/armor_alfsteel.png";
     }
 
     private void onJump(LivingEvent.LivingJumpEvent event) {
-        if (event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET).getItem() == ModItems.alfsteelBoots) {
+        if (event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET).getItem() == ModItems.alfsteelBoots) {
             LivingEntity entity = event.getEntityLiving();
 
-            float rot = entity.rotationYaw * ((float)Math.PI / 180F);
+            float rot = entity.getYRot() * ((float)Math.PI / 180F);
             float xzFactor = entity.isSprinting() ? JUMP_FACTOR : 0;
-            entity.setMotion(entity.getMotion().add(-MathHelper.sin(rot) * xzFactor, JUMP_FACTOR, MathHelper.cos(rot) * xzFactor));
+            entity.setDeltaMovement(entity.getDeltaMovement().add(-Mth.sin(rot) * xzFactor, JUMP_FACTOR, Mth.cos(rot) * xzFactor));
         }
     }
 
     @Nonnull
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(@Nonnull EquipmentSlotType slot) {
-        Multimap<Attribute, AttributeModifier> ret = LinkedHashMultimap.create(super.getAttributeModifiers(slot));
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@Nonnull EquipmentSlot slot) {
+        Multimap<Attribute, AttributeModifier> ret = LinkedHashMultimap.create(super.getDefaultAttributeModifiers(slot));
         ret.removeAll(Attributes.KNOCKBACK_RESISTANCE); // Remove knockback resistance from terrasteel armor.
-        if (slot == this.getEquipmentSlot()) {
+        if (slot == this.getSlot()) {
             @SuppressWarnings("ConstantConditions")
             UUID uuid = new UUID(ForgeRegistries.ITEMS.getKey(this).hashCode() + slot.toString().hashCode(), 0L);
             if (this == ModItems.alfsteelHelmet) {
@@ -85,59 +83,54 @@ public class AlfsteelHelm extends ItemTerrasteelHelm implements PylonRepairable 
     }
 
     public ItemStack[] getArmorSetStacks() {
-        return armorSet.getValue();
+        return armorSet.get();
     }
 
-    public boolean hasArmorSetItem(PlayerEntity player, EquipmentSlotType slot) {
+    public boolean hasArmorSetItem(Player player, EquipmentSlot slot) {
         if (player == null) {
             return false;
         } else {
-            ItemStack stack = player.getItemStackFromSlot(slot);
+            ItemStack stack = player.getItemBySlot(slot);
             if (stack.isEmpty()) {
                 return false;
             } else {
-                switch (slot) {
-                    case HEAD:
-                        return stack.getItem() == ModItems.alfsteelHelmet;
-                    case CHEST:
-                        return stack.getItem() == ModItems.alfsteelChestplate;
-                    case LEGS:
-                        return stack.getItem() == ModItems.alfsteelLeggings;
-                    case FEET:
-                        return stack.getItem() == ModItems.alfsteelBoots;
-                    default:
-                        return false;
-                }
+                return switch (slot) {
+                    case HEAD -> stack.getItem() == ModItems.alfsteelHelmet;
+                    case CHEST -> stack.getItem() == ModItems.alfsteelChestplate;
+                    case LEGS -> stack.getItem() == ModItems.alfsteelLeggings;
+                    case FEET -> stack.getItem() == ModItems.alfsteelBoots;
+                    default -> false;
+                };
             }
         }
     }
 
-    public IFormattableTextComponent getArmorSetName() {
-        return new TranslationTextComponent("botania.armorset.terrasteel.name");
+    public MutableComponent getArmorSetName() {
+        return new TranslatableComponent("botania.armorset.terrasteel.name");
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void addArmorSetDescription(ItemStack stack, List<ITextComponent> list) {
+    public void addArmorSetDescription(ItemStack stack, List<Component> list) {
         super.addArmorSetDescription(stack, list);
         if (stack.getItem() == ModItems.alfsteelHelmet) {
-            list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_helmet.description")).mergeStyle(TextFormatting.GOLD));
+            list.add((new TranslatableComponent("item.mythicbotany.alfsteel_helmet.description")).withStyle(ChatFormatting.GOLD));
         } else if (stack.getItem() == ModItems.alfsteelChestplate) {
-            list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_chestplate.description")).mergeStyle(TextFormatting.GOLD));
+            list.add((new TranslatableComponent("item.mythicbotany.alfsteel_chestplate.description")).withStyle(ChatFormatting.GOLD));
         } else if (stack.getItem() == ModItems.alfsteelLeggings) {
-            list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_leggings.description")).mergeStyle(TextFormatting.GOLD));
+            list.add((new TranslatableComponent("item.mythicbotany.alfsteel_leggings.description")).withStyle(ChatFormatting.GOLD));
         } else if (stack.getItem() == ModItems.alfsteelBoots) {
-            list.add((new TranslationTextComponent("item.mythicbotany.alfsteel_boots.description")).mergeStyle(TextFormatting.GOLD));
+            list.add((new TranslatableComponent("item.mythicbotany.alfsteel_boots.description")).withStyle(ChatFormatting.GOLD));
         }
     }
 
     @Override
-    public boolean getIsRepairable(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
-        return repair.getItem() == ModItems.alfsteelIngot || (!Ingredient.fromTag(ModTags.Items.INGOTS_TERRASTEEL).test(repair) && super.getIsRepairable(toRepair, repair));
+    public boolean isValidRepairItem(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
+        return repair.getItem() == ModItems.alfsteelIngot || (!Ingredient.of(ModTags.Items.INGOTS_TERRASTEEL).test(repair) && super.isValidRepairItem(toRepair, repair));
     }
 
     @Override
     public boolean canRepairPylon(ItemStack stack) {
-        return stack.getDamage() > 0;
+        return stack.getDamageValue() > 0;
     }
 
     @Override
@@ -147,7 +140,7 @@ public class AlfsteelHelm extends ItemTerrasteelHelm implements PylonRepairable 
 
     @Override
     public ItemStack repairOneTick(ItemStack stack) {
-        stack.setDamage(Math.max(0, stack.getDamage() - 5));
+        stack.setDamageValue(Math.max(0, stack.getDamageValue() - 5));
         return stack;
     }
 }

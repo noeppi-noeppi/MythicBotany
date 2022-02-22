@@ -1,43 +1,40 @@
 package mythicbotany.mimir;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import io.github.noeppi_noeppi.libx.block.tesr.HorizontalRotatedTesr;
+import com.mojang.blaze3d.vertex.PoseStack;
+import io.github.noeppi_noeppi.libx.render.block.RotatedBlockRenderer;
+import io.github.noeppi_noeppi.libx.util.LazyValue;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.util.LazyLoadedValue;
+import com.mojang.math.Vector3f;
 import vazkii.botania.common.item.ModItems;
 
 import javax.annotation.Nonnull;
 
-public class RenderYggdrasilBranch extends HorizontalRotatedTesr<TileYggdrasilBranch> {
+public class RenderYggdrasilBranch extends RotatedBlockRenderer<TileYggdrasilBranch> {
 
     private final LazyValue<ItemStack> twig = new LazyValue<>(() -> new ItemStack(ModItems.livingwoodTwig));
-    
-    public RenderYggdrasilBranch(TileEntityRendererDispatcher rendererDispatcherIn) {
-        super(rendererDispatcherIn);
-    }
 
     @Override
-    protected void doRender(@Nonnull TileYggdrasilBranch tile, float partialTicks, @Nonnull MatrixStack matrixStack, @Nonnull IRenderTypeBuffer buffer, int light, int overlay) {
-        matrixStack.push();
-        matrixStack.translate(0.5, 0.9, 0.5);
-        matrixStack.rotate(Vector3f.YP.rotationDegrees(90));
-        matrixStack.rotate(Vector3f.ZP.rotationDegrees(160));
-        matrixStack.scale(0.8f, 0.8f, 0.8f);
-        Minecraft.getInstance().getItemRenderer().renderItem(twig.getValue(), ItemCameraTransforms.TransformType.GROUND, light, OverlayTexture.NO_OVERLAY, matrixStack, buffer);
-        matrixStack.pop();
+    protected void doRender(@Nonnull TileYggdrasilBranch tile, float partialTicks, @Nonnull PoseStack poseStack, @Nonnull MultiBufferSource buffer, int light, int overlay) {
+        poseStack.pushPose();
+        poseStack.translate(0.5, 0.9, 0.5);
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(90));
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(160));
+        poseStack.scale(0.8f, 0.8f, 0.8f);
+        Minecraft.getInstance().getItemRenderer().renderStatic(twig.get(), ItemTransforms.TransformType.GROUND, light, OverlayTexture.NO_OVERLAY, poseStack, buffer, 0);
+        poseStack.popPose();
         ItemStack stack = tile.getInventory().getStackInSlot(0);
         if (!stack.isEmpty()) {
-            matrixStack.push();
-            matrixStack.translate(0.5, 0.1, 0.25);
-            matrixStack.rotate(Vector3f.YP.rotationDegrees(90));
-            Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GROUND, light, OverlayTexture.NO_OVERLAY, matrixStack, buffer);
-            matrixStack.pop();
+            poseStack.pushPose();
+            poseStack.translate(0.5, 0.1, 0.25);
+            poseStack.mulPose(Vector3f.YP.rotationDegrees(90));
+            Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.GROUND, light, OverlayTexture.NO_OVERLAY, poseStack, buffer, 0);
+            poseStack.popPose();
         }
     }
 }

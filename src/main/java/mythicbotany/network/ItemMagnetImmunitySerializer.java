@@ -1,7 +1,7 @@
 package mythicbotany.network;
 
 import io.github.noeppi_noeppi.libx.network.PacketSerializer;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class ItemMagnetImmunitySerializer implements PacketSerializer<ItemMagnetImmunitySerializer.ItemMagnetImmunityMessage> {
 
@@ -11,7 +11,7 @@ public class ItemMagnetImmunitySerializer implements PacketSerializer<ItemMagnet
     }
 
     @Override
-    public void encode(ItemMagnetImmunityMessage msg, PacketBuffer buffer) {
+    public void encode(ItemMagnetImmunityMessage msg, FriendlyByteBuf buffer) {
         buffer.writeInt(msg.entityId);
         buffer.writeBoolean(msg.immune);
         buffer.writeDouble(msg.x);
@@ -20,7 +20,7 @@ public class ItemMagnetImmunitySerializer implements PacketSerializer<ItemMagnet
     }
 
     @Override
-    public ItemMagnetImmunityMessage decode(PacketBuffer buffer) {
+    public ItemMagnetImmunityMessage decode(FriendlyByteBuf buffer) {
         return new ItemMagnetImmunityMessage(buffer.readInt(), buffer.readBoolean(),
                 buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
     }

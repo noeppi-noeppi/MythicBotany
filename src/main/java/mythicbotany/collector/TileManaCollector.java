@@ -1,17 +1,19 @@
 package mythicbotany.collector;
 
-import mythicbotany.base.TileEntityMana;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
+import mythicbotany.base.BlockEntityMana;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.MinecraftForge;
 import vazkii.botania.api.internal.IManaBurst;
-import vazkii.botania.api.mana.IManaCollector;
-import vazkii.botania.api.mana.ManaNetworkEvent;
-import vazkii.botania.common.core.handler.ManaNetworkHandler;
+import vazkii.botania.api.mana.*;
+import vazkii.botania.common.handler.ManaNetworkHandler;
 
-public class TileManaCollector extends TileEntityMana implements IManaCollector, ITickableTileEntity {
+public class TileManaCollector extends BlockEntityMana implements IManaCollector, TickableBlock {
 
-    public TileManaCollector(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn, 10000, true, true);
+    public TileManaCollector(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state, 10000, true, true);
     }
 
     @Override
@@ -34,20 +36,20 @@ public class TileManaCollector extends TileEntityMana implements IManaCollector,
         return maxMana;
     }
 
-    public void remove() {
-        super.remove();
-        ManaNetworkEvent.removeCollector(this);
+    public void setRemoved() {
+        super.setRemoved();
+        MinecraftForge.EVENT_BUS.post(new ManaNetworkEvent(this, ManaBlockType.COLLECTOR, ManaNetworkAction.REMOVE));
     }
 
     public void onChunkUnloaded() {
         super.onChunkUnloaded();
-        ManaNetworkEvent.removeCollector(this);
+        MinecraftForge.EVENT_BUS.post(new ManaNetworkEvent(this, ManaBlockType.COLLECTOR, ManaNetworkAction.REMOVE));
     }
 
     public void tick() {
         boolean inNetwork = ManaNetworkHandler.instance.isCollectorIn(this);
         if (!inNetwork && !this.isRemoved()) {
-            ManaNetworkEvent.addCollector(this);
+            MinecraftForge.EVENT_BUS.post(new ManaNetworkEvent(this, ManaBlockType.COLLECTOR, ManaNetworkAction.ADD));
         }
     }
 }

@@ -1,7 +1,7 @@
 package mythicbotany.network;
 
 import io.github.noeppi_noeppi.libx.network.PacketSerializer;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class UpdatePortalTimeSerializer implements PacketSerializer<UpdatePortalTimeSerializer.UpdatePortalTimeMessage> {
 
@@ -11,12 +11,12 @@ public class UpdatePortalTimeSerializer implements PacketSerializer<UpdatePortal
     }
 
     @Override
-    public void encode(UpdatePortalTimeMessage msg, PacketBuffer buffer) {
+    public void encode(UpdatePortalTimeMessage msg, FriendlyByteBuf buffer) {
         buffer.writeVarInt(msg.portalTime);
     }
 
     @Override
-    public UpdatePortalTimeMessage decode(PacketBuffer buffer) {
+    public UpdatePortalTimeMessage decode(FriendlyByteBuf buffer) {
         return new UpdatePortalTimeMessage(buffer.readVarInt());
     }
 

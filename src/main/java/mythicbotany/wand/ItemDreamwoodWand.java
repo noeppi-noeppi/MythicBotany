@@ -1,42 +1,44 @@
 package mythicbotany.wand;
 
 import com.google.common.collect.ImmutableSet;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
+import io.github.noeppi_noeppi.libx.render.RenderHelper;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import vazkii.botania.api.BotaniaForgeClientCapabilities;
+import vazkii.botania.api.block.IWandHUD;
 import vazkii.botania.api.corporea.ICorporeaSpark;
 import vazkii.botania.api.mana.spark.SparkHelper;
 import vazkii.botania.api.mana.spark.SparkUpgradeType;
-import vazkii.botania.api.wand.IWandHUD;
-import vazkii.botania.common.core.helper.ItemNBTHelper;
-import vazkii.botania.common.core.helper.PlayerHelper;
 import vazkii.botania.common.entity.EntityCorporeaSpark;
-import vazkii.botania.common.entity.EntitySpark;
+import vazkii.botania.common.entity.EntityManaSpark;
+import vazkii.botania.common.helper.ItemNBTHelper;
+import vazkii.botania.common.helper.PlayerHelper;
 import vazkii.botania.common.item.ItemSparkUpgrade;
 import vazkii.botania.common.item.ItemTwigWand;
+import vazkii.botania.forge.CapabilityUtil;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
     }
 
     @Override
-    public Set<Object> getAdditionalRegisters() {
+    public Set<Object> getAdditionalRegisters(ResourceLocation id) {
         return ImmutableSet.of(RecipeDreamwoodWand.SERIALIZER);
     }
 
@@ -60,63 +62,70 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
     @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
         defer.accept(() -> {
-            ItemModelsProperties.registerProperty(ModItems.dreamwoodTwigWand, new ResourceLocation(MythicBotany.getInstance().modid, "bindmode"), (stack, world, entity) -> ItemTwigWand.getBindMode(stack) ? 1 : 0);
-            Minecraft.getInstance().getItemColors().register((stack, colorId) -> colorId == 1 ? DyeColor.byId(getColor1(stack)).getColorValue() : (colorId == 2 ? DyeColor.byId(getColor2(stack)).getColorValue() : -1), ModItems.dreamwoodTwigWand);
+            ItemProperties.register(ModItems.dreamwoodTwigWand, new ResourceLocation(MythicBotany.getInstance().modid, "bindmode"), (stack, world, entity, seed) -> ItemTwigWand.getBindMode(stack) ? 1 : 0);
+            Minecraft.getInstance().getItemColors().register((stack, colorId) -> colorId == 1 ? DyeColor.byId(getColor1(stack)).getTextColor() : (colorId == 2 ? DyeColor.byId(getColor2(stack)).getTextColor() : -1), ModItems.dreamwoodTwigWand);
         });
         MinecraftForge.EVENT_BUS.addListener(this::onRenderGameOverlay);
     }
 
     @OnlyIn(Dist.CLIENT)
     private void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.world == null || minecraft.player == null)
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null || mc.player == null || mc.options.hideGui) {
             return;
-        RayTraceResult pos = minecraft.objectMouseOver;
-        if (pos != null) {
-            BlockPos bpos = pos.getType() == RayTraceResult.Type.BLOCK ? ((BlockRayTraceResult) pos).getPos() : null;
-            BlockState state = bpos != null ? minecraft.world.getBlockState(bpos) : null;
-            Block block = state == null ? null : state.getBlock();
-            if (PlayerHelper.hasAnyHeldItem(minecraft.player)) {
-                if (PlayerHelper.hasHeldItem(minecraft.player, ModItems.dreamwoodTwigWand) && block instanceof IWandHUD) {
-                    event.getMatrixStack().push();
-                    minecraft.getProfiler().startSection("wandItemDreamwood");
-                    ((IWandHUD) block).renderHUD(event.getMatrixStack(), minecraft, minecraft.world, bpos);
-                    minecraft.getProfiler().endSection();
-                    event.getMatrixStack().pop();
-                    //noinspection deprecation
-                    RenderSystem.color4f(1, 1, 1, 1);
+        }
+        if (mc.hitResult instanceof BlockHitResult result) {
+            PoseStack poseStack = event.getMatrixStack();
+            BlockPos pos = result.getBlockPos();
+            BlockState state = mc.level.getBlockState(pos);
+            BlockEntity blockEntity = mc.level.getBlockEntity(pos);
+            if (PlayerHelper.hasAnyHeldItem(mc.player)) {
+                if (PlayerHelper.hasHeldItem(mc.player, ModItems.dreamwoodTwigWand)) {
+                    IWandHUD hud = CapabilityUtil.findCapability(BotaniaForgeClientCapabilities.WAND_HUD, mc.level, pos, state, blockEntity);
+                    if (hud != null) {
+                        RenderHelper.resetColor();
+                        hud.renderHUD(poseStack, mc);
+                        RenderHelper.resetColor();
+                    }
                 }
             }
         }
     }
 
     private void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
-        World world = event.getWorld();
-        PlayerEntity player = event.getPlayer();
-        ItemStack held = player.getHeldItem(event.getHand());
-        if (!world.isRemote && !held.isEmpty() && held.getItem() == ModItems.dreamwoodTwigWand) {
-            if (event.getTarget() instanceof EntitySpark) {
-                EntitySpark spark = (EntitySpark) event.getTarget();
-                if (player.isSneaking()) {
+        Level level = event.getWorld();
+        Player player = event.getPlayer();
+        ItemStack held = player.getItemInHand(event.getHand());
+        if (!level.isClientSide && !held.isEmpty() && held.getItem() == ModItems.dreamwoodTwigWand) {
+            if (event.getTarget() instanceof EntityManaSpark spark) {
+                if (player.isShiftKeyDown()) {
                     if (spark.getUpgrade() != SparkUpgradeType.NONE) {
-                        spark.entityDropItem(ItemSparkUpgrade.getByType(spark.getUpgrade()), 0.0F);
+                        spark.spawnAtLocation(ItemSparkUpgrade.getByType(spark.getUpgrade()), 0.0F);
                         spark.setUpgrade(SparkUpgradeType.NONE);
                         spark.getTransfers().clear();
                     } else {
-                        spark.entityDropItem(new ItemStack(vazkii.botania.common.item.ModItems.spark), 0.0F);
-                        spark.remove();
+                        SparkUpgradeType upgrade = spark.getUpgrade();
+                        spark.spawnAtLocation(new ItemStack(vazkii.botania.common.item.ModItems.spark), 0.0F);
+                        if (upgrade != SparkUpgradeType.NONE) {
+                            spark.spawnAtLocation(ItemSparkUpgrade.getByType(upgrade), 0.0F);
+                        }
+                        spark.remove(Entity.RemovalReason.DISCARDED);
                     }
-                    event.setCanceled(true);
-                    event.setCancellationResult(ActionResultType.successOrConsume(false));
                 } else {
-                    SparkHelper.getSparksAround(world, spark.getPosX(), spark.getPosY() + (double) (spark.getHeight() / 2.0F), spark.getPosZ(), spark.getNetwork()).forEach((otherSpark) -> EntitySpark.particleBeam(player, spark, (Entity) otherSpark));
+                    SparkHelper.getSparksAround(spark.level, spark.getX(), spark.getY() + spark.getBbHeight() / 2d, spark.getZ(), spark.getNetwork()).forEach((s) -> EntityManaSpark.particleBeam(player, spark, s.entity()));
                 }
-            } else if (event.getTarget() instanceof EntityCorporeaSpark) {
-                EntityCorporeaSpark spark = (EntityCorporeaSpark) event.getTarget();
-                if (player.isSneaking()) {
+            } else if (event.getTarget() instanceof EntityCorporeaSpark spark) {
+                if (player.isShiftKeyDown()) {
                     boolean master = spark.isMaster();
-                    spark.entityDropItem(new ItemStack(master ? vazkii.botania.common.item.ModItems.corporeaSparkMaster : vazkii.botania.common.item.ModItems.corporeaSpark), 0.0F);
-                    spark.remove();
+                    boolean creative = spark.isCreative();
+                    if (creative) {
+                        spark.spawnAtLocation(new ItemStack(vazkii.botania.common.item.ModItems.corporeaSparkCreative));
+                    } else if (master) {
+                        spark.spawnAtLocation(new ItemStack(vazkii.botania.common.item.ModItems.corporeaSparkMaster));
+                    } else {
+                        spark.spawnAtLocation(new ItemStack(vazkii.botania.common.item.ModItems.corporeaSpark));
+                    }
+                    spark.remove(Entity.RemovalReason.DISCARDED);
                     if (master) {
                         spark.getConnections().clear();
                         spark.getRelatives().clear();
@@ -127,7 +136,7 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
                         }
                     }
                     event.setCanceled(true);
-                    event.setCancellationResult(ActionResultType.successOrConsume(false));
+                    event.setCancellationResult(InteractionResult.sidedSuccess(false));
                 } else {
                     displayRelatives(player, new ArrayList<>(), spark.getMaster());
                 }
@@ -135,33 +144,32 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
         }
     }
 
-    private static void displayRelatives(PlayerEntity player, List<ICorporeaSpark> checked, ICorporeaSpark spark) {
+    private static void displayRelatives(Player player, List<ICorporeaSpark> checked, ICorporeaSpark spark) {
         if (spark != null) {
             List<ICorporeaSpark> sparks = spark.getRelatives();
             if (sparks.isEmpty()) {
-                EntitySpark.particleBeam(player, (Entity) spark, (Entity) spark.getMaster());
+                EntityManaSpark.particleBeam(player, spark.entity(), spark.getMaster().entity());
             } else {
-                for (ICorporeaSpark endSpark : sparks) {
-                    if (!checked.contains(endSpark)) {
-                        EntitySpark.particleBeam(player, (Entity) spark, (Entity) endSpark);
-                        checked.add(endSpark);
-                        displayRelatives(player, checked, endSpark);
+                for (ICorporeaSpark other : sparks) {
+                    if (!checked.contains(other)) {
+                        EntityManaSpark.particleBeam(player, spark.entity(), other.entity());
+                        checked.add(other);
+                        displayRelatives(player, checked, other);
                     }
                 }
             }
         }
-
     }
 
     @Nonnull
     @Override
-    protected String getDefaultTranslationKey() {
-        return vazkii.botania.common.item.ModItems.twigWand.getTranslationKey();
+    protected String getOrCreateDescriptionId() {
+        return vazkii.botania.common.item.ModItems.twigWand.getDescriptionId();
     }
 
     @Override
-    public void fillItemGroup(@Nonnull ItemGroup group, @Nonnull NonNullList<ItemStack> stacks) {
-        if (this.isInGroup(group)) {
+    public void fillItemCategory(@Nonnull CreativeModeTab category, @Nonnull NonNullList<ItemStack> stacks) {
+        if (this.allowdedIn(category)) {
             for (int i = 0; i < 16; ++i) {
                 stacks.add(forColors(i, i));
             }
