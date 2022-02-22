@@ -1,7 +1,7 @@
-package mythicbotany.alfheim.entity;
+package mythicbotany.alfheim.content;
 
 import mythicbotany.ModEntities;
-import mythicbotany.alfheim.AlfheimWorldGen;
+import mythicbotany.alfheim.util.AlfheimWorldGenUtil;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -217,7 +217,7 @@ public class AlfPixie extends PathfinderMob {
         public void start() {
             int aboveGround = 0;
             BlockPos.MutableBlockPos mpos = entity.blockPosition().below().mutable();
-            while (mpos.getY() > 0 && AlfheimWorldGen.passReplaceableAndDreamwood(entity.level.getBlockState(mpos))) {
+            while (mpos.getY() > 0 && AlfheimWorldGenUtil.passReplaceableAndDreamWood(entity.level.getBlockState(mpos))) {
                 mpos.move(Direction.DOWN);
                 aboveGround += 1;
                 if (aboveGround >= 10) break;

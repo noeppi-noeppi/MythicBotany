@@ -3,7 +3,7 @@ package mythicbotany;
 import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
 import io.github.noeppi_noeppi.libx.base.BlockBase;
 import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
-import mythicbotany.alfheim.BlockAlfheimLeaves;
+import mythicbotany.alfheim.content.BlockAlfheimLeaves;
 import mythicbotany.alfheim.teleporter.BlockReturnPortal;
 import mythicbotany.alfheim.teleporter.TileReturnPortal;
 import mythicbotany.collector.TileManaCollector;

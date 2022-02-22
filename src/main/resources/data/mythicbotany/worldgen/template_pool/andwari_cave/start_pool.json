@@ -1,0 +1,15 @@
+{
+  "name": "mythicbotany:andwari_cave/start_pool",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "mythicbotany:andwari_cave",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "mythicbotany:andwari_cave"
+      }
+    }
+  ]
+}

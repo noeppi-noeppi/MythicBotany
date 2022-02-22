@@ -1,16 +1,17 @@
-package mythicbotany.alfheim;
+package mythicbotany.alfheim.feature;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.world.level.block.state.BlockState;
+import mythicbotany.alfheim.util.AlfheimWorldGenUtil;
+import mythicbotany.alfheim.util.HorizontalPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import vazkii.botania.api.item.IPetalApothecary;
+import vazkii.botania.api.block.IPetalApothecary;
 import vazkii.botania.common.block.BlockAltar;
 import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.block.tile.TileAltar;
@@ -18,7 +19,6 @@ import vazkii.botania.common.item.ModItems;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Random;
 
 public class AbandonedApothecaryFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -50,33 +50,27 @@ public class AbandonedApothecaryFeature extends Feature<NoneFeatureConfiguration
     }
 
     @Override
-    public boolean place(@Nonnull WorldGenLevel level, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos pos, @Nonnull NoneFeatureConfiguration config) {
-        if (rand.nextInt(6) == 0) {
-            return tryGenerate(level, generator, rand, new BlockPos(pos.getX() + rand.nextInt(16), 0, pos.getZ() + rand.nextInt(16)));
-        } else {
-            return false;
-        }
+    public boolean place(@Nonnull FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        return AlfheimWorldGenUtil.generateTries(context, 1, this::tryGenerate);
     }
 
-    private boolean tryGenerate(@Nonnull WorldGenLevel level, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos hor) {
-        BlockPos pos = AlfheimWorldGen.highestFreeBlock(level, hor, AlfheimWorldGen::passReplaceableAndLeaves);
-        //noinspection deprecation
-        if (level.getBlockState(pos.below()).canOcclude() && level.getBlockState(pos.above()).isAir()) {
-            BlockState state = STATES.get(rand.nextInt(STATES.size()));
-            if (rand.nextInt(30) == 0) {
-                return level.setBlock(pos, state.setValue(BlockAltar.FLUID, IPetalApothecary.State.LAVA), 2);
-            } else if (rand.nextInt(4) != 0) {
-                if (!level.setBlock(pos, state.setValue(BlockAltar.FLUID, IPetalApothecary.State.WATER), 2)) {
+    private boolean tryGenerate(FeaturePlaceContext<NoneFeatureConfiguration> context, HorizontalPos hor) {
+        BlockPos pos = AlfheimWorldGenUtil.highestFreeBlock(context.level(), hor, AlfheimWorldGenUtil::passReplaceableAndLeaves);
+        if (context.level().getBlockState(pos.below()).canOcclude() && context.level().getBlockState(pos.above()).isAir()) {
+            BlockState state = STATES.get(context.random().nextInt(STATES.size()));
+            if (context.random().nextInt(30) == 0) {
+                return context.level().setBlock(pos, state.setValue(BlockAltar.FLUID, IPetalApothecary.State.LAVA), 2);
+            } else if (context.random().nextInt(4) != 0) {
+                if (!context.level().setBlock(pos, state.setValue(BlockAltar.FLUID, IPetalApothecary.State.WATER), 2)) {
                     return false;
                 }
                 try {
-                    BlockEntity te = level.getBlockEntity(pos);
-                    if (te instanceof TileAltar) {
-                        te.setPosition(pos);
-                        te.blockState = state.setValue(BlockAltar.FLUID, IPetalApothecary.State.WATER);
-                        int petals = rand.nextInt(5);
+                    BlockEntity be = context.level().getBlockEntity(pos);
+                    if (be instanceof TileAltar) {
+                        be.blockState = state.setValue(BlockAltar.FLUID, IPetalApothecary.State.WATER);
+                        int petals = context.random().nextInt(5);
                         for (int i = 0; i < petals; i++) {
-                            ((TileAltar) te).getItemHandler().setItem(i, new ItemStack(PETALS.get(rand.nextInt(PETALS.size()))));
+                            ((TileAltar) be).getItemHandler().setItem(i, new ItemStack(PETALS.get(context.random().nextInt(PETALS.size()))));
                         }
                     }
                 } catch (Exception e) {
@@ -84,7 +78,7 @@ public class AbandonedApothecaryFeature extends Feature<NoneFeatureConfiguration
                 }
                 return true;
             } else {
-                return level.setBlock(pos, state.setValue(BlockAltar.FLUID, IPetalApothecary.State.EMPTY), 2);
+                return context.level().setBlock(pos, state.setValue(BlockAltar.FLUID, IPetalApothecary.State.EMPTY), 2);
             }
         } else {
             return false;

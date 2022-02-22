@@ -1,4 +1,4 @@
-package mythicbotany.alfheim.entity;
+package mythicbotany.alfheim.content;
 
 import mythicbotany.MythicBotany;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

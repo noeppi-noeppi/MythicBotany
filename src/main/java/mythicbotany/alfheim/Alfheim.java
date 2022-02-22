@@ -3,6 +3,8 @@ package mythicbotany.alfheim;
 import io.github.noeppi_noeppi.libx.annotation.registration.NoReg;
 import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
 import mythicbotany.MythicBotany;
+import mythicbotany.alfheim.placement.AlfheimFeatures;
+import mythicbotany.alfheim.util.AlfheimWorldGenUtil;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
@@ -35,7 +37,7 @@ public class Alfheim {
         AlfheimBiomeManager.addCommonBiome(alfheimLakes.getRegistryName());
         AlfheimBiomeManager.addRareBiome(goldenFields.getRegistryName());
         
-        AlfheimBiomeManager.addStructure(AlfheimWorldGen.andwariCave, new StructureFeatureConfiguration(28, 8, 438));
+        AlfheimBiomeManager.addStructure(AlfheimWorldGenUtil.andwariCave, new StructureFeatureConfiguration(28, 8, 438));
     }
     
     public static final Biome alfheimPlains = alfheimBiome()

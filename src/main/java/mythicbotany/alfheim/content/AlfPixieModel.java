@@ -1,17 +1,11 @@
-package mythicbotany.alfheim.entity;
+package mythicbotany.alfheim.content;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
-import vazkii.botania.client.model.ModelPixie;
-import vazkii.botania.common.entity.EntityPixie;
 
 import javax.annotation.Nonnull;
 

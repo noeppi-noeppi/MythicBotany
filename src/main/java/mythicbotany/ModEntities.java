@@ -1,8 +1,8 @@
 package mythicbotany;
 
 import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
-import mythicbotany.alfheim.entity.AlfPixie;
-import mythicbotany.alfheim.entity.AlfPixieRender;
+import mythicbotany.alfheim.content.AlfPixie;
+import mythicbotany.alfheim.content.AlfPixieRender;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;

@@ -1,4 +1,4 @@
-package mythicbotany.alfheim;
+package mythicbotany.alfheim.content;
 
 import com.google.common.collect.ImmutableSet;
 import io.github.noeppi_noeppi.libx.mod.ModX;

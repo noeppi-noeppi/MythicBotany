@@ -4,7 +4,8 @@ import io.github.noeppi_noeppi.libx.mod.registration.ModXRegistration;
 import io.github.noeppi_noeppi.libx.mod.registration.RegistrationBuilder;
 import mythicbotany.advancement.ModCriteria;
 import mythicbotany.alfheim.Alfheim;
-import mythicbotany.alfheim.AlfheimFeatures;
+import mythicbotany.alfheim.placement.AlfheimFeatures;
+import mythicbotany.alfheim.structure.piece.ModStructurePieces;
 import mythicbotany.alfheim.teleporter.AlfheimPortalHandler;
 import mythicbotany.config.ClientConfig;
 import mythicbotany.kvasir.WanderingTraderRuneInput;
@@ -13,6 +14,8 @@ import mythicbotany.network.MythicNetwork;
 import mythicbotany.patchouli.PageRitualInfo;
 import mythicbotany.patchouli.PageRitualPattern;
 import mythicbotany.pylon.PylonRepairables;
+import mythicbotany.register.FeatureTransformer;
+import mythicbotany.register.TrunkPlacerTransformer;
 import mythicbotany.rune.RuneRitualRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -60,7 +63,6 @@ public class MythicBotany extends ModXRegistration {
         addRegistrationHandler(ModRecipes::register);
         addRegistrationHandler(ModMisc::register);
         addRegistrationHandler(Alfheim::register);
-        addRegistrationHandler(AlfheimFeatures::register);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::sendIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ModEntities::createAttributes);
@@ -89,6 +91,8 @@ public class MythicBotany extends ModXRegistration {
     @Override
     protected void initRegistration(RegistrationBuilder builder) {
         builder.setVersion(1);
+        builder.addTransformer(TrunkPlacerTransformer.INSTANCE);
+        builder.addTransformer(FeatureTransformer.INSTANCE);
     }
 
     @Override
@@ -96,6 +100,7 @@ public class MythicBotany extends ModXRegistration {
         logger.info("Loading MythicBotany");
         
         event.enqueueWork(() -> {
+            ModStructurePieces.setup();
             ModEntities.setup();
             ModCriteria.setup();
             

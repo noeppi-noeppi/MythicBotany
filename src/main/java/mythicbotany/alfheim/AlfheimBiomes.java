@@ -1,6 +1,7 @@
 package mythicbotany.alfheim;
 
 import mythicbotany.ModEntities;
+import mythicbotany.alfheim.placement.AlfheimFeatures;
 import mythicbotany.config.MythicConfig;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.EntityType;

@@ -90,7 +90,6 @@ public class AlfheimPortalHandler {
             RenderHelper.resetColor();
             RenderSystem.disableBlend();
             poseStack.popPose();
-            
         }
     }
 }
