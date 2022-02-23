@@ -10,7 +10,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.rune.RuneRitualRecipe;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
@@ -57,19 +56,19 @@ public class RuneRitualCategory implements IRecipeCategory<RuneRitualRecipe> {
     @Nonnull
     @Override
     public Component getTitle() {
-        return localizedName;
+        return this.localizedName;
     }
 
     @Nonnull
     @Override
     public IDrawable getBackground() {
-        return background;
+        return this.background;
     }
 
     @Nonnull
     @Override
     public IDrawable getIcon() {
-        return icon;
+        return this.icon;
     }
 
     @Override
@@ -93,14 +92,14 @@ public class RuneRitualCategory implements IRecipeCategory<RuneRitualRecipe> {
         }
         ii.setOutputs(VanillaTypes.ITEM, outputs);
 
-        inputOutputSizes.put(recipe.getId(), Pair.of(inputs.size() - (1 + recipe.getRunes().size()), outputs.size()));
+        this.inputOutputSizes.put(recipe.getId(), Pair.of(inputs.size() - (1 + recipe.getRunes().size()), outputs.size()));
     }
 
     @Override
     public void setRecipe(@Nonnull IRecipeLayout layout, @Nonnull RuneRitualRecipe recipe, @Nonnull IIngredients ii) {
-        initRunePositioned(layout, 0, 0, 0, true);
+        this.initRunePositioned(layout, 0, 0, 0, true);
         for (int i = 0; i < recipe.getRunes().size(); i++) {
-            initRunePositioned(layout, i + 1, recipe.getRunes().get(i).getX(), recipe.getRunes().get(i).getZ(), recipe.getRunes().get(i).isConsumed());
+            this.initRunePositioned(layout, i + 1, recipe.getRunes().get(i).getX(), recipe.getRunes().get(i).getZ(), recipe.getRunes().get(i).isConsumed());
         }
         int baseInputId = 1 + recipe.getRunes().size();
         int inputSize = ii.getInputs(VanillaTypes.ITEM).size() - baseInputId;
@@ -119,17 +118,17 @@ public class RuneRitualCategory implements IRecipeCategory<RuneRitualRecipe> {
     }
 
     public void draw(RuneRitualRecipe recipe, @Nonnull PoseStack poseStack, double mouseX, double mouseY) {
-        if (inputOutputSizes.containsKey(recipe.getId())) {
-            Pair<Integer, Integer> sizes = inputOutputSizes.get(recipe.getId());
+        if (this.inputOutputSizes.containsKey(recipe.getId())) {
+            Pair<Integer, Integer> sizes = this.inputOutputSizes.get(recipe.getId());
             
             int startInX = 68 - (sizes.getLeft() * 9);
             for (int i = 0; i < sizes.getLeft(); i++) {
-                slot.draw(poseStack, startInX + (i * 18), 137);
+                this.slot.draw(poseStack, startInX + (i * 18), 137);
             }
             
             int startOutX = 68 - (sizes.getRight() * 9);
             for (int i = 0; i < sizes.getRight(); i++) {
-                slot.draw(poseStack, startOutX + (i * 18), 169);
+                this.slot.draw(poseStack, startOutX + (i * 18), 169);
             }
         }
         if (recipe.getMana() > 0) {

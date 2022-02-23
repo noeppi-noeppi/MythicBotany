@@ -23,22 +23,22 @@ public class BlockStateProvider extends BlockStateProviderBase {
 
     @Override
     protected void setup() {
-        manualModel(ModBlocks.manaInfuser);
-        manualModel(ModBlocks.alfsteelPylon);
-        manualModel(ModBlocks.yggdrasilBranch);
-        manualModel(ModBlocks.runeHolder);
-        manualModel(ModBlocks.masterRuneHolder);
-        manualModel(ModBlocks.mjoellnir);
+        this.manualModel(ModBlocks.manaInfuser);
+        this.manualModel(ModBlocks.alfsteelPylon);
+        this.manualModel(ModBlocks.yggdrasilBranch);
+        this.manualModel(ModBlocks.runeHolder);
+        this.manualModel(ModBlocks.masterRuneHolder);
+        this.manualModel(ModBlocks.mjoellnir);
     }
 
     @Override
     protected ModelFile defaultModel(ResourceLocation id, Block block) {
         if (block instanceof BlockFunctionalFlower<?>) {
-            return models().getBuilder(id.getPath()).parent(new AlwaysExistentModelFile(new ResourceLocation("botania", "block/shapes/cross")))
+            return this.models().getBuilder(id.getPath()).parent(new AlwaysExistentModelFile(new ResourceLocation("botania", "block/shapes/cross")))
                     .texture("cross", new ResourceLocation(id.getNamespace(), "block/" + id.getPath()));
         } else if (block instanceof BlockFloatingFunctionalFlower<?>) {
             //noinspection ConstantConditions
-            return FloatingFlowerModelBuilder.create(models(), id.getPath())
+            return FloatingFlowerModelBuilder.create(this.models(), id.getPath())
                     .flower(((BlockFloatingFunctionalFlower<?>) block).getNonFloatingBlock().getRegistryName())
                     .parent(new AlwaysExistentModelFile(new ResourceLocation("minecraft", "block/block")));
         } else {

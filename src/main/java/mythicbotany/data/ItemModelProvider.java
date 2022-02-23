@@ -20,12 +20,12 @@ public class ItemModelProvider extends ItemModelProviderBase {
 
 	@Override
 	protected void setup() {
-		handheld(ModItems.alfsteelSword);
-		manualModel(ModItems.alfsteelPick);
-		manualModel(ModItems.alfsteelAxe);
-		manualModel(ModItems.fadedNetherStar);
-		manualModel(ModItems.dreamwoodTwigWand);
-		manualModel(ModBlocks.alfsteelPylon.asItem());
+        this.handheld(ModItems.alfsteelSword);
+        this.manualModel(ModItems.alfsteelPick);
+        this.manualModel(ModItems.alfsteelAxe);
+        this.manualModel(ModItems.fadedNetherStar);
+        this.manualModel(ModItems.dreamwoodTwigWand);
+        this.manualModel(ModBlocks.alfsteelPylon.asItem());
 	}
 
 	@Override

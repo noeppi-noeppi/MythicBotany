@@ -14,15 +14,15 @@ import java.util.Arrays;
 public interface RuneExtension extends RecipeExtension {
 
     default void runeAltar(ItemLike output, int mana, ItemLike... inputs) {
-        runeAltar(new ItemStack(output), mana, inputs);
+        this.runeAltar(new ItemStack(output), mana, inputs);
     }
 
     default void runeAltar(ItemLike output, int mana, Ingredient... inputs) {
-        runeAltar(new ItemStack(output), mana, inputs);
+        this.runeAltar(new ItemStack(output), mana, inputs);
     }
 
     default void runeAltar(ItemStack output, int mana, ItemLike... inputs) {
-        runeAltar(output, mana, Arrays.stream(inputs).map(Ingredient::of).toArray(Ingredient[]::new));
+        this.runeAltar(output, mana, Arrays.stream(inputs).map(Ingredient::of).toArray(Ingredient[]::new));
     }
 
     default void runeAltar(ItemStack output, int mana, Ingredient... inputs) {

@@ -13,23 +13,23 @@ import vazkii.botania.data.recipes.ManaInfusionProvider;
 public interface ManaInfusionExtension extends RecipeExtension {
 
     default void manaInfusion(ItemLike input, ItemLike result, int mana) {
-        manaInfusion(input, new ItemStack(result), mana);
+        this.manaInfusion(input, new ItemStack(result), mana);
     }
 
     default void manaInfusion(Tag.Named<Item> input, ItemLike result, int mana) {
-        manaInfusion(input, new ItemStack(result), mana);
+        this.manaInfusion(input, new ItemStack(result), mana);
     }
 
     default void manaInfusion(Ingredient input, ItemLike result, int mana) {
-        manaInfusion(input, new ItemStack(result), mana);
+        this.manaInfusion(input, new ItemStack(result), mana);
     }
     
     default void manaInfusion(ItemLike input, ItemStack result, int mana) {
-        manaInfusion(Ingredient.of(input), result, mana);
+        this.manaInfusion(Ingredient.of(input), result, mana);
     }
     
     default void manaInfusion(Tag.Named<Item> input, ItemStack result, int mana) {
-        manaInfusion(Ingredient.of(input), result, mana);
+        this.manaInfusion(Ingredient.of(input), result, mana);
     }
     
     default void manaInfusion(Ingredient input, ItemStack result, int mana) {
@@ -37,23 +37,23 @@ public interface ManaInfusionExtension extends RecipeExtension {
     }
 
     default void manaAlchemy(ItemLike input, ItemLike result, int mana) {
-        manaAlchemy(input, new ItemStack(result), mana);
+        this.manaAlchemy(input, new ItemStack(result), mana);
     }
 
     default void manaAlchemy(Tag.Named<Item> input, ItemLike result, int mana) {
-        manaAlchemy(input, new ItemStack(result), mana);
+        this.manaAlchemy(input, new ItemStack(result), mana);
     }
 
     default void manaAlchemy(Ingredient input, ItemLike result, int mana) {
-        manaAlchemy(input, new ItemStack(result), mana);
+        this.manaAlchemy(input, new ItemStack(result), mana);
     }
     
     default void manaAlchemy(ItemLike input, ItemStack result, int mana) {
-        manaAlchemy(Ingredient.of(input), result, mana);
+        this.manaAlchemy(Ingredient.of(input), result, mana);
     }
 
     default void manaAlchemy(Tag.Named<Item> input, ItemStack result, int mana) {
-        manaAlchemy(Ingredient.of(input), result, mana);
+        this.manaAlchemy(Ingredient.of(input), result, mana);
     }
 
     default void manaAlchemy(Ingredient input, ItemStack result, int mana) {
@@ -61,23 +61,23 @@ public interface ManaInfusionExtension extends RecipeExtension {
     }
 
     default void manaConjuration(ItemLike input, ItemLike result, int mana) {
-        manaConjuration(input, new ItemStack(result), mana);
+        this.manaConjuration(input, new ItemStack(result), mana);
     }
 
     default void manaConjuration(Tag.Named<Item> input, ItemLike result, int mana) {
-        manaConjuration(input, new ItemStack(result), mana);
+        this.manaConjuration(input, new ItemStack(result), mana);
     }
 
     default void manaConjuration(Ingredient input, ItemLike result, int mana) {
-        manaConjuration(input, new ItemStack(result), mana);
+        this.manaConjuration(input, new ItemStack(result), mana);
     }
     
     default void manaConjuration(ItemLike input, ItemStack result, int mana) {
-        manaConjuration(Ingredient.of(input), result, mana);
+        this.manaConjuration(Ingredient.of(input), result, mana);
     }
 
     default void manaConjuration(Tag.Named<Item> input, ItemStack result, int mana) {
-        manaConjuration(Ingredient.of(input), result, mana);
+        this.manaConjuration(Ingredient.of(input), result, mana);
     }
 
     default void manaConjuration(Ingredient input, ItemStack result, int mana) {

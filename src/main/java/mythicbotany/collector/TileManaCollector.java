@@ -33,7 +33,7 @@ public class TileManaCollector extends BlockEntityMana implements IManaCollector
 
     @Override
     public int getMaxMana() {
-        return maxMana;
+        return this.maxMana;
     }
 
     public void setRemoved() {

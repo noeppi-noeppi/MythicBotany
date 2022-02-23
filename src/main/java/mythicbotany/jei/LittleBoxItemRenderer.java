@@ -57,12 +57,12 @@ public class LittleBoxItemRenderer implements IIngredientRenderer<ItemStack> {
         if (parent != null) {
             tooltip.addAll(parent.getTooltip(stack, flag));
         }
-        if (x != 0 || z != 0) {
-            tooltip.add(new TranslatableComponent("tooltip.mythicbotany.rune_offset", x, z).withStyle(ChatFormatting.GOLD));
+        if (this.x != 0 || this.z != 0) {
+            tooltip.add(new TranslatableComponent("tooltip.mythicbotany.rune_offset", this.x, this.z).withStyle(ChatFormatting.GOLD));
         } else {
             tooltip.add(new TranslatableComponent("tooltip.mythicbotany.rune_master").withStyle(ChatFormatting.GOLD));
         }
-        if (consume) {
+        if (this.consume) {
             tooltip.add(new TranslatableComponent("tooltip.mythicbotany.rune_consume").withStyle(ChatFormatting.DARK_RED));
         } else {
             tooltip.add(new TranslatableComponent("tooltip.mythicbotany.rune_keep").withStyle(ChatFormatting.DARK_GREEN));

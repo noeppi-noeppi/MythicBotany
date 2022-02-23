@@ -89,105 +89,105 @@ public class TileMasterRuneHolder extends TileRuneHolder implements TickableBloc
 
     @Override
     public void tick() {
-        if (level == null) {
+        if (this.level == null) {
             return;
         }
-        if (recipeId != null) {
-            if (recipe == null || !recipeId.equals(recipe.getId())) {
-                Recipe<?> foundRecipe = level.getRecipeManager().byKey(recipeId).orElse(null);
+        if (this.recipeId != null) {
+            if (this.recipe == null || !this.recipeId.equals(this.recipe.getId())) {
+                Recipe<?> foundRecipe = this.level.getRecipeManager().byKey(this.recipeId).orElse(null);
                 if (foundRecipe instanceof RuneRitualRecipe) {
-                    recipe = (RuneRitualRecipe) foundRecipe;
-                    recipeId = recipe.getId();
-                    setChanged();
-                    setDispatchable();
+                    this.recipe = (RuneRitualRecipe) foundRecipe;
+                    this.recipeId = this.recipe.getId();
+                    this.setChanged();
+                    this.setDispatchable();
                 } else {
-                    recipeId = null;
+                    this.recipeId = null;
                 }
             }
         }
-        if (!level.isClientSide) {
-            if (recipe != null) {
-                if (!recipeValid(recipe, transformId)) {
-                    cancelRecipe();
+        if (!this.level.isClientSide) {
+            if (this.recipe != null) {
+                if (!this.recipeValid(this.recipe, this.transformId)) {
+                    this.cancelRecipe();
                 } else {
-                    if (progress == 0) {
-                        setDispatchable();
+                    if (this.progress == 0) {
+                        this.setDispatchable();
                     }
-                    progress += 1;
-                    if (progress >= recipe.getTicks()) {
-                        getInventory().setStackInSlot(0, ItemStack.EMPTY);
-                        for (ItemStack result : recipe.getOutputs()) {
-                            ItemEntity ie = new ItemEntity(level, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, result.copy());
+                    this.progress += 1;
+                    if (this.progress >= this.recipe.getTicks()) {
+                        this.getInventory().setStackInSlot(0, ItemStack.EMPTY);
+                        for (ItemStack result : this.recipe.getOutputs()) {
+                            ItemEntity ie = new ItemEntity(this.level, this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5, result.copy());
                             ie.setPickUpDelay(40);
                             ie.setGlowingTag(true);
-                            level.addFreshEntity(ie);
+                            this.level.addFreshEntity(ie);
                         }
 
-                        for (RuneRitualRecipe.RunePosition rune : recipe.getRunes()) {
-                            BlockPos runePos = worldPosition.offset(rune.getX(transformId), 0, rune.getZ(transformId));
-                            BlockState state = Objects.requireNonNull(level).getBlockState(runePos);
+                        for (RuneRitualRecipe.RunePosition rune : this.recipe.getRunes()) {
+                            BlockPos runePos = this.worldPosition.offset(rune.getX(this.transformId), 0, rune.getZ(this.transformId));
+                            BlockState state = Objects.requireNonNull(this.level).getBlockState(runePos);
                             if (state.getBlock() == ModBlocks.runeHolder) {
-                                TileRuneHolder tile = ModBlocks.runeHolder.getBlockEntity(level, runePos);
+                                TileRuneHolder tile = ModBlocks.runeHolder.getBlockEntity(this.level, runePos);
                                 tile.setTarget(null, 0, true);
                                 ItemStack runeStack = tile.getInventory().getStackInSlot(0);
                                 tile.getInventory().setStackInSlot(0, ItemStack.EMPTY);
                                 if (!rune.isConsumed() && !runeStack.isEmpty()) {
-                                    ItemEntity ie = new ItemEntity(level, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, runeStack);
-                                    level.addFreshEntity(ie);
+                                    ItemEntity ie = new ItemEntity(this.level, this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5, runeStack);
+                                    this.level.addFreshEntity(ie);
                                 }
                             }
                         }
-                        RuneRitualRecipe recipeCopy = recipe;
-                        recipe = null;
-                        recipeId = null;
-                        progress = 0;
-                        transformId = 0;
-                        List<ItemStack> consumedStacksCops = consumedStacks;
-                        consumedStacks = new ArrayList<>();
-                        specialNbt = new CompoundTag();
+                        RuneRitualRecipe recipeCopy = this.recipe;
+                        this.recipe = null;
+                        this.recipeId = null;
+                        this.progress = 0;
+                        this.transformId = 0;
+                        List<ItemStack> consumedStacksCops = this.consumedStacks;
+                        this.consumedStacks = new ArrayList<>();
+                        this.specialNbt = new CompoundTag();
 
                         if (recipeCopy.getSpecialOutput() != null) {
-                            recipeCopy.getSpecialOutput().apply(level, worldPosition, consumedStacksCops);
+                            recipeCopy.getSpecialOutput().apply(this.level, this.worldPosition, consumedStacksCops);
                         }
-                        setDispatchable();
+                        this.setDispatchable();
                     } else {
-                        updabePatterns(recipe, transformId, progress / (double) recipe.getTicks(), false);
+                        this.updabePatterns(this.recipe, this.transformId, this.progress / (double) this.recipe.getTicks(), false);
                     }
                 }
-                setChanged();
+                this.setChanged();
             } else {
-                recipeId = null;
-                progress = 0;
-                transformId = 0;
-                if (!consumedStacks.isEmpty()) {
-                    consumedStacks = new ArrayList<>();
+                this.recipeId = null;
+                this.progress = 0;
+                this.transformId = 0;
+                if (!this.consumedStacks.isEmpty()) {
+                    this.consumedStacks = new ArrayList<>();
                 }
-                specialNbt = new CompoundTag();
-                setChanged();
-                setDispatchable();
+                this.specialNbt = new CompoundTag();
+                this.setChanged();
+                this.setDispatchable();
             }
         } else {
-            if (recipe != null) {
-                if (progress < recipe.getTicks() && progress > 0) {
-                    progress += 1;
-                    double progressScaled = progress / (double) recipe.getTicks();
-                    updabePatterns(recipe, transformId, progressScaled, false);
-                    if (progress == recipe.getTicks() - 1) {
-                        level.addParticle(ParticleTypes.FLASH, worldPosition.getX() + 0.5, worldPosition.getY() + 0.45, worldPosition.getZ() + 0.5, 0, 0, 0);
-                    } else if (progress < recipe.getTicks() - 2) {
-                        progressScaled = Math.max(0, (progress - 2) / (double) recipe.getTicks());
-                        for (RuneRitualRecipe.RunePosition rune : recipe.getRunes()) {
-                            BlockEntity runeHolderBE = level.getBlockEntity(worldPosition.offset(rune.getX(transformId), 0, rune.getZ(transformId)));
+            if (this.recipe != null) {
+                if (this.progress < this.recipe.getTicks() && this.progress > 0) {
+                    this.progress += 1;
+                    double progressScaled = this.progress / (double) this.recipe.getTicks();
+                    this.updabePatterns(this.recipe, this.transformId, progressScaled, false);
+                    if (this.progress == this.recipe.getTicks() - 1) {
+                        this.level.addParticle(ParticleTypes.FLASH, this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.45, this.worldPosition.getZ() + 0.5, 0, 0, 0);
+                    } else if (this.progress < this.recipe.getTicks() - 2) {
+                        progressScaled = Math.max(0, (this.progress - 2) / (double) this.recipe.getTicks());
+                        for (RuneRitualRecipe.RunePosition rune : this.recipe.getRunes()) {
+                            BlockEntity runeHolderBE = this.level.getBlockEntity(this.worldPosition.offset(rune.getX(this.transformId), 0, rune.getZ(this.transformId)));
                             if (runeHolderBE instanceof TileRuneHolder) {
                                 ItemStack stack = ((TileRuneHolder) runeHolderBE).getInventory().getStackInSlot(0);
                                 if (!stack.isEmpty()) {
-                                    double x = rune.getX(transformId) * (1 - progressScaled);
+                                    double x = rune.getX(this.transformId) * (1 - progressScaled);
                                     double y = Math.sin(progressScaled * Math.PI);
-                                    double z = rune.getZ(transformId) * (1 - progressScaled);
-                                    double xr = (level.random.nextDouble() * 0.6) - 0.3;
-                                    double yr = (level.random.nextDouble() * 0.6) - 0.3;
-                                    double zr = (level.random.nextDouble() * 0.6) - 0.3;
-                                    level.addParticle(getParticle(stack.getItem()), worldPosition.getX() + 0.5 + x + xr, worldPosition.getY() + 0.25 + y + yr, worldPosition.getZ() + 0.5 + z + zr, 0, 0, 0);
+                                    double z = rune.getZ(this.transformId) * (1 - progressScaled);
+                                    double xr = (this.level.random.nextDouble() * 0.6) - 0.3;
+                                    double yr = (this.level.random.nextDouble() * 0.6) - 0.3;
+                                    double zr = (this.level.random.nextDouble() * 0.6) - 0.3;
+                                    this.level.addParticle(this.getParticle(stack.getItem()), this.worldPosition.getX() + 0.5 + x + xr, this.worldPosition.getY() + 0.25 + y + yr, this.worldPosition.getZ() + 0.5 + z + zr, 0, 0, 0);
                                 }
                             }
                         }
@@ -198,7 +198,7 @@ public class TileMasterRuneHolder extends TileRuneHolder implements TickableBloc
     }
 
     public void tryStartRitual(Player player) {
-        tryStartRitual(
+        this.tryStartRitual(
                 msg -> player.sendMessage(msg, player.getUUID()),
                 mana -> ManaItemHandler.instance().requestManaExact(new ItemStack(Items.COBBLESTONE), player, mana, false),
                 mana -> ManaItemHandler.instance().requestManaExact(new ItemStack(Items.COBBLESTONE), player, mana, true)
@@ -206,35 +206,35 @@ public class TileMasterRuneHolder extends TileRuneHolder implements TickableBloc
     }
     
     public void tryStartRitual(Consumer<Component> messages, Function<Integer, Boolean> manaBest, Consumer<Integer> manaRequest) {
-        if (recipe != null) {
+        if (this.recipe != null) {
             messages.accept(new TranslatableComponent("message.mythicbotany.ritual_running").withStyle(ChatFormatting.GRAY));
         } else {
-            Pair<RuneRitualRecipe, Integer> recipe = findRecipe();
+            Pair<RuneRitualRecipe, Integer> recipe = this.findRecipe();
             if (recipe == null) {
                 messages.accept(new TranslatableComponent("message.mythicbotany.ritual_wrong_shape").withStyle(ChatFormatting.GRAY));
             } else {
-                tryStart(recipe.getLeft(), recipe.getRight(), messages, manaBest, manaRequest);
+                this.tryStart(recipe.getLeft(), recipe.getRight(), messages, manaBest, manaRequest);
             }
         }
     }
 
     @Nullable
     private Pair<RuneRitualRecipe, Integer> findRecipe() {
-        if (level == null) {
+        if (this.level == null) {
             return null;
         }
-        return level.getRecipeManager().getAllRecipesFor(ModRecipes.RUNE_RITUAL).stream()
+        return this.level.getRecipeManager().getAllRecipesFor(ModRecipes.RUNE_RITUAL).stream()
                 .flatMap(this::recipeMatches)
                 .findFirst().orElse(null);
     }
 
     private Stream<Pair<RuneRitualRecipe, Integer>> recipeMatches(RuneRitualRecipe recipe) {
-        if (!recipe.getCenterRune().test(getInventory().getStackInSlot(0))) {
+        if (!recipe.getCenterRune().test(this.getInventory().getStackInSlot(0))) {
             return Stream.empty();
         }
         int transformId = -1;
         for (int i = 0; i < 8; i++) {
-            if (runePatternMatches(recipe, i)) {
+            if (this.runePatternMatches(recipe, i)) {
                 transformId = i;
                 break;
             }
@@ -255,9 +255,9 @@ public class TileMasterRuneHolder extends TileRuneHolder implements TickableBloc
                 return;
             }
         }
-        Vec3 center = new Vec3(worldPosition.getX() + 0.5, worldPosition.getY(), worldPosition.getZ() + 0.5);
+        Vec3 center = new Vec3(this.worldPosition.getX() + 0.5, this.worldPosition.getY(), this.worldPosition.getZ() + 0.5);
         AABB aabb = new AABB(center, center).inflate(2);
-        List<ItemEntity> inputs = Objects.requireNonNull(level).getEntities(EntityType.ITEM, aabb, e -> true);
+        List<ItemEntity> inputs = Objects.requireNonNull(this.level).getEntities(EntityType.ITEM, aabb, e -> true);
         List<MutableTriple<ItemEntity, ItemStack, Integer>> stacks = inputs.stream()
                 .map(e -> MutableTriple.of(e, e.getItem(), e.getItem().getCount()))
                 .filter(t -> !t.getMiddle().isEmpty()).toList();
@@ -279,13 +279,13 @@ public class TileMasterRuneHolder extends TileRuneHolder implements TickableBloc
 
         // Special input must be the last as check and apply is in one method here. After this we apply everything
         if (recipe.getSpecialInput() != null) {
-            Either<MutableComponent, CompoundTag> result = recipe.getSpecialInput().apply(level, worldPosition, recipe);
+            Either<MutableComponent, CompoundTag> result = recipe.getSpecialInput().apply(this.level, this.worldPosition, recipe);
             Optional<MutableComponent> tc = result.left();
             if (tc.isPresent()) {
                 messages.accept(tc.get().withStyle(ChatFormatting.GRAY));
                 return;
             }
-            result.ifRight(nbt -> specialNbt = nbt);
+            result.ifRight(nbt -> this.specialNbt = nbt);
         }
         
         manaRequest.accept(recipe.getMana());
@@ -299,19 +299,19 @@ public class TileMasterRuneHolder extends TileRuneHolder implements TickableBloc
         this.progress = 0;
         this.transformId = transform;
         this.consumedStacks = consumedStacks;
-        
-        setChanged();
-        setDispatchable();
+
+        this.setChanged();
+        this.setDispatchable();
     }
 
     private boolean runePatternMatches(RuneRitualRecipe recipe, int idx) {
         for (RuneRitualRecipe.RunePosition rune : recipe.getRunes()) {
-            BlockPos runePos = worldPosition.offset(rune.getX(idx), 0, rune.getZ(idx));
-            BlockState state = Objects.requireNonNull(level).getBlockState(runePos);
+            BlockPos runePos = this.worldPosition.offset(rune.getX(idx), 0, rune.getZ(idx));
+            BlockState state = Objects.requireNonNull(this.level).getBlockState(runePos);
             if (state.getBlock() != ModBlocks.runeHolder) {
                 return false;
             }
-            TileRuneHolder tile = ModBlocks.runeHolder.getBlockEntity(level, runePos);
+            TileRuneHolder tile = ModBlocks.runeHolder.getBlockEntity(this.level, runePos);
             if (!rune.getRune().test(tile.getInventory().getStackInSlot(0))) {
                 return false;
             }
@@ -321,51 +321,51 @@ public class TileMasterRuneHolder extends TileRuneHolder implements TickableBloc
 
     private void updabePatterns(RuneRitualRecipe recipe, int transformId, double progress, boolean sync) {
         if (transformId < 0 || transformId >= 8) transformId = 0;
-        setTarget(worldPosition, 0, sync);
+        this.setTarget(this.worldPosition, 0, sync);
         for (RuneRitualRecipe.RunePosition rune : recipe.getRunes()) {
-            BlockPos runePos = worldPosition.offset(rune.getX(transformId), 0, rune.getZ(transformId));
-            BlockState state = Objects.requireNonNull(level).getBlockState(runePos);
+            BlockPos runePos = this.worldPosition.offset(rune.getX(transformId), 0, rune.getZ(transformId));
+            BlockState state = Objects.requireNonNull(this.level).getBlockState(runePos);
             if (state.getBlock() == ModBlocks.runeHolder) {
-                TileRuneHolder tile = ModBlocks.runeHolder.getBlockEntity(level, runePos);
-                tile.setTarget(progress == 0 ? null : worldPosition, progress, sync);
+                TileRuneHolder tile = ModBlocks.runeHolder.getBlockEntity(this.level, runePos);
+                tile.setTarget(progress == 0 ? null : this.worldPosition, progress, sync);
             }
         }
     }
 
     public void cancelRecipe() {
-        if (level != null && recipe != null) {
-            updabePatterns(recipe, transformId, 0, true);
-            for (ItemStack stack : consumedStacks) {
-                ItemEntity ie = new ItemEntity(level, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, stack);
-                level.addFreshEntity(ie);
+        if (this.level != null && this.recipe != null) {
+            this.updabePatterns(this.recipe, this.transformId, 0, true);
+            for (ItemStack stack : this.consumedStacks) {
+                ItemEntity ie = new ItemEntity(this.level, this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5, stack);
+                this.level.addFreshEntity(ie);
             }
-            if (recipe.getSpecialInput() != null) {
-                recipe.getSpecialInput().cancel(level, worldPosition, recipe, specialNbt);
+            if (this.recipe.getSpecialInput() != null) {
+                this.recipe.getSpecialInput().cancel(this.level, this.worldPosition, this.recipe, this.specialNbt);
             }
-            SolidifiedMana.dropMana(level, worldPosition, recipe.getMana());
-            recipe = null;
-            recipeId = null;
-            progress = 0;
-            transformId = 0;
-            consumedStacks = new ArrayList<>();
-            specialNbt = new CompoundTag();
-            setChanged();
-            setDispatchable();
+            SolidifiedMana.dropMana(this.level, this.worldPosition, this.recipe.getMana());
+            this.recipe = null;
+            this.recipeId = null;
+            this.progress = 0;
+            this.transformId = 0;
+            this.consumedStacks = new ArrayList<>();
+            this.specialNbt = new CompoundTag();
+            this.setChanged();
+            this.setDispatchable();
         }
     }
 
     private boolean recipeValid(RuneRitualRecipe recipe, int transformId) {
-        if (!recipe.getCenterRune().test(getInventory().getStackInSlot(0))) {
+        if (!recipe.getCenterRune().test(this.getInventory().getStackInSlot(0))) {
             return false;
         }
         if (transformId < 0 || transformId >= 8) transformId = 0;
         for (RuneRitualRecipe.RunePosition rune : recipe.getRunes()) {
-            BlockPos runePos = worldPosition.offset(rune.getX(transformId), 0, rune.getZ(transformId));
-            BlockState state = Objects.requireNonNull(level).getBlockState(runePos);
+            BlockPos runePos = this.worldPosition.offset(rune.getX(transformId), 0, rune.getZ(transformId));
+            BlockState state = Objects.requireNonNull(this.level).getBlockState(runePos);
             if (state.getBlock() != ModBlocks.runeHolder) {
                 return false;
             }
-            TileRuneHolder tile = ModBlocks.runeHolder.getBlockEntity(level, runePos);
+            TileRuneHolder tile = ModBlocks.runeHolder.getBlockEntity(this.level, runePos);
             if (!rune.getRune().test(tile.getInventory().getStackInSlot(0))) {
                 return false;
             }
@@ -377,36 +377,36 @@ public class TileMasterRuneHolder extends TileRuneHolder implements TickableBloc
     public void load(@Nonnull CompoundTag nbt) {
         super.load(nbt);
         ResourceLocation id = NBTX.getRL(nbt, "recipe", MISSIGNO);
-        recipeId = id == MISSIGNO ? null : id;
-        progress = nbt.getInt("progress");
-        transformId = nbt.getInt("transform");
+        this.recipeId = id == MISSIGNO ? null : id;
+        this.progress = nbt.getInt("progress");
+        this.transformId = nbt.getInt("transform");
         if (nbt.contains("Consumed", Tag.TAG_LIST)) {
             ListTag consumed = nbt.getList("Consumed", Tag.TAG_COMPOUND);
-            consumedStacks = new ArrayList<>();
+            this.consumedStacks = new ArrayList<>();
             for (int i = 0; i < consumed.size(); i++) {
                 ItemStack stack = ItemStack.of(consumed.getCompound(i));
                 if (!stack.isEmpty()) {
-                    consumedStacks.add(stack);
+                    this.consumedStacks.add(stack);
                 }
             }
         } else {
-            consumedStacks = new ArrayList<>();
+            this.consumedStacks = new ArrayList<>();
         }
-        specialNbt = nbt.getCompound("SpecialInputData").copy();
+        this.specialNbt = nbt.getCompound("SpecialInputData").copy();
     }
 
     @Override
     public void saveAdditional(@Nonnull CompoundTag nbt) {
         super.saveAdditional(nbt);
-        NBTX.putRL(nbt, "recipe", recipe == null ? MISSIGNO : recipe.getId());
-        nbt.putInt("progress", progress);
-        nbt.putInt("transform", transformId);
+        NBTX.putRL(nbt, "recipe", this.recipe == null ? MISSIGNO : this.recipe.getId());
+        nbt.putInt("progress", this.progress);
+        nbt.putInt("transform", this.transformId);
         ListTag consumed = new ListTag();
-        for (ItemStack stack : consumedStacks) {
+        for (ItemStack stack : this.consumedStacks) {
             consumed.add(stack.serializeNBT());
         }
         nbt.put("Consumed", consumed);
-        nbt.put("SpecialInputData", specialNbt.copy());
+        nbt.put("SpecialInputData", this.specialNbt.copy());
     }
 
     @Nonnull
@@ -414,10 +414,10 @@ public class TileMasterRuneHolder extends TileRuneHolder implements TickableBloc
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = super.getUpdateTag();
         //noinspection ConstantConditions
-        if (!level.isClientSide) {
-            NBTX.putRL(nbt, "recipe", recipe == null ? MISSIGNO : recipe.getId());
-            nbt.putInt("progress", progress);
-            nbt.putInt("transform", transformId);
+        if (!this.level.isClientSide) {
+            NBTX.putRL(nbt, "recipe", this.recipe == null ? MISSIGNO : this.recipe.getId());
+            nbt.putInt("progress", this.progress);
+            nbt.putInt("transform", this.transformId);
         }
         return nbt;
     }
@@ -426,11 +426,11 @@ public class TileMasterRuneHolder extends TileRuneHolder implements TickableBloc
     public void handleUpdateTag(CompoundTag nbt) {
         super.handleUpdateTag(nbt);
         //noinspection ConstantConditions
-        if (level.isClientSide) {
+        if (this.level.isClientSide) {
             ResourceLocation id = NBTX.getRL(nbt, "recipe", MISSIGNO);
-            recipeId = id == MISSIGNO ? null : id;
-            progress = nbt.getInt("progress");
-            transformId = nbt.getInt("transform");
+            this.recipeId = id == MISSIGNO ? null : id;
+            this.progress = nbt.getInt("progress");
+            this.transformId = nbt.getInt("transform");
         }
     }
     

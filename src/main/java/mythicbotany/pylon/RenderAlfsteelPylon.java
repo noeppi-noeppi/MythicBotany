@@ -39,11 +39,11 @@ public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylo
     }
     
     public void render(@Nonnull TileAlfsteelPylon blockEntity, float partialTicks, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
-        doRender(blockEntity, partialTicks, matrixStack, buffer, combinedLight, combinedOverlay);
+        this.doRender(blockEntity, partialTicks, matrixStack, buffer, combinedLight, combinedOverlay);
     }
 
     public void doRender(@Nullable TileAlfsteelPylon pylon, float pticks, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
-        boolean direct = pylon == null && (forceTransform == ItemTransforms.TransformType.GUI || forceTransform.firstPerson());
+        boolean direct = pylon == null && (this.forceTransform == ItemTransforms.TransformType.GUI || this.forceTransform.firstPerson());
         RenderType glow = direct ? RenderHelper.NATURA_PYLON_GLOW_DIRECT : RenderHelper.NATURA_PYLON_GLOW;
 
         poseStack.pushPose();
@@ -59,7 +59,7 @@ public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylo
 
         RenderType layer = RenderType.entityTranslucent(TEXTURE);
         VertexConsumer vertex = buffer.getBuffer(layer);
-        ((IPylonModel) model).renderRing(poseStack, vertex, light, overlay);
+        ((IPylonModel) this.model).renderRing(poseStack, vertex, light, overlay);
         if (pylon != null) {
             poseStack.translate(0.0D, Math.sin((double) worldTime / 20.0D) / 20.0D - 0.025D, 0.0D);
         }
@@ -76,7 +76,7 @@ public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylo
         }
 
         vertex = buffer.getBuffer(glow);
-        ((IPylonModel) model).renderCrystal(poseStack, vertex, light, overlay);
+        ((IPylonModel) this.model).renderCrystal(poseStack, vertex, light, overlay);
         poseStack.popPose();
         poseStack.popPose();
     }

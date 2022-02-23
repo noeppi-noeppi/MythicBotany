@@ -24,12 +24,12 @@ public class AdvancementProvider extends AdvancementProviderBase {
 
     @Override
     public void setup() {
-        root().display(wandIcon())
-                .background(mod.resource("textures/block/alfsteel_block.png"))
-                .task(items(ModTags.Items.INGOTS_TERRASTEEL));
-                
-        advancement("all_runes").display(ModItems.joetunheimRune)
-                .tasks(itemTasks(
+        this.root().display(wandIcon())
+                .background(this.mod.resource("textures/block/alfsteel_block.png"))
+                .task(this.items(ModTags.Items.INGOTS_TERRASTEEL));
+
+        this.advancement("all_runes").display(ModItems.joetunheimRune)
+                .tasks(this.itemTasks(
                         vazkii.botania.common.item.ModItems.runeAir,
                         vazkii.botania.common.item.ModItems.runeAutumn,
                         vazkii.botania.common.item.ModItems.runeEarth,
@@ -50,27 +50,27 @@ public class AdvancementProvider extends AdvancementProviderBase {
                         ModItems.midgardRune, ModItems.joetunheimRune, ModItems.muspelheimRune,
                         ModItems.niflheimRune, ModItems.nidavellirRune, ModItems.helheimRune
                 ));
-        
-        advancement("mimir").display(ModItems.gjallarHornFull)
-                .task(eat(ModItems.gjallarHornFull));
-        
-        advancement("alfheim").parent("mimir").display(ModItems.dreamCherry)
-                .task(enter(Alfheim.DIMENSION));
-        
-        advancement("andwari").parent("alfheim").display(ModItems.andwariRing)
-                .task(items(ModItems.andwariRing));
-        
-        advancement("mjoellnir").parent("mimir").display(ModBlocks.mjoellnir)
-                .task(items(ModBlocks.mjoellnir));
-        
-        advancement("kill_pixie").parent("mjoellnir").display(ModItems.alfPixieSpawnEgg)
-                .task(new MjoellnirTrigger.Instance(ItemPredicate.ANY, entity(ModEntities.alfPixie)));
-        
-        advancement("alfsteel").display(ModItems.alfsteelIngot)
-                .task(items(ModItems.alfsteelIngot));
-        
-        advancement("mending_repair").parent("alfsteel").display(ModBlocks.alfsteelPylon)
-                .task(new AlfRepairTrigger.Instance(stack(Enchantments.MENDING)));
+
+        this.advancement("mimir").display(ModItems.gjallarHornFull)
+                .task(this.eat(ModItems.gjallarHornFull));
+
+        this.advancement("alfheim").parent("mimir").display(ModItems.dreamCherry)
+                .task(this.enter(Alfheim.DIMENSION));
+
+        this.advancement("andwari").parent("alfheim").display(ModItems.andwariRing)
+                .task(this.items(ModItems.andwariRing));
+
+        this.advancement("mjoellnir").parent("mimir").display(ModBlocks.mjoellnir)
+                .task(this.items(ModBlocks.mjoellnir));
+
+        this.advancement("kill_pixie").parent("mjoellnir").display(ModItems.alfPixieSpawnEgg)
+                .task(new MjoellnirTrigger.Instance(ItemPredicate.ANY, this.entity(ModEntities.alfPixie)));
+
+        this.advancement("alfsteel").display(ModItems.alfsteelIngot)
+                .task(this.items(ModItems.alfsteelIngot));
+
+        this.advancement("mending_repair").parent("alfsteel").display(ModBlocks.alfsteelPylon)
+                .task(new AlfRepairTrigger.Instance(this.stack(Enchantments.MENDING)));
     }
     
     private static ItemStack wandIcon() {

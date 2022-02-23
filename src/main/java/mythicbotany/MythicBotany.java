@@ -5,7 +5,6 @@ import io.github.noeppi_noeppi.libx.mod.registration.RegistrationBuilder;
 import mythicbotany.advancement.ModCriteria;
 import mythicbotany.alfheim.Alfheim;
 import mythicbotany.alfheim.AlfheimDimension;
-import mythicbotany.alfheim.placement.AlfheimFeatures;
 import mythicbotany.alfheim.structure.piece.ModStructurePieces;
 import mythicbotany.alfheim.teleporter.AlfheimPortalHandler;
 import mythicbotany.config.ClientConfig;
@@ -61,9 +60,9 @@ public class MythicBotany extends ModXRegistration {
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.CLIENT_CONFIG);
 
-        addRegistrationHandler(ModRecipes::register);
-        addRegistrationHandler(ModMisc::register);
-        addRegistrationHandler(Alfheim::register);
+        this.addRegistrationHandler(ModRecipes::register);
+        this.addRegistrationHandler(ModMisc::register);
+        this.addRegistrationHandler(Alfheim::register);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::sendIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ModEntities::createAttributes);
@@ -98,7 +97,7 @@ public class MythicBotany extends ModXRegistration {
 
     @Override
     protected void setup(final FMLCommonSetupEvent event) {
-        logger.info("Loading MythicBotany");
+        this.logger.info("Loading MythicBotany");
         
         event.enqueueWork(() -> {
             ModStructurePieces.setup();
@@ -119,8 +118,8 @@ public class MythicBotany extends ModXRegistration {
     protected void clientSetup(FMLClientSetupEvent event) {
         ModEntities.clientSetup();
         event.enqueueWork(() -> {
-            ClientBookRegistry.INSTANCE.pageTypes.put(new ResourceLocation(modid, "ritual_pattern"), PageRitualPattern.class);
-            ClientBookRegistry.INSTANCE.pageTypes.put(new ResourceLocation(modid, "ritual_info"), PageRitualInfo.class);
+            ClientBookRegistry.INSTANCE.pageTypes.put(new ResourceLocation(this.modid, "ritual_pattern"), PageRitualPattern.class);
+            ClientBookRegistry.INSTANCE.pageTypes.put(new ResourceLocation(this.modid, "ritual_info"), PageRitualInfo.class);
         });
     }
 

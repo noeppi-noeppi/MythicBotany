@@ -41,7 +41,7 @@ public class ItemMjoellnir extends BlockItem {
     @Override
     public InteractionResultHolder<ItemStack> use(@Nonnull Level level, @Nonnull Player player, @Nonnull InteractionHand hand) {
         if (!player.isShiftKeyDown()) {
-            throwHammer(level, player, hand);
+            this.throwHammer(level, player, hand);
             if (MythicConfig.mjoellnir.ranged_cooldown > 0) {
                 player.getCooldowns().addCooldown(this, MythicConfig.mjoellnir.ranged_cooldown);
             }

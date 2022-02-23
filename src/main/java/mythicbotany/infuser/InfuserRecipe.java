@@ -59,7 +59,7 @@ public class InfuserRecipe implements IInfuserRecipe {
 
     @Override
     public boolean matches(@Nonnull Container inv, @Nonnull Level level) {
-        List<Ingredient> ingredientsMissing = new ArrayList<>(inputs);
+        List<Ingredient> ingredientsMissing = new ArrayList<>(this.inputs);
         IntStream.range(0, inv.getContainerSize()).boxed().map(inv::getItem).filter(stack -> !stack.isEmpty()).forEach(stack ->
                 ingredientsMissing.stream().filter(ingredient -> ingredient.test(stack)).findFirst().ifPresent(ingredientsMissing::remove)
         );
@@ -95,7 +95,7 @@ public class InfuserRecipe implements IInfuserRecipe {
             }
             return ItemStack.EMPTY;
         }
-        return output.copy();
+        return this.output.copy();
     }
 
     @Nonnull

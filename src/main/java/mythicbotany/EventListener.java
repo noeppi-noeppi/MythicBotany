@@ -77,7 +77,7 @@ public class EventListener {
                         event.setDamageModifier(calculatedModifier);
                     }
                 }
-                crittingPlayers.add(event.getPlayer().getUUID());
+                this.crittingPlayers.add(event.getPlayer().getUUID());
             }
         }
     }
@@ -100,7 +100,7 @@ public class EventListener {
                 return;
             }
         }
-        if (event.getSource().getEntity() instanceof Player && crittingPlayers.contains(event.getSource().getEntity().getUUID())) {
+        if (event.getSource().getEntity() instanceof Player && this.crittingPlayers.contains(event.getSource().getEntity().getUUID())) {
             ItemTerrasteelHelm.onEntityAttacked(event.getSource(), event.getAmount(), ((Player) event.getSource().getEntity()), event.getEntityLiving());
         }
     }
@@ -108,7 +108,7 @@ public class EventListener {
     @SubscribeEvent
     public void endTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            crittingPlayers.clear();
+            this.crittingPlayers.clear();
         }
     }
 

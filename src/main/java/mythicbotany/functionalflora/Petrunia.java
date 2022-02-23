@@ -1,9 +1,9 @@
 package mythicbotany.functionalflora;
 
-import io.github.noeppi_noeppi.libx.util.NBTX;
 import mythicbotany.ModBlocks;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
 import mythicbotany.rune.TileMasterRuneHolder;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -27,7 +27,7 @@ public class Petrunia extends FunctionalFlowerBase {
     protected void tickFlower() {
         //noinspection ConstantConditions
         if (!this.level.isClientSide) {
-            if (currentPos == null) {
+            if (this.currentPos == null) {
                 find: for (int x = -3; x <= 3; x++) {
                     for (int y = -1; y <= 1; y++) {
                         for (int z = -3; z <= 3; z++) {
@@ -72,13 +72,13 @@ public class Petrunia extends FunctionalFlowerBase {
     public void load(@Nonnull CompoundTag nbt) {
         super.load(nbt);
         this.storedMana = nbt.getInt("StoredMana");
-        this.currentPos = NBTX.getPos(nbt, "CurrentRuneTargetPos");
+        this.currentPos = NbtUtils.readBlockPos(nbt.getCompound("CurrentRuneTargetPos"));
     }
 
     @Override
     public void saveAdditional(@Nonnull CompoundTag nbt) {
         super.saveAdditional(nbt);
         nbt.putInt("StoredMana", this.storedMana);
-        if (this.currentPos != null) NBTX.putPos(nbt, "CurrentRuneTargetPos", this.currentPos);
+        if (this.currentPos != null) nbt.put("CurrentRuneTargetPos", NbtUtils.writeBlockPos(this.currentPos));
     }
 }

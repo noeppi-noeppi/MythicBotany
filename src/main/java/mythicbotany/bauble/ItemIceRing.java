@@ -17,7 +17,7 @@ public class ItemIceRing extends ItemBauble {
 
     public void onWornTick(ItemStack stack, LivingEntity player) {
         if (player.level.isClientSide) {
-            displayParticles(player);
+            this.displayParticles(player);
         }
     }
 

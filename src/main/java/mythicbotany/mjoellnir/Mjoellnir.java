@@ -60,8 +60,8 @@ public class Mjoellnir extends Projectile {
 
     @Override
     protected void defineSynchedData() {
-        entityData.define(RETURNING, false);
-        entityData.define(STACK, ItemStack.EMPTY);
+        this.entityData.define(RETURNING, false);
+        this.entityData.define(STACK, ItemStack.EMPTY);
     }
 
     @Nonnull
@@ -74,9 +74,9 @@ public class Mjoellnir extends Projectile {
     public void onSyncedDataUpdated(@Nonnull EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         if (RETURNING.equals(key)) {
-            returning = entityData.get(RETURNING);
+            this.returning = this.entityData.get(RETURNING);
         } else if (STACK.equals(key)) {
-            stack = entityData.get(STACK);
+            this.stack = this.entityData.get(STACK);
         }
     }
 
@@ -86,62 +86,62 @@ public class Mjoellnir extends Projectile {
 
         // Will be changed before moving.
         // But we need the original value later on
-        boolean returningTickStart = returning;
+        boolean returningTickStart = this.returning;
 
-        if (!returning) {
-            checkForCollision();
-        } else if (!level.isClientSide) {
-            Vec3 returnPoint = getReturnPoint();
+        if (!this.returning) {
+            this.checkForCollision();
+        } else if (!this.level.isClientSide) {
+            Vec3 returnPoint = this.getReturnPoint();
             if (returnPoint != null) {
-                applyReturnMotion(returnPoint);
+                this.applyReturnMotion(returnPoint);
             }
-            tryReturn(returnPoint);
+            this.tryReturn(returnPoint);
         }
 
 
         Vec3 motion = this.getDeltaMovement();
         if (returningTickStart) {
             // The move method applies collisions. We don't want that
-            // when returning or we might be stuck
+            // when returning, or we might be stuck
             Vec3 position = this.position();
-            setPos(position.x + motion.x, position.y + motion.y, position.z + motion.z);
+            this.setPos(position.x + motion.x, position.y + motion.y, position.z + motion.z);
 //            move(MoverType.SELF, motion);
         } else {
-            move(MoverType.SELF, motion);
+            this.move(MoverType.SELF, motion);
         }
 
-        lifeLeft -= 1;
+        this.lifeLeft -= 1;
 
-        if (lifeLeft <= 0) {
-            startReturn();
+        if (this.lifeLeft <= 0) {
+            this.startReturn();
         }
 
-        Vec3 position = position();
+        Vec3 position = this.position();
         this.setPos(position.x, position.y, position.z);
     }
 
     private void checkForCollision() {
         // We also check on the client because it takes time for the server to update and this makes it smoother
         // however we don't trigger any logic here, just set the motion.
-        Vec3 motion = getDeltaMovement();
-        Vec3 position = position();
+        Vec3 motion = this.getDeltaMovement();
+        Vec3 position = this.position();
         Vec3 rayCast = position.add(motion);
 
-        if (isAlive() && !entityData.get(RETURNING)) {
-            HitResult result = ProjectileUtil.getEntityHitResult(level, this, position, rayCast, getBoundingBox().expandTowards(getDeltaMovement()).inflate(1),
-                    entity -> entity != this && !entity.isSpectator() && entity.isAlive() && entity.isPickable() && entity != getThrower());
+        if (this.isAlive() && !this.entityData.get(RETURNING)) {
+            HitResult result = ProjectileUtil.getEntityHitResult(this.level, this, position, rayCast, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1),
+                    entity -> entity != this && !entity.isSpectator() && entity.isAlive() && entity.isPickable() && entity != this.getThrower());
 
             if (result == null || result.getType() == HitResult.Type.MISS) {
-                result = level.clip(new ClipContext(position, rayCast, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+                result = this.level.clip(new ClipContext(position, rayCast, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
             }
             //noinspection ConstantConditions
             if (result != null && result.getType() != HitResult.Type.MISS) {
-                if (!level.isClientSide) {
-                    onHit(result);
+                if (!this.level.isClientSide) {
+                    this.onHit(result);
                 } else {
-                    Vec3 returnPoint = getReturnPoint();
+                    Vec3 returnPoint = this.getReturnPoint();
                     if (returnPoint != null) {
-                        applyReturnMotionClient(returnPoint);
+                        this.applyReturnMotionClient(returnPoint);
                     }
                 }
             }
@@ -150,25 +150,25 @@ public class Mjoellnir extends Projectile {
 
     @Override
     protected void onHit(@Nonnull HitResult result) {
-        if (!returning) {
+        if (!this.returning) {
             super.onHit(result);
-            startReturn();
+            this.startReturn();
         }
     }
 
     @Override
     protected void onHitEntity(@Nonnull EntityHitResult result) {
         if (result.getEntity() instanceof LivingEntity) {
-            attackEntities((LivingEntity) result.getEntity());
+            this.attackEntities((LivingEntity) result.getEntity());
         }
     }
 
     @Override
     protected void onHitBlock(@Nonnull BlockHitResult hit) {
         AABB aabb = new AABB(hit.getLocation(), hit.getLocation()).inflate(2);
-        List<LivingEntity> living = level.getEntitiesOfClass(LivingEntity.class, aabb, entity -> !entity.isSpectator() && entity.isAlive() && entity != getThrower());
+        List<LivingEntity> living = this.level.getEntitiesOfClass(LivingEntity.class, aabb, entity -> !entity.isSpectator() && entity.isAlive() && entity != this.getThrower());
         if (!living.isEmpty()) {
-            attackEntities(living.get(level.random.nextInt(living.size())));
+            this.attackEntities(living.get(this.level.random.nextInt(living.size())));
         }
     }
 
@@ -180,110 +180,110 @@ public class Mjoellnir extends Projectile {
     
     @Nullable
     private Vec3 getReturnPoint() {
-        Player throwerEntity = getThrower();
+        Player throwerEntity = this.getThrower();
         if (throwerEntity != null) {
             return throwerEntity.position();
-        } else if (throwPos != null) {
-            return throwPos;
+        } else if (this.throwPos != null) {
+            return this.throwPos;
         } else {
             return null;
         }
     }
 
     private void applyReturnMotion(@Nonnull Vec3 returnPoint) {
-        if (!level.isClientSide) {
-            Vec3 motion = getDeltaMovement();
-            Vec3 position = position();
+        if (!this.level.isClientSide) {
+            Vec3 motion = this.getDeltaMovement();
+            Vec3 position = this.position();
             Vec3 returnVec = new Vec3(returnPoint.x - position.x, returnPoint.y - position.y, returnPoint.z - position.z).normalize().multiply(0.6, 0.6, 0.6);
             // clamp because some mods think, it's a good idea to over enchant stuff on any type of tool they don't know about
-            double loyalty = 1 + (0.07 * Mth.clamp(EnchantmentHelper.getItemEnchantmentLevel(Enchantments.LOYALTY, stack), 0, 3));
+            double loyalty = 1 + (0.07 * Mth.clamp(EnchantmentHelper.getItemEnchantmentLevel(Enchantments.LOYALTY, this.stack), 0, 3));
             Vec3 newMotion = new Vec3(((3 * motion.x) + returnVec.x) / 4, ((3 * motion.y) + returnVec.y) / 4, ((3 * motion.z) + returnVec.z) / 4).multiply(loyalty, loyalty, loyalty);
-            setDeltaMovement(newMotion);
+            this.setDeltaMovement(newMotion);
         }
     }
 
     private void applyReturnMotionClient(@Nonnull Vec3 returnPoint) {
-        if (level.isClientSide) {
-            Vec3 motion = getDeltaMovement();
-            Vec3 position = position();
+        if (this.level.isClientSide) {
+            Vec3 motion = this.getDeltaMovement();
+            Vec3 position = this.position();
             Vec3 returnVec = new Vec3(returnPoint.x - position.x, returnPoint.y - position.y, returnPoint.z - position.z).normalize().multiply(0.6, 0.6, 0.6);
             Vec3 newMotion = new Vec3(((3 * motion.x) + returnVec.x) / 4, ((3 * motion.y) + returnVec.y) / 4, ((3 * motion.z) + returnVec.z) / 4);
-            setDeltaMovement(newMotion);
+            this.setDeltaMovement(newMotion);
         }
     }
 
     private void tryReturn(@Nullable Vec3 returnPoint) {
         if (returnPoint == null) {
             // We don't know where we should fly. Just place it where we are.
-            BlockMjoellnir.putInWorld(stack, level, blockPosition());
+            BlockMjoellnir.putInWorld(this.stack, this.level, this.blockPosition());
             this.remove(RemovalReason.DISCARDED);
-        } else if (returnPoint.distanceToSqr(position()) < 2) {
-            Player throwerEntity = getThrower();
+        } else if (returnPoint.distanceToSqr(this.position()) < 2) {
+            Player throwerEntity = this.getThrower();
             if (throwerEntity != null) {
-                if (!BlockMjoellnir.putInInventory(throwerEntity, stack, hotbarSlot)) {
-                    BlockMjoellnir.putInWorld(stack, level, new BlockPos(returnPoint));
+                if (!BlockMjoellnir.putInInventory(throwerEntity, this.stack, this.hotbarSlot)) {
+                    BlockMjoellnir.putInWorld(this.stack, this.level, new BlockPos(returnPoint));
                 }
             } else {
-                BlockMjoellnir.putInWorld(stack, level, new BlockPos(returnPoint));
+                BlockMjoellnir.putInWorld(this.stack, this.level, new BlockPos(returnPoint));
             }
             this.remove(RemovalReason.DISCARDED);
         }
     }
 
     private void startReturn() {
-        if (!returning) {
-            setLifeLeft(0);
-            setReturning(true);
+        if (!this.returning) {
+            this.setLifeLeft(0);
+            this.setReturning(true);
         }
     }
 
     private void attackEntities(LivingEntity target) {
         AABB aabb = new AABB(target.position(), target.position()).inflate(4);
-        List<LivingEntity> found = level.getEntitiesOfClass(LivingEntity.class, aabb, entity -> !entity.isSpectator() && entity.isAlive() && entity != getThrower());
-        LightningBolt lightning = attackEntity(target);
+        List<LivingEntity> found = this.level.getEntitiesOfClass(LivingEntity.class, aabb, entity -> !entity.isSpectator() && entity.isAlive() && entity != this.getThrower());
+        LightningBolt lightning = this.attackEntity(target);
         for (LivingEntity entity : found) {
             if (entity != target) {
-                areaDamage(entity, lightning);
+                this.areaDamage(entity, lightning);
             }
         }
     }
 
     @Nullable
     private LightningBolt attackEntity(LivingEntity target) {
-        if (!level.isClientSide) {
-            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) >= 1) {
+        if (!this.level.isClientSide) {
+            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, this.stack) >= 1) {
                 target.setSecondsOnFire(5);
             }
-            int knockback = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
+            int knockback = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, this.stack);
             if (knockback > 0) {
                 Vec3 vector3d = this.getDeltaMovement().multiply(1, 0, 1).normalize().scale(knockback * 0.6);
                 if (vector3d.lengthSqr() > 0) {
                     target.push(vector3d.x, 0.1D, vector3d.z);
                 }
             }
-            int power = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+            int power = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, this.stack);
             float dmg = MythicConfig.mjoellnir.base_damage_ranged + 1;
             if (power > 0) {
                 dmg += (MythicConfig.mjoellnir.enchantment_multiplier * Enchantments.SHARPNESS.getDamageBonus(power, target.getMobType()));
             }
-            Player thrower = getThrower();
+            Player thrower = this.getThrower();
             if (thrower instanceof ServerPlayer) {
-                ModCriteria.MJOELLNIR.trigger((ServerPlayer) thrower, getStack(), target);
+                ModCriteria.MJOELLNIR.trigger((ServerPlayer) thrower, this.getStack(), target);
             }
             target.hurt(thrower == null ? DamageSource.GENERIC : DamageSource.indirectMobAttack(this, thrower), dmg);
-            LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+            LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, this.level);
             lightning.setPos(target.getX(), target.getY(), target.getZ());
             lightning.setVisualOnly(true);
             lightning.setCause(thrower instanceof ServerPlayer ? (ServerPlayer) thrower : null);
-            level.addFreshEntity(lightning);
+            this.level.addFreshEntity(lightning);
             // When the entity is struck by lightning it'll take lightning damage and be set
-            // on fire. We don't want that so we disable the lightning damage for that time
+            // on fire. We don't want that, so we disable the lightning damage for that time
             // and reset the fire to the old state afterwards
-            if (level instanceof ServerLevel && !ForgeEventFactory.onEntityStruckByLightning(target, lightning)) {
+            if (this.level instanceof ServerLevel && !ForgeEventFactory.onEntityStruckByLightning(target, lightning)) {
                 int fireTicks = target.getRemainingFireTicks();
                 LivingEntity oldImmune = EventListener.lightningImmuneEntity;
                 EventListener.lightningImmuneEntity = target;
-                target.thunderHit((ServerLevel) level, lightning);
+                target.thunderHit((ServerLevel) this.level, lightning);
                 EventListener.lightningImmuneEntity = oldImmune;
                 target.setRemainingFireTicks(fireTicks);
             }
@@ -294,61 +294,61 @@ public class Mjoellnir extends Projectile {
     }
 
     private void areaDamage(LivingEntity target, @Nullable LightningBolt lightning) {
-        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) >= 1) {
+        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, this.stack) >= 1) {
             target.setSecondsOnFire(2);
         }
-        int power = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+        int power = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, this.stack);
         float dmg = MythicConfig.mjoellnir.base_damage_ranged + 1;
         if (power > 0) {
             dmg += (MythicConfig.mjoellnir.enchantment_multiplier * Enchantments.SHARPNESS.getDamageBonus(power, target.getMobType()));
         }
         dmg *= MythicConfig.mjoellnir.secondary_target_multiplier;
-        Player thrower = getThrower();
+        Player thrower = this.getThrower();
         target.hurt(thrower == null ? DamageSource.GENERIC : DamageSource.indirectMobAttack(this, thrower), dmg);
-        if (lightning != null && level.random.nextFloat() < MythicConfig.mjoellnir.secondary_lightning_chance) {
+        if (lightning != null && this.level.random.nextFloat() < MythicConfig.mjoellnir.secondary_lightning_chance) {
             int fireTicks = target.getRemainingFireTicks();
             LivingEntity oldImmune = EventListener.lightningImmuneEntity;
             EventListener.lightningImmuneEntity = target;
-            target.thunderHit((ServerLevel) level, lightning);
+            target.thunderHit((ServerLevel) this.level, lightning);
             EventListener.lightningImmuneEntity = oldImmune;
             target.setRemainingFireTicks(fireTicks);
         }
     }
 
     public boolean isReturning() {
-        return returning;
+        return this.returning;
     }
 
     public void setReturning(boolean returning) {
-        entityData.set(RETURNING, returning);
+        this.entityData.set(RETURNING, returning);
         this.returning = returning;
     }
 
     public ItemStack getStack() {
-        return stack;
+        return this.stack;
     }
 
     public void setStack(ItemStack stack) {
-        entityData.set(STACK, stack);
+        this.entityData.set(STACK, stack);
         this.stack = stack;
     }
 
     @Nullable
     public Player getThrower() {
-        if (thrower == null) {
+        if (this.thrower == null) {
             return null;
         } else {
-            return level.getPlayerByUUID(thrower);
+            return this.level.getPlayerByUUID(this.thrower);
         }
     }
 
     @Nullable
     public UUID getThrowerId() {
-        return thrower;
+        return this.thrower;
     }
 
     public void setThrower(@Nullable Player thrower) {
-        setThrowerId(thrower == null ? null : thrower.getGameProfile().getId());
+        this.setThrowerId(thrower == null ? null : thrower.getGameProfile().getId());
     }
 
     public void setThrowerId(@Nullable UUID thrower) {
@@ -357,7 +357,7 @@ public class Mjoellnir extends Projectile {
 
     @Nullable
     public Vec3 getThrowPos() {
-        return throwPos;
+        return this.throwPos;
     }
 
     public void setThrowPos(@Nullable Vec3 throwPos) {
@@ -365,7 +365,7 @@ public class Mjoellnir extends Projectile {
     }
 
     public int getHotBarSlot() {
-        return hotbarSlot;
+        return this.hotbarSlot;
     }
 
     public void setHotBarSlot(int hotBarSlot) {
@@ -373,7 +373,7 @@ public class Mjoellnir extends Projectile {
     }
 
     public int getLifeLeft() {
-        return lifeLeft;
+        return this.lifeLeft;
     }
 
     public void setLifeLeft(int lifeLeft) {
@@ -383,43 +383,43 @@ public class Mjoellnir extends Projectile {
     @Override
     protected void addAdditionalSaveData(@Nonnull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.put("Stack", stack.save(new CompoundTag()));
-        if (thrower != null) {
+        compound.put("Stack", this.stack.save(new CompoundTag()));
+        if (this.thrower != null) {
             compound.putBoolean("thrower", true);
-            compound.putLong("throwerl", thrower.getLeastSignificantBits());
-            compound.putLong("throwerm", thrower.getMostSignificantBits());
+            compound.putLong("throwerl", this.thrower.getLeastSignificantBits());
+            compound.putLong("throwerm", this.thrower.getMostSignificantBits());
         } else {
             compound.putBoolean("thrower", false);
         }
-        if (throwPos != null) {
+        if (this.throwPos != null) {
             compound.putBoolean("throwPos", true);
-            compound.putDouble("throwX", throwPos.x);
-            compound.putDouble("throwY", throwPos.y);
-            compound.putDouble("throwZ", throwPos.z);
+            compound.putDouble("throwX", this.throwPos.x);
+            compound.putDouble("throwY", this.throwPos.y);
+            compound.putDouble("throwZ", this.throwPos.z);
         } else {
             compound.putBoolean("throwPos", false);
         }
-        compound.putDouble("hotbar", hotbarSlot);
-        compound.putDouble("lifeTime", lifeLeft);
-        compound.putBoolean("returning", returning);
+        compound.putDouble("hotbar", this.hotbarSlot);
+        compound.putDouble("lifeTime", this.lifeLeft);
+        compound.putBoolean("returning", this.returning);
     }
 
     @Override
     protected void readAdditionalSaveData(@Nonnull CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        setStack(ItemStack.of(compound.getCompound("Stack")));
+        this.setStack(ItemStack.of(compound.getCompound("Stack")));
         if (compound.getBoolean("thrower")) {
-            setThrowerId(new UUID(compound.getLong("throwerm"), compound.getLong("throwerl")));
+            this.setThrowerId(new UUID(compound.getLong("throwerm"), compound.getLong("throwerl")));
         } else {
-            setThrowerId(null);
+            this.setThrowerId(null);
         }
         if (compound.getBoolean("throwPos")) {
-            setThrowPos(new Vec3(compound.getDouble("throwX"), compound.getDouble("throwY"), compound.getDouble("throwZ")));
+            this.setThrowPos(new Vec3(compound.getDouble("throwX"), compound.getDouble("throwY"), compound.getDouble("throwZ")));
         } else {
-            setThrowPos(null);
+            this.setThrowPos(null);
         }
-        setHotBarSlot(compound.getInt("hotbar"));
-        setLifeLeft(compound.getInt("lifeTime"));
-        setReturning(compound.getBoolean("returning"));
+        this.setHotBarSlot(compound.getInt("hotbar"));
+        this.setLifeLeft(compound.getInt("lifeTime"));
+        this.setReturning(compound.getBoolean("returning"));
     }
 }

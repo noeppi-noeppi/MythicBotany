@@ -1,7 +1,5 @@
 package mythicbotany.alfheim.gen;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mythicbotany.alfheim.Alfheim;

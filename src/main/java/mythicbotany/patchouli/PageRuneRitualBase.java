@@ -29,22 +29,22 @@ public abstract class PageRuneRitualBase extends BookPage {
 	public void build(BookEntry entry, BookContentsBuilder builder, int pageNum) {
         super.build(entry, builder, pageNum);
 
-        if (recipeId == null) {
-			recipe = null;
+        if (this.recipeId == null) {
+            this.recipe = null;
 		} else {
-            Recipe<?> foundRecipe = Minecraft.getInstance().level != null ? Minecraft.getInstance().level.getRecipeManager().byKey(recipeId).orElse(null) : null;
+            Recipe<?> foundRecipe = Minecraft.getInstance().level != null ? Minecraft.getInstance().level.getRecipeManager().byKey(this.recipeId).orElse(null) : null;
             if (foundRecipe instanceof RuneRitualRecipe) {
-                recipe = (RuneRitualRecipe) foundRecipe;
+                this.recipe = (RuneRitualRecipe) foundRecipe;
             } else {
-                recipe = null;
+                this.recipe = null;
             }
         }
     }
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        if (!title.isEmpty()) {
-            parent.drawCenteredStringNoShadow(poseStack, parent.book.i18n ? I18n.get(title) : title, GuiBook.PAGE_WIDTH / 2, 0, 0x000000);
+        if (!this.title.isEmpty()) {
+            this.parent.drawCenteredStringNoShadow(poseStack, this.parent.book.i18n ? I18n.get(this.title) : this.title, GuiBook.PAGE_WIDTH / 2, 0, 0x000000);
         }
     }
 }

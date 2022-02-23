@@ -59,7 +59,7 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
 
     @Override
     public Map<String, Object> getNamedAdditionalRegisters(ResourceLocation id) {
-        return ImmutableMap.of("floating", floatingBlock);
+        return ImmutableMap.of("floating", this.floatingBlock);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
     @SuppressWarnings("deprecation")
     @Override
     public int getAnalogOutputSignal(@Nonnull BlockState blockState, @Nonnull Level level, @Nonnull BlockPos pos) {
-        FunctionalFlowerBase te = getBlockEntity(level, pos);
+        FunctionalFlowerBase te = this.getBlockEntity(level, pos);
         if (te.getCurrentMana() > 0) {
             return 1 + (int) ((te.getCurrentMana() / (double) te.maxMana) * 14);
         } else {
@@ -131,14 +131,14 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
     @Override
     public void appendHoverText(@Nonnull ItemStack stack, @Nullable BlockGetter level, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        if (isGenerating) {
+        if (this.isGenerating) {
             tooltip.add(new TranslatableComponent("botania.flowerType.generating").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
         } else {
             tooltip.add(new TranslatableComponent("botania.flowerType.functional").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
 
         }
         //noinspection ConstantConditions
-        tooltip.add(new TranslatableComponent("block." + mod.modid + "." + this.getRegistryName().getPath() + ".description").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        tooltip.add(new TranslatableComponent("block." + this.mod.modid + "." + this.getRegistryName().getPath() + ".description").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 
     @Override
@@ -148,7 +148,7 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
     }
 
     public BlockFloatingFunctionalFlower<T> getFloatingBlock() {
-        return floatingBlock;
+        return this.floatingBlock;
     }
 
     @Nonnull
@@ -161,7 +161,7 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
     @Override
     public BlockState getPlant(BlockGetter level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
-        if (state.getBlock() != this) return defaultBlockState();
+        if (state.getBlock() != this) return this.defaultBlockState();
         return state;
     }
 }

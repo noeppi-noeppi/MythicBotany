@@ -3,8 +3,8 @@ package mythicbotany.rune;
 import io.github.noeppi_noeppi.libx.inventory.BaseItemStackHandler;
 import io.github.noeppi_noeppi.libx.capability.ItemCapabilities;
 import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
-import io.github.noeppi_noeppi.libx.util.NBTX;
 import mythicbotany.ModItemTags;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -45,28 +45,28 @@ public class TileRuneHolder extends BlockEntityBase {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         //noinspection unchecked
-        return cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (LazyOptional<T>) itemCap : super.getCapability(cap, side);
+        return cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (LazyOptional<T>) this.itemCap : super.getCapability(cap, side);
     }
 
     public BaseItemStackHandler getInventory() {
-        return inventory;
+        return this.inventory;
     }
 
     @Override
     public void load(@Nonnull CompoundTag nbt) {
         super.load(nbt);
-        inventory.deserializeNBT(nbt.getCompound("Inventory"));
-        target = NBTX.getPos(nbt, "TargetPos");
-        floatProgress = nbt.getDouble("FloatProgress");
+        this.inventory.deserializeNBT(nbt.getCompound("Inventory"));
+        this.target = NbtUtils.readBlockPos(nbt.getCompound("TargetPos"));
+        this.floatProgress = nbt.getDouble("FloatProgress");
     }
 
     @Override
     public void saveAdditional(@Nonnull CompoundTag nbt) {
         super.saveAdditional(nbt);
-        nbt.put("Inventory", inventory.serializeNBT());
+        nbt.put("Inventory", this.inventory.serializeNBT());
         if (this.target != null) {
-            NBTX.putPos(nbt, "TargetPos", target);
-            nbt.putDouble("FloatProgress", floatProgress);
+            nbt.put("TargetPos", NbtUtils.writeBlockPos(this.target));
+            nbt.putDouble("FloatProgress", this.floatProgress);
         }
     }
 
@@ -75,11 +75,11 @@ public class TileRuneHolder extends BlockEntityBase {
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = super.getUpdateTag();
         //noinspection ConstantConditions
-        if (!level.isClientSide) {
-            nbt.put("Inventory", inventory.serializeNBT());
+        if (!this.level.isClientSide) {
+            nbt.put("Inventory", this.inventory.serializeNBT());
             if (this.target != null) {
-                NBTX.putPos(nbt, "TargetPos", target);
-                nbt.putDouble("FloatProgress", floatProgress);
+                nbt.put("TargetPos", NbtUtils.writeBlockPos(this.target));
+                nbt.putDouble("FloatProgress", this.floatProgress);
             }
         }
         return nbt;
@@ -89,20 +89,20 @@ public class TileRuneHolder extends BlockEntityBase {
     public void handleUpdateTag(CompoundTag nbt) {
         super.handleUpdateTag(nbt);
         //noinspection ConstantConditions
-        if (level.isClientSide) {
-            inventory.deserializeNBT(nbt.getCompound("Inventory"));
-            target = NBTX.getPos(nbt, "TargetPos");
-            floatProgress = nbt.getDouble("FloatProgress");
+        if (this.level.isClientSide) {
+            this.inventory.deserializeNBT(nbt.getCompound("Inventory"));
+            this.target = NbtUtils.readBlockPos(nbt.getCompound("TargetPos"));
+            this.floatProgress = nbt.getDouble("FloatProgress");
         }
     }
 
     @Nullable
     public BlockPos getTarget() {
-        return target;
+        return this.target;
     }
 
     public double getFloatProgress() {
-        return floatProgress;
+        return this.floatProgress;
     }
 
     public void setTarget(@Nullable BlockPos target, double floatProgress, boolean sync) {
@@ -112,19 +112,19 @@ public class TileRuneHolder extends BlockEntityBase {
         } else {
             this.floatProgress = 0;
         }
-        setChanged();
+        this.setChanged();
         if (sync) {
-            setDispatchable();
+            this.setDispatchable();
         }
     }
 
     @Override
     public AABB getRenderBoundingBox() {
         AABB aabb = super.getRenderBoundingBox();
-        if (target != null) {
+        if (this.target != null) {
             // If the rune is floating to a target, we need to expand the render
             // aabb to include that target or runes will sometimes not render.
-            return aabb.expandTowards(target.getX() - worldPosition.getX(), 0, target.getZ() - worldPosition.getZ()).inflate(1);
+            return aabb.expandTowards(this.target.getX() - this.worldPosition.getX(), 0, this.target.getZ() - this.worldPosition.getZ()).inflate(1);
         } else {
             return aabb;
         }

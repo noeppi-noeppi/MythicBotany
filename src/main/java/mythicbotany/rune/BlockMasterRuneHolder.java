@@ -35,7 +35,7 @@ public class BlockMasterRuneHolder extends BlockRuneHolder<TileMasterRuneHolder>
                 if (!MythicPlayerData.getData(player).getBoolean("MimirKnowledge")) {
                     player.sendMessage(new TranslatableComponent("message.mythicbotany.mimir_unknown").withStyle(ChatFormatting.GRAY), player.getUUID());
                 } else {
-                    TileMasterRuneHolder tile = getBlockEntity(level, pos);
+                    TileMasterRuneHolder tile = this.getBlockEntity(level, pos);
                     tile.tryStartRitual(player);
                 }
             }

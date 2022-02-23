@@ -41,14 +41,14 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
 
     @Override
     protected void setup() {
-        makeFloatingFlowerRecipes();
-        makeDreamwoodWandRecipe();
-        
-        doubleCompress(ModItems.alfsteelNugget, ModItems.alfsteelIngot, ModBlocks.alfsteelBlock, true);
-        shaped(ModItems.fireRing, "re ", "e e", " e ", 'r', ModItems.muspelheimRune, 'e', ModTags.Items.INGOTS_ELEMENTIUM);
-        shaped(ModItems.iceRing, "re ", "e e", " e ", 'r', ModItems.niflheimRune, 'e', ModTags.Items.INGOTS_ELEMENTIUM);
-        
-        shaped(ModBlocks.manaInfuser, "eee", "wdz", "xay",
+        this.makeFloatingFlowerRecipes();
+        this.makeDreamwoodWandRecipe();
+
+        this.doubleCompress(ModItems.alfsteelNugget, ModItems.alfsteelIngot, ModBlocks.alfsteelBlock, true);
+        this.shaped(ModItems.fireRing, "re ", "e e", " e ", 'r', ModItems.muspelheimRune, 'e', ModTags.Items.INGOTS_ELEMENTIUM);
+        this.shaped(ModItems.iceRing, "re ", "e e", " e ", 'r', ModItems.niflheimRune, 'e', ModTags.Items.INGOTS_ELEMENTIUM);
+
+        this.shaped(ModBlocks.manaInfuser, "eee", "wdz", "xay",
                 'e', ModTags.Items.INGOTS_ELEMENTIUM,
                 'd', ModTags.Items.DREAMWOOD_LOGS_GLIMMERING,
                 'a', ModItems.asgardRune,
@@ -57,66 +57,66 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
                 'y', vazkii.botania.common.item.ModItems.runeAutumn,
                 'z',vazkii.botania.common.item.ModItems.runeWinter
         );
-        
-        shaped(ModBlocks.alfsteelPylon, " g ", "npn", " g ", 'p', vazkii.botania.common.block.ModBlocks.naturaPylon, 'n', ModItems.alfsteelNugget, 'g', Items.GHAST_TEAR);
-        shaped(vazkii.botania.common.block.ModBlocks.gaiaPylon, " d ", "epe", " d ", 'p', ModBlocks.alfsteelPylon, 'e', ModTags.Items.INGOTS_ELEMENTIUM, 'p', vazkii.botania.common.item.ModItems.pixieDust);
-        shaped(ModBlocks.manaCollector, "dgd", "dpd", "dmd", 'd', ModTags.Items.DREAMWOOD_LOGS_GLIMMERING, 'g', vazkii.botania.common.item.ModItems.gaiaIngot, 'p', vazkii.botania.common.item.ModItems.pixieDust, 'm', ModItems.vanaheimRune);
-        shaped(ModBlocks.yggdrasilBranch, "lll", "ttt", "lll", 'l', ModTags.Items.LIVINGWOOD_LOGS, 't', ModTags.Items.NUGGETS_TERRASTEEL);
-        shaped(ModBlocks.runeHolder, " w ", "wdw", 'w', Tags.Items.INGOTS_IRON, 'd', ModTags.Items.DUSTS_MANA);
-        shaped(ModBlocks.masterRuneHolder, " w ", "wdw", 'w', Tags.Items.INGOTS_IRON, 'd', ModTags.Items.DUSTS_MANA);
-        shapeless(ModItems.kvasirMead, ModItems.kvasirBlood, Items.HONEY_BOTTLE);
 
-        blasting(ModBlocks.elementiumOre, vazkii.botania.common.item.ModItems.elementium, 0.7f, 200);
-        blasting(ModBlocks.dragonstoneOre, vazkii.botania.common.item.ModItems.dragonstone, 0.7f, 200);
+        this.shaped(ModBlocks.alfsteelPylon, " g ", "npn", " g ", 'p', vazkii.botania.common.block.ModBlocks.naturaPylon, 'n', ModItems.alfsteelNugget, 'g', Items.GHAST_TEAR);
+        this.shaped(vazkii.botania.common.block.ModBlocks.gaiaPylon, " d ", "epe", " d ", 'p', ModBlocks.alfsteelPylon, 'e', ModTags.Items.INGOTS_ELEMENTIUM, 'p', vazkii.botania.common.item.ModItems.pixieDust);
+        this.shaped(ModBlocks.manaCollector, "dgd", "dpd", "dmd", 'd', ModTags.Items.DREAMWOOD_LOGS_GLIMMERING, 'g', vazkii.botania.common.item.ModItems.gaiaIngot, 'p', vazkii.botania.common.item.ModItems.pixieDust, 'm', ModItems.vanaheimRune);
+        this.shaped(ModBlocks.yggdrasilBranch, "lll", "ttt", "lll", 'l', ModTags.Items.LIVINGWOOD_LOGS, 't', ModTags.Items.NUGGETS_TERRASTEEL);
+        this.shaped(ModBlocks.runeHolder, " w ", "wdw", 'w', Tags.Items.INGOTS_IRON, 'd', ModTags.Items.DUSTS_MANA);
+        this.shaped(ModBlocks.masterRuneHolder, " w ", "wdw", 'w', Tags.Items.INGOTS_IRON, 'd', ModTags.Items.DUSTS_MANA);
+        this.shapeless(ModItems.kvasirMead, ModItems.kvasirBlood, Items.HONEY_BOTTLE);
 
-        smithing(vazkii.botania.common.item.ModItems.terraSword, ModItems.alfsteelIngot, ModItems.alfsteelSword);
-        smithing(vazkii.botania.common.item.ModItems.terraPick, ModItems.alfsteelIngot, ModItems.alfsteelPick);
-        smithing(vazkii.botania.common.item.ModItems.terraAxe, ModItems.alfsteelIngot, ModItems.alfsteelAxe);
-        smithing(vazkii.botania.common.item.ModItems.terrasteelHelm, ModItems.alfsteelIngot, ModItems.alfsteelHelmet);
-        smithing(vazkii.botania.common.item.ModItems.terrasteelChest, ModItems.alfsteelIngot, ModItems.alfsteelChestplate);
-        smithing(vazkii.botania.common.item.ModItems.terrasteelLegs, ModItems.alfsteelIngot, ModItems.alfsteelLeggings);
-        smithing(vazkii.botania.common.item.ModItems.terrasteelBoots, ModItems.alfsteelIngot, ModItems.alfsteelBoots);
-        smithing(vazkii.botania.common.item.ModItems.manaRingGreater, ModItems.alfsteelIngot, ModItems.manaRingGreatest);
-        smithing(vazkii.botania.common.item.ModItems.auraRingGreater, ModItems.alfsteelIngot, ModItems.auraRingGreatest);
+        this.blasting(ModBlocks.elementiumOre, vazkii.botania.common.item.ModItems.elementium, 0.7f, 200);
+        this.blasting(ModBlocks.dragonstoneOre, vazkii.botania.common.item.ModItems.dragonstone, 0.7f, 200);
 
-        petalApothecary(ModBlocks.exoblaze, petal(DyeColor.YELLOW), petal(DyeColor.YELLOW), petal(DyeColor.GRAY), petal(DyeColor.LIGHT_GRAY), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire), Ingredient.of(Items.BLAZE_POWDER));
-        petalApothecary(ModBlocks.witherAconite, petal(DyeColor.BLACK), petal(DyeColor.BLACK), Ingredient.of(vazkii.botania.common.item.ModItems.runePride), Ingredient.of(Blocks.WITHER_ROSE));
-        petalApothecary(ModBlocks.aquapanthus, petal(DyeColor.BLUE), petal(DyeColor.BLUE), petal(DyeColor.LIGHT_BLUE), petal(DyeColor.GREEN), petal(DyeColor.CYAN));
-        petalApothecary(ModBlocks.hellebore, petal(DyeColor.RED), petal(DyeColor.RED), petal(DyeColor.PURPLE), petal(DyeColor.CYAN), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire));
-        petalApothecary(ModBlocks.raindeletia, petal(DyeColor.LIGHT_BLUE), petal(DyeColor.BLUE), petal(DyeColor.MAGENTA), petal(DyeColor.WHITE), Ingredient.of(vazkii.botania.common.item.ModItems.runeWater));
-        petalApothecary(ModBlocks.petrunia, petal(DyeColor.RED), petal(DyeColor.RED), petal(DyeColor.ORANGE), petal(DyeColor.BROWN), Ingredient.of(ModItems.gjallarHornFull), Ingredient.of(vazkii.botania.common.item.ModItems.phantomInk));
+        this.smithing(vazkii.botania.common.item.ModItems.terraSword, ModItems.alfsteelIngot, ModItems.alfsteelSword);
+        this.smithing(vazkii.botania.common.item.ModItems.terraPick, ModItems.alfsteelIngot, ModItems.alfsteelPick);
+        this.smithing(vazkii.botania.common.item.ModItems.terraAxe, ModItems.alfsteelIngot, ModItems.alfsteelAxe);
+        this.smithing(vazkii.botania.common.item.ModItems.terrasteelHelm, ModItems.alfsteelIngot, ModItems.alfsteelHelmet);
+        this.smithing(vazkii.botania.common.item.ModItems.terrasteelChest, ModItems.alfsteelIngot, ModItems.alfsteelChestplate);
+        this.smithing(vazkii.botania.common.item.ModItems.terrasteelLegs, ModItems.alfsteelIngot, ModItems.alfsteelLeggings);
+        this.smithing(vazkii.botania.common.item.ModItems.terrasteelBoots, ModItems.alfsteelIngot, ModItems.alfsteelBoots);
+        this.smithing(vazkii.botania.common.item.ModItems.manaRingGreater, ModItems.alfsteelIngot, ModItems.manaRingGreatest);
+        this.smithing(vazkii.botania.common.item.ModItems.auraRingGreater, ModItems.alfsteelIngot, ModItems.auraRingGreatest);
 
-        manaInfusion(vazkii.botania.common.item.ModItems.grassHorn, ModItems.gjallarHornEmpty, 20000);
+        this.petalApothecary(ModBlocks.exoblaze, this.petal(DyeColor.YELLOW), this.petal(DyeColor.YELLOW), this.petal(DyeColor.GRAY), this.petal(DyeColor.LIGHT_GRAY), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire), Ingredient.of(Items.BLAZE_POWDER));
+        this.petalApothecary(ModBlocks.witherAconite, this.petal(DyeColor.BLACK), this.petal(DyeColor.BLACK), Ingredient.of(vazkii.botania.common.item.ModItems.runePride), Ingredient.of(Blocks.WITHER_ROSE));
+        this.petalApothecary(ModBlocks.aquapanthus, this.petal(DyeColor.BLUE), this.petal(DyeColor.BLUE), this.petal(DyeColor.LIGHT_BLUE), this.petal(DyeColor.GREEN), this.petal(DyeColor.CYAN));
+        this.petalApothecary(ModBlocks.hellebore, this.petal(DyeColor.RED), this.petal(DyeColor.RED), this.petal(DyeColor.PURPLE), this.petal(DyeColor.CYAN), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire));
+        this.petalApothecary(ModBlocks.raindeletia, this.petal(DyeColor.LIGHT_BLUE), this.petal(DyeColor.BLUE), this.petal(DyeColor.MAGENTA), this.petal(DyeColor.WHITE), Ingredient.of(vazkii.botania.common.item.ModItems.runeWater));
+        this.petalApothecary(ModBlocks.petrunia, this.petal(DyeColor.RED), this.petal(DyeColor.RED), this.petal(DyeColor.ORANGE), this.petal(DyeColor.BROWN), Ingredient.of(ModItems.gjallarHornFull), Ingredient.of(vazkii.botania.common.item.ModItems.phantomInk));
 
-        runeAltar(ModItems.midgardRune, 16000, Ingredient.of(ModTags.Items.INGOTS_MANASTEEL), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeSpring), Ingredient.of(vazkii.botania.common.item.ModItems.runeGreed), Ingredient.of(Blocks.GRASS_BLOCK));
-        runeAltar(ModItems.alfheimRune, 16000, Ingredient.of(ModTags.Items.INGOTS_ELEMENTIUM), Ingredient.of(vazkii.botania.common.item.ModItems.runeAir), Ingredient.of(vazkii.botania.common.item.ModItems.runeSummer), Ingredient.of(vazkii.botania.common.item.ModItems.runeLust), Ingredient.of(Blocks.ACACIA_LEAVES, Blocks.BIRCH_LEAVES, Blocks.DARK_OAK_LEAVES, Blocks.JUNGLE_LEAVES, Blocks.OAK_LEAVES, Blocks.SPRUCE_LEAVES));
-        runeAltar(ModItems.muspelheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_NETHER_BRICK), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire), Ingredient.of(vazkii.botania.common.item.ModItems.runeSummer), Ingredient.of(vazkii.botania.common.item.ModItems.runeWrath), Ingredient.of(Blocks.MAGMA_BLOCK));
-        runeAltar(ModItems.niflheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_IRON), Ingredient.of(vazkii.botania.common.item.ModItems.runeWater), Ingredient.of(vazkii.botania.common.item.ModItems.runeWinter), Ingredient.of(vazkii.botania.common.item.ModItems.runeWrath), Ingredient.of(Blocks.BLUE_ICE));
-        runeAltar(ModItems.asgardRune, 16000, Ingredient.of(Tags.Items.INGOTS_NETHERITE), Ingredient.of(vazkii.botania.common.item.ModItems.runeAir), Ingredient.of(vazkii.botania.common.item.ModItems.runeAutumn), Ingredient.of(vazkii.botania.common.item.ModItems.runePride), Ingredient.of(vazkii.botania.common.item.ModItems.rainbowRod));
-        runeAltar(ModItems.vanaheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_NETHERITE), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeSpring), Ingredient.of(vazkii.botania.common.item.ModItems.runePride), Ingredient.of(vazkii.botania.common.block.ModBlocks.alfPortal));
-        runeAltar(ModItems.helheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire), Ingredient.of(vazkii.botania.common.item.ModItems.runeAutumn), Ingredient.of(vazkii.botania.common.item.ModItems.runeEnvy), Ingredient.of(Items.SKELETON_SKULL, Items.WITHER_SKELETON_SKULL, Items.CREEPER_HEAD, Items.DRAGON_HEAD, Items.ZOMBIE_HEAD));
-        runeAltar(ModItems.nidavellirRune, 16000, Ingredient.of(Tags.Items.INGOTS_COPPER), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeWinter), Ingredient.of(vazkii.botania.common.item.ModItems.runeSloth), Ingredient.of(Blocks.IRON_BLOCK));
-        runeAltar(ModItems.joetunheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_BRICK), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeAutumn), Ingredient.of(vazkii.botania.common.item.ModItems.runeGluttony), Ingredient.of(Blocks.BLACKSTONE));
+        this.manaInfusion(vazkii.botania.common.item.ModItems.grassHorn, ModItems.gjallarHornEmpty, 20000);
 
-        elvenTrade(ModBlocks.dreamwoodLeaves, Ingredient.of(ItemTags.LEAVES));
-        
-        infuser(vazkii.botania.common.item.ModItems.terrasteel)
+        this.runeAltar(ModItems.midgardRune, 16000, Ingredient.of(ModTags.Items.INGOTS_MANASTEEL), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeSpring), Ingredient.of(vazkii.botania.common.item.ModItems.runeGreed), Ingredient.of(Blocks.GRASS_BLOCK));
+        this.runeAltar(ModItems.alfheimRune, 16000, Ingredient.of(ModTags.Items.INGOTS_ELEMENTIUM), Ingredient.of(vazkii.botania.common.item.ModItems.runeAir), Ingredient.of(vazkii.botania.common.item.ModItems.runeSummer), Ingredient.of(vazkii.botania.common.item.ModItems.runeLust), Ingredient.of(Blocks.ACACIA_LEAVES, Blocks.BIRCH_LEAVES, Blocks.DARK_OAK_LEAVES, Blocks.JUNGLE_LEAVES, Blocks.OAK_LEAVES, Blocks.SPRUCE_LEAVES));
+        this.runeAltar(ModItems.muspelheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_NETHER_BRICK), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire), Ingredient.of(vazkii.botania.common.item.ModItems.runeSummer), Ingredient.of(vazkii.botania.common.item.ModItems.runeWrath), Ingredient.of(Blocks.MAGMA_BLOCK));
+        this.runeAltar(ModItems.niflheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_IRON), Ingredient.of(vazkii.botania.common.item.ModItems.runeWater), Ingredient.of(vazkii.botania.common.item.ModItems.runeWinter), Ingredient.of(vazkii.botania.common.item.ModItems.runeWrath), Ingredient.of(Blocks.BLUE_ICE));
+        this.runeAltar(ModItems.asgardRune, 16000, Ingredient.of(Tags.Items.INGOTS_NETHERITE), Ingredient.of(vazkii.botania.common.item.ModItems.runeAir), Ingredient.of(vazkii.botania.common.item.ModItems.runeAutumn), Ingredient.of(vazkii.botania.common.item.ModItems.runePride), Ingredient.of(vazkii.botania.common.item.ModItems.rainbowRod));
+        this.runeAltar(ModItems.vanaheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_NETHERITE), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeSpring), Ingredient.of(vazkii.botania.common.item.ModItems.runePride), Ingredient.of(vazkii.botania.common.block.ModBlocks.alfPortal));
+        this.runeAltar(ModItems.helheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire), Ingredient.of(vazkii.botania.common.item.ModItems.runeAutumn), Ingredient.of(vazkii.botania.common.item.ModItems.runeEnvy), Ingredient.of(Items.SKELETON_SKULL, Items.WITHER_SKELETON_SKULL, Items.CREEPER_HEAD, Items.DRAGON_HEAD, Items.ZOMBIE_HEAD));
+        this.runeAltar(ModItems.nidavellirRune, 16000, Ingredient.of(Tags.Items.INGOTS_COPPER), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeWinter), Ingredient.of(vazkii.botania.common.item.ModItems.runeSloth), Ingredient.of(Blocks.IRON_BLOCK));
+        this.runeAltar(ModItems.joetunheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_BRICK), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeAutumn), Ingredient.of(vazkii.botania.common.item.ModItems.runeGluttony), Ingredient.of(Blocks.BLACKSTONE));
+
+        this.elvenTrade(ModBlocks.dreamwoodLeaves, Ingredient.of(ItemTags.LEAVES));
+
+        this.infuser(vazkii.botania.common.item.ModItems.terrasteel)
                 .addIngredient(ModTags.Items.INGOTS_MANASTEEL)
                 .addIngredient(vazkii.botania.common.item.ModItems.manaPearl)
                 .addIngredient(ModTags.Items.GEMS_MANA_DIAMOND)
                 .setManaCost(500000)
                 .setColors(0x0000FF, 0x00FF00)
                 .build();
-        
-        infuser(ModItems.alfsteelIngot)
+
+        this.infuser(ModItems.alfsteelIngot)
                 .addIngredient(ModTags.Items.INGOTS_ELEMENTIUM)
                 .addIngredient(ModTags.Items.GEMS_DRAGONSTONE)
                 .addIngredient(vazkii.botania.common.item.ModItems.pixieDust)
                 .setManaCost(2000000)
                 .setColors(0xFF008D, 0xFF9600)
                 .build();
-        
-        runeRitual(vazkii.botania.common.item.ModItems.runeMana)
+
+        this.runeRitual(vazkii.botania.common.item.ModItems.runeMana)
                 .rune4(vazkii.botania.common.item.ModItems.runeGreed, 2, 2)
                 .rune2(ModItems.alfheimRune, 3, 0)
                 .rune2(vazkii.botania.common.item.ModItems.runeGreed, 0, 3)
@@ -125,7 +125,7 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
                 .output(new ItemStack(ModItems.andwariRing))
                 .build();
 
-        runeRitual(ModItems.fimbultyrTablet)
+        this.runeRitual(ModItems.fimbultyrTablet)
                 .rune4(vazkii.botania.common.item.ModItems.runeWrath, 5, 0)
                 .rune4(vazkii.botania.common.item.ModItems.runePride, 4, 4)
                 .rune(vazkii.botania.common.item.ModItems.runeAir, -3, 2)
@@ -148,7 +148,7 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
                 .mana(500000)
                 .build();
 
-        runeRitual(ModItems.fimbultyrTablet)
+        this.runeRitual(ModItems.fimbultyrTablet)
                 .rune2(ModItems.midgardRune, 2, 2)
                 .rune2(ModItems.helheimRune, -2, 2)
                 .rune2(vazkii.botania.common.item.ModItems.runeSummer, 1, 3)

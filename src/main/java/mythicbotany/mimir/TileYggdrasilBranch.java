@@ -31,7 +31,7 @@ public class TileYggdrasilBranch extends BlockEntityMana implements TickableBloc
             .validator(stack -> stack.getItem() == ModItems.gjallarHornEmpty, 0)
             .build();
     
-    private final LazyOptional<IItemHandlerModifiable> itemCap = ItemCapabilities.create(() -> inventory).cast();
+    private final LazyOptional<IItemHandlerModifiable> itemCap = ItemCapabilities.create(() -> this.inventory).cast();
 
     private int progress = 0;
     
@@ -48,27 +48,27 @@ public class TileYggdrasilBranch extends BlockEntityMana implements TickableBloc
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         //noinspection unchecked
-        return cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (LazyOptional<T>) itemCap : super.getCapability(cap, side);
+        return cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (LazyOptional<T>) this.itemCap : super.getCapability(cap, side);
     }
 
     @Override
     public void tick() {
-        if (inventory.getStackInSlot(0).getItem() == ModItems.gjallarHornEmpty && inventory.getStackInSlot(0).getCount() == 1) {
-            if (mana >= 20) {
+        if (this.inventory.getStackInSlot(0).getItem() == ModItems.gjallarHornEmpty && this.inventory.getStackInSlot(0).getCount() == 1) {
+            if (this.mana >= 20) {
                 //noinspection ConstantConditions
-                if (!level.isClientSide) {
-                    mana -= 10;
-                    progress += 1;
-                    if (progress >= 600) {
-                        inventory.setStackInSlot(0, new ItemStack(ModItems.gjallarHornFull));
-                        progress = 0;
+                if (!this.level.isClientSide) {
+                    this.mana -= 10;
+                    this.progress += 1;
+                    if (this.progress >= 600) {
+                        this.inventory.setStackInSlot(0, new ItemStack(ModItems.gjallarHornFull));
+                        this.progress = 0;
                     }
-                    setChanged();
-                    setDispatchable();
-                } else if (level.getGameTime() % 4 == 0) {
+                    this.setChanged();
+                    this.setDispatchable();
+                } else if (this.level.getGameTime() % 4 == 0) {
                     double xf = 0.5;
                     double zf = 0.35;
-                    Direction dir = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+                    Direction dir = this.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
                     if (dir.getAxis() == Direction.Axis.X) {
                         double tmp = xf;
                         xf = zf;
@@ -78,28 +78,28 @@ public class TileYggdrasilBranch extends BlockEntityMana implements TickableBloc
                         xf = 1 - xf;
                         zf = 1 - zf;
                     }
-                    level.addParticle(ParticleTypes.DRIPPING_WATER, worldPosition.getX() + xf, worldPosition.getY() + 0.76, worldPosition.getZ() + zf, 0, -0.2, 0);
+                    this.level.addParticle(ParticleTypes.DRIPPING_WATER, this.worldPosition.getX() + xf, this.worldPosition.getY() + 0.76, this.worldPosition.getZ() + zf, 0, -0.2, 0);
                 }
             }
-        } else if (progress != 0) {
-            progress = 0;
-            setChanged();
-            setDispatchable();
+        } else if (this.progress != 0) {
+            this.progress = 0;
+            this.setChanged();
+            this.setDispatchable();
         }
     }
 
     @Override
     public void load(@Nonnull CompoundTag nbt) {
         super.load(nbt);
-        inventory.deserializeNBT(nbt.getCompound("Inventory"));
-        progress = nbt.getInt("Progress");
+        this.inventory.deserializeNBT(nbt.getCompound("Inventory"));
+        this.progress = nbt.getInt("Progress");
     }
 
     @Override
     public void saveAdditional(@Nonnull CompoundTag nbt) {
         super.saveAdditional(nbt);
-        nbt.put("Inventory", inventory.serializeNBT());
-        nbt.putInt("Progress", progress);
+        nbt.put("Inventory", this.inventory.serializeNBT());
+        nbt.putInt("Progress", this.progress);
     }
 
     @Nonnull
@@ -107,8 +107,8 @@ public class TileYggdrasilBranch extends BlockEntityMana implements TickableBloc
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = super.getUpdateTag();
         //noinspection ConstantConditions
-        if (!level.isClientSide) {
-            nbt.put("Inventory", inventory.serializeNBT());
+        if (!this.level.isClientSide) {
+            nbt.put("Inventory", this.inventory.serializeNBT());
         }
         return nbt;
     }
@@ -117,12 +117,12 @@ public class TileYggdrasilBranch extends BlockEntityMana implements TickableBloc
     public void handleUpdateTag(CompoundTag nbt) {
         super.handleUpdateTag(nbt);
         //noinspection ConstantConditions
-        if (level.isClientSide) {
-           inventory.deserializeNBT(nbt.getCompound("Inventory"));
+        if (this.level.isClientSide) {
+            this.inventory.deserializeNBT(nbt.getCompound("Inventory"));
         }
     }
 
     public IItemHandlerModifiable getInventory() {
-        return inventory;
+        return this.inventory;
     }
 }

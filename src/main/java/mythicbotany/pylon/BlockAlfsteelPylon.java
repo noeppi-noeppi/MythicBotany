@@ -2,7 +2,6 @@ package mythicbotany.pylon;
 
 import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
 import io.github.noeppi_noeppi.libx.mod.ModX;
-import io.github.noeppi_noeppi.libx.render.ItemStackRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
@@ -39,7 +38,7 @@ public class BlockAlfsteelPylon extends BlockBE<TileAlfsteelPylon> {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        BlockEntityRenderers.register(getBlockEntityType(), RenderAlfsteelPylon::new);
+        BlockEntityRenderers.register(this.getBlockEntityType(), RenderAlfsteelPylon::new);
     }
 
     @Override

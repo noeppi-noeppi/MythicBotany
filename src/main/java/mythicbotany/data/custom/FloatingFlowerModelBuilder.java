@@ -35,9 +35,9 @@ public class FloatingFlowerModelBuilder extends BlockModelBuilder {
     public JsonObject toJson() {
         JsonObject json = super.toJson();
         json.addProperty("loader", "botania:floating_flower");
-        if (flower != null) {
+        if (this.flower != null) {
             JsonObject flowerObj = new JsonObject();
-            flowerObj.addProperty("parent", flower.toString());
+            flowerObj.addProperty("parent", this.flower.toString());
             json.add("flower", flowerObj);
         }
         return json;

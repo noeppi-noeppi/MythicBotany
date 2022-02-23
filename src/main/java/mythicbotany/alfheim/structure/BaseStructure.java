@@ -48,7 +48,7 @@ public class BaseStructure extends StructureFeature<JigsawConfiguration> {
 
             JigsawConfiguration config = new JigsawConfiguration(
                     () -> context.registryAccess().ownedRegistryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
-                            .get(MythicBotany.getInstance().resource(structureId)),
+                            .get(MythicBotany.getInstance().resource(this.structureId)),
                     10
             );
 

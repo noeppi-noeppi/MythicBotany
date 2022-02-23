@@ -33,7 +33,7 @@ public class MultipleInputsComponent implements ICustomComponent {
     private List<Ingredient> makeIngredients() {
         AtomicReference<Recipe<?>> recipe = new AtomicReference<>(null);
         //noinspection ConstantConditions
-        Minecraft.getInstance().level.getRecipeManager().byKey(new ResourceLocation(recipeName)).ifPresent(recipe::set);
+        Minecraft.getInstance().level.getRecipeManager().byKey(new ResourceLocation(this.recipeName)).ifPresent(recipe::set);
         if (recipe.get() == null) {
             throw new RuntimeException("Missing recipe: " + this.recipeName);
         } else {
@@ -42,9 +42,9 @@ public class MultipleInputsComponent implements ICustomComponent {
     }
 
     public void render(@Nonnull PoseStack poseStack, @Nonnull IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
-        int widthHalf = (20 * ingredients.size()) / 2;
-        for (int i = 0; i < ingredients.size(); i++) {
-            context.renderIngredient(poseStack, this.x - widthHalf + 9 + (20 * i), this.y, mouseX, mouseY, ingredients.get(i));
+        int widthHalf = (20 * this.ingredients.size()) / 2;
+        for (int i = 0; i < this.ingredients.size(); i++) {
+            context.renderIngredient(poseStack, this.x - widthHalf + 9 + (20 * i), this.y, mouseX, mouseY, this.ingredients.get(i));
         }
     }
 

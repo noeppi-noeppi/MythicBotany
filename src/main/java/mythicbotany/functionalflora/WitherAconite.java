@@ -25,8 +25,8 @@ public class WitherAconite extends FunctionalFlowerBase {
     @Override
     protected void tickFlower() {
         //noinspection ConstantConditions
-        if (!level.isClientSide) {
-            List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, new AABB(worldPosition, worldPosition.immutable().offset(1, 1, 1)));
+        if (!this.level.isClientSide) {
+            List<ItemEntity> items = this.level.getEntitiesOfClass(ItemEntity.class, new AABB(this.worldPosition, this.worldPosition.immutable().offset(1, 1, 1)));
             if (items.size() == 1) {
                 ItemEntity item = items.get(0);
                 ItemStack stack = item.getItem();
@@ -35,13 +35,13 @@ public class WitherAconite extends FunctionalFlowerBase {
                         stack = new ItemStack(ModItems.fadedNetherStar);
                     }
                     if (stack.getItem() == ModItems.fadedNetherStar) {
-                        int manaTransfer = Math.min(maxTransfer * 2, Math.min(maxMana - mana, stack.getMaxDamage() - stack.getDamageValue()));
+                        int manaTransfer = Math.min(this.maxTransfer * 2, Math.min(this.maxMana - this.mana, stack.getMaxDamage() - stack.getDamageValue()));
                         if (manaTransfer > 0) {
                             stack.setDamageValue(stack.getDamageValue() + manaTransfer);
                             if (stack.getDamageValue() >= stack.getMaxDamage())
                                 stack = ItemStack.EMPTY;
-                            mana = Mth.clamp(mana + manaTransfer, 0, maxMana);
-                            didWork = true;
+                            this.mana = Mth.clamp(this.mana + manaTransfer, 0, this.maxMana);
+                            this.didWork = true;
                             item.setItem(stack);
                             MythicBotany.getNetwork().setItemMagnetImmune(item);
                         }

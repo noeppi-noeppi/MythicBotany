@@ -28,7 +28,7 @@ public class WheatFeature extends Feature<NoneFeatureConfiguration> {
         for (int i = 0; i < 5; i++) {
             int length = context.random().nextInt(5);
             for (int j = 0; j < length; j++) {
-                tryPlace(context.level(), hor);
+                this.tryPlace(context.level(), hor);
                 hor = hor.offset(Direction.from2DDataValue(context.random().nextInt(4)));
             }
         }

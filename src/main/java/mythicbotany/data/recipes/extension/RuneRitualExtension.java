@@ -57,11 +57,11 @@ public interface RuneRitualExtension extends RecipeExtension {
         }
 
         public RuneRitualRecipeBuilder rune(ItemLike rune, int x, int z, boolean consume) {
-            return rune(Ingredient.of(rune), x, z, consume);
+            return this.rune(Ingredient.of(rune), x, z, consume);
         }
 
         public RuneRitualRecipeBuilder rune(Tag<Item> rune, int x, int z, boolean consume) {
-            return rune(Ingredient.of(rune), x, z, consume);
+            return this.rune(Ingredient.of(rune), x, z, consume);
         }
 
         public RuneRitualRecipeBuilder rune(Ingredient rune, int x, int z, boolean consume) {
@@ -74,116 +74,116 @@ public interface RuneRitualExtension extends RecipeExtension {
 
         public RuneRitualRecipeBuilder rune4(ItemLike rune, int x, int z, boolean consume) {
             if (x == 0) {
-                rune(rune, 0, -z, consume);
-                rune(rune, 0, z, consume);
-                rune(rune, -z, 0, consume);
-                rune(rune, z, 0, consume);
+                this.rune(rune, 0, -z, consume);
+                this.rune(rune, 0, z, consume);
+                this.rune(rune, -z, 0, consume);
+                this.rune(rune, z, 0, consume);
             } else if (z == 0) {
-                rune(rune, -x, 0, consume);
-                rune(rune, x, 0, consume);
-                rune(rune, 0, -x, consume);
-                rune(rune, 0, x, consume);
+                this.rune(rune, -x, 0, consume);
+                this.rune(rune, x, 0, consume);
+                this.rune(rune, 0, -x, consume);
+                this.rune(rune, 0, x, consume);
             } else {
-                rune(rune, -x, -z, consume);
-                rune(rune, -x, z, consume);
-                rune(rune, x, -z, consume);
-                rune(rune, x, z, consume);
+                this.rune(rune, -x, -z, consume);
+                this.rune(rune, -x, z, consume);
+                this.rune(rune, x, -z, consume);
+                this.rune(rune, x, z, consume);
             }
             return this;
         }
 
         public RuneRitualRecipeBuilder rune4(Tag<Item> rune, int x, int z, boolean consume) {
             if (x == 0) {
-                rune(rune, 0, -z, consume);
-                rune(rune, 0, z, consume);
-                rune(rune, -z, 0, consume);
-                rune(rune, z, 0, consume);
+                this.rune(rune, 0, -z, consume);
+                this.rune(rune, 0, z, consume);
+                this.rune(rune, -z, 0, consume);
+                this.rune(rune, z, 0, consume);
             } else if (z == 0) {
-                rune(rune, -x, 0, consume);
-                rune(rune, x, 0, consume);
-                rune(rune, 0, -x, consume);
-                rune(rune, 0, x, consume);
+                this.rune(rune, -x, 0, consume);
+                this.rune(rune, x, 0, consume);
+                this.rune(rune, 0, -x, consume);
+                this.rune(rune, 0, x, consume);
             } else {
-                rune(rune, -x, -z, consume);
-                rune(rune, -x, z, consume);
-                rune(rune, x, -z, consume);
-                rune(rune, x, z, consume);
+                this.rune(rune, -x, -z, consume);
+                this.rune(rune, -x, z, consume);
+                this.rune(rune, x, -z, consume);
+                this.rune(rune, x, z, consume);
             }
             return this;
         }
 
         public RuneRitualRecipeBuilder rune4(Ingredient rune, int x, int z, boolean consume) {
             if (x == 0) {
-                rune(rune, 0, -z, consume);
-                rune(rune, 0, z, consume);
-                rune(rune, -z, 0, consume);
-                rune(rune, z, 0, consume);
+                this.rune(rune, 0, -z, consume);
+                this.rune(rune, 0, z, consume);
+                this.rune(rune, -z, 0, consume);
+                this.rune(rune, z, 0, consume);
             } else if (z == 0) {
-                rune(rune, -x, 0, consume);
-                rune(rune, x, 0, consume);
-                rune(rune, 0, -x, consume);
-                rune(rune, 0, x, consume);
+                this.rune(rune, -x, 0, consume);
+                this.rune(rune, x, 0, consume);
+                this.rune(rune, 0, -x, consume);
+                this.rune(rune, 0, x, consume);
             } else {
-                rune(rune, -x, -z, consume);
-                rune(rune, -x, z, consume);
-                rune(rune, x, -z, consume);
-                rune(rune, x, z, consume);
+                this.rune(rune, -x, -z, consume);
+                this.rune(rune, -x, z, consume);
+                this.rune(rune, x, -z, consume);
+                this.rune(rune, x, z, consume);
             }
             return this;
         }
 
         public RuneRitualRecipeBuilder rune2(ItemLike rune, int x, int z, boolean consume) {
-            rune(rune, -x, -z, consume);
-            rune(rune, x, z, consume);
+            this.rune(rune, -x, -z, consume);
+            this.rune(rune, x, z, consume);
             return this;
         }
 
         public RuneRitualRecipeBuilder rune2(Tag<Item> rune, int x, int z, boolean consume) {
-            rune(rune, -x, -z, consume);
-            rune(rune, x, z, consume);
+            this.rune(rune, -x, -z, consume);
+            this.rune(rune, x, z, consume);
             return this;
         }
 
         public RuneRitualRecipeBuilder rune2(Ingredient rune, int x, int z, boolean consume) {
-            rune(rune, -x, -z, consume);
-            rune(rune, x, z, consume);
+            this.rune(rune, -x, -z, consume);
+            this.rune(rune, x, z, consume);
             return this;
         }
 
         public RuneRitualRecipeBuilder rune(ItemLike rune, int x, int z) {
-            return rune(rune, x, z, false);
+            return this.rune(rune, x, z, false);
         }
 
         public RuneRitualRecipeBuilder rune(Tag<Item> rune, int x, int z) {
-            return rune(rune, x, z, false);
+            return this.rune(rune, x, z, false);
         }
 
         public RuneRitualRecipeBuilder rune(Ingredient rune, int x, int z) {
-            return rune(rune, x, z, false);
+            return this.rune(rune, x, z, false);
         }
 
         public RuneRitualRecipeBuilder rune4(ItemLike rune, int x, int z) {
-            return rune4(rune, x, z, false);
+            return this.rune4(rune, x, z, false);
         }
 
         public RuneRitualRecipeBuilder rune4(Tag<Item> rune, int x, int z) {
-            return rune4(rune, x, z, false);
+            return this.rune4(rune, x, z, false);
         }
 
         public RuneRitualRecipeBuilder rune4(Ingredient rune, int x, int z) {
-            return rune4(rune, x, z, false);
+            return this.rune4(rune, x, z, false);
         }
 
         public RuneRitualRecipeBuilder rune2(ItemLike rune, int x, int z) {
-            return rune2(rune, x, z, false);
+            return this.rune2(rune, x, z, false);
         }
 
         public RuneRitualRecipeBuilder rune2(Tag<Item> rune, int x, int z) {
-            return rune2(rune, x, z, false);
+            return this.rune2(rune, x, z, false);
         }
 
         public RuneRitualRecipeBuilder rune2(Ingredient rune, int x, int z) {
-            return rune2(rune, x, z, false);
+            return this.rune2(rune, x, z, false);
         }
 
         public RuneRitualRecipeBuilder mana(int manaCost) {
@@ -197,11 +197,11 @@ public interface RuneRitualExtension extends RecipeExtension {
         }
 
         public RuneRitualRecipeBuilder input(ItemLike input) {
-            return input(Ingredient.of(input));
+            return this.input(Ingredient.of(input));
         }
 
         public RuneRitualRecipeBuilder input(Tag<Item> input) {
-            return input(Ingredient.of(input));
+            return this.input(Ingredient.of(input));
         }
 
         public RuneRitualRecipeBuilder input(Ingredient input) {
@@ -210,7 +210,7 @@ public interface RuneRitualExtension extends RecipeExtension {
         }
 
         public RuneRitualRecipeBuilder output(ItemLike output) {
-            return output(new ItemStack(output));
+            return this.output(new ItemStack(output));
         }
 
         public RuneRitualRecipeBuilder output(ItemStack output) {
@@ -242,7 +242,7 @@ public interface RuneRitualExtension extends RecipeExtension {
         }
 
         public void build(ResourceLocation id) {
-            this.ext.consumer().accept(new TheRecipe(new ResourceLocation(id.getNamespace(), "mythicbotany_rune_rituals/" + id.getPath()), centerRune, runes, manaCost, tickTime, inputs, outputs, specialInput, specialOutput));
+            this.ext.consumer().accept(new TheRecipe(new ResourceLocation(id.getNamespace(), "mythicbotany_rune_rituals/" + id.getPath()), this.centerRune, this.runes, this.manaCost, this.tickTime, this.inputs, this.outputs, this.specialInput, this.specialOutput));
         }
 
         private static class TheRecipe implements FinishedRecipe {
@@ -274,15 +274,15 @@ public interface RuneRitualExtension extends RecipeExtension {
             @Nonnull
             @Override
             public ResourceLocation getId() {
-                return id;
+                return this.id;
             }
 
             @Override
             public void serializeRecipeData(@Nonnull JsonObject json) {
                 json.addProperty("group", "rune_rituals");
-                json.add("center", centerRune.toJson());
+                json.add("center", this.centerRune.toJson());
                 JsonArray runesJson = new JsonArray();
-                runes.stream().map(rune -> {
+                this.runes.stream().map(rune -> {
                     JsonObject obj = new JsonObject();
                     obj.add("rune", rune.getRune().toJson());
                     obj.addProperty("x", rune.getX());
@@ -292,23 +292,23 @@ public interface RuneRitualExtension extends RecipeExtension {
                 }).forEach(runesJson::add);
                 json.add("runes", runesJson);
 
-                json.addProperty("mana", manaCost);
-                json.addProperty("ticks", tickTime);
+                json.addProperty("mana", this.manaCost);
+                json.addProperty("ticks", this.tickTime);
 
                 JsonArray inputsJson = new JsonArray();
-                inputs.stream().map(Ingredient::toJson).forEach(inputsJson::add);
+                this.inputs.stream().map(Ingredient::toJson).forEach(inputsJson::add);
                 json.add("inputs", inputsJson);
 
                 JsonArray outputsJson = new JsonArray();
-                outputs.stream().map(stack -> CraftingHelper2.serializeItemStack(stack, true)).forEach(outputsJson::add);
+                this.outputs.stream().map(stack -> CraftingHelper2.serializeItemStack(stack, true)).forEach(outputsJson::add);
                 json.add("outputs", outputsJson);
 
-                if (specialInput != null) {
-                    json.addProperty("special_input", specialInput.id.toString());
+                if (this.specialInput != null) {
+                    json.addProperty("special_input", this.specialInput.id.toString());
                 }
 
-                if (specialOutput != null) {
-                    json.addProperty("special_output", specialOutput.id.toString());
+                if (this.specialOutput != null) {
+                    json.addProperty("special_output", this.specialOutput.id.toString());
                 }
             }
 

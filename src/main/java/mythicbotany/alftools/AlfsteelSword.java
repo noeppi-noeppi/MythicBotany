@@ -35,7 +35,7 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
         super(props.durability(4600));
         MinecraftForge.EVENT_BUS.addListener(this::onLeftClick);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", getDamage(), AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.getDamage(), AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", 2.4, AttributeModifier.Operation.ADDITION));
         this.attributeModifiers = builder.build();
     }
@@ -86,8 +86,8 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
     public EntityManaBurst getAlfBurst(Player player, ItemStack stack) {
         EntityManaBurst burst = ItemTerraSword.getBurst(player, stack);
         burst.setColor(0xF79100);
-        burst.setMana(getManaPerDamage());
-        burst.setStartingMana(getManaPerDamage());
+        burst.setMana(this.getManaPerDamage());
+        burst.setStartingMana(this.getManaPerDamage());
         burst.setMinManaLoss(20);
         burst.setManaLossPerTick(2.0F);
         return burst;
@@ -95,7 +95,7 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
     
     public void trySpawnAlfBurst(Player player) {
         if (!player.getMainHandItem().isEmpty() && player.getMainHandItem().is(vazkii.botania.common.item.ModItems.terraSword) && player.getAttackStrengthScale(0) == 1) {
-            EntityManaBurst burst = getAlfBurst(player, player.getMainHandItem());
+            EntityManaBurst burst = this.getAlfBurst(player, player.getMainHandItem());
             player.level.addFreshEntity(burst);
             player.getMainHandItem().hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
             player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.terraBlade, SoundSource.PLAYERS, 1, 1);

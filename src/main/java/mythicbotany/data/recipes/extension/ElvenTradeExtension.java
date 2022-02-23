@@ -13,15 +13,15 @@ import java.util.Arrays;
 public interface ElvenTradeExtension extends RecipeExtension {
 
     default void elvenTrade(ItemLike output, ItemLike... inputs) {
-        elvenTrade(new ItemStack(output), inputs);
+        this.elvenTrade(new ItemStack(output), inputs);
     }
 
     default void elvenTrade(ItemLike output, Ingredient... inputs) {
-        elvenTrade(new ItemStack(output), inputs);
+        this.elvenTrade(new ItemStack(output), inputs);
     }
     
     default void elvenTrade(ItemStack output, ItemLike... inputs) {
-        elvenTrade(output, Arrays.stream(inputs).map(Ingredient::of).toArray(Ingredient[]::new));
+        this.elvenTrade(output, Arrays.stream(inputs).map(Ingredient::of).toArray(Ingredient[]::new));
     }
 
     default void elvenTrade(ItemStack output, Ingredient... inputs) {

@@ -17,41 +17,41 @@ public class TileMjoellnir extends BlockEntityBase {
     
     public TileMjoellnir(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        stack = new ItemStack(ModBlocks.mjoellnir);
+        this.stack = new ItemStack(ModBlocks.mjoellnir);
     }
 
     public ItemStack getStack() {
-        return stack;
+        return this.stack;
     }
 
     public void setStack(ItemStack stack) {
         this.stack = stack;
-        setChanged();
-        setDispatchable();
+        this.setChanged();
+        this.setDispatchable();
     }
 
     @Override
     public void load(@Nonnull CompoundTag nbt) {
         super.load(nbt);
         if (nbt.contains("hammer", Tag.TAG_COMPOUND)) {
-            stack = ItemStack.of(nbt.getCompound("hammer"));
+            this.stack = ItemStack.of(nbt.getCompound("hammer"));
         } else {
-            stack = new ItemStack(ModBlocks.mjoellnir);
+            this.stack = new ItemStack(ModBlocks.mjoellnir);
         }
     }
 
     @Override
     public void saveAdditional(@Nonnull CompoundTag nbt) {
         super.saveAdditional(nbt);
-        nbt.put("hammer", stack.save(new CompoundTag()));
+        nbt.put("hammer", this.stack.save(new CompoundTag()));
     }
 
     @Nonnull
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = super.getUpdateTag();
-        if (level != null && !level.isClientSide) {
-            nbt.put("hammer", stack.save(new CompoundTag()));
+        if (this.level != null && !this.level.isClientSide) {
+            nbt.put("hammer", this.stack.save(new CompoundTag()));
         }
         return nbt;
     }
@@ -60,9 +60,9 @@ public class TileMjoellnir extends BlockEntityBase {
     public void handleUpdateTag(CompoundTag nbt) {
         super.handleUpdateTag(nbt);
         if (nbt.contains("hammer", Tag.TAG_COMPOUND)) {
-            stack = ItemStack.of(nbt.getCompound("hammer"));
+            this.stack = ItemStack.of(nbt.getCompound("hammer"));
         } else {
-            stack = new ItemStack(ModBlocks.mjoellnir);
+            this.stack = new ItemStack(ModBlocks.mjoellnir);
         }
     }
 }

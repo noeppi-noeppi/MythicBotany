@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import vazkii.botania.common.lib.ModTags;
-import vazkii.botania.data.recipes.ElvenTradeProvider;
 import vazkii.botania.data.recipes.PetalProvider;
 
 import java.lang.reflect.Constructor;
@@ -38,15 +37,15 @@ public interface PetalExtension extends RecipeExtension {
     }
     
     default void petalApothecary(ItemLike output, ItemLike... inputs) {
-        petalApothecary(new ItemStack(output), inputs);
+        this.petalApothecary(new ItemStack(output), inputs);
     }
 
     default void petalApothecary(ItemLike output, Ingredient... inputs) {
-        petalApothecary(new ItemStack(output), inputs);
+        this.petalApothecary(new ItemStack(output), inputs);
     }
     
     default void petalApothecary(ItemStack output, ItemLike... inputs) {
-        petalApothecary(output, Arrays.stream(inputs).map(Ingredient::of).toArray(Ingredient[]::new));
+        this.petalApothecary(output, Arrays.stream(inputs).map(Ingredient::of).toArray(Ingredient[]::new));
     }
 
     default void petalApothecary(ItemStack output, Ingredient... inputs) {

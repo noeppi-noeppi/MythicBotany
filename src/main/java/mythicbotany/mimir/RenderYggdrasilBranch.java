@@ -7,9 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.util.LazyLoadedValue;
 import com.mojang.math.Vector3f;
 import vazkii.botania.common.item.ModItems;
 
@@ -26,7 +24,7 @@ public class RenderYggdrasilBranch extends RotatedBlockRenderer<TileYggdrasilBra
         poseStack.mulPose(Vector3f.YP.rotationDegrees(90));
         poseStack.mulPose(Vector3f.ZP.rotationDegrees(160));
         poseStack.scale(0.8f, 0.8f, 0.8f);
-        Minecraft.getInstance().getItemRenderer().renderStatic(twig.get(), ItemTransforms.TransformType.GROUND, light, OverlayTexture.NO_OVERLAY, poseStack, buffer, 0);
+        Minecraft.getInstance().getItemRenderer().renderStatic(this.twig.get(), ItemTransforms.TransformType.GROUND, light, OverlayTexture.NO_OVERLAY, poseStack, buffer, 0);
         poseStack.popPose();
         ItemStack stack = tile.getInventory().getStackInSlot(0);
         if (!stack.isEmpty()) {

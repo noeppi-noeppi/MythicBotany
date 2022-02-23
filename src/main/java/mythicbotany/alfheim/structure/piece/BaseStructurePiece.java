@@ -75,7 +75,7 @@ public abstract class BaseStructurePiece extends SinglePoolElement {
         String data = block.nbt == null ? "" : block.nbt.getString("metadata");
         // Replace structure block in all cases
         level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
-        onDataMarker(data, templates, structures, level, block, pos, rot, random, box);
+        this.onDataMarker(data, templates, structures, level, block, pos, rot, random, box);
         super.handleDataMarker(level, block, pos, rot, random, box);
     }
 

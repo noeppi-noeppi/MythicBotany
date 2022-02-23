@@ -46,70 +46,70 @@ public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable
     @Override
     public void tick() {
         //noinspection ConstantConditions
-        if (level.isClientSide || !hasValidPlatform())
+        if (this.level.isClientSide || !this.hasValidPlatform())
             return;
-        if (active && recipe != null && mana > 0) {
-            MythicBotany.getNetwork().spawnInfusionParticles(level, worldPosition, mana / (float) recipe.getManaUsage(), recipe.fromColor(), recipe.toColor());
+        if (this.active && this.recipe != null && this.mana > 0) {
+            MythicBotany.getNetwork().spawnInfusionParticles(this.level, this.worldPosition, this.mana / (float) this.recipe.getManaUsage(), this.recipe.fromColor(), this.recipe.toColor());
         }
-        List<ItemEntity> items = getItems();
+        List<ItemEntity> items = this.getItems();
         List<ItemStack> stacks = items.stream().map(ItemEntity::getItem).collect(Collectors.toList());
-        if (active && recipe != null && output != null) {
-            if (recipe.result(stacks).isEmpty()) {
-                SolidifiedMana.dropMana(level, worldPosition, mana);
-                active = false;
-                recipe = null;
-                fromColor = -1;
-                toColor = -1;
-                mana = 0;
-                maxMana = 0;
-                output = null;
-                level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
-                setChanged();
-            } else if (mana >= recipe.getManaUsage()) {
-                active = false;
-                recipe = null;
-                fromColor = -1;
-                toColor = -1;
-                mana = 0;
-                maxMana = 0;
-                level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
+        if (this.active && this.recipe != null && this.output != null) {
+            if (this.recipe.result(stacks).isEmpty()) {
+                SolidifiedMana.dropMana(this.level, this.worldPosition, this.mana);
+                this.active = false;
+                this.recipe = null;
+                this.fromColor = -1;
+                this.toColor = -1;
+                this.mana = 0;
+                this.maxMana = 0;
+                this.output = null;
+                this.level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
+                this.setChanged();
+            } else if (this.mana >= this.recipe.getManaUsage()) {
+                this.active = false;
+                this.recipe = null;
+                this.fromColor = -1;
+                this.toColor = -1;
+                this.mana = 0;
+                this.maxMana = 0;
+                this.level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
                 items.forEach(ie -> ie.remove(Entity.RemovalReason.DISCARDED));
-                ItemEntity outItem = new ItemEntity(level, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, output);
-                level.addFreshEntity(outItem);
-                output = null;
-                setChanged();
+                ItemEntity outItem = new ItemEntity(this.level, this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5, this.output);
+                this.level.addFreshEntity(outItem);
+                this.output = null;
+                this.setChanged();
             } else {
                 items.forEach(ie -> MythicBotany.getNetwork().setItemMagnetImmune(ie));
             }
         } else {
             Pair<IInfuserRecipe, ItemStack> match = InfuserRecipe.getOutput(this.level, stacks);
             if (match != null) {
-                if (!active) {
-                    active = true;
-                    recipe = match.getLeft();
-                    mana = 0;
+                if (!this.active) {
+                    this.active = true;
+                    this.recipe = match.getLeft();
+                    this.mana = 0;
                 } else {
-                    recipe = match.getLeft();
-                    mana = Mth.clamp(mana, 0, recipe.getManaUsage());
+                    this.recipe = match.getLeft();
+                    this.mana = Mth.clamp(this.mana, 0, this.recipe.getManaUsage());
                 }
-                maxMana = recipe.getManaUsage();
-                fromColor = recipe.fromColor();
-                toColor = recipe.toColor();
-                output = match.getRight();
-                level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
+                this.maxMana = this.recipe.getManaUsage();
+                this.fromColor = this.recipe.fromColor();
+                this.toColor = this.recipe.toColor();
+                this.output = match.getRight();
+                this.level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
                 items.forEach(ie -> MythicBotany.getNetwork().setItemMagnetImmune(ie));
-                setChanged();
-            } else if (active || recipe != null || output != null) {
-                SolidifiedMana.dropMana(level, worldPosition, mana);
-                active = false;
-                recipe = null;
-                fromColor = -1;
-                toColor = -1;
-                mana = 0;
-                maxMana = 0;
-                output = null;
-                level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
-                setChanged();
+                this.setChanged();
+            } else if (this.active || this.recipe != null || this.output != null) {
+                SolidifiedMana.dropMana(this.level, this.worldPosition, this.mana);
+                this.active = false;
+                this.recipe = null;
+                this.fromColor = -1;
+                this.toColor = -1;
+                this.mana = 0;
+                this.maxMana = 0;
+                this.output = null;
+                this.level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
+                this.setChanged();
             }
         }
     }
@@ -120,17 +120,17 @@ public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable
     }
 
     private boolean hasValidPlatform() {
-        BlockPos center = worldPosition.below();
+        BlockPos center = this.worldPosition.below();
         //noinspection ConstantConditions
-        return level.getBlockState(center).getBlock() == ModBlocks.shimmerrock
-                && level.getBlockState(center.north().west()).getBlock() == ModBlocks.shimmerrock
-                && level.getBlockState(center.north().east()).getBlock() == ModBlocks.shimmerrock
-                && level.getBlockState(center.south().west()).getBlock() == ModBlocks.shimmerrock
-                && level.getBlockState(center.south().east()).getBlock() == ModBlocks.shimmerrock
-                && level.getBlockState(center.north()).getBlock() == Blocks.GOLD_BLOCK
-                && level.getBlockState(center.east()).getBlock() == Blocks.GOLD_BLOCK
-                && level.getBlockState(center.south()).getBlock() == Blocks.GOLD_BLOCK
-                && level.getBlockState(center.west()).getBlock() == Blocks.GOLD_BLOCK;
+        return this.level.getBlockState(center).getBlock() == ModBlocks.shimmerrock
+                && this.level.getBlockState(center.north().west()).getBlock() == ModBlocks.shimmerrock
+                && this.level.getBlockState(center.north().east()).getBlock() == ModBlocks.shimmerrock
+                && this.level.getBlockState(center.south().west()).getBlock() == ModBlocks.shimmerrock
+                && this.level.getBlockState(center.south().east()).getBlock() == ModBlocks.shimmerrock
+                && this.level.getBlockState(center.north()).getBlock() == Blocks.GOLD_BLOCK
+                && this.level.getBlockState(center.east()).getBlock() == Blocks.GOLD_BLOCK
+                && this.level.getBlockState(center.south()).getBlock() == Blocks.GOLD_BLOCK
+                && this.level.getBlockState(center.west()).getBlock() == Blocks.GOLD_BLOCK;
     }
 
     @Override
@@ -140,8 +140,8 @@ public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable
 
     @Override
     public int getAvailableSpaceForMana() {
-        if (recipe != null) {
-            return Math.max(0, recipe.getManaUsage() - mana);
+        if (this.recipe != null) {
+            return Math.max(0, this.recipe.getManaUsage() - this.mana);
         } else {
             return 0;
         }
@@ -161,72 +161,72 @@ public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable
 
     @Override
     public boolean areIncomingTranfersDone() {
-        return !active;
+        return !this.active;
     }
 
     @Override
     public boolean isFull() {
-        if (recipe == null) {
+        if (this.recipe == null) {
             return true;
         } else {
-            return mana >= recipe.getManaUsage();
+            return this.mana >= this.recipe.getManaUsage();
         }
     }
 
     @Override
     public void receiveMana(int i) {
-        if (recipe != null) {
-            mana = Mth.clamp(mana + i, 0, recipe.getManaUsage());
+        if (this.recipe != null) {
+            this.mana = Mth.clamp(this.mana + i, 0, this.recipe.getManaUsage());
             //noinspection ConstantConditions
-            level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
-            setChanged();
+            this.level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
+            this.setChanged();
         }
     }
 
     @Override
     public boolean canReceiveManaFromBursts() {
-        return active;
+        return this.active;
     }
 
     @Override
     public int getCurrentMana() {
-        return mana;
+        return this.mana;
     }
 
     @Override
     public void load(@Nonnull CompoundTag nbt) {
         super.load(nbt);
-        mana = nbt.getInt("mana");
+        this.mana = nbt.getInt("mana");
         if (nbt.contains("output")) {
-            output = ItemStack.of(nbt.getCompound("output"));
+            this.output = ItemStack.of(nbt.getCompound("output"));
         } else {
-            output = null;
+            this.output = null;
         }
-        active = nbt.getBoolean("active");
+        this.active = nbt.getBoolean("active");
     }
 
     @Override
     public void saveAdditional(@Nonnull CompoundTag nbt) {
         super.saveAdditional(nbt);
-        nbt.putInt("mana", mana);
-        if (output != null) {
-            nbt.put("output", output.save(new CompoundTag()));
+        nbt.putInt("mana", this.mana);
+        if (this.output != null) {
+            nbt.put("output", this.output.save(new CompoundTag()));
         }
-        nbt.putBoolean("active", active);
+        nbt.putBoolean("active", this.active);
     }
 
     @Nonnull
     @Override
     public CompoundTag getUpdateTag() {
         //noinspection ConstantConditions
-        if (level.isClientSide)
+        if (this.level.isClientSide)
             return super.getUpdateTag();
         CompoundTag compound = super.getUpdateTag();
-        compound.putInt("mana", mana);
-        compound.putInt("max", maxMana);
-        if (recipe != null) {
-            compound.putInt("fromColor", fromColor);
-            compound.putInt("toColor", toColor);
+        compound.putInt("mana", this.mana);
+        compound.putInt("max", this.maxMana);
+        if (this.recipe != null) {
+            compound.putInt("fromColor", this.fromColor);
+            compound.putInt("toColor", this.toColor);
         } else {
             compound.putInt("fromColor", -1);
             compound.putInt("toColor", -1);
@@ -237,27 +237,27 @@ public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable
     @Override
     public void handleUpdateTag(CompoundTag tag) {
         //noinspection ConstantConditions
-        if (!level.isClientSide)
+        if (!this.level.isClientSide)
             return;
-        mana = tag.getInt("mana");
-        maxMana = tag.getInt("maxMana");
-        fromColor = tag.getInt("fromColor");
-        toColor = tag.getInt("toColor");
+        this.mana = tag.getInt("mana");
+        this.maxMana = tag.getInt("maxMana");
+        this.fromColor = tag.getInt("fromColor");
+        this.toColor = tag.getInt("toColor");
     }
 
     public int getSourceColor() {
-        return fromColor;
+        return this.fromColor;
     }
 
     public int getTargetColor() {
-        return toColor;
+        return this.toColor;
     }
 
     public double getProgress() {
-        if (maxMana <= 0) {
+        if (this.maxMana <= 0) {
             return -1;
         } else {
-            return mana / (double) maxMana;
+            return this.mana / (double) this.maxMana;
         }
     }
 }

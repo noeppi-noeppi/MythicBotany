@@ -28,7 +28,7 @@ import java.util.function.Consumer;
 
 public class BlockRuneHolder<T extends TileRuneHolder> extends BlockBE<T> {
 
-    public static VoxelShape SHAPE = Shapes.or(
+    public static final VoxelShape SHAPE = Shapes.or(
             box(6.5, 1, 6.5, 9.5, 3, 9.5),
             box(5, 0, 5, 11, 1, 11)
     );
@@ -43,14 +43,14 @@ public class BlockRuneHolder<T extends TileRuneHolder> extends BlockBE<T> {
     
     @Override
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        BlockEntityRenderers.register(getBlockEntityType(), mgr -> new RenderRuneHolder());
+        BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderRuneHolder());
     }
 
     @Nonnull
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult hit) {
-        TileRuneHolder tile = getBlockEntity(level, pos);
+        TileRuneHolder tile = this.getBlockEntity(level, pos);
         if (!tile.getInventory().getStackInSlot(0).isEmpty()) {
             if (!level.isClientSide) {
                 ItemStack held = player.getItemInHand(hand);

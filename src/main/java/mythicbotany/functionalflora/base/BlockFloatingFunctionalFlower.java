@@ -35,7 +35,7 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
     }
 
     public BlockFunctionalFlower<T> getNonFloatingBlock() {
-        return nonFloatingBlock;
+        return this.nonFloatingBlock;
     }
 
     @Nonnull
@@ -54,7 +54,7 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
     @Override
     @SuppressWarnings("deprecation")
     public int getAnalogOutputSignal(@Nonnull BlockState blockState, @Nonnull Level level, @Nonnull BlockPos pos) {
-        FunctionalFlowerBase te = getBlockEntity(level, pos);
+        FunctionalFlowerBase te = this.getBlockEntity(level, pos);
         if (te.getCurrentMana() > 0) {
             return 1 + (int) ((te.getCurrentMana() / (double) te.maxMana) * 14);
         } else {
@@ -69,7 +69,7 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
     @Override
     public void appendHoverText(@Nonnull ItemStack stack, @Nullable BlockGetter level, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        if (getNonFloatingBlock().isGenerating) {
+        if (this.getNonFloatingBlock().isGenerating) {
             tooltip.add(new TranslatableComponent("botania.flowerType.generating").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
 
         } else {
@@ -77,7 +77,7 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
 
         }
         //noinspection ConstantConditions
-        tooltip.add(new TranslatableComponent("block." + mod.modid + "." + this.getNonFloatingBlock().getRegistryName().getPath() + ".description").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        tooltip.add(new TranslatableComponent("block." + this.mod.modid + "." + this.getNonFloatingBlock().getRegistryName().getPath() + ".description").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 
     @SuppressWarnings("deprecation")

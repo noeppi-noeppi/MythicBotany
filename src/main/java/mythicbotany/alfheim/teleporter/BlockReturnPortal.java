@@ -36,7 +36,7 @@ public class BlockReturnPortal extends BlockBE<TileReturnPortal> {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        BlockEntityRenderers.register(getBlockEntityType(), mgr -> new RenderReturnPortal());
+        BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderReturnPortal());
     }
     
     @Nonnull

@@ -22,25 +22,25 @@ public class Exoblaze extends FunctionalFlowerBase {
     @Override
     protected void tickFlower() {
         //noinspection ConstantConditions
-        if (!level.isClientSide) {
-            if (tickToNextCheck > 0) {
-                tickToNextCheck -= 1;
+        if (!this.level.isClientSide) {
+            if (this.tickToNextCheck > 0) {
+                this.tickToNextCheck -= 1;
                 return;
             }
-            tickToNextCheck = MAX_TICK_TO_NEXT_CHECK;
-            BlockPos basePos = worldPosition.immutable();
+            this.tickToNextCheck = MAX_TICK_TO_NEXT_CHECK;
+            BlockPos basePos = this.worldPosition.immutable();
             outer:
             for (int xd = -3; xd <= 3; xd++) {
                 for (int yd = -1; yd <= 1; yd++) {
                     for (int zd = -3; zd <= 3; zd++) {
-                        if (mana < MANA_PER_BREW)
+                        if (this.mana < MANA_PER_BREW)
                             break outer;
-                        BlockEntity te = level.getBlockEntity(basePos.offset(xd, yd, zd));
+                        BlockEntity te = this.level.getBlockEntity(basePos.offset(xd, yd, zd));
                         if (te instanceof BrewingStandBlockEntity && ((BrewingStandBlockEntity) te).fuel < 20) {
-                            mana -= MANA_PER_BREW;
+                            this.mana -= MANA_PER_BREW;
                             ((BrewingStandBlockEntity) te).fuel += 1;
-                            didWork = true;
-                            setChanged();
+                            this.didWork = true;
+                            this.setChanged();
                             te.setChanged();
                         }
                     }
@@ -51,6 +51,6 @@ public class Exoblaze extends FunctionalFlowerBase {
 
     @Override
     public RadiusDescriptor getRadius() {
-        return new RadiusDescriptor.Square(worldPosition, 3);
+        return new RadiusDescriptor.Square(this.worldPosition, 3);
     }
 }

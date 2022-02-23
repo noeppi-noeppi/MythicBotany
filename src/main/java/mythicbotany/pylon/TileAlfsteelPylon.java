@@ -34,21 +34,21 @@ public class TileAlfsteelPylon extends BlockEntityMana implements TickableBlock 
     @Override
     public void tick() {
         //noinspection ConstantConditions
-        if (!level.isClientSide) {
-            List<ItemEntity> items = getItems();
+        if (!this.level.isClientSide) {
+            List<ItemEntity> items = this.getItems();
             if (items.size() == 1) {
                 ItemEntity item = items.get(0);
                 ItemStack stack = item.getItem();
                 PylonRepairable repairable = PylonRepairables.getRepairInfo(stack);
                 if (repairable != null && stack.getCount() == 1) {
                     int manaCost = repairable.getRepairManaPerTick(stack);
-                    if (mana >= manaCost) {
+                    if (this.mana >= manaCost) {
                         UUID throwerId = item.getThrower();
-                        Player thrower = throwerId == null ? null : level.getPlayerByUUID(throwerId);
+                        Player thrower = throwerId == null ? null : this.level.getPlayerByUUID(throwerId);
                         if (thrower instanceof ServerPlayer) {
                             ModCriteria.ALF_REPAIR.trigger((ServerPlayer) thrower, stack);
                         }
-                        mana -= manaCost;
+                        this.mana -= manaCost;
                         stack = repairable.repairOneTick(stack);
                         item.setItem(stack);
                         if (stack.getDamageValue() > 0) {
@@ -56,8 +56,8 @@ public class TileAlfsteelPylon extends BlockEntityMana implements TickableBlock 
                         } else {
                             MythicBotany.getNetwork().removeItemMagnetImmune(item);
                         }
-                        setChanged();
-                        MythicBotany.getNetwork().channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new PylonSerializer.PylonMessage(level.dimension().getRegistryName(), worldPosition));
+                        this.setChanged();
+                        MythicBotany.getNetwork().channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> this.level.getChunkAt(this.worldPosition)), new PylonSerializer.PylonMessage(this.level.dimension().getRegistryName(), this.worldPosition));
                     }
                 }
             }

@@ -51,7 +51,7 @@ public class ShatteredTrunkPlacer extends TrunkPlacer {
                 BlockPos.MutableBlockPos mpos = pos.relative(Direction.UP).relative(dir).mutable();
                 for (int i = 0; i < 3; i++) {
                     mpos.move(0, -1, 0);
-                    if (!placeLog(level, blockSetter, mpos, random, config)) {
+                    if (!this.placeLog(level, blockSetter, mpos, random, config)) {
                         break;
                     }
                 }
@@ -62,7 +62,7 @@ public class ShatteredTrunkPlacer extends TrunkPlacer {
         }
         int straightTrunkSize = Math.max(3, freeTreeHeight - 3);
         for (int i = 0; i < straightTrunkSize; i++) {
-            placeLog(level, blockSetter, pos.above(i), random, config);
+            this.placeLog(level, blockSetter, pos.above(i), random, config);
         }
         int shatters = 3 + random.nextInt(3);
         shatterLoop: for (int i = 0; i < shatters; i++) {
@@ -81,7 +81,7 @@ public class ShatteredTrunkPlacer extends TrunkPlacer {
                     mpos.move(x < xm ? xs : 0, random.nextInt(3) != 0 ? 1 : 0, z < zm ? zs : 0);
                     x = Math.min(xm, x + 1);
                     z = Math.min(zm, z + 1);
-                    if (placeLog(level, blockSetter, mpos, random, config)) {
+                    if (this.placeLog(level, blockSetter, mpos, random, config)) {
                         list.add(new FoliagePlacer.FoliageAttachment(mpos.immutable(), 0, false));
                     } else {
                         continue shatterLoop;
@@ -102,14 +102,14 @@ public class ShatteredTrunkPlacer extends TrunkPlacer {
     }
     
     public int getBaseHeight() {
-        return baseHeight;
+        return this.baseHeight;
     }
     
     public int getHeightRandA() {
-        return heightRandA;
+        return this.heightRandA;
     }
     
     public int getHeightRandB() {
-        return heightRandB;
+        return this.heightRandB;
     }
 }

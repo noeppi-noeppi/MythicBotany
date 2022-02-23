@@ -46,7 +46,7 @@ public class BlockManaInfuser extends BlockBE<TileManaInfuser> {
 
     @SuppressWarnings("deprecation")
     public int getAnalogOutputSignal(@Nonnull BlockState blockState, @Nonnull Level level, @Nonnull BlockPos pos) {
-        TileManaInfuser te = getBlockEntity(level, pos);
+        TileManaInfuser te = this.getBlockEntity(level, pos);
         double progress = te.getProgress();
         if (progress < 0) {
             return 0;

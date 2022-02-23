@@ -79,7 +79,7 @@ public class RuneRitualRecipe implements Recipe<Container> {
     @Nonnull
     @Override
     public ItemStack assemble(@Nonnull Container inv) {
-        return getResultItem();
+        return this.getResultItem();
     }
 
     @Override
@@ -99,7 +99,7 @@ public class RuneRitualRecipe implements Recipe<Container> {
     @Nonnull
     @Override
     public ResourceLocation getId() {
-        return id;
+        return this.id;
     }
 
     @Nonnull
@@ -115,37 +115,37 @@ public class RuneRitualRecipe implements Recipe<Container> {
     }
 
     public Ingredient getCenterRune() {
-        return centerRune;
+        return this.centerRune;
     }
 
     public List<RunePosition> getRunes() {
-        return runes;
+        return this.runes;
     }
     
     public int getMana() {
-        return mana;
+        return this.mana;
     }
 
     public int getTicks() {
-        return ticks;
+        return this.ticks;
     }
 
     public List<Ingredient> getInputs() {
-        return inputs;
+        return this.inputs;
     }
 
     public List<ItemStack> getOutputs() {
-        return outputs;
+        return this.outputs;
     }
 
     @Nullable
     public SpecialRuneInput getSpecialInput() {
-        return specialInput;
+        return this.specialInput;
     }
 
     @Nullable
     public SpecialRuneOutput getSpecialOutput() {
-        return specialOutput;
+        return this.specialOutput;
     }
 
     public static class RunePosition {
@@ -168,49 +168,49 @@ public class RuneRitualRecipe implements Recipe<Container> {
             this.consume = (x == 0 && z == 0) || consume;
             this.xcoords = new int[8];
             this.zcoords = new int[8];
-            xcoords[0] = x;
-            zcoords[0] = z;
-            xcoords[HFLIP] = -x;
-            zcoords[HFLIP] = z;
-            xcoords[VFLIP] = x;
-            zcoords[VFLIP] = -z;
-            xcoords[HFLIP | VFLIP] = -x;
-            zcoords[HFLIP | VFLIP] = -z;
+            this.xcoords[0] = x;
+            this.zcoords[0] = z;
+            this.xcoords[HFLIP] = -x;
+            this.zcoords[HFLIP] = z;
+            this.xcoords[VFLIP] = x;
+            this.zcoords[VFLIP] = -z;
+            this.xcoords[HFLIP | VFLIP] = -x;
+            this.zcoords[HFLIP | VFLIP] = -z;
             for (int i = 0; i < (HFLIP | VFLIP); i++) {
-                xcoords[i | ROTATE] = -zcoords[i];
-                zcoords[i | ROTATE] = xcoords[i];
+                this.xcoords[i | ROTATE] = -this.zcoords[i];
+                this.zcoords[i | ROTATE] = this.xcoords[i];
             }
         }
 
         public Ingredient getRune() {
-            return rune;
+            return this.rune;
         }
 
         public int getX() {
-            return x;
+            return this.x;
         }
 
         public int getZ() {
-            return z;
+            return this.z;
         }
 
         public boolean isConsumed() {
-            return consume;
+            return this.consume;
         }
 
         public int getX(int transformIdx) {
             if (transformIdx < 0 || transformIdx >= 8) {
-                return getX();
+                return this.getX();
             } else {
-                return xcoords[transformIdx];
+                return this.xcoords[transformIdx];
             }
         }
 
         public int getZ(int transformIdx) {
             if (transformIdx < 0 || transformIdx >= 8) {
-                return getZ();
+                return this.getZ();
             } else {
-                return zcoords[transformIdx];
+                return this.zcoords[transformIdx];
             }
         }
     }

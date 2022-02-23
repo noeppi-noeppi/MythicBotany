@@ -57,7 +57,7 @@ public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerab
     }
 
     public EntityType<Mjoellnir> getEntityType() {
-        return entityType;
+        return this.entityType;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerab
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
         ItemBlockRenderTypes.setRenderLayer(this, RenderType.cutout());
         BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderMjoellnir());
-        EntityRenderers.register(entityType, RenderEntityMjoellnir::new);
+        EntityRenderers.register(this.entityType, RenderEntityMjoellnir::new);
     }
 
     @Nonnull
@@ -78,7 +78,7 @@ public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerab
     public InteractionResult use(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult hit) {
         if (!level.isClientSide) {
             if (canHold(player)) {
-                TileMjoellnir tile = getBlockEntity(level, pos);
+                TileMjoellnir tile = this.getBlockEntity(level, pos);
                 if (putInInventory(player, tile.getStack().copy(), getHotbarSlot(player, hand))) {
                     level.setBlock(pos, state.getFluidState().createLegacyBlock(), 3);
                 } else {

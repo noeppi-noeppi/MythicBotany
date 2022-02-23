@@ -1,13 +1,10 @@
 package mythicbotany.alfheim;
 
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.SurfaceRules;
-import net.minecraft.world.level.levelgen.placement.CaveSurface;
 
 public class BiomeConfiguration {
 
@@ -84,7 +81,7 @@ public class BiomeConfiguration {
     }
 
     public BiomeConfiguration surface(Block top, Block below) {
-        return surface(top.defaultBlockState(), below.defaultBlockState());
+        return this.surface(top.defaultBlockState(), below.defaultBlockState());
     }
 
     public BiomeConfiguration surface(BlockState top, BlockState below) {

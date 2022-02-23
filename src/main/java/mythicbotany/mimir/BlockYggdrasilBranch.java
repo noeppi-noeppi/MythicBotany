@@ -35,7 +35,7 @@ import java.util.function.Consumer;
 
 public class BlockYggdrasilBranch extends BlockBE<TileYggdrasilBranch> {
 
-    public static RotationShape SHAPE = new RotationShape(box(5, 0, 8, 11, 12, 14));
+    public static final RotationShape SHAPE = new RotationShape(box(5, 0, 8, 11, 12, 14));
     
     public BlockYggdrasilBranch(ModX mod, Properties properties) {
         this(mod, properties, new Item.Properties());
@@ -48,8 +48,8 @@ public class BlockYggdrasilBranch extends BlockBE<TileYggdrasilBranch> {
 
     @Override
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        BlockEntityRenderers.register(getBlockEntityType(), mgr -> new RenderYggdrasilBranch());
-        ItemStackRenderer.addRenderBlock(getBlockEntityType(), false);
+        BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderYggdrasilBranch());
+        ItemStackRenderer.addRenderBlock(this.getBlockEntityType(), false);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class BlockYggdrasilBranch extends BlockBE<TileYggdrasilBranch> {
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult hit) {
-        TileYggdrasilBranch tile = getBlockEntity(level, pos);
+        TileYggdrasilBranch tile = this.getBlockEntity(level, pos);
         if (player.getItemInHand(hand).getItem() instanceof ItemTwigWand) {
             return InteractionResult.PASS;
         } else if (!tile.getInventory().getStackInSlot(0).isEmpty()) {

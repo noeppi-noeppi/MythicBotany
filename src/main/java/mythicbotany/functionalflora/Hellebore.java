@@ -25,36 +25,36 @@ public class Hellebore extends FunctionalFlowerBase {
     @Override
     protected void tickFlower() {
         //noinspection ConstantConditions
-        if (!level.isClientSide) {
-            int prevMana = mana;
+        if (!this.level.isClientSide) {
+            int prevMana = this.mana;
 
-            List<AbstractPiglin> piglins = level.getEntitiesOfClass(AbstractPiglin.class, new AABB(worldPosition.getX() - 5.5, worldPosition.getY() - 2, worldPosition.getZ() - 5.5, worldPosition.getX() + 6.5, worldPosition.getY() + 3, worldPosition.getZ() + 6.5));
+            List<AbstractPiglin> piglins = this.level.getEntitiesOfClass(AbstractPiglin.class, new AABB(this.worldPosition.getX() - 5.5, this.worldPosition.getY() - 2, this.worldPosition.getZ() - 5.5, this.worldPosition.getX() + 6.5, this.worldPosition.getY() + 3, this.worldPosition.getZ() + 6.5));
             for (AbstractPiglin piglin : piglins) {
-                if (mana >= MANA_PER_ENTITY_AND_SECOND && piglin.timeInOverworld > 20) {
-                    mana -= MANA_PER_ENTITY_AND_SECOND;
+                if (this.mana >= MANA_PER_ENTITY_AND_SECOND && piglin.timeInOverworld > 20) {
+                    this.mana -= MANA_PER_ENTITY_AND_SECOND;
                     piglin.timeInOverworld = 0;
-                    MythicBotany.getNetwork().spawnParticle(level, ParticleTypes.FLAME, 10, piglin.getX(), piglin.getY(), piglin.getZ(), 0, 0.05, 0, 0.4, 0.8, 0.4, true);
+                    MythicBotany.getNetwork().spawnParticle(this.level, ParticleTypes.FLAME, 10, piglin.getX(), piglin.getY(), piglin.getZ(), 0, 0.05, 0, 0.4, 0.8, 0.4, true);
                 }
             }
 
-            List<Hoglin> hoglins = level.getEntitiesOfClass(Hoglin.class, new AABB(worldPosition.getX() - 5.5, worldPosition.getY() - 2, worldPosition.getZ() - 5.5, worldPosition.getX() + 6.5, worldPosition.getY() + 3, worldPosition.getZ() + 6.5));
+            List<Hoglin> hoglins = this.level.getEntitiesOfClass(Hoglin.class, new AABB(this.worldPosition.getX() - 5.5, this.worldPosition.getY() - 2, this.worldPosition.getZ() - 5.5, this.worldPosition.getX() + 6.5, this.worldPosition.getY() + 3, this.worldPosition.getZ() + 6.5));
             for (Hoglin hoglin : hoglins) {
-                if (mana >= MANA_PER_ENTITY_AND_SECOND && hoglin.timeInOverworld > 20) {
-                    mana -= MANA_PER_ENTITY_AND_SECOND;
+                if (this.mana >= MANA_PER_ENTITY_AND_SECOND && hoglin.timeInOverworld > 20) {
+                    this.mana -= MANA_PER_ENTITY_AND_SECOND;
                     hoglin.timeInOverworld = 0;
-                    MythicBotany.getNetwork().spawnParticle(level, ParticleTypes.FLAME, 10, hoglin.getX(), hoglin.getY(), hoglin.getZ(), 0, 0.08, 0, 0.8, 0.7, 0.8, true);
+                    MythicBotany.getNetwork().spawnParticle(this.level, ParticleTypes.FLAME, 10, hoglin.getX(), hoglin.getY(), hoglin.getZ(), 0, 0.08, 0, 0.8, 0.7, 0.8, true);
                 }
             }
 
-            if (prevMana != mana) {
-                mana = Mth.clamp(mana, 0, maxMana);
-                setChanged();
+            if (prevMana != this.mana) {
+                this.mana = Mth.clamp(this.mana, 0, this.maxMana);
+                this.setChanged();
             }
         }
     }
 
     @Override
     public RadiusDescriptor getRadius() {
-        return new RadiusDescriptor.Square(worldPosition, 5);
+        return new RadiusDescriptor.Square(this.worldPosition, 5);
     }
 }

@@ -56,7 +56,7 @@ public class BlockAlfheimLeaves extends LeavesBlock implements Registerable {
     @Nonnull
     @Override
     public BlockState updateShape(@Nonnull BlockState state, @Nonnull Direction facing, @Nonnull BlockState facingState, @Nonnull LevelAccessor level, @Nonnull BlockPos currentPos, @Nonnull BlockPos facingPos) {
-        int distance = getDistanceAt(facingState) + 1;
+        int distance = this.getDistanceAt(facingState) + 1;
         if (distance != 1 || state.getValue(DISTANCE) != distance) {
             level.scheduleTick(currentPos, this, 1);
         }
@@ -65,12 +65,12 @@ public class BlockAlfheimLeaves extends LeavesBlock implements Registerable {
 
     @Override
     public void tick(@Nonnull BlockState state, @Nonnull ServerLevel level, @Nonnull BlockPos pos, @Nonnull Random random) {
-        level.setBlock(pos, updateDistance(state, level, pos), 3);
+        level.setBlock(pos, this.updateDistance(state, level, pos), 3);
     }
 
     @Override
     public BlockState getStateForPlacement(@Nonnull BlockPlaceContext context) {
-        return updateDistance(this.defaultBlockState().setValue(PERSISTENT, true), context.getLevel(), context.getClickedPos());
+        return this.updateDistance(this.defaultBlockState().setValue(PERSISTENT, true), context.getLevel(), context.getClickedPos());
     }
 
     protected int getDistanceAt(BlockState neighbor) {
@@ -86,7 +86,7 @@ public class BlockAlfheimLeaves extends LeavesBlock implements Registerable {
         BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
         for (Direction dir : Direction.values()) {
             mpos.setWithOffset(pos, dir);
-            distance = Math.min(distance, getDistanceAt(level.getBlockState(mpos)) + 1);
+            distance = Math.min(distance, this.getDistanceAt(level.getBlockState(mpos)) + 1);
             if (distance == 1) {
                 break;
             }

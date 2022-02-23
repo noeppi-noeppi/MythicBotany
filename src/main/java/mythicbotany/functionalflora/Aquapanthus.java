@@ -58,58 +58,58 @@ public class Aquapanthus extends FunctionalFlowerBase {
     @Override
     protected void tickFlower() {
         //noinspection ConstantConditions
-        if (!level.isClientSide) {
-            if (currentlyFilling != null) {
-                if (mana >= MANA_PER_TICK) {
-                    if (fill()) {
-                        mana = Mth.clamp(mana - MANA_PER_TICK, 0, maxMana);
-                        didWork = true;
-                        fillingSince += 1;
+        if (!this.level.isClientSide) {
+            if (this.currentlyFilling != null) {
+                if (this.mana >= MANA_PER_TICK) {
+                    if (this.fill()) {
+                        this.mana = Mth.clamp(this.mana - MANA_PER_TICK, 0, this.maxMana);
+                        this.didWork = true;
+                        this.fillingSince += 1;
                     } else {
-                        fillingSince = 0;
-                        currentlyFilling = null;
+                        this.fillingSince = 0;
+                        this.currentlyFilling = null;
                     }
                 }
-                LibX.getNetwork().updateBE(level, worldPosition);
-                setChanged();
+                LibX.getNetwork().updateBE(this.level, this.worldPosition);
+                this.setChanged();
             } else {
-                if (tickToNextCheck > 0) {
-                    tickToNextCheck -= 1;
+                if (this.tickToNextCheck > 0) {
+                    this.tickToNextCheck -= 1;
                     return;
                 }
-                tickToNextCheck = MAX_TICK_TO_NEXT_CHECK;
+                this.tickToNextCheck = MAX_TICK_TO_NEXT_CHECK;
 
-                BlockPos basePos = worldPosition.immutable();
+                BlockPos basePos = this.worldPosition.immutable();
                 outer: for (int xd = -3; xd <= 3; xd++) {
                     for (int zd = -3; zd <= 3; zd++) {
                         BlockPos pos = basePos.offset(xd, 0, zd);
-                        BlockState state = level.getBlockState(pos);
-                        BlockEntity te = level.getBlockEntity(pos);
-                        if (canFill(state, te)) {
-                            currentlyFilling = pos;
-                            fillingSince = 0;
-                            setChanged();
+                        BlockState state = this.level.getBlockState(pos);
+                        BlockEntity te = this.level.getBlockEntity(pos);
+                        if (this.canFill(state, te)) {
+                            this.currentlyFilling = pos;
+                            this.fillingSince = 0;
+                            this.setChanged();
                             break outer;
                         }
                     }
                 }
             }
         } else {
-            if (currentlyFilling != null && fillingSince > 0) {
-                double progress = fillingSince / (double) TICKS_TO_FILL;
+            if (this.currentlyFilling != null && this.fillingSince > 0) {
+                double progress = this.fillingSince / (double) TICKS_TO_FILL;
 
-                double x = ((currentlyFilling.getX() - worldPosition.getX()) * progress) + worldPosition.getX() + 0.5;
-                double y = worldPosition.getY() + (1.5 * Math.sin(progress * Math.PI));
-                double z = ((currentlyFilling.getZ() - worldPosition.getZ()) * progress) + worldPosition.getZ() + 0.5;
+                double x = ((this.currentlyFilling.getX() - this.worldPosition.getX()) * progress) + this.worldPosition.getX() + 0.5;
+                double y = this.worldPosition.getY() + (1.5 * Math.sin(progress * Math.PI));
+                double z = ((this.currentlyFilling.getZ() - this.worldPosition.getZ()) * progress) + this.worldPosition.getZ() + 0.5;
 
-                double xd = ((currentlyFilling.getX() - worldPosition.getX()) * progress) / 10;
+                double xd = ((this.currentlyFilling.getX() - this.worldPosition.getX()) * progress) / 10;
                 double yd = Math.sin(progress * Math.PI) / 10;
-                double zd = ((currentlyFilling.getZ() - worldPosition.getZ()) * progress) / 10;
+                double zd = ((this.currentlyFilling.getZ() - this.worldPosition.getZ()) * progress) / 10;
 
                 WispParticleData data = WispParticleData.wisp(0.85F, 0.1f, 0.1f, 1, 0.25F);
-                level.addParticle(data, x, y, z, xd, yd, zd);
+                this.level.addParticle(data, x, y, z, xd, yd, zd);
                 data = WispParticleData.wisp((float) Math.random() * 0.1F + 0.1F, 0.2f, 0.2f, 1, 0.9F);
-                level.addParticle(data, x, y, z, (float) (Math.random() - 0.5) * 0.05F, (float) (Math.random() - 0.5) * 0.05F, (float) (Math.random() - 0.5) * 0.05F);
+                this.level.addParticle(data, x, y, z, (float) (Math.random() - 0.5) * 0.05F, (float) (Math.random() - 0.5) * 0.05F, (float) (Math.random() - 0.5) * 0.05F);
             }
         }
     }
@@ -144,14 +144,14 @@ public class Aquapanthus extends FunctionalFlowerBase {
     
     private boolean fill() {
         //noinspection ConstantConditions
-        BlockState state = level.getBlockState(currentlyFilling);
-        BlockEntity be = level.getBlockEntity(currentlyFilling);
+        BlockState state = this.level.getBlockState(this.currentlyFilling);
+        BlockEntity be = this.level.getBlockEntity(this.currentlyFilling);
         if (state.getBlock() == Blocks.CAULDRON || (state.getBlock() == Blocks.WATER_CAULDRON && state.getValue(LayeredCauldronBlock.LEVEL) < 3) || (be instanceof IPetalApothecary && ((IPetalApothecary) be).getFluid() == IPetalApothecary.State.EMPTY)) {
-            if (fillingSince >= TICKS_TO_FILL) {
+            if (this.fillingSince >= TICKS_TO_FILL) {
                 if (state.getBlock() == Blocks.CAULDRON) {
-                    level.setBlockAndUpdate(currentlyFilling, Blocks.WATER_CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 1));
+                    this.level.setBlockAndUpdate(this.currentlyFilling, Blocks.WATER_CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 1));
                 } else if (state.getBlock() == Blocks.WATER_CAULDRON) {
-                    level.setBlockAndUpdate(currentlyFilling, state.setValue(LayeredCauldronBlock.LEVEL, Mth.clamp(state.getValue(LayeredCauldronBlock.LEVEL) + 1, 0, 3)));
+                    this.level.setBlockAndUpdate(this.currentlyFilling, state.setValue(LayeredCauldronBlock.LEVEL, Mth.clamp(state.getValue(LayeredCauldronBlock.LEVEL) + 1, 0, 3)));
                 } else if (be instanceof IPetalApothecary) {
                     ((IPetalApothecary) be).setFluid(IPetalApothecary.State.WATER);
                     be.setChanged();
@@ -160,7 +160,7 @@ public class Aquapanthus extends FunctionalFlowerBase {
             }
             return true;
         } else if ((FILLING_SLOW_IDS.contains(state.getBlock().getRegistryName()) || FILLING_FAST_IDS.contains(state.getBlock().getRegistryName())) && be != null) {
-            if (fillingSince >= TICKS_TO_FILL) {
+            if (this.fillingSince >= TICKS_TO_FILL) {
                 //noinspection ConstantConditions
                 IFluidHandler handler = be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP).orElse(null);
                 //noinspection ConstantConditions
@@ -174,7 +174,7 @@ public class Aquapanthus extends FunctionalFlowerBase {
                 }
                 return false;
             } else {
-                return canFill(state, be);
+                return this.canFill(state, be);
             }
         } else {
             return false;
@@ -183,7 +183,7 @@ public class Aquapanthus extends FunctionalFlowerBase {
 
     @Override
     public RadiusDescriptor getRadius() {
-        return new RadiusDescriptor.Square(worldPosition, 3);
+        return new RadiusDescriptor.Square(this.worldPosition, 3);
     }
 
     @Override
@@ -191,23 +191,23 @@ public class Aquapanthus extends FunctionalFlowerBase {
         super.load(nbt);
         if (nbt.contains("waterFilling")) {
             CompoundTag fillingTag = nbt.getCompound("waterFilling");
-            currentlyFilling = new BlockPos(fillingTag.getInt("x"), fillingTag.getInt("y"), fillingTag.getInt("z"));
+            this.currentlyFilling = new BlockPos(fillingTag.getInt("x"), fillingTag.getInt("y"), fillingTag.getInt("z"));
         } else {
-            currentlyFilling = null;
+            this.currentlyFilling = null;
         }
-        fillingSince = nbt.getInt("filling_since");
+        this.fillingSince = nbt.getInt("filling_since");
     }
 
     @Override
     public void saveAdditional(@Nonnull CompoundTag nbt) {
         super.saveAdditional(nbt);
-        if (currentlyFilling != null) {
+        if (this.currentlyFilling != null) {
             CompoundTag fillingTag = new CompoundTag();
-            fillingTag.putInt("x", currentlyFilling.getX());
-            fillingTag.putInt("y", currentlyFilling.getY());
-            fillingTag.putInt("z", currentlyFilling.getZ());
+            fillingTag.putInt("x", this.currentlyFilling.getX());
+            fillingTag.putInt("y", this.currentlyFilling.getY());
+            fillingTag.putInt("z", this.currentlyFilling.getZ());
             nbt.put("waterFilling", fillingTag);
-            nbt.putInt("filling_since", fillingSince);
+            nbt.putInt("filling_since", this.fillingSince);
         }
     }
 
@@ -216,15 +216,15 @@ public class Aquapanthus extends FunctionalFlowerBase {
     public CompoundTag getUpdateTag() {
         CompoundTag updateTag = super.getUpdateTag();
         //noinspection ConstantConditions
-        if (!level.isClientSide) {
-            if (currentlyFilling != null) {
+        if (!this.level.isClientSide) {
+            if (this.currentlyFilling != null) {
                 CompoundTag fillingTag = new CompoundTag();
-                fillingTag.putInt("x", currentlyFilling.getX());
-                fillingTag.putInt("y", currentlyFilling.getY());
-                fillingTag.putInt("z", currentlyFilling.getZ());
+                fillingTag.putInt("x", this.currentlyFilling.getX());
+                fillingTag.putInt("y", this.currentlyFilling.getY());
+                fillingTag.putInt("z", this.currentlyFilling.getZ());
                 updateTag.put("waterFilling", fillingTag);
             }
-            updateTag.putInt("filling_since", fillingSince);
+            updateTag.putInt("filling_since", this.fillingSince);
         }
         return updateTag;
     }
@@ -232,14 +232,14 @@ public class Aquapanthus extends FunctionalFlowerBase {
     @Override
     public void handleUpdateTag(CompoundTag tag) {
         //noinspection ConstantConditions
-        if (level.isClientSide) {
+        if (this.level.isClientSide) {
             if (tag.contains("waterFilling")) {
                 CompoundTag fillingTag = tag.getCompound("waterFilling");
-                currentlyFilling = new BlockPos(fillingTag.getInt("x"), fillingTag.getInt("y"), fillingTag.getInt("z"));
+                this.currentlyFilling = new BlockPos(fillingTag.getInt("x"), fillingTag.getInt("y"), fillingTag.getInt("z"));
             } else {
-                currentlyFilling = null;
+                this.currentlyFilling = null;
             }
-            fillingSince = tag.getInt("filling_since");
+            this.fillingSince = tag.getInt("filling_since");
         }
         super.handleUpdateTag(tag);
     }

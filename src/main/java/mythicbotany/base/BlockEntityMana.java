@@ -68,12 +68,12 @@ public abstract class BlockEntityMana extends BlockEntityBase implements ISparkA
 
     @Override
     public boolean canAttachSpark(ItemStack itemStack) {
-        return sparks;
+        return this.sparks;
     }
 
     @Override
     public int getAvailableSpaceForMana() {
-        return Mth.clamp(maxMana - mana, 0, maxMana);
+        return Mth.clamp(this.maxMana - this.mana, 0, this.maxMana);
     }
 
     @Override
@@ -90,36 +90,36 @@ public abstract class BlockEntityMana extends BlockEntityBase implements ISparkA
 
     @Override
     public boolean areIncomingTranfersDone() {
-        return mana < maxMana && canReceive();
+        return this.mana < this.maxMana && this.canReceive();
     }
 
     @Override
     public boolean isFull() {
-        return mana >= maxMana;
+        return this.mana >= this.maxMana;
     }
 
     @Override
     public void receiveMana(int i) {
-        mana = Mth.clamp(mana + i, 0, maxMana);
-        onManaChange();
-        setChanged();
+        this.mana = Mth.clamp(this.mana + i, 0, this.maxMana);
+        this.onManaChange();
+        this.setChanged();
     }
 
     @Override
     public boolean canReceiveManaFromBursts() {
-        return bursts;
+        return this.bursts;
     }
 
     @Override
     public int getCurrentMana() {
-        return Mth.clamp(mana, 0, maxMana);
+        return Mth.clamp(this.mana, 0, this.maxMana);
     }
 
     @Override
     public void load(@Nonnull CompoundTag nbt) {
         super.load(nbt);
         if (nbt.contains("mana", Tag.TAG_INT)) {
-            this.mana = Mth.clamp(nbt.getInt("mana"), 0, maxMana);
+            this.mana = Mth.clamp(nbt.getInt("mana"), 0, this.maxMana);
         } else {
             this.mana = 0;
         }
@@ -128,7 +128,7 @@ public abstract class BlockEntityMana extends BlockEntityBase implements ISparkA
     @Override
     public void saveAdditional(@Nonnull CompoundTag nbt) {
         super.saveAdditional(nbt);
-        nbt.putInt("mana", Mth.clamp(mana, 0, maxMana));
+        nbt.putInt("mana", Mth.clamp(this.mana, 0, this.maxMana));
     }
 
     @Nonnull
@@ -136,8 +136,8 @@ public abstract class BlockEntityMana extends BlockEntityBase implements ISparkA
     public CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
         //noinspection ConstantConditions
-        if (!level.isClientSide) {
-            tag.putInt("mana", mana);
+        if (!this.level.isClientSide) {
+            tag.putInt("mana", this.mana);
         }
         return tag;
     }
@@ -145,8 +145,8 @@ public abstract class BlockEntityMana extends BlockEntityBase implements ISparkA
     @Override
     public void handleUpdateTag(CompoundTag tag) {
         //noinspection ConstantConditions
-        if (level.isClientSide) {
-            mana = Mth.clamp(tag.getInt("mana"), 0, maxMana);
+        if (this.level.isClientSide) {
+            this.mana = Mth.clamp(tag.getInt("mana"), 0, this.maxMana);
         }
     }
 
@@ -159,7 +159,7 @@ public abstract class BlockEntityMana extends BlockEntityBase implements ISparkA
     @Override
     public boolean onUsedByWand(@Nullable Player player, ItemStack itemStack, Direction direction) {
         if (this.level != null && this.level.isClientSide) {
-            LibX.getNetwork().requestBE(level, this.worldPosition);
+            LibX.getNetwork().requestBE(this.level, this.worldPosition);
         }
         return true;
     }

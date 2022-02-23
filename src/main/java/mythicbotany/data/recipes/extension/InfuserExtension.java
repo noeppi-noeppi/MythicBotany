@@ -130,13 +130,13 @@ public interface InfuserExtension extends RecipeExtension {
                 }
                 json.add("output", CraftingHelper2.serializeItemStack(this.output, true));
                 JsonArray ingredients = new JsonArray();
-                for (Ingredient ingredient : inputs) {
+                for (Ingredient ingredient : this.inputs) {
                     ingredients.add(ingredient.toJson());
                 }
-                json.addProperty("mana", mana);
+                json.addProperty("mana", this.mana);
                 json.add("ingredients", ingredients);
-                json.addProperty("fromColor", fromColor);
-                json.addProperty("toColor", toColor);
+                json.addProperty("fromColor", this.fromColor);
+                json.addProperty("toColor", this.toColor);
             }
 
             @Nonnull

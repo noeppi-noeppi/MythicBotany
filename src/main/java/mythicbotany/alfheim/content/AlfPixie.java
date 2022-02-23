@@ -70,12 +70,12 @@ public class AlfPixie extends PathfinderMob {
                 this.heal(1);
             }
         }
-        if (level.isClientSide) {
+        if (this.level.isClientSide) {
             for (int i = 0; i < 4; i++) {
                 SparkleParticleData data = SparkleParticleData.sparkle(0.1F + (float) Math.random() * 0.25f, 1, 0.25f, 0.9f, 12);
-                level.addParticle(data, getX() + (Math.random() - 0.5) * 0.25,
-                        getY() + 0.5 + (Math.random() - 0.5) * 0.25,
-                        getZ() + (Math.random() - 0.5) * 0.25,
+                this.level.addParticle(data, this.getX() + (Math.random() - 0.5) * 0.25,
+                        this.getY() + 0.5 + (Math.random() - 0.5) * 0.25,
+                        this.getZ() + (Math.random() - 0.5) * 0.25,
                         0, 0, 0);
             }
         }
@@ -216,8 +216,8 @@ public class AlfPixie extends PathfinderMob {
 
         public void start() {
             int aboveGround = 0;
-            BlockPos.MutableBlockPos mpos = entity.blockPosition().below().mutable();
-            while (mpos.getY() > 0 && AlfheimWorldGenUtil.passReplaceableAndDreamWood(entity.level.getBlockState(mpos))) {
+            BlockPos.MutableBlockPos mpos = this.entity.blockPosition().below().mutable();
+            while (mpos.getY() > 0 && AlfheimWorldGenUtil.passReplaceableAndDreamWood(this.entity.level.getBlockState(mpos))) {
                 mpos.move(Direction.DOWN);
                 aboveGround += 1;
                 if (aboveGround >= 10) break;

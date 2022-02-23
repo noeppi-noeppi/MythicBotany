@@ -34,14 +34,14 @@ public class PageRitualInfo extends PageRuneRitualBase {
     @Override
     public void build(BookEntry entry, BookContentsBuilder builder, int pageNum) {
         super.build(entry, builder, pageNum);
-        manaComponent = new ManaComponent();
-        manaComponent.build((GuiBook.PAGE_WIDTH / 2) - 51, 115, pageNum);
-        if (recipe != null) {
+        this.manaComponent = new ManaComponent();
+        this.manaComponent.build((GuiBook.PAGE_WIDTH / 2) - 51, 115, pageNum);
+        if (this.recipe != null) {
             ArrayList<ItemStack> outputs = new ArrayList<>();
             //noinspection CollectionAddAllCanBeReplacedWithConstructor
-            outputs.addAll(recipe.getOutputs());
-            if (recipe.getSpecialOutput() != null) {
-                outputs.addAll(recipe.getSpecialOutput().getJeiOutputItems());
+            outputs.addAll(this.recipe.getOutputs());
+            if (this.recipe.getSpecialOutput() != null) {
+                outputs.addAll(this.recipe.getSpecialOutput().getJeiOutputItems());
             }
             for (ItemStack stack : outputs) {
                 entry.addRelevantStack(builder, stack, pageNum);
@@ -52,9 +52,9 @@ public class PageRitualInfo extends PageRuneRitualBase {
     @Override
     public void onDisplayed(GuiBookEntry parent, int left, int top) {
         super.onDisplayed(parent, left, top);
-        if (text != null) {
-            Component tc = text.isEmpty() ? new TextComponent("") : (parent.book.i18n ? new TranslatableComponent(text) : new TextComponent(text));
-            desc = new BookTextRenderer(parent, tc, 1, 64);
+        if (this.text != null) {
+            Component tc = this.text.isEmpty() ? new TextComponent("") : (parent.book.i18n ? new TranslatableComponent(this.text) : new TextComponent(this.text));
+            this.desc = new BookTextRenderer(parent, tc, 1, 64);
         }
     }
 
@@ -64,49 +64,49 @@ public class PageRitualInfo extends PageRuneRitualBase {
         RenderSystem.setShaderTexture(0, OVERLAY_TEXTURE);
         RenderSystem.enableBlend();
         GuiComponent.blit(poseStack, 0, 0, 0, 0, GuiBook.PAGE_WIDTH, GuiBook.PAGE_HEIGHT, 256, 256);
-        renderInputs(poseStack, mouseX, mouseY, partialTicks);
-        renderOutputs(poseStack, mouseX, mouseY, partialTicks);
-        renderManaBar(poseStack, mouseX, mouseY, partialTicks);
-        if (desc != null) {
-            desc.render(poseStack, mouseX, mouseY);
+        this.renderInputs(poseStack, mouseX, mouseY, partialTicks);
+        this.renderOutputs(poseStack, mouseX, mouseY, partialTicks);
+        this.renderManaBar(poseStack, mouseX, mouseY, partialTicks);
+        if (this.desc != null) {
+            this.desc.render(poseStack, mouseX, mouseY);
         }
     }
 
     private void renderInputs(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        if (recipe != null) {
+        if (this.recipe != null) {
             ArrayList<Ingredient> inputs = new ArrayList<>();
             //noinspection CollectionAddAllCanBeReplacedWithConstructor
-            inputs.addAll(recipe.getInputs());
-            if (recipe.getSpecialInput() != null) {
-                inputs.addAll(recipe.getSpecialInput().getJeiInputItems());
+            inputs.addAll(this.recipe.getInputs());
+            if (this.recipe.getSpecialInput() != null) {
+                inputs.addAll(this.recipe.getSpecialInput().getJeiInputItems());
             }
             int startX = (GuiBook.PAGE_WIDTH / 2) - (8 * inputs.size());
             for (int i = 0; i < inputs.size(); i++) {
-                parent.renderIngredient(poseStack, startX + (16 * i), 12, mouseX, mouseY, inputs.get(i));
+                this.parent.renderIngredient(poseStack, startX + (16 * i), 12, mouseX, mouseY, inputs.get(i));
             }
         }
     }
 
     private void renderOutputs(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        if (recipe != null) {
+        if (this.recipe != null) {
             ArrayList<ItemStack> outputs = new ArrayList<>();
             //noinspection CollectionAddAllCanBeReplacedWithConstructor
-            outputs.addAll(recipe.getOutputs());
-            if (recipe.getSpecialOutput() != null) {
-                outputs.addAll(recipe.getSpecialOutput().getJeiOutputItems());
+            outputs.addAll(this.recipe.getOutputs());
+            if (this.recipe.getSpecialOutput() != null) {
+                outputs.addAll(this.recipe.getSpecialOutput().getJeiOutputItems());
             }
             int startX = (GuiBook.PAGE_WIDTH / 2) - (8 * outputs.size());
             for (int i = 0; i < outputs.size(); i++) {
-                parent.renderItemStack(poseStack, startX + (16 * i), 41, mouseX, mouseY, outputs.get(i));
+                this.parent.renderItemStack(poseStack, startX + (16 * i), 41, mouseX, mouseY, outputs.get(i));
             }
         }
     }
 
     private void renderManaBar(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        if (recipe != null && recipe.getMana() > 0) {
-            manaComponent.mana = IVariable.wrap(recipe.getMana());
-            manaComponent.onVariablesAvailable(v -> v);
-            manaComponent.render(poseStack, parent, partialTicks, mouseX, mouseY);
+        if (this.recipe != null && this.recipe.getMana() > 0) {
+            this.manaComponent.mana = IVariable.wrap(this.recipe.getMana());
+            this.manaComponent.onVariablesAvailable(v -> v);
+            this.manaComponent.render(poseStack, this.parent, partialTicks, mouseX, mouseY);
         }
     }
 }

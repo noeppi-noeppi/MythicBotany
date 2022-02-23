@@ -38,8 +38,8 @@ public class WanderingTraderRuneInput extends SpecialRuneInput {
 
     private WanderingTraderRuneInput() {
         super(new ResourceLocation(MythicBotany.getInstance().modid, "wandering_trader"));
-        traderStack = new ItemStack(Items.PLAYER_HEAD);
-        CompoundTag nbt = traderStack.getOrCreateTag();
+        this.traderStack = new ItemStack(Items.PLAYER_HEAD);
+        CompoundTag nbt = this.traderStack.getOrCreateTag();
         CompoundTag skullOwner = new CompoundTag();
         skullOwner.putUUID("Id", UUID.fromString("3358ddae-3a41-4ba0-bdfa-ee54b6c55cf5"));
         CompoundTag properties = new CompoundTag();
@@ -56,7 +56,7 @@ public class WanderingTraderRuneInput extends SpecialRuneInput {
         tooltipNBT.add(StringTag.valueOf(Component.Serializer.toJson(new TranslatableComponent("tooltip.mythicbotany.sacrifice_entity2").withStyle(ChatFormatting.RESET).withStyle(Style.EMPTY.withItalic(false)).withStyle(ChatFormatting.AQUA))));
         display.put("Lore", tooltipNBT);
         nbt.put("display", display);
-        traderStack.setHoverName(new TranslatableComponent("entity.minecraft.wandering_trader").withStyle(Style.EMPTY.withItalic(false)).withStyle(ChatFormatting.DARK_AQUA));
+        this.traderStack.setHoverName(new TranslatableComponent("entity.minecraft.wandering_trader").withStyle(Style.EMPTY.withItalic(false)).withStyle(ChatFormatting.DARK_AQUA));
     }
 
     @Override
@@ -93,6 +93,6 @@ public class WanderingTraderRuneInput extends SpecialRuneInput {
 
     @Override
     public List<Ingredient> getJeiInputItems() {
-        return ImmutableList.of(new NbtIngredient(traderStack));
+        return ImmutableList.of(new NbtIngredient(this.traderStack));
     }
 }

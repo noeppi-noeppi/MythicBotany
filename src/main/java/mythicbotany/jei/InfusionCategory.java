@@ -67,19 +67,19 @@ public class InfusionCategory implements IRecipeCategory<IInfuserRecipe> {
     @Nonnull
     @Override
     public Component getTitle() {
-        return localizedName;
+        return this.localizedName;
     }
 
     @Nonnull
     @Override
     public IDrawable getBackground() {
-        return background;
+        return this.background;
     }
 
     @Nonnull
     @Override
     public IDrawable getIcon() {
-        return icon;
+        return this.icon;
     }
 
     @Override

@@ -17,22 +17,22 @@ public class Raindeletia extends FunctionalFlowerBase {
     @Override
     protected void tickFlower() {
         //noinspection ConstantConditions
-        if (!level.isClientSide) {
+        if (!this.level.isClientSide) {
             float multiplier = 0;
-            if (level.isRainingAt(worldPosition)) {
-                multiplier = level.isThundering() ? MythicConfig.flowers.raindeletia.thunder : MythicConfig.flowers.raindeletia.rain;
+            if (this.level.isRainingAt(this.worldPosition)) {
+                multiplier = this.level.isThundering() ? MythicConfig.flowers.raindeletia.thunder : MythicConfig.flowers.raindeletia.rain;
             }
-            if (level.getBlockState(worldPosition.below()).getBlock() == ModBlocks.enchantedSoil) {
+            if (this.level.getBlockState(this.worldPosition.below()).getBlock() == ModBlocks.enchantedSoil) {
                 multiplier = multiplier * MythicConfig.flowers.raindeletia.enchanted_soil;
-            } else if (level.getBlockState(worldPosition.below()).getBlock() == ModBlocks.vividGrass) {
+            } else if (this.level.getBlockState(this.worldPosition.below()).getBlock() == ModBlocks.vividGrass) {
                 multiplier = multiplier * MythicConfig.flowers.raindeletia.vivid_grass;
-            }  else if (level.getBlockState(worldPosition.below()).getBlock() == ModBlocks.dryGrass) {
+            }  else if (this.level.getBlockState(this.worldPosition.below()).getBlock() == ModBlocks.dryGrass) {
                 multiplier = multiplier * MythicConfig.flowers.raindeletia.dry_grass;
             }
 
             int manaTransfer = Math.round(multiplier * MythicConfig.flowers.raindeletia.base);
-            mana = Mth.clamp(mana + manaTransfer, 0, maxMana);
-            didWork = true;
+            this.mana = Mth.clamp(this.mana + manaTransfer, 0, this.maxMana);
+            this.didWork = true;
         }
     }
 }

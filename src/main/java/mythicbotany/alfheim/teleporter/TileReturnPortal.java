@@ -24,17 +24,17 @@ public class TileReturnPortal extends BlockEntityBase implements TickableBlock {
 
     @Override
     public void tick() {
-        if (level != null && !level.isClientSide) {
-            if (!validPortal(level, worldPosition)) {
-                level.setBlockAndUpdate(worldPosition, Blocks.AIR.defaultBlockState());
+        if (this.level != null && !this.level.isClientSide) {
+            if (!validPortal(this.level, this.worldPosition)) {
+                this.level.setBlockAndUpdate(this.worldPosition, Blocks.AIR.defaultBlockState());
                 return;
             }
-            if (AlfheimPortalHandler.shouldCheck(level)) {
-                List<Player> playersInPortal = level.getEntitiesOfClass(Player.class, new AABB(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), worldPosition.getX() + 1, worldPosition.getY() + 1, worldPosition.getZ() + 1));
+            if (AlfheimPortalHandler.shouldCheck(this.level)) {
+                List<Player> playersInPortal = this.level.getEntitiesOfClass(Player.class, new AABB(this.worldPosition.getX(), this.worldPosition.getY(), this.worldPosition.getZ(), this.worldPosition.getX() + 1, this.worldPosition.getY() + 1, this.worldPosition.getZ() + 1));
                 for (Player player : playersInPortal) {
                     if (player instanceof ServerPlayer) {
-                        if (AlfheimPortalHandler.setInPortal(level, player)) {
-                            AlfheimTeleporter.teleportToOverworld((ServerPlayer) player, worldPosition);
+                        if (AlfheimPortalHandler.setInPortal(this.level, player)) {
+                            AlfheimTeleporter.teleportToOverworld((ServerPlayer) player, this.worldPosition);
                         }
                     }
                 }
