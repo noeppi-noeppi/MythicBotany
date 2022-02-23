@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group": "mythicbotany:infuser",
   "pattern": [
     "eee",
     "wdz",
@@ -8,25 +7,25 @@
   ],
   "key": {
     "e": {
-      "tag": "forge:ingots/elementium"
+      "tag": "botania:elementium_ingots"
     },
     "d": {
-      "item": "botania:glimmering_dreamwood"
+      "tag": "botania:glimmering_dreamwood_logs"
     },
     "a": {
       "item": "mythicbotany:asgard_rune"
     },
     "w": {
-      "tag": "botania:runes/spring"
+      "item": "botania:rune_spring"
     },
     "x": {
-      "tag": "botania:runes/summer"
+      "item": "botania:rune_summer"
     },
     "y": {
-      "tag": "botania:runes/autumn"
+      "item": "botania:rune_autumn"
     },
     "z": {
-      "tag": "botania:runes/winter"
+      "item": "botania:rune_winter"
     }
   },
   "result": {

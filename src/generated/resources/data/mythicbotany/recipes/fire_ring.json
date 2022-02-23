@@ -1,17 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group": "mythicbotany:fire_ring",
   "pattern": [
-    "gm ",
-    "m m",
-    " m "
+    "re ",
+    "e e",
+    " e "
   ],
   "key": {
-    "m": {
-      "item": "botania:elementium_ingot"
-    },
-    "g": {
+    "r": {
       "item": "mythicbotany:muspelheim_rune"
+    },
+    "e": {
+      "tag": "botania:elementium_ingots"
     }
   },
   "result": {

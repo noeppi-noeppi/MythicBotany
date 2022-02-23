@@ -6,22 +6,22 @@
     ]
   },
   "criteria": {
-    "has_item0": {
+    "criterion0": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "botania:livingwood"
+            "tag": "botania:livingwood_logs"
           }
         ]
       }
     },
-    "has_item1": {
+    "criterion1": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:nuggets/terrasteel"
+            "tag": "botania:terrasteel_nuggets"
           }
         ]
       }
@@ -35,8 +35,8 @@
   },
   "requirements": [
     [
-      "has_item0",
-      "has_item1",
+      "criterion0",
+      "criterion1",
       "has_the_recipe"
     ]
   ]

@@ -6,16 +6,16 @@
   "mana": 16000,
   "ingredients": [
     {
-      "tag": "forge:ingots/manasteel"
+      "tag": "botania:manasteel_ingots"
     },
     {
-      "tag": "botania:runes/earth"
+      "item": "botania:rune_earth"
     },
     {
-      "tag": "botania:runes/spring"
+      "item": "botania:rune_spring"
     },
     {
-      "tag": "botania:runes/greed"
+      "item": "botania:rune_greed"
     },
     {
       "item": "minecraft:grass_block"

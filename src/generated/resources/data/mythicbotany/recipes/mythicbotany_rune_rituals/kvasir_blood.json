@@ -39,7 +39,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/summer"
+        "item": "botania:rune_summer"
       },
       "x": -1,
       "z": -3,
@@ -47,7 +47,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/summer"
+        "item": "botania:rune_summer"
       },
       "x": 1,
       "z": 3,
@@ -55,7 +55,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/summer"
+        "item": "botania:rune_summer"
       },
       "x": -3,
       "z": -1,
@@ -63,7 +63,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/summer"
+        "item": "botania:rune_summer"
       },
       "x": 3,
       "z": 1,
@@ -71,7 +71,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/fire"
+        "item": "botania:rune_fire"
       },
       "x": 1,
       "z": -3,
@@ -79,7 +79,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/fire"
+        "item": "botania:rune_fire"
       },
       "x": -1,
       "z": 3,
@@ -87,7 +87,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/fire"
+        "item": "botania:rune_fire"
       },
       "x": 3,
       "z": -1,
@@ -95,7 +95,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/fire"
+        "item": "botania:rune_fire"
       },
       "x": -3,
       "z": 1,
@@ -117,7 +117,8 @@
   ],
   "outputs": [
     {
-      "item": "mythicbotany:kvasir_blood"
+      "item": "mythicbotany:kvasir_blood",
+      "count": 1
     }
   ],
   "special_input": "mythicbotany:wandering_trader"

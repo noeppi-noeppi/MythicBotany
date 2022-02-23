@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:mjoellnir"
+            "items": [
+              "mythicbotany:mjoellnir"
+            ]
           }
         ]
       }

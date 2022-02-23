@@ -49,7 +49,7 @@ public interface PetalExtension extends RecipeExtension {
     }
 
     default void petalApothecary(ItemStack output, Ingredient... inputs) {
-        this.consumer().accept(Wrapper.create(this.provider().loc(output.getItem(), "by_elven_trade"), output, inputs));
+        this.consumer().accept(Wrapper.create(this.provider().loc(output.getItem(), "petal_apothecary"), output, inputs));
     }
     
     class Wrapper extends PetalProvider {

@@ -6,16 +6,16 @@
   "mana": 16000,
   "ingredients": [
     {
-      "item": "minecraft:netherite_ingot"
+      "tag": "forge:ingots/netherite"
     },
     {
-      "tag": "botania:runes/earth"
+      "item": "botania:rune_earth"
     },
     {
-      "tag": "botania:runes/spring"
+      "item": "botania:rune_spring"
     },
     {
-      "tag": "botania:runes/pride"
+      "item": "botania:rune_pride"
     },
     {
       "item": "botania:alfheim_portal"

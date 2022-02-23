@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/summer"
+            "items": [
+              "botania:rune_summer"
+            ]
           }
         ]
       }
@@ -31,7 +33,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/spring"
+            "items": [
+              "botania:rune_spring"
+            ]
           }
         ]
       }
@@ -41,7 +45,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/sloth"
+            "items": [
+              "botania:rune_sloth"
+            ]
           }
         ]
       }
@@ -51,7 +57,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/pride"
+            "items": [
+              "botania:rune_pride"
+            ]
           }
         ]
       }
@@ -61,7 +69,9 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:asgard_rune"
+            "items": [
+              "mythicbotany:asgard_rune"
+            ]
           }
         ]
       }
@@ -71,7 +81,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/wrath"
+            "items": [
+              "botania:rune_wrath"
+            ]
           }
         ]
       }
@@ -81,7 +93,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/winter"
+            "items": [
+              "botania:rune_winter"
+            ]
           }
         ]
       }
@@ -91,7 +105,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/water"
+            "items": [
+              "botania:rune_water"
+            ]
           }
         ]
       }
@@ -101,7 +117,9 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:alfheim_rune"
+            "items": [
+              "mythicbotany:alfheim_rune"
+            ]
           }
         ]
       }
@@ -111,7 +129,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/air"
+            "items": [
+              "botania:rune_air"
+            ]
           }
         ]
       }
@@ -121,7 +141,9 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:vanaheim_rune"
+            "items": [
+              "mythicbotany:vanaheim_rune"
+            ]
           }
         ]
       }
@@ -131,7 +153,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/greed"
+            "items": [
+              "botania:rune_greed"
+            ]
           }
         ]
       }
@@ -141,7 +165,9 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:nidavellir_rune"
+            "items": [
+              "mythicbotany:nidavellir_rune"
+            ]
           }
         ]
       }
@@ -151,7 +177,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/lust"
+            "items": [
+              "botania:rune_lust"
+            ]
           }
         ]
       }
@@ -161,7 +189,9 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:niflheim_rune"
+            "items": [
+              "mythicbotany:niflheim_rune"
+            ]
           }
         ]
       }
@@ -171,7 +201,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/fire"
+            "items": [
+              "botania:rune_fire"
+            ]
           }
         ]
       }
@@ -181,7 +213,9 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:muspelheim_rune"
+            "items": [
+              "mythicbotany:muspelheim_rune"
+            ]
           }
         ]
       }
@@ -191,7 +225,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/gluttony"
+            "items": [
+              "botania:rune_gluttony"
+            ]
           }
         ]
       }
@@ -201,7 +237,9 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:joetunheim_rune"
+            "items": [
+              "mythicbotany:joetunheim_rune"
+            ]
           }
         ]
       }
@@ -211,7 +249,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/earth"
+            "items": [
+              "botania:rune_earth"
+            ]
           }
         ]
       }
@@ -221,7 +261,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/envy"
+            "items": [
+              "botania:rune_envy"
+            ]
           }
         ]
       }
@@ -231,7 +273,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/autumn"
+            "items": [
+              "botania:rune_autumn"
+            ]
           }
         ]
       }
@@ -241,7 +285,9 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:helheim_rune"
+            "items": [
+              "mythicbotany:helheim_rune"
+            ]
           }
         ]
       }
@@ -251,7 +297,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:runes/mana"
+            "items": [
+              "botania:rune_mana"
+            ]
           }
         ]
       }
@@ -261,7 +309,9 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:midgard_rune"
+            "items": [
+              "mythicbotany:midgard_rune"
+            ]
           }
         ]
       }

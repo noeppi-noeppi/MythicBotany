@@ -17,7 +17,7 @@
       "tag": "botania:petals/light_gray"
     },
     {
-      "tag": "botania:runes/fire"
+      "item": "botania:rune_fire"
     },
     {
       "item": "minecraft:blaze_powder"

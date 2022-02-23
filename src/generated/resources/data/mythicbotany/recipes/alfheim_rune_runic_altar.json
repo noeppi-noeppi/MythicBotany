@@ -6,16 +6,16 @@
   "mana": 16000,
   "ingredients": [
     {
-      "tag": "forge:ingots/elementium"
+      "tag": "botania:elementium_ingots"
     },
     {
-      "tag": "botania:runes/air"
+      "item": "botania:rune_air"
     },
     {
-      "tag": "botania:runes/summer"
+      "item": "botania:rune_summer"
     },
     {
-      "tag": "botania:runes/lust"
+      "item": "botania:rune_lust"
     },
     [
       {

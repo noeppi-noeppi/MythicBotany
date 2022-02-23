@@ -6,16 +6,16 @@
   "mana": 16000,
   "ingredients": [
     {
-      "item": "minecraft:netherite_ingot"
+      "tag": "forge:ingots/netherite"
     },
     {
-      "tag": "botania:runes/air"
+      "item": "botania:rune_air"
     },
     {
-      "tag": "botania:runes/autumn"
+      "item": "botania:rune_autumn"
     },
     {
-      "tag": "botania:runes/pride"
+      "item": "botania:rune_pride"
     },
     {
       "item": "botania:rainbow_rod"

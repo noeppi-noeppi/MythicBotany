@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "mythicbotany:feysythia_floating"
+      "mythicbotany:gaia_pylon"
     ]
   },
   "criteria": {
@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "botania:floating_flowers"
+            "items": [
+              "mythicbotany:alfsteel_pylon"
+            ]
           }
         ]
       }
@@ -21,8 +23,18 @@
       "conditions": {
         "items": [
           {
+            "tag": "botania:elementium_ingots"
+          }
+        ]
+      }
+    },
+    "criterion2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
             "items": [
-              "mythicbotany:feysythia"
+              "botania:pixie_dust"
             ]
           }
         ]
@@ -31,7 +43,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "mythicbotany:feysythia_floating"
+        "recipe": "mythicbotany:gaia_pylon"
       }
     }
   },
@@ -39,6 +51,7 @@
     [
       "criterion0",
       "criterion1",
+      "criterion2",
       "has_the_recipe"
     ]
   ]

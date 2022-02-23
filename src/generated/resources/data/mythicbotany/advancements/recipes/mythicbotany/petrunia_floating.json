@@ -6,12 +6,24 @@
     ]
   },
   "criteria": {
-    "has_item": {
+    "criterion0": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:petrunia"
+            "tag": "botania:floating_flowers"
+          }
+        ]
+      }
+    },
+    "criterion1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "mythicbotany:petrunia"
+            ]
           }
         ]
       }
@@ -25,7 +37,8 @@
   },
   "requirements": [
     [
-      "has_item",
+      "criterion0",
+      "criterion1",
       "has_the_recipe"
     ]
   ]

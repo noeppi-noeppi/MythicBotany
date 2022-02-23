@@ -2,16 +2,18 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "mythicbotany:alfsteel_ingot_from_block"
+      "mythicbotany:aura_ring_greatest_smithing"
     ]
   },
   "criteria": {
-    "has_item": {
+    "has_item0": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:alfsteel_block"
+            "items": [
+              "botania:aura_ring_greater"
+            ]
           }
         ]
       }
@@ -19,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "mythicbotany:alfsteel_ingot_from_block"
+        "recipe": "mythicbotany:aura_ring_greatest_smithing"
       }
     }
   },
   "requirements": [
     [
-      "has_item",
+      "has_item0",
       "has_the_recipe"
     ]
   ]

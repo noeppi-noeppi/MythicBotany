@@ -6,12 +6,48 @@
     ]
   },
   "criteria": {
-    "has_item": {
+    "criterion0": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "botania:gaia_ingot"
+            "tag": "botania:glimmering_dreamwood_logs"
+          }
+        ]
+      }
+    },
+    "criterion1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:gaia_ingot"
+            ]
+          }
+        ]
+      }
+    },
+    "criterion2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:pixie_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "criterion3": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "mythicbotany:vanaheim_rune"
+            ]
           }
         ]
       }
@@ -25,7 +61,10 @@
   },
   "requirements": [
     [
-      "has_item",
+      "criterion0",
+      "criterion1",
+      "criterion2",
+      "criterion3",
       "has_the_recipe"
     ]
   ]

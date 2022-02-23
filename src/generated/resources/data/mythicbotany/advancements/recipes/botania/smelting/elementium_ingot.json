@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:elementium_ore"
+            "items": [
+              "mythicbotany:elementium_ore"
+            ]
           }
         ]
       }

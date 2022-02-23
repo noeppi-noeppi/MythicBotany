@@ -2,15 +2,16 @@
   "type": "mythicbotany:infusion",
   "group": "infuser",
   "output": {
-    "item": "mythicbotany:alfsteel_ingot"
+    "item": "mythicbotany:alfsteel_ingot",
+    "count": 1
   },
   "mana": 2000000,
   "ingredients": [
     {
-      "tag": "forge:ingots/elementium"
+      "tag": "botania:elementium_ingots"
     },
     {
-      "tag": "forge:gems/dragonstone"
+      "tag": "botania:dragonstone_gems"
     },
     {
       "item": "botania:pixie_dust"

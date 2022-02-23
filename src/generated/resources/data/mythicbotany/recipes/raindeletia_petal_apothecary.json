@@ -17,7 +17,7 @@
       "tag": "botania:petals/white"
     },
     {
-      "tag": "botania:runes/water"
+      "item": "botania:rune_water"
     }
   ]
 }

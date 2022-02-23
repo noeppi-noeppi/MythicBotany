@@ -11,7 +11,7 @@
       "tag": "botania:petals/black"
     },
     {
-      "tag": "botania:runes/pride"
+      "item": "botania:rune_pride"
     },
     {
       "item": "minecraft:wither_rose"

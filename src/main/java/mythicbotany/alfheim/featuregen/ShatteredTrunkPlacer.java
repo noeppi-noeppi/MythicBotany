@@ -2,6 +2,7 @@ package mythicbotany.alfheim.featuregen;
 
 import com.mojang.serialization.Codec;
 import io.github.noeppi_noeppi.libx.annotation.api.Codecs;
+import io.github.noeppi_noeppi.libx.annotation.codec.PrimaryConstructor;
 import io.github.noeppi_noeppi.libx.annotation.registration.NoReg;
 import io.github.noeppi_noeppi.libx.annotation.registration.RegName;
 import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
@@ -31,6 +32,7 @@ public class ShatteredTrunkPlacer extends TrunkPlacer {
     @NoReg public static final Codec<ShatteredTrunkPlacer> CODEC = Codecs.get(MythicBotany.class, ShatteredTrunkPlacer.class);
     @RegName("shattered_trunk") public static final TrunkPlacerType<ShatteredTrunkPlacer> TYPE = new TrunkPlacerType<>(CODEC);
 
+    @PrimaryConstructor
     public ShatteredTrunkPlacer(int baseHeight, int heightRandA, int heightRandB) {
         super(baseHeight, heightRandA, heightRandB);
     }

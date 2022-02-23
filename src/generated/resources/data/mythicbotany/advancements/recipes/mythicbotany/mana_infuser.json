@@ -6,12 +6,82 @@
     ]
   },
   "criteria": {
-    "has_item": {
+    "criterion0": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:asgard_rune"
+            "tag": "botania:elementium_ingots"
+          }
+        ]
+      }
+    },
+    "criterion1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "botania:glimmering_dreamwood_logs"
+          }
+        ]
+      }
+    },
+    "criterion2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "mythicbotany:asgard_rune"
+            ]
+          }
+        ]
+      }
+    },
+    "criterion3": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_spring"
+            ]
+          }
+        ]
+      }
+    },
+    "criterion4": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_summer"
+            ]
+          }
+        ]
+      }
+    },
+    "criterion5": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_autumn"
+            ]
+          }
+        ]
+      }
+    },
+    "criterion6": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_winter"
+            ]
           }
         ]
       }
@@ -25,7 +95,13 @@
   },
   "requirements": [
     [
-      "has_item",
+      "criterion0",
+      "criterion1",
+      "criterion2",
+      "criterion3",
+      "criterion4",
+      "criterion5",
+      "criterion6",
       "has_the_recipe"
     ]
   ]

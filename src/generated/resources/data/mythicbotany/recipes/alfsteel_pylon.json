@@ -1,20 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group": "mythicbotany:alfsteel_pylon",
   "pattern": [
     " g ",
     "npn",
     " g "
   ],
   "key": {
+    "p": {
+      "item": "botania:natura_pylon"
+    },
     "n": {
       "item": "mythicbotany:alfsteel_nugget"
     },
     "g": {
       "item": "minecraft:ghast_tear"
-    },
-    "p": {
-      "item": "botania:natura_pylon"
     }
   },
   "result": {

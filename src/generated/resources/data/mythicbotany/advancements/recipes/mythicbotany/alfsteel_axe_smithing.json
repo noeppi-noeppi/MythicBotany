@@ -6,10 +6,16 @@
     ]
   },
   "criteria": {
-    "alfsteel_axe_criteria": {
-      "trigger": "minecraft:recipe_unlocked",
+    "has_item0": {
+      "trigger": "minecraft:inventory_changed",
       "conditions": {
-        "recipe": "botania:terra_axe"
+        "items": [
+          {
+            "items": [
+              "botania:terra_axe"
+            ]
+          }
+        ]
       }
     },
     "has_the_recipe": {
@@ -21,7 +27,7 @@
   },
   "requirements": [
     [
-      "alfsteel_axe_criteria",
+      "has_item0",
       "has_the_recipe"
     ]
   ]

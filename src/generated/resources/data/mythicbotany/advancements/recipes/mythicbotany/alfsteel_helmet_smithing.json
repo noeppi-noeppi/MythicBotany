@@ -6,10 +6,16 @@
     ]
   },
   "criteria": {
-    "alfsteel_helmet_criteria": {
-      "trigger": "minecraft:recipe_unlocked",
+    "has_item0": {
+      "trigger": "minecraft:inventory_changed",
       "conditions": {
-        "recipe": "botania:terra_helm"
+        "items": [
+          {
+            "items": [
+              "botania:terrasteel_helmet"
+            ]
+          }
+        ]
       }
     },
     "has_the_recipe": {
@@ -21,7 +27,7 @@
   },
   "requirements": [
     [
-      "alfsteel_helmet_criteria",
+      "has_item0",
       "has_the_recipe"
     ]
   ]

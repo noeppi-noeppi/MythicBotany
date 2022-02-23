@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "mythicbotany:modified_gaia_pylon_with_alfsteel"
+      "mythicbotany:alfsteel_nugget_compress"
     ]
   },
   "criteria": {
@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:alfsteel_pylon"
+            "items": [
+              "mythicbotany:alfsteel_nugget"
+            ]
           }
         ]
       }
@@ -19,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "mythicbotany:modified_gaia_pylon_with_alfsteel"
+        "recipe": "mythicbotany:alfsteel_nugget_compress"
       }
     }
   },

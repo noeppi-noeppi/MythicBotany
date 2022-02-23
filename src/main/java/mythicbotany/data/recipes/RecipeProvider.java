@@ -59,7 +59,7 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
         );
 
         this.shaped(ModBlocks.alfsteelPylon, " g ", "npn", " g ", 'p', vazkii.botania.common.block.ModBlocks.naturaPylon, 'n', ModItems.alfsteelNugget, 'g', Items.GHAST_TEAR);
-        this.shaped(vazkii.botania.common.block.ModBlocks.gaiaPylon, " d ", "epe", " d ", 'p', ModBlocks.alfsteelPylon, 'e', ModTags.Items.INGOTS_ELEMENTIUM, 'p', vazkii.botania.common.item.ModItems.pixieDust);
+        this.shaped(vazkii.botania.common.block.ModBlocks.gaiaPylon, " d ", "epe", " d ", 'p', ModBlocks.alfsteelPylon, 'e', ModTags.Items.INGOTS_ELEMENTIUM, 'd', vazkii.botania.common.item.ModItems.pixieDust);
         this.shaped(ModBlocks.manaCollector, "dgd", "dpd", "dmd", 'd', ModTags.Items.DREAMWOOD_LOGS_GLIMMERING, 'g', vazkii.botania.common.item.ModItems.gaiaIngot, 'p', vazkii.botania.common.item.ModItems.pixieDust, 'm', ModItems.vanaheimRune);
         this.shaped(ModBlocks.yggdrasilBranch, "lll", "ttt", "lll", 'l', ModTags.Items.LIVINGWOOD_LOGS, 't', ModTags.Items.NUGGETS_TERRASTEEL);
         this.shaped(ModBlocks.runeHolder, " w ", "wdw", 'w', Tags.Items.INGOTS_IRON, 'd', ModTags.Items.DUSTS_MANA);

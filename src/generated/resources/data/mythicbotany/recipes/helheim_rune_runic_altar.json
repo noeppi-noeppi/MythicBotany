@@ -9,13 +9,13 @@
       "tag": "forge:ingots/gold"
     },
     {
-      "tag": "botania:runes/fire"
+      "item": "botania:rune_fire"
     },
     {
-      "tag": "botania:runes/autumn"
+      "item": "botania:rune_autumn"
     },
     {
-      "tag": "botania:runes/envy"
+      "item": "botania:rune_envy"
     },
     [
       {

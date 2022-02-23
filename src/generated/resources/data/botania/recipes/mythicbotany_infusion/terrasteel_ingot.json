@@ -2,18 +2,19 @@
   "type": "mythicbotany:infusion",
   "group": "infuser",
   "output": {
-    "item": "botania:terrasteel_ingot"
+    "item": "botania:terrasteel_ingot",
+    "count": 1
   },
   "mana": 500000,
   "ingredients": [
     {
-      "tag": "forge:ingots/manasteel"
+      "tag": "botania:manasteel_ingots"
     },
     {
       "item": "botania:mana_pearl"
     },
     {
-      "tag": "forge:gems/mana_diamond"
+      "tag": "botania:mana_diamond_gems"
     }
   ],
   "fromColor": 255,

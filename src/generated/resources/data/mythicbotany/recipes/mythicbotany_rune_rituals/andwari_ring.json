@@ -2,12 +2,12 @@
   "type": "mythicbotany:rune_ritual",
   "group": "rune_rituals",
   "center": {
-    "tag": "botania:runes/mana"
+    "item": "botania:rune_mana"
   },
   "runes": [
     {
       "rune": {
-        "tag": "botania:runes/greed"
+        "item": "botania:rune_greed"
       },
       "x": -2,
       "z": -2,
@@ -15,7 +15,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/greed"
+        "item": "botania:rune_greed"
       },
       "x": -2,
       "z": 2,
@@ -23,7 +23,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/greed"
+        "item": "botania:rune_greed"
       },
       "x": 2,
       "z": -2,
@@ -31,7 +31,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/greed"
+        "item": "botania:rune_greed"
       },
       "x": 2,
       "z": 2,
@@ -55,7 +55,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/water"
+        "item": "botania:rune_greed"
       },
       "x": 0,
       "z": -3,
@@ -63,7 +63,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/water"
+        "item": "botania:rune_greed"
       },
       "x": 0,
       "z": 3,
@@ -88,9 +88,8 @@
   "outputs": [
     {
       "item": "mythicbotany:andwari_ring",
-      "nbt": {
-        "Damage": 0
-      }
+      "count": 1,
+      "nbt": "{Damage:0}"
     }
   ]
 }

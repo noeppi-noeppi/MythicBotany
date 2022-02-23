@@ -25,7 +25,7 @@ public interface ElvenTradeExtension extends RecipeExtension {
     }
 
     default void elvenTrade(ItemStack output, Ingredient... inputs) {
-        this.consumer().accept(Wrapper.create(this.provider().loc(output.getItem(), "by_elven_trade"), output, inputs));
+        this.consumer().accept(Wrapper.create(this.provider().loc(output.getItem(), "elven_trade"), output, inputs));
     }
     
     class Wrapper extends ElvenTradeProvider {

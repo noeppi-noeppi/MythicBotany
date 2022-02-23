@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group": "mythicbotany:alfsteel_ingot_from_nuggets",
   "pattern": [
     "aaa",
     "aaa",

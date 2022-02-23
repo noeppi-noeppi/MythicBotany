@@ -22,7 +22,9 @@
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:andwari_ring"
+            "items": [
+              "mythicbotany:andwari_ring"
+            ]
           }
         ]
       }

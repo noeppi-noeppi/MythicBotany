@@ -33,7 +33,7 @@ public interface ManaInfusionExtension extends RecipeExtension {
     }
     
     default void manaInfusion(Ingredient input, ItemStack result, int mana) {
-        this.consumer().accept(Wrapper.create(this.provider().loc(result.getItem(), "from_mana_infusion"), result, input, mana));
+        this.consumer().accept(Wrapper.create(this.provider().loc(result.getItem(), "mana_infusion"), result, input, mana));
     }
 
     default void manaAlchemy(ItemLike input, ItemLike result, int mana) {
@@ -57,7 +57,7 @@ public interface ManaInfusionExtension extends RecipeExtension {
     }
 
     default void manaAlchemy(Ingredient input, ItemStack result, int mana) {
-        this.consumer().accept(Wrapper.alchemy(this.provider().loc(result.getItem(), "from_mana_alchemy"), result, input, mana));
+        this.consumer().accept(Wrapper.alchemy(this.provider().loc(result.getItem(), "mana_alchemy"), result, input, mana));
     }
 
     default void manaConjuration(ItemLike input, ItemLike result, int mana) {
@@ -81,7 +81,7 @@ public interface ManaInfusionExtension extends RecipeExtension {
     }
 
     default void manaConjuration(Ingredient input, ItemStack result, int mana) {
-        this.consumer().accept(Wrapper.conjuration(this.provider().loc(result.getItem(), "from_mana_conjuration"), result, input, mana));
+        this.consumer().accept(Wrapper.conjuration(this.provider().loc(result.getItem(), "mana_conjuration"), result, input, mana));
     }
     
     class Wrapper extends ManaInfusionProvider {

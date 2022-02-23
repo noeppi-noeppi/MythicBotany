@@ -41,7 +41,7 @@ import vazkii.patchouli.client.book.ClientBookRegistry;
 import javax.annotation.Nonnull;
 
 @Mod("mythicbotany")
-public class MythicBotany extends ModXRegistration {
+public final class MythicBotany extends ModXRegistration {
 
     private static MythicBotany instance;
     private static MythicNetwork network;

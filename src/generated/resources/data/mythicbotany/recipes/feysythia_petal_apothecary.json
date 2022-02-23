@@ -36,7 +36,7 @@
         }
       ],
       "recipe": {
-        "type": "mythicbotany:empty"
+        "type": "libx:empty"
       }
     }
   ]

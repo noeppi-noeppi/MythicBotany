@@ -6,22 +6,26 @@
     ]
   },
   "criteria": {
-    "has_item0": {
+    "criterion0": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "mythicbotany:kvasir_blood"
+            "items": [
+              "mythicbotany:kvasir_blood"
+            ]
           }
         ]
       }
     },
-    "has_item1": {
+    "criterion1": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:honey_bottle"
+            "items": [
+              "minecraft:honey_bottle"
+            ]
           }
         ]
       }
@@ -35,8 +39,8 @@
   },
   "requirements": [
     [
-      "has_item0",
-      "has_item1",
+      "criterion0",
+      "criterion1",
       "has_the_recipe"
     ]
   ]

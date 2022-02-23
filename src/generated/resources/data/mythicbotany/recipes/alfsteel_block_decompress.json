@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "mythicbotany:alfsteel_ingot_from_block",
   "ingredients": [
     {
       "item": "mythicbotany:alfsteel_block"

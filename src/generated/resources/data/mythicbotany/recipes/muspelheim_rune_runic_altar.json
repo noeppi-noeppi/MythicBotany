@@ -9,13 +9,13 @@
       "tag": "forge:ingots/nether_brick"
     },
     {
-      "tag": "botania:runes/fire"
+      "item": "botania:rune_fire"
     },
     {
-      "tag": "botania:runes/summer"
+      "item": "botania:rune_summer"
     },
     {
-      "tag": "botania:runes/wrath"
+      "item": "botania:rune_wrath"
     },
     {
       "item": "minecraft:magma_block"

@@ -9,13 +9,13 @@
       "tag": "forge:ingots/iron"
     },
     {
-      "tag": "botania:runes/water"
+      "item": "botania:rune_water"
     },
     {
-      "tag": "botania:runes/winter"
+      "item": "botania:rune_winter"
     },
     {
-      "tag": "botania:runes/wrath"
+      "item": "botania:rune_wrath"
     },
     {
       "item": "minecraft:blue_ice"

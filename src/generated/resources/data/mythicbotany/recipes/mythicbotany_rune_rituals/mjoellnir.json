@@ -7,7 +7,7 @@
   "runes": [
     {
       "rune": {
-        "tag": "botania:runes/wrath"
+        "item": "botania:rune_wrath"
       },
       "x": -5,
       "z": 0,
@@ -15,7 +15,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/wrath"
+        "item": "botania:rune_wrath"
       },
       "x": 5,
       "z": 0,
@@ -23,7 +23,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/wrath"
+        "item": "botania:rune_wrath"
       },
       "x": 0,
       "z": -5,
@@ -31,7 +31,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/wrath"
+        "item": "botania:rune_wrath"
       },
       "x": 0,
       "z": 5,
@@ -39,7 +39,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/pride"
+        "item": "botania:rune_pride"
       },
       "x": -4,
       "z": -4,
@@ -47,7 +47,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/pride"
+        "item": "botania:rune_pride"
       },
       "x": -4,
       "z": 4,
@@ -55,7 +55,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/pride"
+        "item": "botania:rune_pride"
       },
       "x": 4,
       "z": -4,
@@ -63,7 +63,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/pride"
+        "item": "botania:rune_pride"
       },
       "x": 4,
       "z": 4,
@@ -71,7 +71,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/air"
+        "item": "botania:rune_air"
       },
       "x": -3,
       "z": 2,
@@ -79,7 +79,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/air"
+        "item": "botania:rune_air"
       },
       "x": 3,
       "z": 2,
@@ -87,7 +87,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/air"
+        "item": "botania:rune_air"
       },
       "x": -2,
       "z": 3,
@@ -95,7 +95,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/air"
+        "item": "botania:rune_air"
       },
       "x": 2,
       "z": 3,
@@ -103,7 +103,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/earth"
+        "item": "botania:rune_earth"
       },
       "x": -3,
       "z": -2,
@@ -111,7 +111,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/earth"
+        "item": "botania:rune_earth"
       },
       "x": 3,
       "z": -2,
@@ -119,7 +119,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/earth"
+        "item": "botania:rune_earth"
       },
       "x": -2,
       "z": -3,
@@ -127,7 +127,7 @@
     },
     {
       "rune": {
-        "tag": "botania:runes/earth"
+        "item": "botania:rune_earth"
       },
       "x": 2,
       "z": -3,

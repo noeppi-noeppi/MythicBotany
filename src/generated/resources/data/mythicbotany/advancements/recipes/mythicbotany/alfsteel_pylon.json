@@ -6,12 +6,38 @@
     ]
   },
   "criteria": {
-    "has_item": {
+    "criterion0": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "botania:natura_pylon"
+            "items": [
+              "botania:natura_pylon"
+            ]
+          }
+        ]
+      }
+    },
+    "criterion1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "mythicbotany:alfsteel_nugget"
+            ]
+          }
+        ]
+      }
+    },
+    "criterion2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:ghast_tear"
+            ]
           }
         ]
       }
@@ -25,7 +51,9 @@
   },
   "requirements": [
     [
-      "has_item",
+      "criterion0",
+      "criterion1",
+      "criterion2",
       "has_the_recipe"
     ]
   ]

@@ -20,7 +20,9 @@
       "trigger": "minecraft:consume_item",
       "conditions": {
         "item": {
-          "item": "mythicbotany:gjallar_horn_full"
+          "items": [
+            "mythicbotany:gjallar_horn_full"
+          ]
         }
       }
     }

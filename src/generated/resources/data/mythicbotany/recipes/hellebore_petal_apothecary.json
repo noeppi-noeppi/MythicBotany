@@ -17,7 +17,7 @@
       "tag": "botania:petals/cyan"
     },
     {
-      "tag": "botania:runes/fire"
+      "item": "botania:rune_fire"
     }
   ]
 }

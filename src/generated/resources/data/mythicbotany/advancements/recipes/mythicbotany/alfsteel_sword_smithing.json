@@ -6,10 +6,16 @@
     ]
   },
   "criteria": {
-    "alfsteel_sword_criteria": {
-      "trigger": "minecraft:recipe_unlocked",
+    "has_item0": {
+      "trigger": "minecraft:inventory_changed",
       "conditions": {
-        "recipe": "botania:terra_sword"
+        "items": [
+          {
+            "items": [
+              "botania:terra_sword"
+            ]
+          }
+        ]
       }
     },
     "has_the_recipe": {
@@ -21,7 +27,7 @@
   },
   "requirements": [
     [
-      "alfsteel_sword_criteria",
+      "has_item0",
       "has_the_recipe"
     ]
   ]

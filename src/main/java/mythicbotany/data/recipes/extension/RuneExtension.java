@@ -26,7 +26,7 @@ public interface RuneExtension extends RecipeExtension {
     }
 
     default void runeAltar(ItemStack output, int mana, Ingredient... inputs) {
-        this.consumer().accept(Wrapper.create(this.provider().loc(output.getItem(), "by_elven_trade"), output, mana, inputs));
+        this.consumer().accept(Wrapper.create(this.provider().loc(output.getItem(), "runic_altar"), output, mana, inputs));
     }
 
     class Wrapper extends RuneProvider {

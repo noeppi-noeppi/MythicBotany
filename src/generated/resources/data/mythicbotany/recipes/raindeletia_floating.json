@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "mythicbotany:raindeletia_floating",
   "ingredients": [
     {
       "tag": "botania:floating_flowers"
