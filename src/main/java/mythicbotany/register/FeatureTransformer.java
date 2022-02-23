@@ -5,6 +5,7 @@ import io.github.noeppi_noeppi.libx.mod.registration.RegistryTransformer;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -31,7 +32,6 @@ public class FeatureTransformer implements RegistryTransformer {
                     Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, id, feature);
                 }
             };
-            
         } else if (object instanceof PlacedFeature placement) {
             return new Registerable() {
 
@@ -40,7 +40,6 @@ public class FeatureTransformer implements RegistryTransformer {
                     Registry.register(BuiltinRegistries.PLACED_FEATURE, id, placement);
                 }
             };
-
         } else if (object instanceof ConfiguredStructureFeature<?, ?> structure) {
             return new Registerable() {
 
@@ -49,7 +48,14 @@ public class FeatureTransformer implements RegistryTransformer {
                     Registry.register(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, id, structure);
                 }
             };
+        } else if (object instanceof ConfiguredWorldCarver<?> carver) {
+            return new Registerable() {
 
+                @Override
+                public void registerCommon(ResourceLocation id, Consumer<Runnable> defer) {
+                    Registry.register(BuiltinRegistries.CONFIGURED_CARVER, id, carver);
+                }
+            };
         } else {
             return null;
         }

@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import io.github.noeppi_noeppi.libx.annotation.api.Codecs;
 import io.github.noeppi_noeppi.libx.annotation.registration.NoReg;
 import io.github.noeppi_noeppi.libx.annotation.registration.RegName;
+import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
 import mythicbotany.ModBlockTags;
 import mythicbotany.MythicBotany;
 import net.minecraft.core.BlockPos;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.BiConsumer;
 
+@RegisterClass
 public class ShatteredTrunkPlacer extends TrunkPlacer {
 
     @NoReg public static final Codec<ShatteredTrunkPlacer> CODEC = Codecs.get(MythicBotany.class, ShatteredTrunkPlacer.class);

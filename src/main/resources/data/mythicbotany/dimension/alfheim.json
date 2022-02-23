@@ -1,9 +1,9 @@
 {
   "type": "mythicbotany:alfheim",
   "generator": {
-    "type": "mythicbotany:alfheim_generator",
+    "type": "mythicbotany:alfheim",
     "biome_source": {
-      "type": "mythicbotany:alfheim_biomes"
+      "type": "mythicbotany:alfheim"
     }
   }
 }

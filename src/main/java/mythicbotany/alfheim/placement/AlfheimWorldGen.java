@@ -17,10 +17,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTes
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 
-@RegisterClass(priority = 1) // This should to go before the biomes
+@RegisterClass
 public class AlfheimWorldGen {
-
-
+    
     public static final Feature<NoneFeatureConfiguration> motifFlowers = new MotifFlowerFeature();
     public static final Feature<NoneFeatureConfiguration> manaCrystals = new ManaCrystalFeature();
     public static final Feature<NoneFeatureConfiguration> abandonedApothecaries = new AbandonedApothecaryFeature();

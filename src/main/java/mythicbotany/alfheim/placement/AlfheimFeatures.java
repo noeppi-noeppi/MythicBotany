@@ -4,9 +4,13 @@ import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
 import mythicbotany.ModBlocks;
 import mythicbotany.alfheim.featuregen.RandomFoliagePlacer;
 import mythicbotany.alfheim.featuregen.ShatteredTrunkPlacer;
+import net.minecraft.data.worldgen.Carvers;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
+import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -19,7 +23,7 @@ import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSi
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import vazkii.botania.common.block.ModFluffBlocks;
 
-@RegisterClass
+@RegisterClass(prefix = "wg", priority = -2)
 public class AlfheimFeatures {
     
     public static final ConfiguredFeature<?, ?> metamorphicForestStone = Feature.ORE.configured(new OreConfiguration(AlfheimWorldGen.livingrock, ModFluffBlocks.biomeStoneForest.defaultBlockState(), 27));
@@ -49,4 +53,7 @@ public class AlfheimFeatures {
     public static final ConfiguredFeature<?, ?> wheatFields = AlfheimWorldGen.wheatFields.configured(NoneFeatureConfiguration.INSTANCE);
 
     public static final ConfiguredStructureFeature<JigsawConfiguration, ? extends StructureFeature<JigsawConfiguration>> andwariCave = AlfheimWorldGen.andwariCave.configured(AlfheimWorldGen.dummyJigsaw);
+
+    public static final ConfiguredWorldCarver<CaveCarverConfiguration> cave = AlfheimCarvers.cave.configured(Carvers.CAVE.config());
+    public static final ConfiguredWorldCarver<CanyonCarverConfiguration> canyon = AlfheimCarvers.canyon.configured(Carvers.CANYON.config());
 }

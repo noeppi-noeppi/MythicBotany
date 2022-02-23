@@ -4,7 +4,7 @@ import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
-@RegisterClass
+@RegisterClass(prefix = "wg", priority = -3)
 public class AlfheimPlacements {
     
     public static final PlacedFeature metamorphicForestStone = AlfheimFeatures.metamorphicForestStone.placed(AlfheimModifiers.metamorphicStone);
@@ -27,5 +27,4 @@ public class AlfheimPlacements {
     public static final PlacedFeature goldOre = AlfheimFeatures.goldOre.placed(AlfheimModifiers.ore(2, VerticalAnchor.bottom(), VerticalAnchor.absolute(32)));
     public static final PlacedFeature extraGoldOre = AlfheimFeatures.goldOre.placed(AlfheimModifiers.ore(20, VerticalAnchor.aboveBottom(16), VerticalAnchor.absolute(80)));
     public static final PlacedFeature wheatFields = AlfheimFeatures.wheatFields.placed();
-
 }

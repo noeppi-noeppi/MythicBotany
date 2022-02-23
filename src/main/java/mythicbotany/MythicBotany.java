@@ -4,6 +4,7 @@ import io.github.noeppi_noeppi.libx.mod.registration.ModXRegistration;
 import io.github.noeppi_noeppi.libx.mod.registration.RegistrationBuilder;
 import mythicbotany.advancement.ModCriteria;
 import mythicbotany.alfheim.Alfheim;
+import mythicbotany.alfheim.AlfheimDimension;
 import mythicbotany.alfheim.placement.AlfheimFeatures;
 import mythicbotany.alfheim.structure.piece.ModStructurePieces;
 import mythicbotany.alfheim.teleporter.AlfheimPortalHandler;
@@ -110,7 +111,7 @@ public class MythicBotany extends ModXRegistration {
             RuneRitualRecipe.registerSpecialInput(WanderingTraderRuneInput.INSTANCE);
             RuneRitualRecipe.registerSpecialOutput(MjoellnirRuneOutput.INSTANCE);
             
-            Alfheim.setupBiomes();
+            AlfheimDimension.setup();
         });
     }
 
