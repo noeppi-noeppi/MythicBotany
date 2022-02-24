@@ -48,7 +48,6 @@ public class ModBlocks {
     public static final BlockBE<TileCentralRuneHolder> centralRuneHolder = new BlockCentralRuneHolder(MythicBotany.getInstance(), Properties.of(Material.METAL).strength(3).sound(SoundType.METAL));
     public static final BlockMjoellnir mjoellnir = new BlockMjoellnir(MythicBotany.getInstance(), Properties.of(Material.STONE).strength(-1.0F, 3600000.0F).noDrops(), new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
     public static final Block dreamwoodLeaves = new BlockAlfheimLeaves(MythicBotany.getInstance());
-    // TODO tool values
     public static final BlockBase elementiumOre = new BlockBase(MythicBotany.getInstance(), BlockBehaviour.Properties.of(Material.STONE).strength(4, 4).requiresCorrectToolForDrops());
     public static final BlockBase dragonstoneOre = new BlockBase(MythicBotany.getInstance(),BlockBehaviour.Properties.of(Material.STONE).strength(5, 5).requiresCorrectToolForDrops());
     public static final BlockBase goldOre = new BlockBase(MythicBotany.getInstance(), BlockBehaviour.Properties.of(Material.STONE).strength(3, 3).requiresCorrectToolForDrops());

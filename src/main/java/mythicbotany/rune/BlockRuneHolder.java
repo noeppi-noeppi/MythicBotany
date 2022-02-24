@@ -22,6 +22,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
@@ -42,6 +44,7 @@ public class BlockRuneHolder<T extends TileRuneHolder> extends BlockBE<T> {
     }
     
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
         BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderRuneHolder());
     }

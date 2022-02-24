@@ -35,6 +35,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.botania.common.item.relic.ItemThorRing;
 
 import javax.annotation.Nonnull;
@@ -70,6 +72,7 @@ public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerab
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
         ItemBlockRenderTypes.setRenderLayer(this, RenderType.cutout());
         BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderMjoellnir());

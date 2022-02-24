@@ -47,6 +47,7 @@ public class BlockYggdrasilBranch extends BlockBE<TileYggdrasilBranch> {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
         BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderYggdrasilBranch());
         ItemStackRenderer.addRenderBlock(this.getBlockEntityType(), false);

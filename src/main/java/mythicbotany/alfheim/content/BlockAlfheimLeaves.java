@@ -19,6 +19,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
@@ -49,6 +51,7 @@ public class BlockAlfheimLeaves extends LeavesBlock implements Registerable {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
         ItemBlockRenderTypes.setRenderLayer(this, RenderType.cutoutMipped());
     }
