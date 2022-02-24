@@ -57,5 +57,6 @@ public class ModItems {
     public static final Item kvasirBlood = new ItemBase(MythicBotany.getInstance(), new Properties().stacksTo(8));
     public static final Item kvasirMead = new ItemKvasirMead(MythicBotany.getInstance(), new Properties().stacksTo(8));
     public static final Item dreamCherry = new ItemBase(MythicBotany.getInstance(), new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1.2f).effect(() -> new MobEffectInstance(MobEffects.GLOWING, 20 * 5, 0), 0.3f).build()));
+    public static final Item rawElementium = new ItemBase(MythicBotany.getInstance(), new Item.Properties());
     public static final Item alfPixieSpawnEgg = new ForgeSpawnEggItem(() -> ModEntities.alfPixie, 0xFFB9E2, 0xC6C6A1, new Item.Properties().tab(MythicBotany.getInstance().tab));
 }

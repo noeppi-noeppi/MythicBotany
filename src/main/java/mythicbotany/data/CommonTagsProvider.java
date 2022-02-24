@@ -38,6 +38,7 @@ public class CommonTagsProvider extends CommonTagsProviderBase {
         this.item(ModItemTags.RITUAL_RUNES).add(ModItems.fimbultyrTablet);
         this.item(ItemTags.GOLD_ORES).add(ModBlocks.goldOre.asItem());
         this.item(Tags.Items.ORES).addTag(ModItemTags.ALFHEIM_ORES);
+        this.item(Tags.Items.RAW_MATERIALS).add(ModItems.rawElementium);
 
         this.block(BlockTags.BEACON_BASE_BLOCKS).add(ModBlocks.alfsteelBlock);
         this.block(ModBlockTags.ALFHEIM_LOGS).add(vazkii.botania.common.block.ModBlocks.dreamwood);

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "mythicbotany:raw_elementium_block"
+    }
+  ],
+  "result": {
+    "item": "mythicbotany:raw_elementium",
+    "count": 9
+  }
+}

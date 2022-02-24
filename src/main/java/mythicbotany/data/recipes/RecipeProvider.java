@@ -66,8 +66,10 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
         this.shaped(ModBlocks.centralRuneHolder, " w ", "wdw", 'w', Tags.Items.INGOTS_IRON, 'd', ModTags.Items.DUSTS_MANA);
         this.shapeless(ModItems.kvasirMead, ModItems.kvasirBlood, Items.HONEY_BOTTLE);
 
+        this.compress(ModItems.rawElementium, ModBlocks.rawElementiumBlock, true);
         this.blasting(ModBlocks.elementiumOre, vazkii.botania.common.item.ModItems.elementium, 0.7f, 200);
         this.blasting(ModBlocks.dragonstoneOre, vazkii.botania.common.item.ModItems.dragonstone, 0.7f, 200);
+        this.blasting(this.loc(vazkii.botania.common.item.ModItems.elementium, "from_raw_ore"), ModItems.rawElementium, vazkii.botania.common.item.ModItems.elementium, 0.7f, 200);
 
         this.smithing(vazkii.botania.common.item.ModItems.terraSword, ModItems.alfsteelIngot, ModItems.alfsteelSword);
         this.smithing(vazkii.botania.common.item.ModItems.terraPick, ModItems.alfsteelIngot, ModItems.alfsteelPick);

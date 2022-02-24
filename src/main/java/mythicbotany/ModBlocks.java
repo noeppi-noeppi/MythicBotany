@@ -23,6 +23,7 @@ import mythicbotany.rune.TileRuneHolder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -51,5 +52,6 @@ public class ModBlocks {
     public static final BlockBase elementiumOre = new BlockBase(MythicBotany.getInstance(), BlockBehaviour.Properties.of(Material.STONE)/*.harvestTool(ToolType.PICKAXE).harvestLevel(2)*/.requiresCorrectToolForDrops().strength(4, 4));
     public static final BlockBase dragonstoneOre = new BlockBase(MythicBotany.getInstance(),BlockBehaviour.Properties.of(Material.STONE)/*.harvestTool(ToolType.PICKAXE).harvestLevel(3)*/.requiresCorrectToolForDrops().strength(5, 5));
     public static final BlockBase goldOre = new BlockBase(MythicBotany.getInstance(), BlockBehaviour.Properties.of(Material.STONE)/*.harvestTool(ToolType.PICKAXE).harvestLevel(2)*/.requiresCorrectToolForDrops().strength(3, 3));
+    public static final BlockBase rawElementiumBlock = new BlockBase(MythicBotany.getInstance(), Properties.copy(Blocks.RAW_IRON_BLOCK));
     public static final BlockBE<TileReturnPortal> returnPortal = new BlockReturnPortal(MythicBotany.getInstance(), BlockBehaviour.Properties.of(Material.PORTAL).noCollission().strength(-1.0F).sound(SoundType.GLASS).lightLevel(state -> 4));
 }
