@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 import java.util.Optional;
 
 public class BaseStructure extends StructureFeature<JigsawConfiguration> {
@@ -47,9 +48,11 @@ public class BaseStructure extends StructureFeature<JigsawConfiguration> {
             if (!topBlock.getFluidState().isEmpty()) return Optional.empty();
 
             JigsawConfiguration config = new JigsawConfiguration(
-                    () -> context.registryAccess().ownedRegistryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
-                            .get(MythicBotany.getInstance().resource(this.structureId)),
-                    10
+                    () -> Objects.requireNonNull(
+                            context.registryAccess().ownedRegistryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
+                                    .get(MythicBotany.getInstance().resource(this.structureId)),
+                            "Template not found: " + this.structureId
+                    ), 10
             );
 
             return JigsawPlacement.addPieces(

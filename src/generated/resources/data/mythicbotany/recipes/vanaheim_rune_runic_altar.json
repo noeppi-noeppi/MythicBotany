@@ -6,7 +6,7 @@
   "mana": 16000,
   "ingredients": [
     {
-      "tag": "forge:ingots/netherite"
+      "tag": "botania:terrasteel_ingots"
     },
     {
       "item": "botania:rune_earth"

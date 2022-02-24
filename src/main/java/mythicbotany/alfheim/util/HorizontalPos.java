@@ -16,7 +16,7 @@ public record HorizontalPos(int x, int z) {
         BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos(this.x(), fromY, this.z());
         while (toY > fromY ? mpos.getY() <= toY : mpos.getY() >= toY) {
             if (match.test(mpos)) {
-                return mpos.immutable();
+                return mpos.immutable().relative(toY > fromY ? Direction.DOWN : Direction.UP);
             }
             mpos.move(toY > fromY ? Direction.UP : Direction.DOWN);
         }

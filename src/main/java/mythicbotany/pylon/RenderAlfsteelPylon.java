@@ -1,7 +1,9 @@
 package mythicbotany.pylon;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Vector3f;
 import io.github.noeppi_noeppi.libx.render.ClientTickHandler;
 import io.github.noeppi_noeppi.libx.util.LazyValue;
@@ -10,6 +12,7 @@ import mythicbotany.MythicBotany;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -18,10 +21,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import vazkii.botania.client.core.helper.RenderHelper;
+import vazkii.botania.client.core.helper.CoreShaders;
 import vazkii.botania.client.model.IPylonModel;
 import vazkii.botania.client.model.ModModelLayers;
 import vazkii.botania.client.model.ModelPylonNatura;
+import vazkii.botania.mixin.client.AccessorRenderType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,6 +34,8 @@ import java.util.Random;
 public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylon> {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(MythicBotany.getInstance().modid, "textures/model/pylon_alfsteel.png");
+    public static final RenderType TARGET = createRenderType(false);
+    public static final RenderType DIRECT_TARGET = createRenderType(true);
     
     private final ModelPylonNatura model;
     private ItemTransforms.TransformType forceTransform = ItemTransforms.TransformType.NONE;
@@ -44,7 +50,7 @@ public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylo
 
     public void doRender(@Nullable TileAlfsteelPylon pylon, float pticks, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
         boolean direct = pylon == null && (this.forceTransform == ItemTransforms.TransformType.GUI || this.forceTransform.firstPerson());
-        RenderType glow = direct ? RenderHelper.NATURA_PYLON_GLOW_DIRECT : RenderHelper.NATURA_PYLON_GLOW;
+        RenderType glow = direct ? DIRECT_TARGET : TARGET;
 
         poseStack.pushPose();
         float worldTime = (float) ClientTickHandler.ticksInGame + pticks;
@@ -98,5 +104,21 @@ public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylo
                 ((RenderAlfsteelPylon) renderer).doRender(null, 0f, ms, buffer, light, overlay);
             }
         }
+    }
+    
+    private static RenderType createRenderType(boolean direct) {
+        RenderType.CompositeState.CompositeStateBuilder state = RenderType.CompositeState.builder()
+                .setShaderState(new RenderStateShard.ShaderStateShard(CoreShaders::pylon))
+                .setTextureState(new RenderStateShard.TextureStateShard(TEXTURE, false, false))
+                .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                .setCullState(RenderStateShard.NO_CULL)
+                .setLightmapState(RenderStateShard.LIGHTMAP)
+                .setOverlayState(RenderStateShard.OVERLAY);
+        if (!direct) state = state.setOutputState(RenderStateShard.ITEM_ENTITY_TARGET);
+        return AccessorRenderType.create(
+                "mythicbotany_pylon" + (direct ? "_direct" : ""), DefaultVertexFormat.NEW_ENTITY,
+                VertexFormat.Mode.QUADS, 128, false, false,
+                state.createCompositeState(false)
+        );
     }
 }

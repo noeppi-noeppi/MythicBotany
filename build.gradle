@@ -4,6 +4,8 @@ buildscript {
 
 apply from: 'https://noeppi-noeppi.github.io/ModUtils/v3/mod.gradle'
 
+apply plugin: 'io.github.noeppi_noeppi.tools.modgradle.coremods'
+
 repositories {
     maven { url = 'https://dvs1.progwml6.com/files/maven/' }
     maven { url = 'https://maven.blamejared.com/' }
@@ -12,10 +14,13 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.18.1-3.1.15')
+    annotationProcessor fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.18.1-3.1.16')
+
+    coremods 'io.github.noeppi_noeppi.misc:CoreModTypes:5.0.2-1'
     
-    implementation fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.18.1-3.1.15')
+    implementation fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.18.1-3.1.16')
     implementation fg.deobf('vazkii.botania:Botania:1.18.1-428')
+    compileOnly fg.deobf('vazkii.botania:Botania-xplat:1.18.1-428')
     implementation fg.deobf('vazkii.patchouli:Patchouli:1.18.1-65')
     implementation fg.deobf('top.theillusivec4.curios:curios-forge:1.18.1-5.0.6.1')
 

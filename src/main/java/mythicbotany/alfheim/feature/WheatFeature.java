@@ -37,7 +37,7 @@ public class WheatFeature extends Feature<NoneFeatureConfiguration> {
 
     private void tryPlace(@Nonnull WorldGenLevel level, HorizontalPos hor) {
         BlockPos pos = AlfheimWorldGenUtil.highestFreeBlock(level, hor, AlfheimWorldGenUtil::passReplaceableNoCrops);
-        if (level.getBlockState(pos.below()).canOcclude()) {
+        if (level.getBlockState(pos.below()).canOcclude() && level.getBlockState(pos.below()).getFluidState().isEmpty()) {
             level.setBlock(pos.below(), Blocks.FARMLAND.defaultBlockState(), 2);
             level.setBlock(pos, Blocks.WHEAT.defaultBlockState().setValue(BlockStateProperties.AGE_7, 7), 2);
         }

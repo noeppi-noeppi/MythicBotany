@@ -24,8 +24,6 @@ import vazkii.botania.common.lib.ModTags;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
 
     public static final int MANA_PER_DURABILITY = 200;
@@ -94,7 +92,7 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
     }
     
     public void trySpawnAlfBurst(Player player) {
-        if (!player.getMainHandItem().isEmpty() && player.getMainHandItem().is(vazkii.botania.common.item.ModItems.terraSword) && player.getAttackStrengthScale(0) == 1) {
+        if ((player.getItemBySlot(EquipmentSlot.MAINHAND).getItem() == ModItems.alfsteelSword || player.getItemBySlot(EquipmentSlot.OFFHAND).getItem() == ModItems.alfsteelSword) && player.getAttackStrengthScale(0) == 1) {
             EntityManaBurst burst = this.getAlfBurst(player, player.getMainHandItem());
             player.level.addFreshEntity(burst);
             player.getMainHandItem().hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));

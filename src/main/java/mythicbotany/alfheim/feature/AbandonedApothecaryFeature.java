@@ -51,7 +51,11 @@ public class AbandonedApothecaryFeature extends Feature<NoneFeatureConfiguration
 
     @Override
     public boolean place(@Nonnull FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        return AlfheimWorldGenUtil.generateTries(context, 1, this::tryGenerate);
+        if (context.random().nextInt(3) == 0) {
+            return AlfheimWorldGenUtil.generateTries(context, 1, this::tryGenerate);
+        } else {
+            return false;
+        }
     }
 
     private boolean tryGenerate(FeaturePlaceContext<NoneFeatureConfiguration> context, HorizontalPos hor) {

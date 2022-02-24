@@ -50,7 +50,7 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
 
         this.shaped(ModBlocks.manaInfuser, "eee", "wdz", "xay",
                 'e', ModTags.Items.INGOTS_ELEMENTIUM,
-                'd', ModTags.Items.DREAMWOOD_LOGS_GLIMMERING,
+                'd', vazkii.botania.common.block.ModBlocks.dreamwoodGlimmering,
                 'a', ModItems.asgardRune,
                 'w', vazkii.botania.common.item.ModItems.runeSpring,
                 'x', vazkii.botania.common.item.ModItems.runeSummer,
@@ -60,7 +60,7 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
 
         this.shaped(ModBlocks.alfsteelPylon, " g ", "npn", " g ", 'p', vazkii.botania.common.block.ModBlocks.naturaPylon, 'n', ModItems.alfsteelNugget, 'g', Items.GHAST_TEAR);
         this.shaped(vazkii.botania.common.block.ModBlocks.gaiaPylon, " d ", "epe", " d ", 'p', ModBlocks.alfsteelPylon, 'e', ModTags.Items.INGOTS_ELEMENTIUM, 'd', vazkii.botania.common.item.ModItems.pixieDust);
-        this.shaped(ModBlocks.manaCollector, "dgd", "dpd", "dmd", 'd', ModTags.Items.DREAMWOOD_LOGS_GLIMMERING, 'g', vazkii.botania.common.item.ModItems.gaiaIngot, 'p', vazkii.botania.common.item.ModItems.pixieDust, 'm', ModItems.vanaheimRune);
+        this.shaped(ModBlocks.manaCollector, "dgd", "dpd", "dmd", 'd', vazkii.botania.common.block.ModBlocks.dreamwoodGlimmering, 'g', vazkii.botania.common.item.ModItems.gaiaIngot, 'p', vazkii.botania.common.item.ModItems.pixieDust, 'm', ModItems.vanaheimRune);
         this.shaped(ModBlocks.yggdrasilBranch, "lll", "ttt", "lll", 'l', ModTags.Items.LIVINGWOOD_LOGS, 't', ModTags.Items.NUGGETS_TERRASTEEL);
         this.shaped(ModBlocks.runeHolder, " w ", "wdw", 'w', Tags.Items.INGOTS_IRON, 'd', ModTags.Items.DUSTS_MANA);
         this.shaped(ModBlocks.masterRuneHolder, " w ", "wdw", 'w', Tags.Items.INGOTS_IRON, 'd', ModTags.Items.DUSTS_MANA);
@@ -93,7 +93,7 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
         this.runeAltar(ModItems.muspelheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_NETHER_BRICK), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire), Ingredient.of(vazkii.botania.common.item.ModItems.runeSummer), Ingredient.of(vazkii.botania.common.item.ModItems.runeWrath), Ingredient.of(Blocks.MAGMA_BLOCK));
         this.runeAltar(ModItems.niflheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_IRON), Ingredient.of(vazkii.botania.common.item.ModItems.runeWater), Ingredient.of(vazkii.botania.common.item.ModItems.runeWinter), Ingredient.of(vazkii.botania.common.item.ModItems.runeWrath), Ingredient.of(Blocks.BLUE_ICE));
         this.runeAltar(ModItems.asgardRune, 16000, Ingredient.of(Tags.Items.INGOTS_NETHERITE), Ingredient.of(vazkii.botania.common.item.ModItems.runeAir), Ingredient.of(vazkii.botania.common.item.ModItems.runeAutumn), Ingredient.of(vazkii.botania.common.item.ModItems.runePride), Ingredient.of(vazkii.botania.common.item.ModItems.rainbowRod));
-        this.runeAltar(ModItems.vanaheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_NETHERITE), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeSpring), Ingredient.of(vazkii.botania.common.item.ModItems.runePride), Ingredient.of(vazkii.botania.common.block.ModBlocks.alfPortal));
+        this.runeAltar(ModItems.vanaheimRune, 16000, Ingredient.of(ModTags.Items.INGOTS_TERRASTEEL), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeSpring), Ingredient.of(vazkii.botania.common.item.ModItems.runePride), Ingredient.of(vazkii.botania.common.block.ModBlocks.alfPortal));
         this.runeAltar(ModItems.helheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(vazkii.botania.common.item.ModItems.runeFire), Ingredient.of(vazkii.botania.common.item.ModItems.runeAutumn), Ingredient.of(vazkii.botania.common.item.ModItems.runeEnvy), Ingredient.of(Items.SKELETON_SKULL, Items.WITHER_SKELETON_SKULL, Items.CREEPER_HEAD, Items.DRAGON_HEAD, Items.ZOMBIE_HEAD));
         this.runeAltar(ModItems.nidavellirRune, 16000, Ingredient.of(Tags.Items.INGOTS_COPPER), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeWinter), Ingredient.of(vazkii.botania.common.item.ModItems.runeSloth), Ingredient.of(Blocks.IRON_BLOCK));
         this.runeAltar(ModItems.joetunheimRune, 16000, Ingredient.of(Tags.Items.INGOTS_BRICK), Ingredient.of(vazkii.botania.common.item.ModItems.runeEarth), Ingredient.of(vazkii.botania.common.item.ModItems.runeAutumn), Ingredient.of(vazkii.botania.common.item.ModItems.runeGluttony), Ingredient.of(Blocks.BLACKSTONE));

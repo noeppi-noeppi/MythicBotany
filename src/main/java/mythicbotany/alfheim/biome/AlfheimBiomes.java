@@ -56,15 +56,16 @@ public class AlfheimBiomes {
             .mobSpawnSettings(alfheimMobs().build())
             .specialEffects(
                     alfheimAmbience()
-                            .waterColor(4566514)
-                            .waterFogColor(267827)
-                            .fogColor(12638463)
+                            .waterColor(0x45adf2)
+                            .waterFogColor(0x41633)
+                            .fogColor(0xc0d8ff)
                             .skyColor(OverworldBiomes.calculateSkyColor(0.8f))
                             .build()
             ).generationSettings(
                     alfheimGen()
                             .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AlfheimPlacements.wheatFields)
                             .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AlfheimPlacements.extraGoldOre)
+                            .addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, AlfheimPlacements.abandonedApothecaries)
                             .build()
             ).build();
 
@@ -75,14 +76,15 @@ public class AlfheimBiomes {
             .mobSpawnSettings(alfheimMobs().build())
             .specialEffects(
                     alfheimAmbience()
-                            .waterColor(4566514)
-                            .waterFogColor(267827)
-                            .fogColor(12638463)
+                            .waterColor(0x45adf2)
+                            .waterFogColor(0x41633)
+                            .fogColor(0xc0d8ff)
                             .skyColor(OverworldBiomes.calculateSkyColor(0.8f))
                             .build()
             ).generationSettings(
                     alfheimGen()
                             .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AlfheimPlacements.alfheimGrass)
+                            .addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, AlfheimPlacements.manaCrystals)
                             .build()
             ).build();
 }

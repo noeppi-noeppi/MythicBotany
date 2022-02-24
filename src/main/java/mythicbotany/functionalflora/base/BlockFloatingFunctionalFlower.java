@@ -3,9 +3,13 @@ package mythicbotany.functionalflora.base;
 import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -16,11 +20,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import vazkii.botania.xplat.BotaniaConfig;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> extends BlockBE<T> {
 
@@ -32,6 +40,13 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
         super(mod, beClass, Properties.of(Material.PLANT).isRedstoneConductor((state, world, pos) -> false)
                 .instabreak().sound(SoundType.GRASS));
         this.nonFloatingBlock = nonFloatingBlock;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
+        BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderFunctionalFlower<>());
+        ItemBlockRenderTypes.setRenderLayer(this, RenderType.cutoutMipped());
     }
 
     public BlockFunctionalFlower<T> getNonFloatingBlock() {
@@ -90,6 +105,7 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
     @SuppressWarnings("deprecation")
     @Override
     public RenderShape getRenderShape(@Nonnull BlockState state) {
+        if (FMLEnvironment.dist != Dist.CLIENT) return RenderShape.ENTITYBLOCK_ANIMATED;
         return BotaniaConfig.client().staticFloaters() ? RenderShape.MODEL : RenderShape.ENTITYBLOCK_ANIMATED;
     }
 }

@@ -46,8 +46,19 @@ public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable
     @Override
     public void tick() {
         //noinspection ConstantConditions
-        if (this.level.isClientSide || !this.hasValidPlatform())
+        if (this.level.isClientSide) {
             return;
+        }
+        if (!this.hasValidPlatform()) {
+            this.active = false;
+            this.recipe = null;
+            this.fromColor = -1;
+            this.toColor = -1;
+            this.mana = 0;
+            this.maxMana = 0;
+            this.output = null;
+            return;
+        }
         if (this.active && this.recipe != null && this.mana > 0) {
             MythicBotany.getNetwork().spawnInfusionParticles(this.level, this.worldPosition, this.mana / (float) this.recipe.getManaUsage(), this.recipe.fromColor(), this.recipe.toColor());
         }
@@ -55,12 +66,10 @@ public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable
         List<ItemStack> stacks = items.stream().map(ItemEntity::getItem).collect(Collectors.toList());
         if (this.active && this.recipe != null && this.output != null) {
             if (this.recipe.result(stacks).isEmpty()) {
-                SolidifiedMana.dropMana(this.level, this.worldPosition, this.mana);
                 this.active = false;
                 this.recipe = null;
                 this.fromColor = -1;
                 this.toColor = -1;
-                this.mana = 0;
                 this.maxMana = 0;
                 this.output = null;
                 this.level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
@@ -87,7 +96,7 @@ public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable
                 if (!this.active) {
                     this.active = true;
                     this.recipe = match.getLeft();
-                    this.mana = 0;
+                    this.mana = Math.min(this.mana, Math.round(this.recipe.getManaUsage() * (9 / 10f)));
                 } else {
                     this.recipe = match.getLeft();
                     this.mana = Mth.clamp(this.mana, 0, this.recipe.getManaUsage());

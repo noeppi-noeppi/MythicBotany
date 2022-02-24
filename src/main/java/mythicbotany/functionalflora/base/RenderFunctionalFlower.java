@@ -21,6 +21,7 @@ import net.minecraftforge.client.model.data.IModelData;
 import vazkii.botania.api.subtile.RadiusDescriptor;
 import vazkii.botania.client.core.handler.ClientTickHandler;
 import vazkii.botania.client.core.helper.RenderHelper;
+import vazkii.botania.client.render.tile.RenderTileFloatingFlower;
 import vazkii.botania.client.render.tile.RenderTileSpecialFlower;
 import vazkii.botania.common.helper.PlayerHelper;
 import vazkii.botania.common.item.ItemTwigWand;
@@ -37,25 +38,9 @@ import java.util.Random;
 public class RenderFunctionalFlower<T extends FunctionalFlowerBase> implements BlockEntityRenderer<T> {
     
     @Override
-    public void render(@Nonnull T blockEntity, float partialTicks, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(@Nonnull T blockEntity, float partialTicks, @Nonnull PoseStack poseStack, @Nonnull MultiBufferSource buffer, int light, int overlay) {
         if (blockEntity.isFloating() && !BotaniaConfig.client().staticFloaters()) {
-            IModelData data = blockEntity.getModelData();
-            matrixStack.pushPose();
-            double worldTime = (float) ClientTickHandler.ticksInGame + partialTicks;
-            if (blockEntity.getLevel() != null) {
-                worldTime += (new Random(blockEntity.getBlockPos().hashCode())).nextInt(1000);
-            }
-
-            matrixStack.translate(0.5D, 0.0D, 0.5D);
-            matrixStack.mulPose(Vector3f.YP.rotationDegrees(-((float) worldTime * 0.5F)));
-            matrixStack.translate(-0.5D, (float) Math.sin(worldTime * 0.05000000074505806D) * 0.1F, 0.5D);
-            matrixStack.mulPose(Vector3f.XP.rotationDegrees(4.0F * (float) Math.sin(worldTime * 0.03999999910593033D)));
-            matrixStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
-            BlockRenderDispatcher brd = Minecraft.getInstance().getBlockRenderer();
-            BlockState state = blockEntity.getBlockState();
-            BakedModel ibakedmodel = brd.getBlockModel(state);
-            brd.getModelRenderer().renderModel(matrixStack.last(), buffer.getBuffer(ItemBlockRenderTypes.getRenderType(state, false)), state, ibakedmodel, 1.0F, 1.0F, 1.0F, combinedLight, combinedOverlay, data);
-            matrixStack.popPose();
+            RenderTileFloatingFlower.renderFloatingIsland(blockEntity, partialTicks, poseStack, buffer, light, overlay);
         }
         if (Minecraft.getInstance().cameraEntity instanceof LivingEntity view) {
             if (ItemMonocle.hasMonocle(view)) {
@@ -65,14 +50,14 @@ public class RenderFunctionalFlower<T extends FunctionalFlowerBase> implements B
                     if (blockEntity.getBlockPos().equals(pos) || hasBindingAttempt(view, blockEntity.getBlockPos())) {
                         RadiusDescriptor descriptor = blockEntity.getRadius();
                         if (descriptor != null) {
-                            matrixStack.pushPose();
-                            matrixStack.translate(-blockEntity.getBlockPos().getX(), -blockEntity.getBlockPos().getY(), -blockEntity.getBlockPos().getZ());
+                            poseStack.pushPose();
+                            poseStack.translate(-blockEntity.getBlockPos().getX(), -blockEntity.getBlockPos().getY(), -blockEntity.getBlockPos().getZ());
                             if (descriptor.isCircle()) {
-                                renderCircle(matrixStack, buffer, descriptor.getSubtileCoords(), descriptor.getCircleRadius());
+                                renderCircle(poseStack, buffer, descriptor.getSubtileCoords(), descriptor.getCircleRadius());
                             } else {
-                                RenderTileSpecialFlower.renderRectangle(matrixStack, buffer, descriptor.getAABB(), true, null, (byte) 32);
+                                RenderTileSpecialFlower.renderRectangle(poseStack, buffer, descriptor.getAABB(), true, null, (byte) 32);
                             }
-                            matrixStack.popPose();
+                            poseStack.popPose();
                         }
                     }
                 }

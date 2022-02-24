@@ -1,5 +1,6 @@
 package mythicbotany;
 
+import com.google.common.collect.ImmutableList;
 import mythicbotany.alfheim.Alfheim;
 import mythicbotany.alfheim.teleporter.AlfheimPortalHandler;
 import mythicbotany.alfheim.teleporter.AlfheimTeleporter;
@@ -7,6 +8,8 @@ import mythicbotany.alfheim.teleporter.TileReturnPortal;
 import mythicbotany.alftools.AlfsteelHelm;
 import mythicbotany.misc.Andwari;
 import mythicbotany.mjoellnir.BlockMjoellnir;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,10 +38,12 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 import vazkii.botania.api.item.IAncientWillContainer;
+import vazkii.botania.api.mana.IManaCollector;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.api.recipe.ElvenPortalUpdateEvent;
 import vazkii.botania.common.block.mana.BlockEnchanter;
 import vazkii.botania.common.block.tile.TileAlfPortal;
+import vazkii.botania.common.handler.ManaNetworkHandler;
 import vazkii.botania.common.item.equipment.armor.terrasteel.ItemTerrasteelHelm;
 
 import javax.annotation.Nullable;
@@ -219,6 +224,20 @@ public class EventListener {
                 if (TileReturnPortal.validPortal(event.getEntityItem().getCommandSenderWorld(), pos)) {
                     event.getEntityItem().getCommandSenderWorld().setBlock(pos, ModBlocks.returnPortal.defaultBlockState(), 3);
                     event.getEntityItem().remove(Entity.RemovalReason.DISCARDED);
+                }
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public void clientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == ModItems.dreamwoodTwigWand || player.getItemInHand(InteractionHand.OFF_HAND).getItem() == ModItems.dreamwoodTwigWand)) {
+                for (BlockEntity blockEntity : ImmutableList.copyOf(ManaNetworkHandler.instance.getAllCollectorsInWorld(Minecraft.getInstance().level))) {
+                    if (blockEntity instanceof IManaCollector collector) {
+                        collector.onClientDisplayTick();
+                    }
                 }
             }
         }

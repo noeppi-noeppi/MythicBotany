@@ -49,10 +49,12 @@ public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerab
             box(7, 9, 7, 9, 22, 9)
     );
     
+    private final ItemMjoellnir item;
     private final EntityType<Mjoellnir> entityType;
 
     public BlockMjoellnir(ModX mod, Properties properties, Item.Properties itemProperties) {
         super(mod, TileMjoellnir.class, properties, itemProperties);
+        this.item = new ItemMjoellnir(this, itemProperties);
         this.entityType = EntityType.Builder.<Mjoellnir>of(Mjoellnir::new, MobCategory.MISC).sized(0.6f, 0.9f).clientTrackingRange(20).build(MythicBotany.getInstance().modid + "_mjoellnir");
     }
 
@@ -62,7 +64,9 @@ public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerab
 
     @Override
     public Set<Object> getAdditionalRegisters(ResourceLocation id) {
-        return ImmutableSet.builder().addAll(super.getAdditionalRegisters(id)).add(this.entityType).build();
+        return ImmutableSet.builder()
+                .addAll(super.getAdditionalRegisters(id).stream().filter(e -> !(e instanceof Item)).toList())
+                .add(this.item, this.entityType).build();
     }
 
     @Override

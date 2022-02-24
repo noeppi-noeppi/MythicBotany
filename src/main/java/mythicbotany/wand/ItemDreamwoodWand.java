@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -25,8 +26,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.BotaniaForgeClientCapabilities;
 import vazkii.botania.api.block.IWandHUD;
 import vazkii.botania.api.corporea.ICorporeaSpark;
@@ -41,6 +44,7 @@ import vazkii.botania.common.item.ItemTwigWand;
 import vazkii.botania.forge.CapabilityUtil;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -174,6 +178,12 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
                 stacks.add(forColors(i, i));
             }
         }
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return CapabilityUtil.makeProvider(BotaniaForgeCapabilities.COORD_BOUND_ITEM, new ItemTwigWand.CoordBoundItem(stack));
     }
 
     public static ItemStack forColors(int color1, int color2) {

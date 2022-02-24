@@ -29,6 +29,6 @@ public class AndwariCavePiece extends BaseStructurePiece {
 
     @Override
     protected Vec3i placementOffset(WorldGenLevel level, ChunkGenerator generator) {
-        return new Vec3i(0, -3, 0);
+        return new Vec3i(0, -6, 0);
     }
 }

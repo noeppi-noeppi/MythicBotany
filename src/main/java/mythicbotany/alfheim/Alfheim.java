@@ -8,6 +8,7 @@ import com.mojang.datafixers.util.Pair;
 import mythicbotany.MythicBotany;
 import mythicbotany.alfheim.gen.AlfheimBiomeSource;
 import mythicbotany.alfheim.gen.AlfheimChunkGenerator;
+import mythicbotany.alfheim.surface.AlfheimSurfaceBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.*;
@@ -69,6 +71,12 @@ public class Alfheim {
         }
     }
     
+    public static List<Climate.ParameterPoint> buildAllClimateParameters() {
+        synchronized (LOCK) {
+            return BIOMES.values().stream().toList();
+        }
+    }
+    
     public static Climate.ParameterList<Supplier<Biome>> buildAlfheimClimate(Function<ResourceKey<Biome>, Biome> biomeResolver) {
         synchronized (LOCK) {
             ImmutableList.Builder<Pair<Climate.ParameterPoint, Supplier<Biome>>> list = ImmutableList.builder();
@@ -90,7 +98,7 @@ public class Alfheim {
             for (Map.Entry<ResourceKey<Biome>, SurfaceRules.RuleSource> entry : biomes(BIOME_SURFACE)) {
                 sequence.add(SurfaceRules.ifTrue(SurfaceRules.isBiome(entry.getKey()), entry.getValue()));
             }
-            return SurfaceRules.sequence(sequence.build().toArray(new SurfaceRules.RuleSource[]{}));
+            return AlfheimSurfaceBuilder.buildSurface(SurfaceRules.sequence(sequence.build().toArray(new SurfaceRules.RuleSource[]{})));
         }
     }
     

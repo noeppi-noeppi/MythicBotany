@@ -25,11 +25,11 @@ public class AlfheimWorldGenUtil {
     }
     
     public static BlockPos highestFreeBlock(LevelAccessor level, HorizontalPos hor, Predicate<BlockState> passthrough) {
-        return hor.trace(level.getMaxBuildHeight(), level.getMinBuildHeight(), pos -> level.isEmptyBlock(pos) || passthrough.test(level.getBlockState(pos)));
+        return hor.trace(level.getMaxBuildHeight(), level.getMinBuildHeight(), pos -> !level.isEmptyBlock(pos) && !passthrough.test(level.getBlockState(pos)));
     }
 
     public static BlockPos lowestFreeBlock(LevelAccessor level, HorizontalPos hor, Predicate<BlockState> passthrough) {
-        return hor.trace(level.getMinBuildHeight(), level.getMaxBuildHeight(), pos -> level.isEmptyBlock(pos) || passthrough.test(level.getBlockState(pos)));
+        return hor.trace(level.getMinBuildHeight(), level.getMaxBuildHeight(), pos -> !level.isEmptyBlock(pos) && !passthrough.test(level.getBlockState(pos)));
     }
 
     public static boolean passReplaceableAndLeaves(BlockState state) {

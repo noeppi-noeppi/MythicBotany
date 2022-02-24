@@ -53,7 +53,7 @@ public class BlockYggdrasilBranch extends BlockBE<TileYggdrasilBranch> {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
     public void initializeItemClient(@Nonnull Consumer<IItemRenderProperties> consumer) {
         consumer.accept(ItemStackRenderer.createProperties());
     }

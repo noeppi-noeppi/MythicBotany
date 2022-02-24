@@ -169,6 +169,6 @@ public abstract class BlockEntityMana extends BlockEntityBase implements ISparkA
     }
     
     protected int getManaColor() {
-        return 0x00FF00;
+        return 0x0000FF;
     }
 }

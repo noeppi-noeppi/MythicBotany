@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "botania:block/livingwood",
-    "particle": "botania:block/livingwood"
+    "0": "botania:block/root",
+    "particle": "botania:block/root"
   },
   "elements": [
     {

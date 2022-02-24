@@ -10,7 +10,7 @@
       "tag": "botania:elementium_ingots"
     },
     "d": {
-      "tag": "botania:glimmering_dreamwood_logs"
+      "item": "botania:glimmering_dreamwood"
     },
     "a": {
       "item": "mythicbotany:asgard_rune"

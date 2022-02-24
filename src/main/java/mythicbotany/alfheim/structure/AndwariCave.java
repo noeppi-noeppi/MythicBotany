@@ -8,8 +8,6 @@ import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import java.util.function.Consumer;
 
 public class AndwariCave extends BaseStructure implements Registerable {
-
-    private static final ResourceLocation TEMPLATE = new ResourceLocation(MythicBotany.getInstance().modid, "andwari_cave");
     
     public AndwariCave() {
         super("andwari_cave");
