@@ -9,7 +9,7 @@ import mythicbotany.alftools.AlfsteelHelm;
 import mythicbotany.misc.Andwari;
 import mythicbotany.mjoellnir.BlockMjoellnir;
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,13 +28,13 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.SleepFinishedTimeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -116,20 +116,6 @@ public class EventListener {
     public void endTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             this.crittingPlayers.clear();
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void livingHurt(LivingHurtEvent event) {
-        // Required for old worlds which have been generated with bug #22.
-        // Removes NaN from health and absorption amount
-        if (!event.getEntityLiving().getPersistentData().getBoolean("mythicbotany-fix-22a")) {
-            event.getEntityLiving().getPersistentData().putBoolean("mythicbotany-fix-22a", true);
-            if (Float.isNaN(event.getEntityLiving().getHealth()) || Float.isNaN(event.getEntityLiving().getAbsorptionAmount())) {
-                event.getEntityLiving().setHealth(Float.isFinite(event.getEntityLiving().getMaxHealth()) ? event.getEntityLiving().getMaxHealth() : 1);
-                event.getEntityLiving().setAbsorptionAmount(0);
-                MythicBotany.getInstance().logger.info("Fixed #22 for entity " + event.getEntityLiving().getUUID() + ".");
-            }
         }
     }
 
@@ -251,6 +237,15 @@ public class EventListener {
             if (!MythicPlayerData.getData(event.player).getBoolean("KvasirKnowledge")) {
                 // Player used another mod to get to alfheim
                 event.player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0, true, false, true));
+            }
+        }
+    }
+    
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void sleepFinished(SleepFinishedTimeEvent event) {
+        if (event.getWorld() instanceof ServerLevel level && !level.isClientSide) {
+            if (Alfheim.DIMENSION.equals(level.dimension())) {
+                level.getServer().overworld().setDayTime(event.getNewTime());
             }
         }
     }
