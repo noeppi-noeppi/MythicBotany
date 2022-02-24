@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "mythicbotany:mana_infuser",
+    "mythicbotany:alfsteel_block",
+    "mythicbotany:alfsteel_pylon",
+    "mythicbotany:elementium_ore",
+    "mythicbotany:dragonstone_ore",
+    "mythicbotany:gold_ore",
+    "mythicbotany:raw_elementium_block",
+    "mythicbotany:rune_holder",
+    "mythicbotany:central_rune_holder"
+  ]
+}

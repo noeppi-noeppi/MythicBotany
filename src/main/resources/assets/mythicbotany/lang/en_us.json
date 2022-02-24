@@ -33,6 +33,7 @@
   "item.mythicbotany.kvasir_mead": "Mead of Kvasir",
   "item.mythicbotany.dream_cherry": "Dreamcherry",
   "item.mythicbotany.alf_pixie_spawn_egg": "Alfheim Pixie Spawn Egg",
+  "item.mythicbotany.raw_elementium": "Raw Elementium",
 
   "block.mythicbotany.mana_infuser": "Mana-Infuser",
   "block.mythicbotany.alfsteel_block": "Block of Alfsteel",
@@ -61,6 +62,7 @@
   "block.mythicbotany.dragonstone_ore": "Dragonstone Ore",
   "block.mythicbotany.gold_ore": "Gold Ore",
   "block.mythicbotany.return_portal": "Alfheim Return Portal",
+  "block.mythicbotany.raw_elementium_block": "Block of raw Elementium",
 
   "item.mythicbotany.alfsteel_helmet.description": "Makes you reach a little bit further.",
   "item.mythicbotany.alfsteel_chestplate.description": "Gives you fairly good knockback resistance.",

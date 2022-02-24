@@ -62,9 +62,19 @@ public class CommonTagsProvider extends CommonTagsProviderBase {
         this.block(Tags.Blocks.ORES).addTag(ModBlockTags.ALFHEIM_ORES);
         this.block(BlockTags.LEAVES).addTag(ModBlockTags.ALFHEIM_LEAVES);
         
-        // TODO tool values
-        
         this.copyBlock(ModBlockTags.ALFHEIM_ORES, ModItemTags.ALFHEIM_ORES);
+        
+        this.tool(ModBlocks.manaInfuser, BlockTags.MINEABLE_WITH_PICKAXE, null);
+        this.tool(ModBlocks.alfsteelBlock, BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_IRON_TOOL);
+        this.tool(ModBlocks.alfsteelPylon, BlockTags.MINEABLE_WITH_PICKAXE, null);
+        this.tool(ModBlocks.manaCollector, BlockTags.MINEABLE_WITH_AXE, null);
+        this.tool(ModBlocks.yggdrasilBranch, BlockTags.MINEABLE_WITH_AXE, null);
+        this.tool(ModBlocks.elementiumOre, BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_IRON_TOOL);
+        this.tool(ModBlocks.dragonstoneOre, BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_DIAMOND_TOOL);
+        this.tool(ModBlocks.goldOre, BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_IRON_TOOL);
+        this.tool(ModBlocks.rawElementiumBlock, BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_IRON_TOOL);
+        this.tool(ModBlocks.runeHolder, BlockTags.MINEABLE_WITH_PICKAXE, null);
+        this.tool(ModBlocks.centralRuneHolder, BlockTags.MINEABLE_WITH_PICKAXE, null);
     }
 
     @Override

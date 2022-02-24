@@ -33,7 +33,7 @@ import net.minecraft.world.level.material.Material;
 public class ModBlocks {
 
     public static final BlockBE<TileManaInfuser> manaInfuser = new BlockManaInfuser(MythicBotany.getInstance(), TileManaInfuser.class, Properties.of(Material.METAL).strength(20));
-    public static final BlockBase alfsteelBlock = new BlockBase(MythicBotany.getInstance(), Properties.of(Material.METAL).strength(20));
+    public static final BlockBase alfsteelBlock = new BlockBase(MythicBotany.getInstance(), Properties.of(Material.METAL).strength(20).requiresCorrectToolForDrops());
     public static final BlockBE<TileAlfsteelPylon> alfsteelPylon = new BlockAlfsteelPylon(MythicBotany.getInstance(), Properties.of(Material.METAL).strength(5.5f).sound(SoundType.METAL).lightLevel((s) -> 7));
     public static final BlockBE<TileManaCollector> manaCollector = new BlockBE<>(MythicBotany.getInstance(), TileManaCollector.class, Properties.of(Material.WOOD).strength(5));
     public static final BlockFunctionalFlower<Exoblaze> exoblaze = new BlockFunctionalFlower<>(MythicBotany.getInstance(), Exoblaze.class, Properties.of(Material.PLANT), false);
@@ -49,9 +49,9 @@ public class ModBlocks {
     public static final BlockMjoellnir mjoellnir = new BlockMjoellnir(MythicBotany.getInstance(), Properties.of(Material.STONE).strength(-1.0F, 3600000.0F).noDrops(), new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
     public static final Block dreamwoodLeaves = new BlockAlfheimLeaves(MythicBotany.getInstance());
     // TODO tool values
-    public static final BlockBase elementiumOre = new BlockBase(MythicBotany.getInstance(), BlockBehaviour.Properties.of(Material.STONE)/*.harvestTool(ToolType.PICKAXE).harvestLevel(2)*/.requiresCorrectToolForDrops().strength(4, 4));
-    public static final BlockBase dragonstoneOre = new BlockBase(MythicBotany.getInstance(),BlockBehaviour.Properties.of(Material.STONE)/*.harvestTool(ToolType.PICKAXE).harvestLevel(3)*/.requiresCorrectToolForDrops().strength(5, 5));
-    public static final BlockBase goldOre = new BlockBase(MythicBotany.getInstance(), BlockBehaviour.Properties.of(Material.STONE)/*.harvestTool(ToolType.PICKAXE).harvestLevel(2)*/.requiresCorrectToolForDrops().strength(3, 3));
-    public static final BlockBase rawElementiumBlock = new BlockBase(MythicBotany.getInstance(), Properties.copy(Blocks.RAW_IRON_BLOCK));
-    public static final BlockBE<TileReturnPortal> returnPortal = new BlockReturnPortal(MythicBotany.getInstance(), BlockBehaviour.Properties.of(Material.PORTAL).noCollission().strength(-1.0F).sound(SoundType.GLASS).lightLevel(state -> 4));
+    public static final BlockBase elementiumOre = new BlockBase(MythicBotany.getInstance(), BlockBehaviour.Properties.of(Material.STONE).strength(4, 4).requiresCorrectToolForDrops());
+    public static final BlockBase dragonstoneOre = new BlockBase(MythicBotany.getInstance(),BlockBehaviour.Properties.of(Material.STONE).strength(5, 5).requiresCorrectToolForDrops());
+    public static final BlockBase goldOre = new BlockBase(MythicBotany.getInstance(), BlockBehaviour.Properties.of(Material.STONE).strength(3, 3).requiresCorrectToolForDrops());
+    public static final BlockBase rawElementiumBlock = new BlockBase(MythicBotany.getInstance(), Properties.copy(Blocks.RAW_IRON_BLOCK).requiresCorrectToolForDrops());
+    public static final BlockBE<TileReturnPortal> returnPortal = new BlockReturnPortal(MythicBotany.getInstance(), BlockBehaviour.Properties.of(Material.PORTAL).noCollission().noDrops().strength(-1.0F).sound(SoundType.GLASS).lightLevel(state -> 4));
 }

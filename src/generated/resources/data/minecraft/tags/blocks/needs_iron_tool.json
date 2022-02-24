@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "mythicbotany:alfsteel_block",
+    "mythicbotany:elementium_ore",
+    "mythicbotany:gold_ore",
+    "mythicbotany:raw_elementium_block"
+  ]
+}
