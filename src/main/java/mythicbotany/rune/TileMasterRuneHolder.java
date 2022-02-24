@@ -7,7 +7,6 @@ import io.github.noeppi_noeppi.libx.util.NBTX;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModItems;
 import mythicbotany.ModRecipes;
-import mythicbotany.misc.SolidifiedMana;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.EntityType;
@@ -342,7 +341,6 @@ public class TileMasterRuneHolder extends TileRuneHolder implements TickableBloc
             if (this.recipe.getSpecialInput() != null) {
                 this.recipe.getSpecialInput().cancel(this.level, this.worldPosition, this.recipe, this.specialNbt);
             }
-            SolidifiedMana.dropMana(this.level, this.worldPosition, this.recipe.getMana());
             this.recipe = null;
             this.recipeId = null;
             this.progress = 0;

@@ -4,7 +4,6 @@ import com.google.common.base.Predicates;
 import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
 import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
 import mythicbotany.MythicBotany;
-import mythicbotany.misc.SolidifiedMana;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -109,12 +108,10 @@ public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable
                 items.forEach(ie -> MythicBotany.getNetwork().setItemMagnetImmune(ie));
                 this.setChanged();
             } else if (this.active || this.recipe != null || this.output != null) {
-                SolidifiedMana.dropMana(this.level, this.worldPosition, this.mana);
                 this.active = false;
                 this.recipe = null;
                 this.fromColor = -1;
                 this.toColor = -1;
-                this.mana = 0;
                 this.maxMana = 0;
                 this.output = null;
                 this.level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());

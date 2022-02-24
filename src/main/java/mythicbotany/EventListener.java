@@ -9,6 +9,7 @@ import mythicbotany.alftools.AlfsteelHelm;
 import mythicbotany.misc.Andwari;
 import mythicbotany.mjoellnir.BlockMjoellnir;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -27,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
@@ -239,6 +241,16 @@ public class EventListener {
                         collector.onClientDisplayTick();
                     }
                 }
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public void playerTick(TickEvent.PlayerTickEvent event) {
+        if (event.player.tickCount % 4 == 1 && !event.player.level.isClientSide && Alfheim.DIMENSION.equals(event.player.level.dimension())) {
+            if (!MythicPlayerData.getData(event.player).getBoolean("KvasirKnowledge")) {
+                // Player used another mod to get to alfheim
+                event.player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0, true, false, true));
             }
         }
     }

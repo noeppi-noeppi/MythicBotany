@@ -12,7 +12,6 @@
   "item.mythicbotany.helheim_rune": "Rune of Helheim",
   "item.mythicbotany.alfsteel_ingot": "Alfsteel Ingot",
   "item.mythicbotany.alfsteel_nugget": "Alfsteel Nugget",
-  "item.mythicbotany.alfsteel_armor_upgrade": "Double Alfsteel Ingot",
   "item.mythicbotany.alfsteel_sword": "Alf Blade",
   "item.mythicbotany.alfsteel_pick": "Alf Shatterer",
   "item.mythicbotany.alfsteel_axe": "Alf Truncator",
@@ -34,7 +33,6 @@
   "item.mythicbotany.kvasir_mead": "Mead of Kvasir",
   "item.mythicbotany.dream_cherry": "Dreamcherry",
   "item.mythicbotany.alf_pixie_spawn_egg": "Alfheim Pixie Spawn Egg",
-  "item.mythicbotany.solidified_mana": "Solidified Mana",
 
   "block.mythicbotany.mana_infuser": "Mana-Infuser",
   "block.mythicbotany.alfsteel_block": "Block of Alfsteel",
