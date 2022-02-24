@@ -16,7 +16,7 @@ import java.util.List;
 
 public class WitherAconite extends FunctionalFlowerBase {
 
-    public static final int DEFAULT_MANA_PER_STAR = 2000000;
+    public static final int DEFAULT_MANA_PER_STAR = 1200000;
 
     public WitherAconite(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, 0x333333, DEFAULT_MANA_PER_STAR / 500, DEFAULT_MANA_PER_STAR / 2000, true);
