@@ -66,7 +66,7 @@ public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
     @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
         defer.accept(() -> {
-            ItemProperties.register(ModItems.dreamwoodTwigWand, new ResourceLocation(MythicBotany.getInstance().modid, "bindmode"), (stack, world, entity, seed) -> ItemTwigWand.getBindMode(stack) ? 1 : 0);
+            ItemProperties.register(ModItems.dreamwoodTwigWand, MythicBotany.getInstance().resource("bindmode"), (stack, world, entity, seed) -> ItemTwigWand.getBindMode(stack) ? 1 : 0);
             Minecraft.getInstance().getItemColors().register((stack, colorId) -> colorId == 1 ? DyeColor.byId(getColor1(stack)).getTextColor() : (colorId == 2 ? DyeColor.byId(getColor2(stack)).getTextColor() : -1), ModItems.dreamwoodTwigWand);
         });
         MinecraftForge.EVENT_BUS.addListener(this::onRenderGameOverlay);

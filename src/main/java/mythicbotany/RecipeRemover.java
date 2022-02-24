@@ -16,7 +16,7 @@ import java.util.Set;
 public class RecipeRemover {
 
     public static final ResourceLocation GAIA_PYLON = new ResourceLocation("botania", "gaia_pylon");
-    public static final ResourceLocation HARD_PYLON = new ResourceLocation(MythicBotany.getInstance().modid, "gaia_pylon");
+    public static final ResourceLocation HARD_PYLON = MythicBotany.getInstance().resource("gaia_pylon");
 
     private RecipeRemover() {
 

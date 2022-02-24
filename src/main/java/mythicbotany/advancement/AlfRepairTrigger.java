@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
 
 public class AlfRepairTrigger extends SimpleCriterionTrigger<AlfRepairTrigger.Instance> {
 
-    public static final ResourceLocation ID = new ResourceLocation(MythicBotany.getInstance().modid, "alf_repair");
+    public static final ResourceLocation ID = MythicBotany.getInstance().resource("alf_repair");
     
     @Nonnull
     @Override

@@ -33,7 +33,7 @@ import java.util.Random;
 
 public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylon> {
 
-    public static final ResourceLocation TEXTURE = new ResourceLocation(MythicBotany.getInstance().modid, "textures/model/pylon_alfsteel.png");
+    public static final ResourceLocation TEXTURE = MythicBotany.getInstance().resource("textures/model/pylon_alfsteel.png");
     public static final RenderType TARGET = createRenderType(false);
     public static final RenderType DIRECT_TARGET = createRenderType(true);
     

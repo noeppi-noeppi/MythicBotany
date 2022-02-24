@@ -30,7 +30,7 @@ public class MythicJei implements IModPlugin {
     @Nonnull
     @Override
     public ResourceLocation getPluginUid() {
-        return new ResourceLocation(MythicBotany.getInstance().modid, "jeiplugin");
+        return MythicBotany.getInstance().resource("jeiplugin");
     }
 
     @Override

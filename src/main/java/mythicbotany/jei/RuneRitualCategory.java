@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class RuneRitualCategory implements IRecipeCategory<RuneRitualRecipe> {
 
-    public static final ResourceLocation UID = new ResourceLocation(MythicBotany.getInstance().modid, "jei_category_rune_ritual");
+    public static final ResourceLocation UID = MythicBotany.getInstance().resource("jei_category_rune_ritual");
 
     private final IDrawable background;
     private final IDrawable slot;
@@ -35,7 +35,7 @@ public class RuneRitualCategory implements IRecipeCategory<RuneRitualRecipe> {
     private final Map<ResourceLocation, Pair<Integer, Integer>> inputOutputSizes = new HashMap<>();
 
     public RuneRitualCategory(IGuiHelper guiHelper) {
-        this.background = guiHelper.createDrawable(new ResourceLocation(MythicBotany.getInstance().modid, "textures/gui/jei_ritual.png"), 0, 0, 136, 196);
+        this.background = guiHelper.createDrawable(MythicBotany.getInstance().resource("textures/gui/jei_ritual.png"), 0, 0, 136, 196);
         this.slot = guiHelper.getSlotDrawable();
         this.localizedName = new TranslatableComponent("tooltip.mythicbotany.rune_ritual");
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModItems.fimbultyrTablet));

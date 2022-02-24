@@ -7,6 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModItemTags {
     
-    public static final Tag.Named<Item> RITUAL_RUNES = ItemTags.bind(new ResourceLocation(MythicBotany.getInstance().modid, "ritual_runes").toString());
-    public static final Tag.Named<Item> ALFHEIM_ORES = ItemTags.bind(new ResourceLocation(MythicBotany.getInstance().modid, "alfheim_ores").toString());
+    public static final Tag.Named<Item> RITUAL_RUNES = ItemTags.bind(MythicBotany.getInstance().resource("ritual_runes").toString());
+    public static final Tag.Named<Item> ALFHEIM_ORES = ItemTags.bind(MythicBotany.getInstance().resource("alfheim_ores").toString());
 }

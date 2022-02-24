@@ -44,8 +44,8 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
     @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
         defer.accept(() -> {
-            ItemProperties.register(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.getInstance().modid, "tipped"), (stack, level, entity, seed) -> isTipped(stack) ? 1 : 0);
-            ItemProperties.register(ModItems.alfsteelPick, new ResourceLocation(MythicBotany.getInstance().modid, "active"), (stack, level, entity, seed) -> isEnabled(stack) ? 1 : 0);
+            ItemProperties.register(ModItems.alfsteelPick, MythicBotany.getInstance().resource("tipped"), (stack, level, entity, seed) -> isTipped(stack) ? 1 : 0);
+            ItemProperties.register(ModItems.alfsteelPick, MythicBotany.getInstance().resource("active"), (stack, level, entity, seed) -> isEnabled(stack) ? 1 : 0);
         });
     }
 

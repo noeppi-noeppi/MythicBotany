@@ -37,7 +37,7 @@ public class WanderingTraderRuneInput extends SpecialRuneInput {
     private final ItemStack traderStack;
 
     private WanderingTraderRuneInput() {
-        super(new ResourceLocation(MythicBotany.getInstance().modid, "wandering_trader"));
+        super(MythicBotany.getInstance().resource("wandering_trader"));
         this.traderStack = new ItemStack(Items.PLAYER_HEAD);
         CompoundTag nbt = this.traderStack.getOrCreateTag();
         CompoundTag skullOwner = new CompoundTag();

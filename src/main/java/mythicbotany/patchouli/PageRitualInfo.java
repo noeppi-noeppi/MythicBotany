@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class PageRitualInfo extends PageRuneRitualBase {
 
-    public static final ResourceLocation OVERLAY_TEXTURE = new ResourceLocation(MythicBotany.getInstance().modid, "textures/gui/patchouli_ritual_info.png");
+    public static final ResourceLocation OVERLAY_TEXTURE = MythicBotany.getInstance().resource("textures/gui/patchouli_ritual_info.png");
 
     @SerializedName("text")
     public String text;

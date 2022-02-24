@@ -16,7 +16,7 @@ public class MjoellnirRuneOutput extends SpecialRuneOutput {
     public static final MjoellnirRuneOutput INSTANCE = new MjoellnirRuneOutput();
     
     private MjoellnirRuneOutput() {
-        super(new ResourceLocation(MythicBotany.getInstance().modid, "mjoellnir"));
+        super(MythicBotany.getInstance().resource("mjoellnir"));
     }
 
     @Override

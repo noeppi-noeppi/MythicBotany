@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 
 public class AlfPixieRender extends MobRenderer<AlfPixie, AlfPixieModel> {
     
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MythicBotany.getInstance().modid, "textures/entity/alf_pixie.png");
+    private static final ResourceLocation TEXTURE = MythicBotany.getInstance().resource("textures/entity/alf_pixie.png");
 
     public AlfPixieRender(EntityRendererProvider.Context context) {
         super(context, new AlfPixieModel(context.bakeLayer(ModModelLayers.PIXIE)), 0);

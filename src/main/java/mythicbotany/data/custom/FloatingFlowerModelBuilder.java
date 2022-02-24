@@ -18,7 +18,7 @@ public class FloatingFlowerModelBuilder extends BlockModelBuilder {
 
     public static FloatingFlowerModelBuilder create(BlockModelProvider provider, String path) {
         Preconditions.checkNotNull(path, "Path must not be null");
-        ResourceLocation outputLoc = new ResourceLocation(MythicBotany.getInstance().modid, "block/" + path);
+        ResourceLocation outputLoc = MythicBotany.getInstance().resource("block/" + path);
         return (FloatingFlowerModelBuilder) provider.generatedModels.computeIfAbsent(outputLoc, rl -> new FloatingFlowerModelBuilder(rl, provider.existingFileHelper));
     }
 

@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 public class EmptyRecipe implements Recipe<Container> {
     // TODO remove
     
-    public static final ResourceLocation ID = new ResourceLocation(MythicBotany.getInstance().modid, "empty");
+    public static final ResourceLocation ID = MythicBotany.getInstance().resource("empty");
     public static final RecipeType<EmptyRecipe> TYPE = RecipeType.register(ID.toString());
     
     private final ResourceLocation id;

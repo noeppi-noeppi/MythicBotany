@@ -35,7 +35,7 @@ import java.util.List;
 
 public class InfusionCategory implements IRecipeCategory<IInfuserRecipe> {
 
-    public static final ResourceLocation UID = new ResourceLocation(MythicBotany.getInstance().modid, "jei_category_infusion");
+    public static final ResourceLocation UID = MythicBotany.getInstance().resource("jei_category_infusion");
 
     private final IDrawable background;
     private final Component localizedName;

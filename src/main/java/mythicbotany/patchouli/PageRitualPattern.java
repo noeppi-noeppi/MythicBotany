@@ -16,7 +16,7 @@ import vazkii.patchouli.client.book.gui.GuiBook;
 
 public class PageRitualPattern extends PageRuneRitualBase {
 
-    public static final ResourceLocation OVERLAY_TEXTURE = new ResourceLocation(MythicBotany.getInstance().modid, "textures/gui/patchouli_ritual_pattern.png");
+    public static final ResourceLocation OVERLAY_TEXTURE = MythicBotany.getInstance().resource("textures/gui/patchouli_ritual_pattern.png");
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {

@@ -18,7 +18,7 @@ import javax.annotation.Nonnull;
 
 public class MjoellnirTrigger extends SimpleCriterionTrigger<MjoellnirTrigger.Instance> {
 
-    public static final ResourceLocation ID = new ResourceLocation(MythicBotany.getInstance().modid, "mjoellnir");
+    public static final ResourceLocation ID = MythicBotany.getInstance().resource("mjoellnir");
     
     @Nonnull
     @Override
