@@ -19,7 +19,7 @@
     {
       "type": "crafting",
       "recipe": "mythicbotany:rune_holder",
-      "recipe2": "mythicbotany:master_rune_holder"
+      "recipe2": "mythicbotany:central_rune_holder"
     },
     {
       "type": "spotlight",

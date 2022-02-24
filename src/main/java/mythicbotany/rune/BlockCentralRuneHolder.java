@@ -17,14 +17,14 @@ import vazkii.botania.common.item.ItemTwigWand;
 
 import javax.annotation.Nonnull;
 
-public class BlockMasterRuneHolder extends BlockRuneHolder<TileMasterRuneHolder> {
+public class BlockCentralRuneHolder extends BlockRuneHolder<TileCentralRuneHolder> {
 
-    public BlockMasterRuneHolder(ModX mod, Properties properties) {
+    public BlockCentralRuneHolder(ModX mod, Properties properties) {
         this(mod, properties, new Item.Properties());
     }
 
-    public BlockMasterRuneHolder(ModX mod, Properties properties, Item.Properties itemProperties) {
-        super(mod, TileMasterRuneHolder.class, properties, itemProperties);
+    public BlockCentralRuneHolder(ModX mod, Properties properties, Item.Properties itemProperties) {
+        super(mod, TileCentralRuneHolder.class, properties, itemProperties);
     }
 
     @Nonnull
@@ -35,7 +35,7 @@ public class BlockMasterRuneHolder extends BlockRuneHolder<TileMasterRuneHolder>
                 if (!MythicPlayerData.getData(player).getBoolean("MimirKnowledge")) {
                     player.sendMessage(new TranslatableComponent("message.mythicbotany.mimir_unknown").withStyle(ChatFormatting.GRAY), player.getUUID());
                 } else {
-                    TileMasterRuneHolder tile = this.getBlockEntity(level, pos);
+                    TileCentralRuneHolder tile = this.getBlockEntity(level, pos);
                     tile.tryStartRitual(player);
                 }
             }
@@ -48,8 +48,8 @@ public class BlockMasterRuneHolder extends BlockRuneHolder<TileMasterRuneHolder>
     @Override
     public void onRemove(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull BlockState newState, boolean isMoving) {
         BlockEntity te = level.getBlockEntity(pos);
-        if (te instanceof TileMasterRuneHolder) {
-            ((TileMasterRuneHolder) te).cancelRecipe();
+        if (te instanceof TileCentralRuneHolder) {
+            ((TileCentralRuneHolder) te).cancelRecipe();
         }
         super.onRemove(state, level, pos, newState, isMoving);
     }

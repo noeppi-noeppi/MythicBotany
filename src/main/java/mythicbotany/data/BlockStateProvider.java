@@ -27,7 +27,7 @@ public class BlockStateProvider extends BlockStateProviderBase {
         this.manualModel(ModBlocks.alfsteelPylon);
         this.manualModel(ModBlocks.yggdrasilBranch);
         this.manualModel(ModBlocks.runeHolder);
-        this.manualModel(ModBlocks.masterRuneHolder);
+        this.manualModel(ModBlocks.centralRuneHolder);
         this.manualModel(ModBlocks.mjoellnir);
     }
 

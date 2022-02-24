@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "mythicbotany:master_rune_holder"
+          "name": "mythicbotany:central_rune_holder"
         }
       ],
       "conditions": [

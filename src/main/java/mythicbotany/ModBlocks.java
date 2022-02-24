@@ -16,9 +16,9 @@ import mythicbotany.mimir.TileYggdrasilBranch;
 import mythicbotany.mjoellnir.BlockMjoellnir;
 import mythicbotany.pylon.BlockAlfsteelPylon;
 import mythicbotany.pylon.TileAlfsteelPylon;
-import mythicbotany.rune.BlockMasterRuneHolder;
+import mythicbotany.rune.BlockCentralRuneHolder;
 import mythicbotany.rune.BlockRuneHolder;
-import mythicbotany.rune.TileMasterRuneHolder;
+import mythicbotany.rune.TileCentralRuneHolder;
 import mythicbotany.rune.TileRuneHolder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -44,7 +44,7 @@ public class ModBlocks {
     public static final BlockFunctionalFlower<Petrunia> petrunia = new BlockFunctionalFlower<>(MythicBotany.getInstance(), Petrunia.class, Properties.of(Material.PLANT), false);
     public static final BlockBE<TileYggdrasilBranch> yggdrasilBranch = new BlockYggdrasilBranch(MythicBotany.getInstance(), Properties.of(Material.WOOD).strength(4).sound(SoundType.WOOD));
     public static final BlockBE<TileRuneHolder> runeHolder = new BlockRuneHolder<>(MythicBotany.getInstance(), TileRuneHolder.class, Properties.of(Material.METAL).strength(3).sound(SoundType.METAL));
-    public static final BlockBE<TileMasterRuneHolder> masterRuneHolder = new BlockMasterRuneHolder(MythicBotany.getInstance(), Properties.of(Material.METAL).strength(3).sound(SoundType.METAL));
+    public static final BlockBE<TileCentralRuneHolder> centralRuneHolder = new BlockCentralRuneHolder(MythicBotany.getInstance(), Properties.of(Material.METAL).strength(3).sound(SoundType.METAL));
     public static final BlockMjoellnir mjoellnir = new BlockMjoellnir(MythicBotany.getInstance(), Properties.of(Material.STONE).strength(-1.0F, 3600000.0F).noDrops(), new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
     public static final Block dreamwoodLeaves = new BlockAlfheimLeaves(MythicBotany.getInstance());
     // TODO tool values

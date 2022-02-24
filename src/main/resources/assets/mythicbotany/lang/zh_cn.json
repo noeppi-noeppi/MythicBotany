@@ -50,7 +50,7 @@
   "block.mythicbotany.raindeletia_floating": "悬浮雨德花",
   "block.mythicbotany.yggdrasil_branch": "世界树的枝干",
   "block.mythicbotany.rune_holder": "符文支托",
-  "block.mythicbotany.master_rune_holder": "大师符文支托",
+  "block.mythicbotany.central_rune_holder": "大师符文支托",
   "block.mythicbotany.mjoellnir": "妙尔尼尔",
   "block.mythicbotany.dreamwood_leaves": "梦之木树叶",
   "block.mythicbotany.elementium_ore": "源质钢矿石",
@@ -78,7 +78,7 @@
   "biome.mythicbotany.alfheim_lakes": "精灵之湖",
   
   "tooltip.mythicbotany.rune_ritual": "符文仪式",
-  "tooltip.mythicbotany.rune_master": "符文需要大师符文支托",
+  "tooltip.mythicbotany.rune_central": "符文需要大师符文支托",
   "tooltip.mythicbotany.rune_consume": "这个符文会被消耗。",
   "tooltip.mythicbotany.rune_keep": "这个符文不会被消耗。",
   "tooltip.mythicbotany.rune_offset": "对应坐标: %s, %s",

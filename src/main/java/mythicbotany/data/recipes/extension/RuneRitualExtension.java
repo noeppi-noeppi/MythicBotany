@@ -66,7 +66,7 @@ public interface RuneRitualExtension extends RecipeExtension {
 
         public RuneRitualRecipeBuilder rune(Ingredient rune, int x, int z, boolean consume) {
             if (x < -5 || x > 5 || z < -5 || z > 5) {
-                throw new IllegalStateException("Rune positions should not be more than 5 blocks away frm the master rune holder: (" + x + "," + z + ")");
+                throw new IllegalStateException("Rune positions should not be more than 5 blocks away frm the central rune holder: (" + x + "," + z + ")");
             }
             this.runes.add(new RuneRitualRecipe.RunePosition(rune, x, z, consume));
             return this;

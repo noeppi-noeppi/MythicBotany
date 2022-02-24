@@ -49,7 +49,7 @@ public class PageRitualPattern extends PageRuneRitualBase {
             if (this.parent.isMouseInRelativeRange(mouseX, mouseY, realX, realY, 10, 10)) {
                 this.parent.setTooltipStack(stack);
                 boolean keep = (x != 0 || z != 0) && !consume;
-                String text1 = keep ? I18n.get("tooltip.mythicbotany.rune_offset", x, z) : I18n.get("tooltip.mythicbotany.rune_master");
+                String text1 = keep ? I18n.get("tooltip.mythicbotany.rune_offset", x, z) : I18n.get("tooltip.mythicbotany.rune_central");
                 int color1 = ChatFormatting.GOLD.getColor() == null ? 0x000000 : ChatFormatting.GOLD.getColor();
 
                 String text2 = I18n.get(keep ? "tooltip.mythicbotany.rune_keep" : "tooltip.mythicbotany.rune_consume");

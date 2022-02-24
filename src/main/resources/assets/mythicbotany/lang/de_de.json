@@ -52,7 +52,7 @@
   "block.mythicbotany.feysythia_floating": "Schwebende Feesythie",
   "block.mythicbotany.yggdrasil_branch": "Ableger von Yggdrasil",
   "block.mythicbotany.rune_holder": "Runenhalter",
-  "block.mythicbotany.master_rune_holder": "Zentraler Runenhalter",
+  "block.mythicbotany.central_rune_holder": "Zentraler Runenhalter",
   "block.mythicbotany.mjoellnir": "Mjöllnir",
   "block.mythicbotany.dreamwood_leaves": "Traumholzblätter",
   "block.mythicbotany.elementium_ore": "Elementiumerz",
@@ -83,7 +83,7 @@
   "biome.mythicbotany.alfheim_lakes": "Alfheim Seen",
 
   "tooltip.mythicbotany.rune_ritual": "Runen-Ritual",
-  "tooltip.mythicbotany.rune_master": "Rune für den zentralen Runenhalter.",
+  "tooltip.mythicbotany.rune_central": "Rune für den zentralen Runenhalter.",
   "tooltip.mythicbotany.rune_consume": "Diese Rune wird verbraucht.",
   "tooltip.mythicbotany.rune_keep": "Diese Rune wird NICHT verbraucht.",
   "tooltip.mythicbotany.rune_offset": "Relative Position: %s, %s",

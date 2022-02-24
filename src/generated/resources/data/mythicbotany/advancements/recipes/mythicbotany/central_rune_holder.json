@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "mythicbotany:master_rune_holder"
+      "mythicbotany:central_rune_holder"
     ]
   },
   "criteria": {
@@ -29,7 +29,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "mythicbotany:master_rune_holder"
+        "recipe": "mythicbotany:central_rune_holder"
       }
     }
   },

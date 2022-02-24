@@ -8,21 +8,28 @@ import mythicbotany.pylon.PylonRepairable;
 import mythicbotany.network.AlfSwordLeftClickSerializer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import vazkii.botania.api.internal.IManaBurst;
 import vazkii.botania.common.entity.EntityManaBurst;
 import vazkii.botania.common.handler.ModSounds;
 import vazkii.botania.common.item.equipment.tool.terrasteel.ItemTerraSword;
 import vazkii.botania.common.lib.ModTags;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
 
@@ -97,6 +104,41 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
             player.level.addFreshEntity(burst);
             player.getMainHandItem().hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
             player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.terraBlade, SoundSource.PLAYERS, 1, 1);
+        }
+    }
+
+    @Override
+    public void updateBurst(IManaBurst burst, ItemStack stack) {
+        ThrowableProjectile entity = burst.entity();
+        AABB aabb = new AABB(
+                entity.getX(), entity.getY(), entity.getZ(),
+                entity.xOld, entity.yOld, entity.zOld
+        ).inflate(1);
+        Entity thrower = entity.getOwner();
+        List<LivingEntity> entities = entity.level.getEntitiesOfClass(LivingEntity.class, aabb);
+
+        for (LivingEntity living : entities) {
+            if (living == thrower || living instanceof Player livingPlayer && thrower instanceof Player throwingPlayer && !throwingPlayer.canHarmPlayer(livingPlayer)) {
+                continue;
+            }
+
+            if (living.hurtTime == 0) {
+                int mana = burst.getMana();
+                if (mana >= 33) {
+                    burst.setMana(mana - 33);
+                    float damage = 4 + this.getDamage();
+                    if (!burst.isFake() && !entity.level.isClientSide) {
+                        DamageSource source = DamageSource.MAGIC;
+                        if (thrower instanceof Player player) {
+                            source = DamageSource.playerAttack(player);
+                        } else if (thrower instanceof LivingEntity livingThrower) {
+                            source = DamageSource.mobAttack(livingThrower);
+                        }
+                        living.hurt(source, damage);
+                        if (burst.getMana() <= 0) entity.discard();
+                    }
+                }
+            }
         }
     }
 }

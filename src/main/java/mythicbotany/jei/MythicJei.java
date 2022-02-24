@@ -53,7 +53,7 @@ public class MythicJei implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(@Nonnull IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.manaInfuser), InfusionCategory.UID);
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.masterRuneHolder), RuneRitualCategory.UID);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.centralRuneHolder), RuneRitualCategory.UID);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.runeHolder), RuneRitualCategory.UID);
     }
 

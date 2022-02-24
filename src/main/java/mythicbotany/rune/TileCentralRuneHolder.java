@@ -46,7 +46,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
-public class TileMasterRuneHolder extends TileRuneHolder implements TickableBlock {
+public class TileCentralRuneHolder extends TileRuneHolder implements TickableBlock {
 
     private static final ResourceLocation MISSIGNO = new ResourceLocation("minecraft", "missingno");
     private static final Map<Item, Integer> RUNE_COLORS = ImmutableMap.<Item, Integer>builder()
@@ -82,7 +82,7 @@ public class TileMasterRuneHolder extends TileRuneHolder implements TickableBloc
     private List<ItemStack> consumedStacks = new ArrayList<>();
     private CompoundTag specialNbt = new CompoundTag();
 
-    public TileMasterRuneHolder(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public TileCentralRuneHolder(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 

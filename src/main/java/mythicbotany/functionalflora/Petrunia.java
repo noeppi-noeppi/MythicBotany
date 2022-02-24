@@ -2,7 +2,7 @@ package mythicbotany.functionalflora;
 
 import mythicbotany.ModBlocks;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
-import mythicbotany.rune.TileMasterRuneHolder;
+import mythicbotany.rune.TileCentralRuneHolder;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
@@ -32,7 +32,7 @@ public class Petrunia extends FunctionalFlowerBase {
                     for (int y = -1; y <= 1; y++) {
                         for (int z = -3; z <= 3; z++) {
                             BlockPos pos = this.worldPosition.offset(x, y, z);
-                            if (this.level.getBlockState(pos).getBlock() == ModBlocks.masterRuneHolder) {
+                            if (this.level.getBlockState(pos).getBlock() == ModBlocks.centralRuneHolder) {
                                 this.currentPos = pos.immutable();
                                 break find;
                             }
@@ -43,7 +43,7 @@ public class Petrunia extends FunctionalFlowerBase {
             if (this.currentPos != null) {
                 BlockState state = this.level.getBlockState(this.currentPos);
                 BlockEntity te = this.level.getBlockEntity(this.currentPos);
-                if (state.getBlock() != ModBlocks.masterRuneHolder || !(te instanceof TileMasterRuneHolder tile)) {
+                if (state.getBlock() != ModBlocks.centralRuneHolder || !(te instanceof TileCentralRuneHolder tile)) {
                     this.currentPos = null;
                 } else {
                     tile.tryStartRitual(
