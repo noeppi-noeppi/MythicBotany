@@ -63,7 +63,7 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
         this.shaped(ModBlocks.manaCollector, "dgd", "dpd", "dmd", 'd', vazkii.botania.common.block.ModBlocks.dreamwoodGlimmering, 'g', vazkii.botania.common.item.ModItems.gaiaIngot, 'p', vazkii.botania.common.item.ModItems.pixieDust, 'm', ModItems.vanaheimRune);
         this.shaped(ModBlocks.yggdrasilBranch, "lll", "ttt", "lll", 'l', ModTags.Items.LIVINGWOOD_LOGS, 't', ModTags.Items.NUGGETS_TERRASTEEL);
         this.shaped(ModBlocks.runeHolder, " w ", "wdw", 'w', Tags.Items.INGOTS_IRON, 'd', ModTags.Items.DUSTS_MANA);
-        this.shaped(ModBlocks.centralRuneHolder, " w ", "wdw", 'w', Tags.Items.INGOTS_IRON, 'd', ModTags.Items.DUSTS_MANA);
+        this.shaped(ModBlocks.centralRuneHolder, " w ", "wdw", 'w', Tags.Items.GEMS_EMERALD, 'd', ModTags.Items.DUSTS_MANA);
         this.shapeless(ModItems.kvasirMead, ModItems.kvasirBlood, Items.HONEY_BOTTLE);
 
         this.compress(ModItems.rawElementium, ModBlocks.rawElementiumBlock, true);
