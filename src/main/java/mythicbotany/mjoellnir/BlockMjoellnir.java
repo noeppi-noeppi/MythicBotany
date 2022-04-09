@@ -7,12 +7,14 @@ import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
 import mythicbotany.config.MythicConfig;
+import mythicbotany.register.HackyHolder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -65,9 +67,12 @@ public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerab
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public Set<Object> getAdditionalRegisters(ResourceLocation id) {
+        Set<Object> parent = super.getAdditionalRegisters(id);
+        parent.stream().filter(e -> e instanceof Item).forEach(e -> HackyHolder.bindIntrusive(Registry.ITEM_REGISTRY, ((Item) e).builtInRegistryHolder()));
         return ImmutableSet.builder()
-                .addAll(super.getAdditionalRegisters(id).stream().filter(e -> !(e instanceof Item)).toList())
+                .addAll(parent.stream().filter(e -> !(e instanceof Item)).toList())
                 .add(this.item, this.entityType).build();
     }
 

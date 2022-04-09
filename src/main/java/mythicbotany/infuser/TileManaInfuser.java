@@ -4,6 +4,7 @@ import com.google.common.base.Predicates;
 import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
 import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
 import mythicbotany.MythicBotany;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -15,6 +16,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import org.apache.commons.lang3.tuple.Pair;
+import vazkii.botania.api.BotaniaForgeCapabilities;
+import vazkii.botania.api.mana.IManaReceiver;
 import vazkii.botania.api.mana.spark.IManaSpark;
 import vazkii.botania.api.mana.spark.ISparkAttachable;
 import vazkii.botania.common.block.ModBlocks;
@@ -24,7 +27,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable, TickableBlock {
+public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable, IManaReceiver, TickableBlock {
 
     private int mana;
     private boolean active;
@@ -39,7 +42,7 @@ public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable
     private transient int toColor = -1;
 
     public TileManaInfuser(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        super(type, pos, state);
+        super(type, pos, state, BotaniaForgeCapabilities.MANA_RECEIVER);
     }
 
     @Override
@@ -187,6 +190,16 @@ public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable
             this.level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
             this.setChanged();
         }
+    }
+
+    @Override
+    public Level getManaReceiverLevel() {
+        return this.getLevel();
+    }
+
+    @Override
+    public BlockPos getManaReceiverPos() {
+        return this.getBlockPos();
     }
 
     @Override

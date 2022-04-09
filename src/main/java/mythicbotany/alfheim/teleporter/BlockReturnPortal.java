@@ -3,7 +3,9 @@ package mythicbotany.alfheim.teleporter;
 import com.google.common.collect.ImmutableSet;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
+import mythicbotany.register.HackyHolder;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.BlockItem;
@@ -27,8 +29,11 @@ public class BlockReturnPortal extends BlockBE<TileReturnPortal> {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public Set<Object> getAdditionalRegisters(ResourceLocation id) {
-        return super.getAdditionalRegisters(id).stream()
+        Set<Object> parent = super.getAdditionalRegisters(id);
+        parent.stream().filter(e -> e instanceof BlockItem).forEach(e -> HackyHolder.bindIntrusive(Registry.ITEM_REGISTRY, ((BlockItem) e).builtInRegistryHolder()));
+        return parent.stream()
                 .filter(o -> !(o instanceof BlockItem))
                 .collect(ImmutableSet.toImmutableSet());
     }

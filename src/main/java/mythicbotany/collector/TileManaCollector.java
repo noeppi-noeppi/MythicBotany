@@ -7,7 +7,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import vazkii.botania.api.internal.IManaBurst;
-import vazkii.botania.api.mana.*;
+import vazkii.botania.api.mana.IManaCollector;
+import vazkii.botania.api.mana.ManaBlockType;
+import vazkii.botania.api.mana.ManaNetworkAction;
+import vazkii.botania.api.mana.ManaNetworkEvent;
 import vazkii.botania.common.handler.ManaNetworkHandler;
 
 public class TileManaCollector extends BlockEntityMana implements IManaCollector, TickableBlock {
@@ -47,7 +50,7 @@ public class TileManaCollector extends BlockEntityMana implements IManaCollector
     }
 
     public void tick() {
-        boolean inNetwork = ManaNetworkHandler.instance.isCollectorIn(this);
+        boolean inNetwork = ManaNetworkHandler.instance.isCollectorIn(this.level, this);
         if (!inNetwork && !this.isRemoved()) {
             MinecraftForge.EVENT_BUS.post(new ManaNetworkEvent(this, ManaBlockType.COLLECTOR, ManaNetworkAction.ADD));
         }

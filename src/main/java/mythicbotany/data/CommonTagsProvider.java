@@ -12,7 +12,7 @@ import mythicbotany.functionalflora.base.BlockFunctionalFlower;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
@@ -99,7 +99,7 @@ public class CommonTagsProvider extends CommonTagsProviderBase {
         }
     }
 
-    private void tool(Block block, Tag.Named<Block> tool, @Nullable Tag.Named<Block> level) {
+    private void tool(Block block, TagKey<Block> tool, @Nullable TagKey<Block> level) {
         this.block(tool).add(block);
         if (level != null) this.block(level).add(block);
     }

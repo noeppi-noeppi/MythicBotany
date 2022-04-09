@@ -183,7 +183,7 @@ public class Aquapanthus extends FunctionalFlowerBase {
 
     @Override
     public RadiusDescriptor getRadius() {
-        return new RadiusDescriptor.Square(this.worldPosition, 3);
+        return RadiusDescriptor.Rectangle.square(this.worldPosition, 3);
     }
 
     @Override

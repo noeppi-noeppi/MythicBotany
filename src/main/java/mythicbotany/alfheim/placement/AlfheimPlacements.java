@@ -1,30 +1,35 @@
 package mythicbotany.alfheim.placement;
 
 import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
+import mythicbotany.register.HackyHolder;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+
+import java.util.List;
 
 @RegisterClass(prefix = "wg", priority = -3)
 public class AlfheimPlacements {
     
-    public static final PlacedFeature metamorphicForestStone = AlfheimFeatures.metamorphicForestStone.placed(AlfheimModifiers.metamorphicStone);
-    public static final PlacedFeature metamorphicMountainStone = AlfheimFeatures.metamorphicMountainStone.placed(AlfheimModifiers.metamorphicStone);
-    public static final PlacedFeature metamorphicFungalStone = AlfheimFeatures.metamorphicFungalStone.placed(AlfheimModifiers.metamorphicStone);
-    public static final PlacedFeature metamorphicSwampStone = AlfheimFeatures.metamorphicSwampStone.placed(AlfheimModifiers.metamorphicStone);
-    public static final PlacedFeature metamorphicDesertStone = AlfheimFeatures.metamorphicDesertStone.placed(AlfheimModifiers.metamorphicStone);
-    public static final PlacedFeature metamorphicTaigaStone = AlfheimFeatures.metamorphicTaigaStone.placed(AlfheimModifiers.metamorphicStone);
-    public static final PlacedFeature metamorphicMesaStone = AlfheimFeatures.metamorphicMesaStone.placed(AlfheimModifiers.metamorphicStone);
+    public static final Holder<PlacedFeature> metamorphicForestStone = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.metamorphicForestStone, AlfheimModifiers.metamorphicStone));
+    public static final Holder<PlacedFeature> metamorphicMountainStone = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.metamorphicMountainStone, AlfheimModifiers.metamorphicStone));
+    public static final Holder<PlacedFeature> metamorphicFungalStone = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.metamorphicFungalStone, AlfheimModifiers.metamorphicStone));
+    public static final Holder<PlacedFeature> metamorphicSwampStone = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.metamorphicSwampStone, AlfheimModifiers.metamorphicStone));
+    public static final Holder<PlacedFeature> metamorphicDesertStone = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.metamorphicDesertStone, AlfheimModifiers.metamorphicStone));
+    public static final Holder<PlacedFeature> metamorphicTaigaStone = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.metamorphicTaigaStone, AlfheimModifiers.metamorphicStone));
+    public static final Holder<PlacedFeature> metamorphicMesaStone = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.metamorphicMesaStone, AlfheimModifiers.metamorphicStone));
 
-    public static final PlacedFeature looseDreamwoodTrees = AlfheimFeatures.dreamwoodTrees.placed(AlfheimModifiers.looseTrees);
-    public static final PlacedFeature denseDreamwoodTrees = AlfheimFeatures.dreamwoodTrees.placed(AlfheimModifiers.denseTrees);
+    public static final Holder<PlacedFeature> looseDreamwoodTrees = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.dreamwoodTrees, AlfheimModifiers.looseTrees));
+    public static final Holder<PlacedFeature> denseDreamwoodTrees = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.dreamwoodTrees, AlfheimModifiers.denseTrees));
 
-    public static final PlacedFeature motifFlowers = AlfheimFeatures.motifFlowers.placed();
-    public static final PlacedFeature alfheimGrass = AlfheimFeatures.alfheimGrass.placed(AlfheimModifiers.vegetation);
-    public static final PlacedFeature manaCrystals = AlfheimFeatures.manaCrystals.placed();
-    public static final PlacedFeature abandonedApothecaries = AlfheimFeatures.abandonedApothecaries.placed();
-    public static final PlacedFeature elementiumOre = AlfheimFeatures.elementiumOre.placed(AlfheimModifiers.ore(5, VerticalAnchor.bottom(), VerticalAnchor.absolute(70)));
-    public static final PlacedFeature dragonstoneOre = AlfheimFeatures.dragonstoneOre.placed(AlfheimModifiers.ore(1, VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(16)));
-    public static final PlacedFeature goldOre = AlfheimFeatures.goldOre.placed(AlfheimModifiers.ore(2, VerticalAnchor.bottom(), VerticalAnchor.absolute(32)));
-    public static final PlacedFeature extraGoldOre = AlfheimFeatures.goldOre.placed(AlfheimModifiers.ore(20, VerticalAnchor.aboveBottom(16), VerticalAnchor.absolute(80)));
-    public static final PlacedFeature wheatFields = AlfheimFeatures.wheatFields.placed();
+    public static final Holder<PlacedFeature> motifFlowers = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.motifFlowers, List.of()));
+    public static final Holder<PlacedFeature> alfheimGrass = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.alfheimGrass, AlfheimModifiers.vegetation));
+    public static final Holder<PlacedFeature> manaCrystals = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.manaCrystals, List.of()));
+    public static final Holder<PlacedFeature> abandonedApothecaries = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.abandonedApothecaries, List.of()));
+    public static final Holder<PlacedFeature> elementiumOre = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.elementiumOre, AlfheimModifiers.ore(5, VerticalAnchor.bottom(), VerticalAnchor.absolute(70))));
+    public static final Holder<PlacedFeature> dragonstoneOre = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.dragonstoneOre, AlfheimModifiers.ore(1, VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(16))));
+    public static final Holder<PlacedFeature> goldOre = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.goldOre, AlfheimModifiers.ore(2, VerticalAnchor.bottom(), VerticalAnchor.absolute(32))));
+    public static final Holder<PlacedFeature> extraGoldOre = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.goldOre, AlfheimModifiers.ore(20, VerticalAnchor.aboveBottom(16), VerticalAnchor.absolute(80))));
+    public static final Holder<PlacedFeature> wheatFields = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.wheatFields, List.of()));
 }

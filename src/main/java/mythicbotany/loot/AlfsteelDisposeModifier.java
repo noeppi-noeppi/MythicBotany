@@ -34,7 +34,7 @@ public class AlfsteelDisposeModifier extends LootModifier {
 
     public static void filterDisposable(List<ItemStack> drops, Entity entity, ItemStack stack) {
         if (!stack.isEmpty() && stack.getItem() == ModItems.alfsteelPick && AlfsteelPick.isTipped(stack)) {
-            drops.removeIf((loot) -> !loot.isEmpty() && (ModTags.Items.DISPOSABLE.contains(loot.getItem()) || ModTags.Items.SEMI_DISPOSABLE.contains(loot.getItem()) && !entity.isShiftKeyDown()));
+            drops.removeIf((loot) -> !loot.isEmpty() && (loot.is(ModTags.Items.DISPOSABLE) || loot.is(ModTags.Items.SEMI_DISPOSABLE) && !entity.isShiftKeyDown()));
         }
     }
 

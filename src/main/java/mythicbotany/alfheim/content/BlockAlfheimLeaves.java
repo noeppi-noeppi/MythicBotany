@@ -3,6 +3,7 @@ package mythicbotany.alfheim.content;
 import com.google.common.collect.ImmutableSet;
 import io.github.noeppi_noeppi.libx.mod.ModX;
 import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
+import io.github.noeppi_noeppi.libx.util.TagAccess;
 import mythicbotany.ModBlockTags;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -77,7 +78,7 @@ public class BlockAlfheimLeaves extends LeavesBlock implements Registerable {
     }
 
     protected int getDistanceAt(BlockState neighbor) {
-        if (ModBlockTags.ALFHEIM_LOGS.contains(neighbor.getBlock())) {
+        if (TagAccess.ROOT.has(ModBlockTags.ALFHEIM_LOGS, neighbor.getBlock())) {
             return 0;
         } else {
             return neighbor.getBlock() instanceof LeavesBlock ? neighbor.getValue(DISTANCE) : 7;

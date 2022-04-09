@@ -14,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -54,7 +55,7 @@ public abstract class BlockEntityMana extends BlockEntityBase implements ISparkA
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == BotaniaForgeCapabilities.WANDABLE) {
+        if (cap == BotaniaForgeCapabilities.MANA_RECEIVER || cap == BotaniaForgeCapabilities.WANDABLE) {
             return LazyOptional.of(() -> this).cast();
         } else {
             return DistExecutor.unsafeRunForDist(
@@ -170,5 +171,15 @@ public abstract class BlockEntityMana extends BlockEntityBase implements ISparkA
     
     protected int getManaColor() {
         return 0x0000FF;
+    }
+
+    @Override
+    public Level getManaReceiverLevel() {
+        return this.getLevel();
+    }
+
+    @Override
+    public BlockPos getManaReceiverPos() {
+        return this.getBlockPos();
     }
 }

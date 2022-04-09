@@ -52,6 +52,7 @@ import vazkii.botania.common.item.equipment.armor.terrasteel.ItemTerrasteelHelm;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.List;
 
 public class EventListener {
 
@@ -225,10 +226,8 @@ public class EventListener {
         if (event.phase == TickEvent.Phase.END) {
             Player player = Minecraft.getInstance().player;
             if (player != null && (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == ModItems.dreamwoodTwigWand || player.getItemInHand(InteractionHand.OFF_HAND).getItem() == ModItems.dreamwoodTwigWand)) {
-                for (BlockEntity blockEntity : ImmutableList.copyOf(ManaNetworkHandler.instance.getAllCollectorsInWorld(Minecraft.getInstance().level))) {
-                    if (blockEntity instanceof IManaCollector collector) {
-                        collector.onClientDisplayTick();
-                    }
+                for (IManaCollector collector : ImmutableList.copyOf(ManaNetworkHandler.instance.getAllCollectorsInWorld(Minecraft.getInstance().level))) {
+                    collector.onClientDisplayTick();
                 }
             }
         }

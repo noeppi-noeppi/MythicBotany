@@ -9,6 +9,8 @@ import mythicbotany.MythicBotany;
 import mythicbotany.alfheim.gen.AlfheimBiomeSource;
 import mythicbotany.alfheim.gen.AlfheimChunkGenerator;
 import mythicbotany.alfheim.surface.AlfheimSurfaceBuilder;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
@@ -17,7 +19,10 @@ import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
+import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -40,7 +45,7 @@ public class Alfheim {
     private static final Object LOCK = new Object();
     private static final Map<ResourceKey<Biome>, Climate.ParameterPoint> BIOMES = new HashMap<>();
     private static final Map<ResourceKey<Biome>, SurfaceRules.RuleSource> BIOME_SURFACE = new HashMap<>();
-    private static final Map<StructureFeature<?>, StructureFeatureConfiguration> STRUCTURES = new HashMap<>();
+    private static final Map<ConfiguredStructureFeature<?, ?>, StructureSettings> STRUCTURES = new HashMap<>();
     private static final Multimap<ResourceKey<Biome>, ConfiguredStructureFeature<?, ?>> BIOME_STRUCTURES = HashMultimap.create();
 
     public static void addBiome(Biome biome, BiomeConfiguration settings) {
@@ -55,19 +60,15 @@ public class Alfheim {
             BiomeDictionary.addTypes(biome, BIOME_TYPE);
         }
     }
-    
-    public static void addStructure(ConfiguredStructureFeature<?, ?> structure, StructureFeatureConfiguration settings, Biome... biomes) {
-        addStructure(structure, settings, biomeKeys(biomes));
+
+    public static void addStructure(ConfiguredStructureFeature<?, ?> structure, int weight, int spacing, int separation, int salt) {
+        addStructure(structure, weight, new RandomSpreadStructurePlacement(spacing, separation, RandomSpreadType.LINEAR, salt));
     }
     
-    @SafeVarargs
-    public static void addStructure(ConfiguredStructureFeature<?, ?> structure, StructureFeatureConfiguration settings, ResourceKey<Biome>... biomes) {
+    public static void addStructure(ConfiguredStructureFeature<?, ?> structure, int weight, StructurePlacement placement) {
         synchronized (LOCK) {
-            if (STRUCTURES.containsKey(structure.feature)) throw new IllegalStateException("Structure registered twice in alfheim: " + structure);
-            STRUCTURES.put(structure.feature, settings);
-            for (ResourceKey<Biome> biome : biomes) {
-                BIOME_STRUCTURES.put(biome, structure);
-            }
+            if (STRUCTURES.containsKey(structure)) throw new IllegalStateException("Structure registered twice in alfheim: " + structure);
+            STRUCTURES.put(structure, new StructureSettings(weight, placement));
         }
     }
     
@@ -77,16 +78,12 @@ public class Alfheim {
         }
     }
     
-    public static Climate.ParameterList<Supplier<Biome>> buildAlfheimClimate(Function<ResourceKey<Biome>, Biome> biomeResolver) {
+    public static Climate.ParameterList<Holder<Biome>> buildAlfheimClimate(Function<ResourceKey<Biome>, Optional<Holder<Biome>>> biomeResolver) {
         synchronized (LOCK) {
-            ImmutableList.Builder<Pair<Climate.ParameterPoint, Supplier<Biome>>> list = ImmutableList.builder();
+            ImmutableList.Builder<Pair<Climate.ParameterPoint, Holder<Biome>>> list = ImmutableList.builder();
             for (Map.Entry<ResourceKey<Biome>, Climate.ParameterPoint> entry : biomes(BIOMES)) {
                 ResourceKey<Biome> key = entry.getKey();
-                list.add(new Pair<>(entry.getValue(), () -> {
-                    Biome biome = biomeResolver.apply(key);
-                    if (biome == null) throw new IllegalStateException("Alfheim biome not regsitered: " + key);
-                    return biome;
-                }));
+                list.add(new Pair<>(entry.getValue(), biomeResolver.apply(key).orElseThrow(() -> new NoSuchElementException("Alfheim biome not regsitered: " + key))));
             }
             return new Climate.ParameterList<>(list.build());
         }
@@ -102,9 +99,13 @@ public class Alfheim {
         }
     }
     
-    public static Map<StructureFeature<?>, StructureFeatureConfiguration> buildAlfheimStructures() {
+    public static HolderSet<StructureSet> buildAlfheimStructures() {
         synchronized (LOCK) {
-            return Map.copyOf(STRUCTURES);
+            List<StructureSet> list = new ArrayList<>();
+            for (Map.Entry<ConfiguredStructureFeature<?, ?>, StructureSettings> entry : STRUCTURES.entrySet()) {
+                list.add(new StructureSet(List.of(new StructureSet.StructureSelectionEntry(Holder.direct(entry.getKey()), entry.getValue().weight())), entry.getValue().placement()));
+            }
+            return HolderSet.direct(list.stream().map(Holder::direct).toList());
         }
     }
     
@@ -120,6 +121,7 @@ public class Alfheim {
     
     private static ResourceKey<Biome> biomeKey(Biome biome) {
         Optional<ResourceKey<Biome>> key = ForgeRegistries.BIOMES.getResourceKey(biome);
+        //noinspection ConstantConditions
         if (key != null && key.isPresent()) {
             return key.get();
         } else {
@@ -137,4 +139,6 @@ public class Alfheim {
             return map.entrySet().stream().sorted(Map.Entry.comparingByKey()).toList();
         }
     }
+    
+    private record StructureSettings(int weight, StructurePlacement placement) {}
 }

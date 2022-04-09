@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.noeppi_noeppi.libx.fi.Function3;
 import mythicbotany.MythicBotany;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.WorldGenRegion;
@@ -15,20 +16,19 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.structures.SinglePoolElement;
-import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElementType;
-import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
+import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public abstract class BaseStructurePiece extends SinglePoolElement {
     
-    public static <T extends BaseStructurePiece> Codec<T> codec(Function3<Either<ResourceLocation, StructureTemplate>, Supplier<StructureProcessorList>, StructureTemplatePool.Projection, T> ctor) {
+    public static <T extends BaseStructurePiece> Codec<T> codec(Function3<Either<ResourceLocation, StructureTemplate>, Holder<StructureProcessorList>, StructureTemplatePool.Projection, T> ctor) {
         return RecordCodecBuilder.create((builder) -> builder.group(
                 templateCodec(),
                 processorsCodec(),
@@ -36,12 +36,12 @@ public abstract class BaseStructurePiece extends SinglePoolElement {
         ).apply(builder, ctor::apply));
     }
 
-    public static <T extends BaseStructurePiece> StructurePoolElementType<T> type(Function3<Either<ResourceLocation, StructureTemplate>, Supplier<StructureProcessorList>, StructureTemplatePool.Projection, T> ctor) {
+    public static <T extends BaseStructurePiece> StructurePoolElementType<T> type(Function3<Either<ResourceLocation, StructureTemplate>, Holder<StructureProcessorList>, StructureTemplatePool.Projection, T> ctor) {
         Codec<T> codec = codec(ctor);
         return () -> codec;
     }
 
-    protected BaseStructurePiece(Either<ResourceLocation, StructureTemplate> template, Supplier<StructureProcessorList> processors, StructureTemplatePool.Projection projection) {
+    protected BaseStructurePiece(Either<ResourceLocation, StructureTemplate> template, Holder<StructureProcessorList> processors, StructureTemplatePool.Projection projection) {
         super(template, processors, projection);
     }
 

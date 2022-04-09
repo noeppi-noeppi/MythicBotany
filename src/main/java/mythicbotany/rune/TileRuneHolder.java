@@ -27,7 +27,7 @@ public class TileRuneHolder extends BlockEntityBase {
                 this.setChanged();
                 this.setDispatchable();
             })
-            .validator(stack -> ModItemTags.RITUAL_RUNES.contains(stack.getItem()), 1)
+            .validator(stack -> stack.is(ModItemTags.RITUAL_RUNES), 1)
             .defaultSlotLimit(1)
             .build();
             

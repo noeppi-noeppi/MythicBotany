@@ -4,11 +4,13 @@ import com.google.common.collect.ImmutableSet;
 import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
+import mythicbotany.MythicCap;
 import mythicbotany.pylon.PylonRepairable;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
@@ -20,6 +22,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
+import vazkii.botania.api.BotaniaForgeCapabilities;
+import vazkii.botania.api.mana.IManaItem;
 import vazkii.botania.common.helper.PlayerHelper;
 import vazkii.botania.common.item.ItemTemperanceStone;
 import vazkii.botania.common.item.equipment.tool.ToolCommons;
@@ -29,6 +36,7 @@ import vazkii.botania.common.lib.ModTags;
 import vazkii.botania.common.lib.ResourceLocationHelper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -110,12 +118,13 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
     }
 
     @Override
-    public boolean canReceiveManaFromItem(ItemStack stack, ItemStack otherStack) {
-        return !ModTags.Items.TERRA_PICK_BLACKLIST.contains(otherStack.getItem());
-    }
-
-    @Override
     public int getEntityLifespan(ItemStack itemStack, Level level) {
         return Integer.MAX_VALUE;
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new MythicCap<>(super.initCapabilities(stack, nbt), BotaniaForgeCapabilities.MANA_ITEM, () -> new ManaItem(stack));
     }
 }

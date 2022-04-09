@@ -6,6 +6,7 @@ import io.github.noeppi_noeppi.libx.crafting.CraftingHelper2;
 import io.github.noeppi_noeppi.libx.data.provider.recipe.RecipeExtension;
 import mythicbotany.ModRecipes;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -44,7 +45,7 @@ public interface InfuserExtension extends RecipeExtension {
             this.result = result;
         }
 
-        public InfuserRecipeBuilder addIngredient(Tag<Item> tag) {
+        public InfuserRecipeBuilder addIngredient(TagKey<Item> tag) {
             return this.addIngredient(Ingredient.of(tag));
         }
 

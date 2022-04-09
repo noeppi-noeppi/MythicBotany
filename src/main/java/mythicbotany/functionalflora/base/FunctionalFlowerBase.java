@@ -225,11 +225,11 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
                 IManaNetwork network = BotaniaAPI.instance().getManaNetworkInstance();
                 int size = network.getAllCollectorsInWorld(this.getLevel()).size();
                 if (size != this.sizeLastCheck) {
-                    BlockEntity te = network.getClosestCollector(this.getBlockPos(), this.getLevel(), 10);
-                    if (te instanceof IManaCollector) {
-                        this.pool = te.getBlockPos();
+                    IManaCollector te = network.getClosestCollector(this.getBlockPos(), this.getLevel(), 10);
+                    if (te != null) {
+                        this.pool = te.getManaReceiverPos();
                         this.poolTile = null;
-                        this.spreaderTile = (IManaCollector) te;
+                        this.spreaderTile = te;
                         this.setChanged();
                     }
                     this.sizeLastCheck = size;
@@ -238,10 +238,10 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
                 IManaNetwork network = BotaniaAPI.instance().getManaNetworkInstance();
                 int size = network.getAllPoolsInWorld(this.getLevel()).size();
                 if (size != this.sizeLastCheck) {
-                    BlockEntity te = network.getClosestPool(this.getBlockPos(), this.getLevel(), 10);
-                    if (te instanceof IManaPool) {
-                        this.pool = te.getBlockPos();
-                        this.poolTile = (IManaPool) te;
+                    IManaPool te = network.getClosestPool(this.getBlockPos(), this.getLevel(), 10);
+                    if (te != null) {
+                        this.pool = te.getManaReceiverPos();
+                        this.poolTile = te;
                         this.spreaderTile = null;
                         this.setChanged();
                     }
@@ -341,6 +341,11 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
 
     @OnlyIn(Dist.CLIENT)
     public RadiusDescriptor getRadius() {
+        return null;
+    }
+    
+    @OnlyIn(Dist.CLIENT)
+    public RadiusDescriptor getSecondaryRadius() {
         return null;
     }
 

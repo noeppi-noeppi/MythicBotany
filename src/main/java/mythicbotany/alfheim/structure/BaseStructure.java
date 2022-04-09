@@ -3,19 +3,20 @@ package mythicbotany.alfheim.structure;
 import mythicbotany.MythicBotany;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
-import net.minecraft.world.level.levelgen.feature.structures.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
+import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class BaseStructure extends StructureFeature<JigsawConfiguration> {
@@ -48,11 +49,9 @@ public class BaseStructure extends StructureFeature<JigsawConfiguration> {
             if (!topBlock.getFluidState().isEmpty()) return Optional.empty();
 
             JigsawConfiguration config = new JigsawConfiguration(
-                    () -> Objects.requireNonNull(
-                            context.registryAccess().ownedRegistryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
-                                    .get(MythicBotany.getInstance().resource(this.structureId)),
-                            "Template not found: " + this.structureId
-                    ), 10
+                    context.registryAccess().ownedRegistryOrThrow(Registry.TEMPLATE_POOL_REGISTRY)
+                            .getHolder(ResourceKey.create(Registry.TEMPLATE_POOL_REGISTRY, MythicBotany.getInstance().resource(this.structureId)))
+                            .orElseThrow(() -> new NoSuchElementException("Template not found: " + this.structureId)), 10
             );
 
             return JigsawPlacement.addPieces(

@@ -8,6 +8,7 @@ import mythicbotany.alfheim.feature.ManaCrystalFeature;
 import mythicbotany.alfheim.feature.MotifFlowerFeature;
 import mythicbotany.alfheim.feature.WheatFeature;
 import mythicbotany.alfheim.structure.AndwariCave;
+import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.PlainVillagePools;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
@@ -30,5 +31,5 @@ public class AlfheimWorldGen {
     @NoReg public static final RuleTest livingrock = new BlockMatchTest(vazkii.botania.common.block.ModBlocks.livingrock);
     @NoReg public static final RuleTest alfheimStone = new TagMatchTest(ModBlockTags.BASE_STONE_ALFHEIM);
     
-    @NoReg public static final JigsawConfiguration dummyJigsaw = new JigsawConfiguration(() -> PlainVillagePools.START, 0);
+    @NoReg public static final JigsawConfiguration dummyJigsaw = new JigsawConfiguration(PlainVillagePools.START, 0);
 }

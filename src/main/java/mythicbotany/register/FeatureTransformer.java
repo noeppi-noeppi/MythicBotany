@@ -24,36 +24,53 @@ public class FeatureTransformer implements RegistryTransformer {
     @Nullable
     @Override
     public Object getAdditional(ResourceLocation id, Object object) {
-        if (object instanceof ConfiguredFeature<?, ?> feature) {
+        Object actual;
+        Consumer<Registry<?>> bindHolder;
+        if (object instanceof HackyHolder<?> ref) {
+            actual = ref.value();
+            bindHolder = registry -> {
+                //noinspection unchecked
+                ((HackyHolder<Object>) ref).register(((Registry<Object>) registry), id);
+            };
+        } else {
+            actual = object;
+            bindHolder = registry -> {};
+        }
+        
+        if (actual instanceof ConfiguredFeature<?, ?> feature) {
             return new Registerable() {
                 
                 @Override
                 public void registerCommon(ResourceLocation id, Consumer<Runnable> defer) {
                     Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, id, feature);
+                    bindHolder.accept(BuiltinRegistries.CONFIGURED_FEATURE);
                 }
             };
-        } else if (object instanceof PlacedFeature placement) {
+        } else if (actual instanceof PlacedFeature placement) {
             return new Registerable() {
 
                 @Override
                 public void registerCommon(ResourceLocation id, Consumer<Runnable> defer) {
                     Registry.register(BuiltinRegistries.PLACED_FEATURE, id, placement);
+                    bindHolder.accept(BuiltinRegistries.PLACED_FEATURE);
                 }
             };
-        } else if (object instanceof ConfiguredStructureFeature<?, ?> structure) {
+        } else if (actual instanceof ConfiguredStructureFeature<?, ?> structure) {
             return new Registerable() {
 
                 @Override
                 public void registerCommon(ResourceLocation id, Consumer<Runnable> defer) {
                     Registry.register(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, id, structure);
+                    bindHolder.accept(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE);
                 }
             };
-        } else if (object instanceof ConfiguredWorldCarver<?> carver) {
+        } else if (actual instanceof ConfiguredWorldCarver<?> carver) {
             return new Registerable() {
 
                 @Override
                 public void registerCommon(ResourceLocation id, Consumer<Runnable> defer) {
                     Registry.register(BuiltinRegistries.CONFIGURED_CARVER, id, carver);
+                    bindHolder.accept(BuiltinRegistries.CONFIGURED_CARVER);
                 }
             };
         } else {

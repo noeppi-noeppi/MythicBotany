@@ -55,6 +55,6 @@ public class Hellebore extends FunctionalFlowerBase {
 
     @Override
     public RadiusDescriptor getRadius() {
-        return new RadiusDescriptor.Square(this.worldPosition, 5);
+        return RadiusDescriptor.Rectangle.square(this.worldPosition, 5);
     }
 }

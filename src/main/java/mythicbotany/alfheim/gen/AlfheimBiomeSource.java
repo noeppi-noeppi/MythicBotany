@@ -1,34 +1,34 @@
 package mythicbotany.alfheim.gen;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.Lifecycle;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mythicbotany.alfheim.Alfheim;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.QuartPos;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.RegistryLookupCodec;
-import net.minecraft.world.level.biome.*;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraft.core.*;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
+import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 public class AlfheimBiomeSource {
 
     public static final Codec<Source> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(source -> source.biomeRegistry)
+            RegistryOps.retrieveRegistry(Registry.BIOME_REGISTRY).forGetter(s -> s.biomeRegistry)
     ).apply(instance, instance.stable(AlfheimBiomeSource::createSource)));
     
     private static Source createSource(Registry<Biome> biomeRegistry) {
         return new Source(biomeRegistry, parameters(biomeRegistry), preset(biomeRegistry));
     }
     
-    private static Climate.ParameterList<Supplier<Biome>> parameters(Registry<Biome> biomeRegistry) {
-        return Alfheim.buildAlfheimClimate(biomeRegistry::get);
+    private static Climate.ParameterList<Holder<Biome>> parameters(Registry<Biome> biomeRegistry) {
+        return Alfheim.buildAlfheimClimate(biomeRegistry::getHolder);
     }
     
     private static MultiNoiseBiomeSource.PresetInstance preset(Registry<Biome> biomeRegistry) {
@@ -40,7 +40,7 @@ public class AlfheimBiomeSource {
         private final Registry<Biome> biomeRegistry;
         private final AlfheimClimateModifier modifier;
         
-        public Source(Registry<Biome> biomeRegistry, Climate.ParameterList<Supplier<Biome>> parameters, @Nullable PresetInstance preset) {
+        public Source(Registry<Biome> biomeRegistry, Climate.ParameterList<Holder<Biome>> parameters, @Nullable PresetInstance preset) {
             super(parameters, Optional.ofNullable(preset));
             this.biomeRegistry = biomeRegistry;
             this.modifier = new AlfheimClimateModifier(Alfheim.buildAllClimateParameters());
@@ -54,13 +54,13 @@ public class AlfheimBiomeSource {
 
         @Nonnull
         @Override
-        public Biome getNoiseBiome(@Nonnull Climate.TargetPoint target) {
+        public Holder<Biome> getNoiseBiome(@Nonnull Climate.TargetPoint target) {
             return super.getNoiseBiome(this.modifier.modify(target));
         }
 
         @Override
-        public void addMultinoiseDebugInfo(@Nonnull List<String> list, @Nonnull BlockPos pos, @Nonnull Climate.Sampler sampler) {
-            super.addMultinoiseDebugInfo(list, pos, sampler);
+        public void addDebugInfo(@Nonnull List<String> list, @Nonnull BlockPos pos, @Nonnull Climate.Sampler sampler) {
+            super.addDebugInfo(list, pos, sampler);
             int x = QuartPos.fromBlock(pos.getX());
             int y = QuartPos.fromBlock(pos.getY());
             int z = QuartPos.fromBlock(pos.getZ());

@@ -12,6 +12,7 @@ import mythicbotany.rune.SpecialRuneOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -29,7 +30,7 @@ public interface RuneRitualExtension extends RecipeExtension {
         return new RuneRitualRecipeBuilder(this, Ingredient.of(centerRune));
     }
 
-    default RuneRitualRecipeBuilder runeRitual(Tag<Item> centerRune) {
+    default RuneRitualRecipeBuilder runeRitual(TagKey<Item> centerRune) {
         return new RuneRitualRecipeBuilder(this, Ingredient.of(centerRune));
     }
 
@@ -60,7 +61,7 @@ public interface RuneRitualExtension extends RecipeExtension {
             return this.rune(Ingredient.of(rune), x, z, consume);
         }
 
-        public RuneRitualRecipeBuilder rune(Tag<Item> rune, int x, int z, boolean consume) {
+        public RuneRitualRecipeBuilder rune(TagKey<Item> rune, int x, int z, boolean consume) {
             return this.rune(Ingredient.of(rune), x, z, consume);
         }
 
@@ -92,7 +93,7 @@ public interface RuneRitualExtension extends RecipeExtension {
             return this;
         }
 
-        public RuneRitualRecipeBuilder rune4(Tag<Item> rune, int x, int z, boolean consume) {
+        public RuneRitualRecipeBuilder rune4(TagKey<Item> rune, int x, int z, boolean consume) {
             if (x == 0) {
                 this.rune(rune, 0, -z, consume);
                 this.rune(rune, 0, z, consume);
@@ -138,7 +139,7 @@ public interface RuneRitualExtension extends RecipeExtension {
             return this;
         }
 
-        public RuneRitualRecipeBuilder rune2(Tag<Item> rune, int x, int z, boolean consume) {
+        public RuneRitualRecipeBuilder rune2(TagKey<Item> rune, int x, int z, boolean consume) {
             this.rune(rune, -x, -z, consume);
             this.rune(rune, x, z, consume);
             return this;
@@ -154,7 +155,7 @@ public interface RuneRitualExtension extends RecipeExtension {
             return this.rune(rune, x, z, false);
         }
 
-        public RuneRitualRecipeBuilder rune(Tag<Item> rune, int x, int z) {
+        public RuneRitualRecipeBuilder rune(TagKey<Item> rune, int x, int z) {
             return this.rune(rune, x, z, false);
         }
 
@@ -166,7 +167,7 @@ public interface RuneRitualExtension extends RecipeExtension {
             return this.rune4(rune, x, z, false);
         }
 
-        public RuneRitualRecipeBuilder rune4(Tag<Item> rune, int x, int z) {
+        public RuneRitualRecipeBuilder rune4(TagKey<Item> rune, int x, int z) {
             return this.rune4(rune, x, z, false);
         }
 
@@ -178,7 +179,7 @@ public interface RuneRitualExtension extends RecipeExtension {
             return this.rune2(rune, x, z, false);
         }
 
-        public RuneRitualRecipeBuilder rune2(Tag<Item> rune, int x, int z) {
+        public RuneRitualRecipeBuilder rune2(TagKey<Item> rune, int x, int z) {
             return this.rune2(rune, x, z, false);
         }
 
@@ -200,7 +201,7 @@ public interface RuneRitualExtension extends RecipeExtension {
             return this.input(Ingredient.of(input));
         }
 
-        public RuneRitualRecipeBuilder input(Tag<Item> input) {
+        public RuneRitualRecipeBuilder input(TagKey<Item> input) {
             return this.input(Ingredient.of(input));
         }
 

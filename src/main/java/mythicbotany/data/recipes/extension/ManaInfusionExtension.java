@@ -3,7 +3,7 @@ package mythicbotany.data.recipes.extension;
 import io.github.noeppi_noeppi.libx.data.provider.recipe.RecipeExtension;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -16,7 +16,7 @@ public interface ManaInfusionExtension extends RecipeExtension {
         this.manaInfusion(input, new ItemStack(result), mana);
     }
 
-    default void manaInfusion(Tag.Named<Item> input, ItemLike result, int mana) {
+    default void manaInfusion(TagKey<Item> input, ItemLike result, int mana) {
         this.manaInfusion(input, new ItemStack(result), mana);
     }
 
@@ -28,7 +28,7 @@ public interface ManaInfusionExtension extends RecipeExtension {
         this.manaInfusion(Ingredient.of(input), result, mana);
     }
     
-    default void manaInfusion(Tag.Named<Item> input, ItemStack result, int mana) {
+    default void manaInfusion(TagKey<Item> input, ItemStack result, int mana) {
         this.manaInfusion(Ingredient.of(input), result, mana);
     }
     
@@ -40,7 +40,7 @@ public interface ManaInfusionExtension extends RecipeExtension {
         this.manaAlchemy(input, new ItemStack(result), mana);
     }
 
-    default void manaAlchemy(Tag.Named<Item> input, ItemLike result, int mana) {
+    default void manaAlchemy(TagKey<Item> input, ItemLike result, int mana) {
         this.manaAlchemy(input, new ItemStack(result), mana);
     }
 
@@ -52,7 +52,7 @@ public interface ManaInfusionExtension extends RecipeExtension {
         this.manaAlchemy(Ingredient.of(input), result, mana);
     }
 
-    default void manaAlchemy(Tag.Named<Item> input, ItemStack result, int mana) {
+    default void manaAlchemy(TagKey<Item> input, ItemStack result, int mana) {
         this.manaAlchemy(Ingredient.of(input), result, mana);
     }
 
@@ -64,7 +64,7 @@ public interface ManaInfusionExtension extends RecipeExtension {
         this.manaConjuration(input, new ItemStack(result), mana);
     }
 
-    default void manaConjuration(Tag.Named<Item> input, ItemLike result, int mana) {
+    default void manaConjuration(TagKey<Item> input, ItemLike result, int mana) {
         this.manaConjuration(input, new ItemStack(result), mana);
     }
 
@@ -76,7 +76,7 @@ public interface ManaInfusionExtension extends RecipeExtension {
         this.manaConjuration(Ingredient.of(input), result, mana);
     }
 
-    default void manaConjuration(Tag.Named<Item> input, ItemStack result, int mana) {
+    default void manaConjuration(TagKey<Item> input, ItemStack result, int mana) {
         this.manaConjuration(Ingredient.of(input), result, mana);
     }
 
