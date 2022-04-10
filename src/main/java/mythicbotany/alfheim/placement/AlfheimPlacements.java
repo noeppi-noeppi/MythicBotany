@@ -6,6 +6,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 
 import java.util.List;
 
@@ -32,4 +35,6 @@ public class AlfheimPlacements {
     public static final Holder<PlacedFeature> goldOre = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.goldOre, AlfheimModifiers.ore(2, VerticalAnchor.bottom(), VerticalAnchor.absolute(32))));
     public static final Holder<PlacedFeature> extraGoldOre = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.goldOre, AlfheimModifiers.ore(20, VerticalAnchor.aboveBottom(16), VerticalAnchor.absolute(80))));
     public static final Holder<PlacedFeature> wheatFields = new HackyHolder<>(Registry.PLACED_FEATURE_REGISTRY, new PlacedFeature(AlfheimFeatures.wheatFields, List.of()));
+
+    public static final Holder<StructureSet> andwariCave = new HackyHolder<>(Registry.STRUCTURE_SET_REGISTRY, new StructureSet(AlfheimFeatures.andwariCave, new RandomSpreadStructurePlacement(28, 8, RandomSpreadType.LINEAR, Math.abs("andwari_cave".hashCode()))));
 }

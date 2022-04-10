@@ -9,6 +9,7 @@ import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
@@ -71,6 +72,15 @@ public class FeatureTransformer implements RegistryTransformer {
                 public void registerCommon(ResourceLocation id, Consumer<Runnable> defer) {
                     Registry.register(BuiltinRegistries.CONFIGURED_CARVER, id, carver);
                     bindHolder.accept(BuiltinRegistries.CONFIGURED_CARVER);
+                }
+            };
+        } else if (actual instanceof StructureSet set) {
+            return new Registerable() {
+
+                @Override
+                public void registerCommon(ResourceLocation id, Consumer<Runnable> defer) {
+                    Registry.register(BuiltinRegistries.STRUCTURE_SETS, id, set);
+                    bindHolder.accept(BuiltinRegistries.STRUCTURE_SETS);
                 }
             };
         } else {

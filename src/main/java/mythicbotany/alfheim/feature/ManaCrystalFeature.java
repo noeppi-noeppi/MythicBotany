@@ -28,7 +28,7 @@ public class ManaCrystalFeature extends Feature<NoneFeatureConfiguration> {
 
     private boolean tryGenerate(FeaturePlaceContext<NoneFeatureConfiguration> context, HorizontalPos hor) {
         if (context.random().nextInt(2) == 0) {
-            BlockPos pos = AlfheimWorldGenUtil.highestFreeBlock(context.level(), hor, AlfheimWorldGenUtil::passReplaceableAndLeaves);
+            BlockPos pos = AlfheimWorldGenUtil.highestFreeBlock(context.level(), hor, AlfheimWorldGenUtil::passReplaceableAndDreamWood);
             if (pos.getY() >= 84 && context.level().getBlockState(pos.below()).canOcclude()
                     && context.level().getBlockState(pos.below().north()).canOcclude()
                     && context.level().getBlockState(pos.below().south()).canOcclude()

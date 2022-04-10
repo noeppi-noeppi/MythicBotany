@@ -105,6 +105,7 @@
   "message.mythicbotany.ritual_no_trader": "Das Ritual muss grausamer durchgeführt werden. Ohne einen Fahrenden Händler wirst du es nicht schaffen..",
   "message.mythicbotany.mjoellnir_heavy_pick": "Der Hammer wiegt viel zu viel, dass du ihn heben könntest. Man sagt jedoch, die Götter würden ihre Kraft aus den Goldenen Äpfeln von Idun erhalten.",
   "message.mythicbotany.mjoellnir_heavy_drop": "Du merkst wie die Kraft in deinen Armen nachlässt. Es gbt keine andere Möglichkeit. Du musst den Hammer fallen lassen.",
+  "message.mythicbotany.alfheim_not_loaded": "Alfheim Dimension nicht geladen. Versuche, das Spiel / den Server neu zu starten.",
 
   "advancements.mythicbotany.mythicbotany.root.title": "MythicBotany",
   "advancements.mythicbotany.mythicbotany.root.description": "Tauche tiefer in die Welt der Magie ein",

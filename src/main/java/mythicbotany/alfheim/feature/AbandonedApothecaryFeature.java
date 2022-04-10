@@ -59,7 +59,7 @@ public class AbandonedApothecaryFeature extends Feature<NoneFeatureConfiguration
     }
 
     private boolean tryGenerate(FeaturePlaceContext<NoneFeatureConfiguration> context, HorizontalPos hor) {
-        BlockPos pos = AlfheimWorldGenUtil.highestFreeBlock(context.level(), hor, AlfheimWorldGenUtil::passReplaceableAndLeaves);
+        BlockPos pos = AlfheimWorldGenUtil.highestFreeBlock(context.level(), hor, AlfheimWorldGenUtil::passReplaceableAndDreamWood);
         if (context.level().getBlockState(pos.below()).canOcclude() && context.level().getBlockState(pos.above()).isAir()) {
             BlockState state = STATES.get(context.random().nextInt(STATES.size()));
             if (context.random().nextInt(30) == 0) {

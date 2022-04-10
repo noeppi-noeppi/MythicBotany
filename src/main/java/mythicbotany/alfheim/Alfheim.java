@@ -1,35 +1,27 @@
 package mythicbotany.alfheim;
 
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Pair;
 import mythicbotany.MythicBotany;
 import mythicbotany.alfheim.gen.AlfheimBiomeSource;
 import mythicbotany.alfheim.gen.AlfheimChunkGenerator;
 import mythicbotany.alfheim.surface.AlfheimSurfaceBuilder;
+import mythicbotany.register.HackyHolder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.SurfaceRules;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
-import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
-import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Alfheim {
@@ -45,8 +37,8 @@ public class Alfheim {
     private static final Object LOCK = new Object();
     private static final Map<ResourceKey<Biome>, Climate.ParameterPoint> BIOMES = new HashMap<>();
     private static final Map<ResourceKey<Biome>, SurfaceRules.RuleSource> BIOME_SURFACE = new HashMap<>();
-    private static final Map<ConfiguredStructureFeature<?, ?>, StructureSettings> STRUCTURES = new HashMap<>();
-    private static final Multimap<ResourceKey<Biome>, ConfiguredStructureFeature<?, ?>> BIOME_STRUCTURES = HashMultimap.create();
+    private static final Set<StructureSet> STRUCTURES = new HashSet<>();
+    private static final Set<Holder<StructureSet>> STRUCTURE_HOLDERS = new HashSet<>();
 
     public static void addBiome(Biome biome, BiomeConfiguration settings) {
         addBiome(biomeKey(biome), settings);
@@ -61,14 +53,11 @@ public class Alfheim {
         }
     }
 
-    public static void addStructure(ConfiguredStructureFeature<?, ?> structure, int weight, int spacing, int separation, int salt) {
-        addStructure(structure, weight, new RandomSpreadStructurePlacement(spacing, separation, RandomSpreadType.LINEAR, salt));
-    }
-    
-    public static void addStructure(ConfiguredStructureFeature<?, ?> structure, int weight, StructurePlacement placement) {
+    public static void addStructure(Holder<StructureSet> structure) {
         synchronized (LOCK) {
-            if (STRUCTURES.containsKey(structure)) throw new IllegalStateException("Structure registered twice in alfheim: " + structure);
-            STRUCTURES.put(structure, new StructureSettings(weight, placement));
+            if (STRUCTURES.contains(structure.value())) throw new IllegalStateException("Structure registered twice in alfheim: " + structure);
+            STRUCTURES.add(structure.value());
+            STRUCTURE_HOLDERS.add(structure);
         }
     }
     
@@ -83,7 +72,7 @@ public class Alfheim {
             ImmutableList.Builder<Pair<Climate.ParameterPoint, Holder<Biome>>> list = ImmutableList.builder();
             for (Map.Entry<ResourceKey<Biome>, Climate.ParameterPoint> entry : biomes(BIOMES)) {
                 ResourceKey<Biome> key = entry.getKey();
-                list.add(new Pair<>(entry.getValue(), biomeResolver.apply(key).orElseThrow(() -> new NoSuchElementException("Alfheim biome not regsitered: " + key))));
+                list.add(new Pair<>(entry.getValue(), biomeResolver.apply(key).orElseThrow(() -> new NoSuchElementException("Alfheim biome not registered: " + key))));
             }
             return new Climate.ParameterList<>(list.build());
         }
@@ -99,23 +88,10 @@ public class Alfheim {
         }
     }
     
-    public static HolderSet<StructureSet> buildAlfheimStructures() {
+    public static Predicate<Holder<StructureSet>> buildAlfheimStructures(Registry<Biome> biomeRegistry) {
         synchronized (LOCK) {
-            List<StructureSet> list = new ArrayList<>();
-            for (Map.Entry<ConfiguredStructureFeature<?, ?>, StructureSettings> entry : STRUCTURES.entrySet()) {
-                list.add(new StructureSet(List.of(new StructureSet.StructureSelectionEntry(Holder.direct(entry.getKey()), entry.getValue().weight())), entry.getValue().placement()));
-            }
-            return HolderSet.direct(list.stream().map(Holder::direct).toList());
-        }
-    }
-    
-    public static Map<StructureFeature<?>, ImmutableMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> buildAlfheimStructurePlacement() {
-        synchronized (LOCK) {
-            Map<StructureFeature<?>, Multimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> map = new HashMap<>();
-            for (Map.Entry<ResourceKey<Biome>, ConfiguredStructureFeature<?, ?>> entry : BIOME_STRUCTURES.entries()) {
-                map.computeIfAbsent(entry.getValue().feature, k -> HashMultimap.create()).put(entry.getValue(), entry.getKey());
-            }
-            return map.entrySet().stream().map(e -> Map.entry(e.getKey(), ImmutableMultimap.copyOf(e.getValue()))).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            Set<ResourceKey<StructureSet>> keys = Set.copyOf(STRUCTURE_HOLDERS).stream().map(holder -> holder.unwrapKey().orElseThrow(() -> new IllegalStateException("Alfheim structure with direct holder detected: " + holder + ", this is not allowed."))).collect(Collectors.toUnmodifiableSet());
+            return holder -> keys.stream().anyMatch(holder::is);
         }
     }
     
@@ -129,9 +105,8 @@ public class Alfheim {
         }
     }
 
-    private static ResourceKey<Biome>[] biomeKeys(Biome[] biomes) {
-        //noinspection unchecked
-        return Arrays.stream(biomes).map(Alfheim::biomeKey).toArray(ResourceKey[]::new);
+    private static List<ResourceKey<Biome>> biomeKeys(List<Biome> biomes) {
+        return biomes.stream().map(Alfheim::biomeKey).toList();
     }
     
     private static <T> List<Map.Entry<ResourceKey<Biome>, T>> biomes(Map<ResourceKey<Biome>, T> map) {

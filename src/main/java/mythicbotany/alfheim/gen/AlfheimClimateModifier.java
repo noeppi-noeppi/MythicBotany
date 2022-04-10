@@ -43,11 +43,9 @@ public class AlfheimClimateModifier {
         List<Climate.Parameter> params = biomeData.stream().map(extractor).toList();
         long min = params.stream().map(Climate.Parameter::min).min(Comparator.comparingLong(l -> l)).orElse(-10000l);
         long max = params.stream().map(Climate.Parameter::max).max(Comparator.comparingLong(l -> l)).orElse(10000l);
-        if (min == max) throw new IllegalStateException("Fixed value available in climate value: " + name + ". Alfheim can't generate.");
+        if (min == max) throw new IllegalStateException("Fixed value in climate value: " + name + ". Alfheim can't generate.");
         return new NoiseParameterRange(Math.min(min, max), Math.max(min, max), bias);
     }
-    
-    
     
     private record NoiseParameterRange(long min, long max, double bias) {
         

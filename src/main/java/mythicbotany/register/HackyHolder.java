@@ -34,6 +34,11 @@ public class HackyHolder<T> implements Holder<T> {
         }
     }
 
+    @Nullable
+    public Optional<Holder<T>> delegate() {
+        return Optional.ofNullable(this.holder);
+    }
+
     @Nonnull
     @Override
     public T value() {

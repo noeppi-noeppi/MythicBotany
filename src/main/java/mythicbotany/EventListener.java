@@ -9,6 +9,7 @@ import mythicbotany.alftools.AlfsteelHelm;
 import mythicbotany.misc.Andwari;
 import mythicbotany.mjoellnir.BlockMjoellnir;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -199,7 +200,9 @@ public class EventListener {
                 for (Player player : playersInPortal) {
                     if (player instanceof ServerPlayer && MythicPlayerData.getData(player).getBoolean("KvasirKnowledge")) {
                         if (AlfheimPortalHandler.setInPortal(portal.getLevel(), player)) {
-                            AlfheimTeleporter.teleportToAlfheim((ServerPlayer) player, portal.getBlockPos());
+                            if (!AlfheimTeleporter.teleportToAlfheim((ServerPlayer) player, portal.getBlockPos())) {
+                                player.sendMessage(new TranslatableComponent("message.mythicbotany.alfheim_not_loaded"), player.getUUID());
+                            }
                         }
                     }
                 }

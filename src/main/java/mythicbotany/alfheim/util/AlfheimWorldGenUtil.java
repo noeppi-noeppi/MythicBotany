@@ -40,7 +40,7 @@ public class AlfheimWorldGenUtil {
         return passReplaceableAndLeaves(state) || state.getBlock() == ModBlocks.dreamwoodLeaves || state.getBlock() == vazkii.botania.common.block.ModBlocks.dreamwood;
     }
     
-    public static boolean passReplaceableNoCrops(BlockState state) {
-        return ((state.getMaterial().isReplaceable() && state.getMaterial() != Material.WATER && state.getMaterial() != Material.LAVA)) && !(state.getBlock() instanceof CropBlock);
+    public static Predicate<BlockState> passNoCrops(Predicate<BlockState> test) {
+        return state -> test.test(state) && !(state.getBlock() instanceof CropBlock);
     }
 }

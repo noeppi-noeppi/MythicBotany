@@ -1,8 +1,11 @@
 package mythicbotany.alfheim.placement;
 
+import io.github.noeppi_noeppi.libx.annotation.registration.RegName;
 import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
 import mythicbotany.ModBiomeTags;
 import mythicbotany.ModBlocks;
+import mythicbotany.alfheim.Alfheim;
+import mythicbotany.alfheim.biome.AlfheimBiomes;
 import mythicbotany.alfheim.featuregen.RandomFoliagePlacer;
 import mythicbotany.alfheim.featuregen.ShatteredTrunkPlacer;
 import mythicbotany.register.HackyHolder;
@@ -12,8 +15,6 @@ import net.minecraft.data.worldgen.Carvers;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
-import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
@@ -25,7 +26,10 @@ import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguratio
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import vazkii.botania.common.block.ModFluffBlocks;
+
+import java.util.List;
 
 @RegisterClass(prefix = "wg", priority = -2)
 public class AlfheimFeatures {
@@ -56,7 +60,7 @@ public class AlfheimFeatures {
     public static final Holder<ConfiguredFeature<?, ?>> goldOre = new HackyHolder<>(Registry.CONFIGURED_FEATURE_REGISTRY, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(AlfheimWorldGen.alfheimStone, ModBlocks.goldOre.defaultBlockState(), 9)));
     public static final Holder<ConfiguredFeature<?, ?>> wheatFields = new HackyHolder<>(Registry.CONFIGURED_FEATURE_REGISTRY, new ConfiguredFeature<>(AlfheimWorldGen.wheatFields, NoneFeatureConfiguration.INSTANCE));
 
-    public static final ConfiguredStructureFeature<JigsawConfiguration, ? extends StructureFeature<JigsawConfiguration>> andwariCave = AlfheimWorldGen.andwariCave.configured(AlfheimWorldGen.dummyJigsaw, ModBiomeTags.ANDWARI_CAVE);
+    public static final Holder<ConfiguredStructureFeature<?, ?>> andwariCave = new HackyHolder<>(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY, AlfheimWorldGen.andwariCave.configured(AlfheimWorldGen.dummyJigsaw, ModBiomeTags.ANDWARI_CAVE));
 
     public static final Holder<ConfiguredWorldCarver<?>> cave = new HackyHolder<>(Registry.CONFIGURED_CARVER_REGISTRY, AlfheimCarvers.cave.configured(Carvers.CAVE.value().config()));
     public static final Holder<ConfiguredWorldCarver<?>> canyon = new HackyHolder<>(Registry.CONFIGURED_CARVER_REGISTRY, AlfheimCarvers.canyon.configured(Carvers.CANYON.value().config()));

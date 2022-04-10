@@ -1,7 +1,7 @@
 package mythicbotany.alfheim;
 
 import mythicbotany.alfheim.biome.AlfheimBiomes;
-import mythicbotany.alfheim.placement.AlfheimFeatures;
+import mythicbotany.alfheim.placement.AlfheimPlacements;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -19,6 +19,6 @@ public class AlfheimDimension {
                 SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.yBlockCheck(VerticalAnchor.absolute(68), 0)), BiomeConfiguration.normalAlfheimSurface(Blocks.SAND, Blocks.GRAVEL))
         )));
         
-        Alfheim.addStructure(AlfheimFeatures.andwariCave, 1, 28, 8, Math.abs("andwari_cave".hashCode()));
+        Alfheim.addStructure(AlfheimPlacements.andwariCave);
     }
 }

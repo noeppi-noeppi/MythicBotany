@@ -11,8 +11,11 @@ import mythicbotany.functionalflora.base.BlockFunctionalFlower;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+
+import java.util.Objects;
 
 @Datagen
 public class BlockStateProvider extends BlockStateProviderBase {
@@ -29,6 +32,8 @@ public class BlockStateProvider extends BlockStateProviderBase {
         this.manualModel(ModBlocks.runeHolder);
         this.manualModel(ModBlocks.centralRuneHolder);
         this.manualModel(ModBlocks.mjoellnir);
+        this.manualModel(ModBlocks.returnPortal, this.models().getBuilder(Objects.requireNonNull(ModBlocks.returnPortal.getRegistryName()).getPath())
+                .texture("particle", blockTexture(Blocks.GLASS)));
     }
 
     @Override

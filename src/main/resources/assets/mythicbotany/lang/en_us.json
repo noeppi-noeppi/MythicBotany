@@ -110,6 +110,7 @@
   "message.mythicbotany.ritual_no_trader": "This ritual needs to be performed more cruel. You won't get this to work unless sacrificing a wandering trader.",
   "message.mythicbotany.mjoellnir_heavy_pick": "The hammer weighs way to much for you to lift it. However, it is told that the gods ate from the golden apples of Idun to gain their power.",
   "message.mythicbotany.mjoellnir_heavy_drop": "You feel how the strength of your arms diminishes. There's no way you can hold that heavy hammer any longer.",
+  "message.mythicbotany.alfheim_not_loaded": "Alfheim Dimension has not been loaded. Please try restarting the game / server.",
 
   "advancements.mythicbotany.mythicbotany.root.title": "MythicBotany",
   "advancements.mythicbotany.mythicbotany.root.description": "Dive deeper into the world of magic",

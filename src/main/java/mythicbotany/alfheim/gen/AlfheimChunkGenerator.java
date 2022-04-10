@@ -8,6 +8,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -24,15 +25,18 @@ import java.util.stream.Stream;
 
 public class AlfheimChunkGenerator {
 
-    public static final Codec<NoiseBasedChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<Generator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             RegistryOps.retrieveRegistry(Registry.STRUCTURE_SET_REGISTRY).forGetter(generator -> generator.structureSets),
             RegistryOps.retrieveRegistry(Registry.NOISE_REGISTRY).forGetter(generator -> generator.noises),
+            RegistryOps.retrieveRegistry(Registry.BIOME_REGISTRY).forGetter(s -> s.biomeRegistry),
             BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource),
-            Codec.LONG.fieldOf("seed").orElseGet(WorldSeedHolder::getSeed).forGetter(generator -> generator.seed),
-            NoiseGeneratorSettings.CODEC.fieldOf("settings").orElseGet(NoiseGeneratorSettings::bootstrap).forGetter(generator -> generator.settings)
-    ).apply(instance, instance.stable((t, n, b, s, k) -> new Generator(t, n, b, s, new Holder.Direct<>(applyStructures(k.value()))))));
-    
-    private static NoiseGeneratorSettings applyStructures(NoiseGeneratorSettings settings) {
+            Codec.LONG.fieldOf("seed").orElseGet(WorldSeedHolder::getSeed).forGetter(generator -> generator.seed)
+            // Don't serialise the noise generator settings as they are not present in the registry
+            // Adding it to the codec would corrupt level.dat
+    ).apply(instance, instance.stable(Generator::new)));
+
+    private static NoiseGeneratorSettings generatorSettings() {
+        NoiseGeneratorSettings settings = NoiseGeneratorSettings.bootstrap().value();
         //noinspection deprecation
         return new NoiseGeneratorSettings(
                 withSampling(settings.noiseSettings()),
@@ -47,7 +51,7 @@ public class AlfheimChunkGenerator {
                 settings.useLegacyRandomSource()
         );
     }
-    
+
     private static NoiseSettings withSampling(NoiseSettings settings) {
         NoiseSamplingSettings sampling = new NoiseSamplingSettings(1.2, 18, 80, 120);
         return new NoiseSettings(
@@ -55,16 +59,24 @@ public class AlfheimChunkGenerator {
                 settings.noiseSizeHorizontal(), settings.noiseSizeVertical(), settings.terrainShaper()
         );
     }
-    
+
     private static class Generator extends NoiseBasedChunkGenerator {
-        
+
+        private final Registry<Biome> biomeRegistry;
         private final HolderSet<StructureSet> structureSettings;
-        
-        public Generator(Registry<StructureSet> structureSets, Registry<NormalNoise.NoiseParameters> noises, BiomeSource biomeSource, long seed, Holder<NoiseGeneratorSettings> settings) {
-            super(structureSets, noises, biomeSource, seed, settings);
-            this.structureSettings = Alfheim.buildAlfheimStructures(); 
+
+        public Generator(Registry<StructureSet> structureSets, Registry<NormalNoise.NoiseParameters> noises, Registry<Biome> biomeRegistry, BiomeSource biomeSource, long seed) {
+            super(structureSets, noises, biomeSource, seed, Holder.direct(generatorSettings()));
+            this.biomeRegistry = biomeRegistry;
+            this.structureSettings = HolderSet.direct(structureSets.holders().filter(Alfheim.buildAlfheimStructures(biomeRegistry)).toList());
         }
-        
+
+        @Nonnull
+        @Override
+        protected Codec<? extends ChunkGenerator> codec() {
+            return AlfheimChunkGenerator.CODEC;
+        }
+
         @Nonnull
         @Override
         public Stream<Holder<StructureSet>> possibleStructureSets() {
