@@ -1,5 +1,6 @@
 {
   "type": "mythicbotany:alfheim",
+  "forge:use_server_seed": true,
   "generator": {
     "type": "mythicbotany:alfheim",
     "biome_source": {

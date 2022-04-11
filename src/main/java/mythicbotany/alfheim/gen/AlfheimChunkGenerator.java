@@ -2,7 +2,6 @@ package mythicbotany.alfheim.gen;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.noeppi_noeppi.libx.world.WorldSeedHolder;
 import mythicbotany.alfheim.Alfheim;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -30,7 +29,7 @@ public class AlfheimChunkGenerator {
             RegistryOps.retrieveRegistry(Registry.NOISE_REGISTRY).forGetter(generator -> generator.noises),
             RegistryOps.retrieveRegistry(Registry.BIOME_REGISTRY).forGetter(s -> s.biomeRegistry),
             BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource),
-            Codec.LONG.fieldOf("seed").orElseGet(WorldSeedHolder::getSeed).forGetter(generator -> generator.seed)
+            Codec.LONG.fieldOf("seed").orElse(0l).forGetter(generator -> generator.seed)
             // Don't serialise the noise generator settings as they are not present in the registry
             // Adding it to the codec would corrupt level.dat
     ).apply(instance, instance.stable(Generator::new)));
@@ -75,6 +74,13 @@ public class AlfheimChunkGenerator {
         @Override
         protected Codec<? extends ChunkGenerator> codec() {
             return AlfheimChunkGenerator.CODEC;
+        }
+        
+        @Nonnull
+        @Override
+        public Generator withSeed(long seed) {
+            // Called from forge with the actual seed when building the level stem.
+            return new Generator(this.structureSets, this.noises, this.biomeRegistry, this.biomeSource, seed);
         }
 
         @Nonnull
