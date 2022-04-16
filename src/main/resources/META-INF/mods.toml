@@ -17,7 +17,7 @@ Dive deeper into the world of botania.
 [[dependencies.mythicbotany]]
     modId="forge"
     mandatory=true
-    versionRange="[40.0.44,)"
+    versionRange="[40.0.48,)"
     ordering="NONE"
     side="BOTH"
 
@@ -31,7 +31,7 @@ Dive deeper into the world of botania.
 [[dependencies.mythicbotany]]
     modId="botania"
     mandatory=true
-    versionRange="[1.18.2-430,)"
+    versionRange="[1.18.2-431,)"
     ordering="NONE"
     side="BOTH"
 
@@ -52,6 +52,6 @@ Dive deeper into the world of botania.
 [[dependencies.mythicbotany]]
     modId="libx"
     mandatory=true
-    versionRange="[1.18.2-3.2.10,)"
+    versionRange="[1.18.2-3.2.15,)"
     ordering="NONE"
     side="BOTH"

@@ -42,7 +42,7 @@ public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable
     private transient int toColor = -1;
 
     public TileManaInfuser(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        super(type, pos, state, BotaniaForgeCapabilities.MANA_RECEIVER);
+        super(type, pos, state, BotaniaForgeCapabilities.MANA_RECEIVER, BotaniaForgeCapabilities.SPARK_ATTACHABLE);
     }
 
     @Override

@@ -55,7 +55,7 @@ public abstract class BlockEntityMana extends BlockEntityBase implements ISparkA
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == BotaniaForgeCapabilities.MANA_RECEIVER || cap == BotaniaForgeCapabilities.WANDABLE) {
+        if (cap == BotaniaForgeCapabilities.MANA_RECEIVER || cap == BotaniaForgeCapabilities.WANDABLE || (cap == BotaniaForgeCapabilities.SPARK_ATTACHABLE && this.sparks)) {
             return LazyOptional.of(() -> this).cast();
         } else {
             return DistExecutor.unsafeRunForDist(
