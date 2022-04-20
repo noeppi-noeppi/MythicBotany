@@ -35,6 +35,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.theillusivec4.curios.api.SlotTypePreset;
 import vazkii.patchouli.client.book.ClientBookRegistry;
 
@@ -43,6 +45,8 @@ import javax.annotation.Nonnull;
 @Mod("mythicbotany")
 public final class MythicBotany extends ModXRegistration {
 
+    public static final Logger logger = LoggerFactory.getLogger("mythicbotany");
+    
     private static MythicBotany instance;
     private static MythicNetwork network;
 
@@ -97,7 +101,7 @@ public final class MythicBotany extends ModXRegistration {
 
     @Override
     protected void setup(final FMLCommonSetupEvent event) {
-        this.logger.info("Loading MythicBotany");
+        logger.info("Loading MythicBotany");
         
         event.enqueueWork(() -> {
             ModStructurePieces.setup();

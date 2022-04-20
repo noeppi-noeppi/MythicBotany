@@ -23,9 +23,10 @@ public class InfusionProcessor extends PetalApothecaryProcessor {
         //noinspection ConstantConditions
         Minecraft.getInstance().level.getRecipeManager().byKey(id).ifPresent(recipe -> this.recipe = recipe);
         if (this.recipe == null) {
-            MythicBotany.getInstance().logger.warn("Missing mythicbotany infusion recipe: " + id);
+            MythicBotany.logger.warn("Missing mythicbotany infusion recipe: " + id);
         } else if (!(this.recipe instanceof IInfuserRecipe)) {
-            MythicBotany.getInstance().logger.warn("Recipe is not a mythicbotany infusion recipe: " + id);
+            MythicBotany.logger.warn("Recipe is not a mythicbotany infusion recipe: " + id);
+            this.recipe = null;
         }
     }
 

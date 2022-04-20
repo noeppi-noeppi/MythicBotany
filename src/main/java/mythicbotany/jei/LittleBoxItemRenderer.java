@@ -45,6 +45,7 @@ public class LittleBoxItemRenderer implements IIngredientRenderer<ItemStack> {
         this.consume = (x == 0 && z == 0) || consume;
     }
 
+    @Override
     public void render(@Nonnull PoseStack poseStack, int x, int y, @Nullable ItemStack stack) {
         if (parent != null) {
             parent.render(poseStack, x - 2, y - 2, stack);

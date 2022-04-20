@@ -14,7 +14,7 @@ public class GreatestAuraRing extends ItemBauble {
 
     public void onWornTick(ItemStack stack, LivingEntity living) {
         if (!living.level.isClientSide && living instanceof Player player) {
-            ManaItemHandler.instance().dispatchManaExact(stack, player, 10, true);
+            ManaItemHandler.instance().dispatchManaExact(stack, player, 20, true);
         }
     }
 }
