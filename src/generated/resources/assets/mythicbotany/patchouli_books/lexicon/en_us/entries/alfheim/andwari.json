@@ -27,7 +27,7 @@
       "type": "mythicbotany:ritual_info",
       "title": "",
       "recipe": "mythicbotany:mythicbotany_rune_rituals/andwari_ring",
-      "text": "After removing the curse you can use it for a time. Just place a gold block and get a reward. However, this requires some mana. The curse will also come back slowly. Make sure it never comes back"
+      "text": "lexicon.entry.mythicbotany.alfheim.andwari.page3.text0"
     },
     {
       "type": "patchouli:text",

@@ -78,6 +78,7 @@
   "block.mythicbotany.petrunia.description": "Obtained from a garden in Privet Drive",
   
   "enchantment.mythicbotany.hammer_mobility": "Hammer Mobility",
+  "enchantment.mythicbotany.hammer_mobility.desc": "Increases the attack speed of the hammer.",
   "entity.mythicbotany.mjoellnir": "Mjöllnir",
   "entity.mythicbotany.alf_pixie": "Alfheim Pixie",
   "biome.mythicbotany.alfheim_plains": "Alfheim Plains",
