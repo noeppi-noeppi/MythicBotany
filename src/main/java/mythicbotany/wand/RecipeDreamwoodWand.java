@@ -43,12 +43,12 @@ public class RecipeDreamwoodWand extends TwigWandRecipe {
                 colorId = ((BlockModMushroom)((BlockItem)item).getBlock()).color.getId();
             }
             if (first != -1) {
-                return ItemDreamwoodWand.forColors(first, colorId);
+                return ItemDreamwoodWand.setColors(getResultItem().copy(), first, colorId);
             }
             first = colorId;
         }
 
-        return ItemTwigWand.forColors(first != -1 ? first : 0, 0);
+        return ItemTwigWand.setColors(getResultItem().copy(), first != -1 ? first : 0, 0);
     }
 
     @Nonnull
