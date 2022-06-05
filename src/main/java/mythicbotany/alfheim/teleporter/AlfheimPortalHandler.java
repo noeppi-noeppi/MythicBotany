@@ -55,7 +55,7 @@ public class AlfheimPortalHandler {
                 timesInPortal.put(player, timeInPortal);
             }
             MythicBotany.getNetwork().updatePortalTime(player, timeInPortal);
-            return timeInPortal >= Math.max(player.getPortalWaitTime(), 80);
+            return timeInPortal >= Math.max(player.getPortalWaitTime(), 160);
         } else {
             return false;
         }
@@ -84,7 +84,7 @@ public class AlfheimPortalHandler {
             poseStack.scale(scale, scale, scale);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
-            RenderSystem.setShaderColor(1, 1, 1, Mth.clamp((clientInPortalTime + Minecraft.getInstance().getFrameTime()) / 80f, 0.05f, 0.8f));
+            RenderSystem.setShaderColor(1, 1, 1, Mth.clamp((clientInPortalTime + Minecraft.getInstance().getFrameTime()) / 160f, 0.05f, 0.8f));
             RenderSystem.setShaderTexture(0, MiscellaneousModels.INSTANCE.alfPortalTex.atlasLocation());
             GuiComponent.blit(poseStack, 0, 0, 0, 48, 48, MiscellaneousModels.INSTANCE.alfPortalTex.sprite());
             RenderHelper.resetColor();

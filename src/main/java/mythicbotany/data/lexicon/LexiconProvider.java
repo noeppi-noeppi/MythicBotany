@@ -277,7 +277,7 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("Drinking this mead will allow you to travel the worlds like Kvasir.")
                 .crafting("kvasir_mead")
                 .caption("After drinking the mead you'll be able to step in the Portal to Alfheim and travel to Alfheim yourself.")
-                .caption("If you accidentally break your portal in Alfheim you can fix the frame and throw a dragonstone in.")
+                .caption("If you accidentally break your portal in Alfheim you can fix the frame and throw a dragonstone or some pixie dust in.")
                 .caption("When it despawns, the portal will reopen.")
                 .ritual(ModItems.kvasirBlood, "mythicbotany_rune_rituals/kvasir_blood")
                 .caption("By using a wandering trader as a symbol for Kvasir you should be able to get blood to form the Mead of Kvasir.");

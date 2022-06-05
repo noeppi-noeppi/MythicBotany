@@ -201,11 +201,11 @@ public class EventListener {
     
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void itemDespawn(ItemExpireEvent event) {
-        if (!event.getEntityItem().getCommandSenderWorld().isClientSide && Alfheim.DIMENSION.equals(event.getEntityItem().getCommandSenderWorld().dimension())) {
-            if (event.getEntityItem().getItem().getItem() == vazkii.botania.common.item.ModItems.dragonstone) {
+        if (!event.getEntityItem().level.isClientSide && Alfheim.DIMENSION.equals(event.getEntityItem().level.dimension())) {
+            if (event.getEntityItem().getItem().getItem() == vazkii.botania.common.item.ModItems.dragonstone || event.getEntityItem().getItem().getItem() == vazkii.botania.common.item.ModItems.pixieDust) {
                 BlockPos pos = event.getEntityItem().blockPosition();
-                if (TileReturnPortal.validPortal(event.getEntityItem().getCommandSenderWorld(), pos)) {
-                    event.getEntityItem().getCommandSenderWorld().setBlock(pos, ModBlocks.returnPortal.defaultBlockState(), 3);
+                if (TileReturnPortal.validPortal(event.getEntityItem().level, pos)) {
+                    event.getEntityItem().level.setBlock(pos, ModBlocks.returnPortal.defaultBlockState(), 3);
                     event.getEntityItem().remove(Entity.RemovalReason.DISCARDED);
                 }
             }
