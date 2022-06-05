@@ -19,7 +19,7 @@ dependencies {
     coremods 'io.github.noeppi_noeppi.misc:CoreModTypes:5.0.2-1'
     
     implementation fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.18.2-3.2.15')
-    implementation fg.deobf('vazkii.botania:Botania:1.18.2-431')
+    implementation fg.deobf('vazkii.botania:Botania:1.18.2-433')
     implementation fg.deobf('vazkii.patchouli:Patchouli:1.18.2-67')
     implementation fg.deobf('top.theillusivec4.curios:curios-forge:1.18.2-5.0.6.3')
 

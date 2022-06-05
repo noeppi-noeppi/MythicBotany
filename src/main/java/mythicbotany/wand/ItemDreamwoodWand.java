@@ -6,6 +6,7 @@ import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import io.github.noeppi_noeppi.libx.render.RenderHelper;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
