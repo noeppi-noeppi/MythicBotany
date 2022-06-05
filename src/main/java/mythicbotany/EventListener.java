@@ -124,17 +124,6 @@ public class EventListener {
     }
 
     @SubscribeEvent
-    public void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        ItemStack held = event.getItemStack();
-        if (!held.isEmpty() && held.getItem() == ModItems.dreamwoodTwigWand) {
-            BlockState state = event.getWorld().getBlockState(event.getPos());
-            if (state.getBlock() instanceof BlockEnchanter) {
-                event.setUseBlock(Event.Result.DENY);
-            }
-        }
-    }
-
-    @SubscribeEvent
     public void playerClone(PlayerEvent.Clone event) {
         MythicPlayerData.copy(event.getOriginal(), event.getPlayer());
     }
@@ -218,19 +207,6 @@ public class EventListener {
                 if (TileReturnPortal.validPortal(event.getEntityItem().getCommandSenderWorld(), pos)) {
                     event.getEntityItem().getCommandSenderWorld().setBlock(pos, ModBlocks.returnPortal.defaultBlockState(), 3);
                     event.getEntityItem().remove(Entity.RemovalReason.DISCARDED);
-                }
-            }
-        }
-    }
-    
-    @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
-    public void clientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null && (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == ModItems.dreamwoodTwigWand || player.getItemInHand(InteractionHand.OFF_HAND).getItem() == ModItems.dreamwoodTwigWand)) {
-                for (IManaCollector collector : ImmutableList.copyOf(ManaNetworkHandler.instance.getAllCollectorsInWorld(Minecraft.getInstance().level))) {
-                    collector.onClientDisplayTick();
                 }
             }
         }

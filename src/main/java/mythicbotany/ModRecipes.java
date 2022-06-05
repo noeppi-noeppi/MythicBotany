@@ -20,7 +20,5 @@ public class ModRecipes {
     public static void register() {
         MythicBotany.getInstance().register(Objects.requireNonNull(Registry.RECIPE_TYPE.getKey(INFUSER)).getPath(), INFUSER_SERIALIZER);
         MythicBotany.getInstance().register(Objects.requireNonNull(Registry.RECIPE_TYPE.getKey(RUNE_RITUAL)).getPath(), RUNE_RITUAL_SERIALIZER);
-        // TODO remove
-        MythicBotany.getInstance().register(EmptyRecipe.ID.getPath(), EmptyRecipe.Serializer.INSTANCE);
     }
 }

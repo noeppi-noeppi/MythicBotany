@@ -14,10 +14,8 @@ import mythicbotany.data.recipes.extension.*;
 import mythicbotany.functionalflora.base.BlockFloatingFunctionalFlower;
 import mythicbotany.kvasir.WanderingTraderRuneInput;
 import mythicbotany.mjoellnir.MjoellnirRuneOutput;
-import mythicbotany.wand.RecipeDreamwoodWand;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -28,9 +26,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.common.lib.ModTags;
-import vazkii.botania.data.recipes.WrapperResult;
-
-import java.util.Objects;
 
 @Datagen
 public class RecipeProvider extends RecipeProviderBase implements CraftingExtension, CompressionExtension, SmeltingExtension, SmithingExtension, PetalExtension, ManaInfusionExtension, RuneExtension, ElvenTradeExtension, InfuserExtension, RuneRitualExtension {
@@ -42,7 +37,6 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
     @Override
     protected void setup() {
         this.makeFloatingFlowerRecipes();
-        //this.makeDreamwoodWandRecipe();
 
         this.doubleCompress(ModItems.alfsteelNugget, ModItems.alfsteelIngot, ModBlocks.alfsteelBlock, true);
         this.shaped(ModItems.fireRing, "re ", "e e", " e ", 'r', ModItems.muspelheimRune, 'e', ModTags.Items.INGOTS_ELEMENTIUM);
@@ -173,17 +167,5 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
                 .filter(item -> item instanceof BlockItem)
                 .filter(item -> ((BlockItem) item).getBlock() instanceof BlockFloatingFunctionalFlower<?>)
                 .forEach(item -> this.shapeless(item, ModTags.Items.FLOATING_FLOWERS, ((BlockFloatingFunctionalFlower<?>) ((BlockItem) item).getBlock()).getNonFloatingBlock()));
-    }
-    
-    private void makeDreamwoodWandRecipe() {
-        ShapedRecipeBuilder.shaped(ModItems.dreamwoodTwigWand)
-                .define('p', ModTags.Items.PETALS)
-                .define('t', vazkii.botania.common.item.ModItems.dreamwoodTwig)
-                .pattern(" pt")
-                .pattern(" tp")
-                .pattern("t  ")
-                .group(Objects.requireNonNull(ModItems.dreamwoodTwigWand.getRegistryName()).toString())
-                .unlockedBy("has_item", has(ModTags.Items.PETALS))
-                .save(WrapperResult.ofType(RecipeDreamwoodWand.SERIALIZER, this.consumer()));
     }
 }

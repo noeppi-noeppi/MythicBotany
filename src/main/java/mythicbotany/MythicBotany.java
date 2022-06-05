@@ -19,6 +19,7 @@ import mythicbotany.register.TrunkPlacerTransformer;
 import mythicbotany.rune.RuneRitualRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.api.distmarker.Dist;
@@ -70,6 +71,10 @@ public final class MythicBotany extends ModXRegistration {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::sendIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ModEntities::createAttributes);
+        
+        // Event is an IModBusEvent but still fired on the forge bus. Just register it to both
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, MythicMappings::remapItems);
+        MinecraftForge.EVENT_BUS.addGenericListener(Item.class, MythicMappings::remapItems);
 
         MinecraftForge.EVENT_BUS.addListener(this::serverStart);
         MinecraftForge.EVENT_BUS.addListener(this::datapacksReloaded);

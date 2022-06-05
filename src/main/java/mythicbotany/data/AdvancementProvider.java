@@ -74,7 +74,7 @@ public class AdvancementProvider extends AdvancementProviderBase {
     }
     
     private static ItemStack wandIcon() {
-        ItemStack stack = new ItemStack(ModItems.dreamwoodTwigWand);
+        ItemStack stack = new ItemStack(vazkii.botania.common.item.ModItems.dreamwoodWand);
         stack.getOrCreateTag().putInt("color1", 4);
         stack.getOrCreateTag().putInt("color2", 3);
         return stack;

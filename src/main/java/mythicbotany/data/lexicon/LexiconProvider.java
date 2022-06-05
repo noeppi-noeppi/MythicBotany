@@ -6,9 +6,7 @@ import mythicbotany.ModBlocks;
 import mythicbotany.ModEntities;
 import mythicbotany.ModItems;
 import mythicbotany.data.patchouli.PatchouliProviderBase;
-import mythicbotany.wand.ItemDreamwoodWand;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.world.item.DyeColor;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 @Datagen
@@ -104,12 +102,6 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("When repairing alfsteel tools you pay less mana than when using a mana tablet in your inventory.")
                 .crafting("alfsteel_pylon")
                 .crafting("gaia_pylon");
-        
-        this.entry("wand")
-                .name("Dreamwood Wands")
-                .icon(ItemDreamwoodWand.forColors(DyeColor.RED.getId(), DyeColor.YELLOW.getId()))
-                .crafting("dreamwood_twig_wand")
-                .caption("Just like livingwood, dreamwood can be used to create wands of the forest.");
         
         this.entry("rings")
                 .name("Elemental Rings")

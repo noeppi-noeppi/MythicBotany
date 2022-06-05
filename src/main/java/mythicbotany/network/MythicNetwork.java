@@ -19,7 +19,7 @@ public class MythicNetwork extends NetworkX {
 
     @Override
     protected Protocol getProtocol() {
-        return Protocol.of("5");
+        return Protocol.of("6");
     }
 
     @Override

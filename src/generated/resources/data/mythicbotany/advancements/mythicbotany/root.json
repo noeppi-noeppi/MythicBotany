@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "mythicbotany:dreamwood_twig_wand",
+      "item": "botania:dreamwood_wand",
       "nbt": "{color1:4,color2:3}"
     },
     "title": {
