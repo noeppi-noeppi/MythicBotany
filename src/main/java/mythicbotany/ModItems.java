@@ -46,7 +46,7 @@ public class ModItems {
     public static final Item manaRingGreatest = new GreatestManaRing(new Properties().tab(MythicBotany.getInstance().tab).stacksTo(1).fireResistant());
     public static final Item auraRingGreatest = new GreatestAuraRing(new Properties().tab(MythicBotany.getInstance().tab).stacksTo(1).fireResistant());
     public static final Item fadedNetherStar = new ItemFadedNetherStar();
-    public static final Item dreamwoodTwigWand = new ItemDreamwoodWand(new Properties().tab(MythicBotany.getInstance().tab).stacksTo(1).rarity(Rarity.RARE));
+    //public static final Item dreamwoodTwigWand = new ItemDreamwoodWand(new Properties().tab(MythicBotany.getInstance().tab).stacksTo(1).rarity(Rarity.RARE));
     public static final Item fireRing = new ItemFireRing(new Properties().tab(MythicBotany.getInstance().tab).stacksTo(1));
     public static final Item iceRing = new ItemIceRing(new Properties().tab(MythicBotany.getInstance().tab).stacksTo(1));
     public static final Item gjallarHornEmpty = new ItemBase(MythicBotany.getInstance(), new Properties().stacksTo(1));

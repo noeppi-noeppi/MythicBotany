@@ -53,7 +53,7 @@ import java.util.function.Consumer;
 public class ItemDreamwoodWand extends ItemTwigWand implements Registerable {
 
     public ItemDreamwoodWand(Properties builder) {
-        super(builder);
+        super(ChatFormatting.LIGHT_PURPLE, builder);
         MinecraftForge.EVENT_BUS.addListener(this::onEntityInteract);
     }
 

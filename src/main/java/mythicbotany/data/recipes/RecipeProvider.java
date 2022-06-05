@@ -42,7 +42,7 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
     @Override
     protected void setup() {
         this.makeFloatingFlowerRecipes();
-        this.makeDreamwoodWandRecipe();
+        //this.makeDreamwoodWandRecipe();
 
         this.doubleCompress(ModItems.alfsteelNugget, ModItems.alfsteelIngot, ModBlocks.alfsteelBlock, true);
         this.shaped(ModItems.fireRing, "re ", "e e", " e ", 'r', ModItems.muspelheimRune, 'e', ModTags.Items.INGOTS_ELEMENTIUM);
