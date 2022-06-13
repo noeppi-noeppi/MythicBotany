@@ -6,7 +6,6 @@ import mythicbotany.MythicBotany;
 import mythicbotany.alfheim.gen.AlfheimBiomeSource;
 import mythicbotany.alfheim.gen.AlfheimChunkGenerator;
 import mythicbotany.alfheim.surface.AlfheimSurfaceBuilder;
-import mythicbotany.register.HackyHolder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;

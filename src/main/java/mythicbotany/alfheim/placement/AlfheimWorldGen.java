@@ -8,7 +8,6 @@ import mythicbotany.alfheim.feature.ManaCrystalFeature;
 import mythicbotany.alfheim.feature.MotifFlowerFeature;
 import mythicbotany.alfheim.feature.WheatFeature;
 import mythicbotany.alfheim.structure.AndwariCave;
-import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.PlainVillagePools;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;

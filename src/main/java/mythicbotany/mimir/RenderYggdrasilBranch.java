@@ -1,6 +1,7 @@
 package mythicbotany.mimir;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import io.github.noeppi_noeppi.libx.render.block.RotatedBlockRenderer;
 import io.github.noeppi_noeppi.libx.util.LazyValue;
 import net.minecraft.client.Minecraft;
@@ -8,7 +9,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemStack;
-import com.mojang.math.Vector3f;
 import vazkii.botania.common.item.ModItems;
 
 import javax.annotation.Nonnull;

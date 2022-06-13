@@ -1,10 +1,10 @@
 package mythicbotany.functionalflora;
 
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
-import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.botania.api.subtile.RadiusDescriptor;
 

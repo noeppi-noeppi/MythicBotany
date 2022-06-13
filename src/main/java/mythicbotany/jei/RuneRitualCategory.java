@@ -12,9 +12,9 @@ import mythicbotany.MythicBotany;
 import mythicbotany.rune.RuneRitualRecipe;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.tuple.Pair;
 import vazkii.botania.client.gui.HUDHandler;
 

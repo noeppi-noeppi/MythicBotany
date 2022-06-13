@@ -3,9 +3,9 @@ package mythicbotany;
 import mythicbotany.infuser.IInfuserRecipe;
 import mythicbotany.infuser.InfuserRecipe;
 import mythicbotany.rune.RuneRitualRecipe;
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.core.Registry;
 
 import java.util.Objects;
 

@@ -1,16 +1,16 @@
 package mythicbotany.patchouli;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mythicbotany.MythicBotany;
 import mythicbotany.rune.RuneRitualRecipe;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.ChatFormatting;
 import vazkii.patchouli.client.RenderHelper;
 import vazkii.patchouli.client.book.gui.GuiBook;
 

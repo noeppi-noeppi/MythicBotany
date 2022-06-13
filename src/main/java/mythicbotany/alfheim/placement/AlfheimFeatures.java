@@ -1,11 +1,8 @@
 package mythicbotany.alfheim.placement;
 
-import io.github.noeppi_noeppi.libx.annotation.registration.RegName;
 import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
 import mythicbotany.ModBiomeTags;
 import mythicbotany.ModBlocks;
-import mythicbotany.alfheim.Alfheim;
-import mythicbotany.alfheim.biome.AlfheimBiomes;
 import mythicbotany.alfheim.featuregen.RandomFoliagePlacer;
 import mythicbotany.alfheim.featuregen.ShatteredTrunkPlacer;
 import mythicbotany.register.HackyHolder;
@@ -19,17 +16,12 @@ import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
-import net.minecraft.world.level.levelgen.structure.StructureSet;
 import vazkii.botania.common.block.ModFluffBlocks;
-
-import java.util.List;
 
 @RegisterClass(prefix = "wg", priority = -2)
 public class AlfheimFeatures {

@@ -4,9 +4,9 @@ import io.github.noeppi_noeppi.libx.annotation.registration.NoReg;
 import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
 import mythicbotany.loot.AlfsteelDisposeModifier;
 import mythicbotany.loot.FimbultyrModifier;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraft.world.entity.EquipmentSlot;
 
 @RegisterClass
 public class ModMisc {

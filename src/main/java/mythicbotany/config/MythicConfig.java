@@ -18,6 +18,12 @@ public class MythicConfig {
     })
     public static boolean enableAlfheim = true;
     
+    @Config({
+            "Whether players that manage to get to alfheim via another mod but have not drunk the mead of kvasir",
+            "should get a blindness effect.."
+    })
+    public static boolean lockAlfheim = true;
+    
     @Config("Whether to replace the recipe for the Gaia Pylon with a recipe that requires Alfsteel.")
     public static boolean replaceGaiaRecipe = true;
     
@@ -109,7 +115,7 @@ public class MythicConfig {
         
         @Config({"The damage dealt to secondary targets on ranged attacks.", "This value is multiplied with the damage to the main target."})
         @FloatRange(min = 0, max = 1)
-        public static float secondary_target_multiplier = 0.2f;
+        public static float secondary_target_multiplier = 0.4f;
         
         @Config("The chance for secondary targets to get lightning effects  applied as well on ranged attacks.")
         @FloatRange(min = 0, max = 1)

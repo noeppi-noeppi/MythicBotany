@@ -2,8 +2,8 @@ package mythicbotany.network;
 
 import mythicbotany.MythicBotany;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
