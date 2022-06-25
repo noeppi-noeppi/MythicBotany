@@ -1,4 +1,5 @@
 {
+  "name": "item.botania.lexicon",
   "extend": "botania:lexicon",
   "use_resource_pack": true,
   "i18n": true,

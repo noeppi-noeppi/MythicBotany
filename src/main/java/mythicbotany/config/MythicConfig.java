@@ -20,7 +20,7 @@ public class MythicConfig {
     
     @Config({
             "Whether players that manage to get to alfheim via another mod but have not drunk the mead of kvasir",
-            "should get a blindness effect.."
+            "should get a blindness effect."
     })
     public static boolean lockAlfheim = true;
     
