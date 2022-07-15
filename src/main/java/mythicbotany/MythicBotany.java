@@ -84,6 +84,7 @@ public final class MythicBotany extends ModXRegistration {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, AlfheimPortalHandler::renderGameOverlay);
         });
+        MinecraftForge.EVENT_BUS.addListener(AlfheimPortalHandler::serverStarted);
         MinecraftForge.EVENT_BUS.addListener(AlfheimPortalHandler::endTick);
     }
 

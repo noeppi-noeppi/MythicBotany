@@ -4,10 +4,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.noeppi_noeppi.libx.render.RenderHelper;
 import mythicbotany.MythicBotany;
+import mythicbotany.alfheim.Alfheim;
 import mythicbotany.config.MythicConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.PauseScreen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -17,6 +19,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import vazkii.botania.client.core.handler.MiscellaneousModels;
 
 import java.util.*;
@@ -26,46 +29,69 @@ public class AlfheimPortalHandler {
     public static int clientInPortalTime;
     
     private static final Set<ServerPlayer> inPortal = new HashSet<>();
+    private static final Set<ServerPlayer> portalBlocked = new HashSet<>();
     private static final Map<ServerPlayer, Integer> timesInPortal = new HashMap<>();
 
+    public static void serverStarted(ServerStartedEvent event) {
+        inPortal.clear();
+        portalBlocked.clear();
+        timesInPortal.clear();
+    }
+    
     public static void endTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            Iterator<ServerPlayer> itr = timesInPortal.keySet().iterator();
+            timesInPortal.keySet().removeIf(p -> !inPortal.contains(p));
+            
+            Iterator<ServerPlayer> itr = portalBlocked.iterator();
             while (itr.hasNext()) {
                 ServerPlayer player = itr.next();
-                if (!inPortal.contains(player)) {
+                if (canRemovePortalBlocked(player)) {
                     MythicBotany.getNetwork().updatePortalTime(player, 0);
                     itr.remove();
                 }
             }
-            timesInPortal.keySet().removeIf(p -> !inPortal.contains(p));
+            
+            portalBlocked.removeIf(AlfheimPortalHandler::canRemovePortalBlocked);
             inPortal.clear();
         }
     }
     
+    private static boolean canRemovePortalBlocked(ServerPlayer player) {
+        if (player.isOnPortalCooldown()) return false;
+        if (inPortal.contains(player)) return false;
+        // Only remove portal blocked state when the chunk of the player is loaded
+        // so the block entities can update the inPortal state through setInPortal
+        BlockPos pos = player.blockPosition();
+        return player.level.isOutsideBuildHeight(pos) || player.level.isLoaded(pos);
+    }
+    
     public static boolean setInPortal(Level level, Player playerEntity) {
-        if (!level.isClientSide && playerEntity instanceof ServerPlayer player && !playerEntity.isOnPortalCooldown()) {
+        if (!level.isClientSide && (MythicConfig.enableAlfheim || Objects.equals(level.dimension(), Alfheim.DIMENSION)) && playerEntity instanceof ServerPlayer player) {
             inPortal.add(player);
-            int timeInPortal;
-            if (!timesInPortal.containsKey(player)) {
-                timesInPortal.put(player, 1);
-                timeInPortal = 1;
-            } else {
-                timeInPortal = timesInPortal.get(player) + 1;
-                timesInPortal.put(player, timeInPortal);
+            if (!portalBlocked.contains(player) && !playerEntity.isOnPortalCooldown()) {
+                int timeInPortal;
+                if (!timesInPortal.containsKey(player)) {
+                    timesInPortal.put(player, 1);
+                    timeInPortal = 1;
+                } else {
+                    timeInPortal = timesInPortal.get(player) + 1;
+                    timesInPortal.put(player, timeInPortal);
+                }
+                MythicBotany.getNetwork().updatePortalTime(player, timeInPortal);
+                if (timeInPortal >= 120) {
+                    portalBlocked.add(player);
+                    return true;
+                }
             }
-            MythicBotany.getNetwork().updatePortalTime(player, timeInPortal);
-            return timeInPortal >= Math.max(player.getPortalWaitTime(), 120);
-        } else {
-            return false;
         }
+        return false;
     }
     
     public static boolean shouldCheck(Level level) {
-        if (!MythicConfig.enableAlfheim) {
+        if (!MythicConfig.enableAlfheim && !Objects.equals(level.dimension(), Alfheim.DIMENSION)) {
             return false;
         } else if (level instanceof ServerLevel) {
-            return !timesInPortal.isEmpty() || ((ServerLevel) level).getServer().getTickCount() % 4 == 3;
+            return !timesInPortal.isEmpty() || !portalBlocked.isEmpty() || ((ServerLevel) level).getServer().getTickCount() % 4 == 3;
         } else {
             return false;
         }
