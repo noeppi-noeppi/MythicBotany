@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
+import mythicbotany.config.MythicConfig;
 import mythicbotany.network.AlfSwordLeftClickSerializer;
 import mythicbotany.pylon.PylonRepairable;
 import net.minecraft.sounds.SoundSource;
@@ -33,15 +34,14 @@ import java.util.List;
 
 public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
 
-    public static final int MANA_PER_DURABILITY = 200;
     private final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
     public AlfsteelSword(Properties props) {
-        super(props.durability(4600));
+        super(props.durability(MythicConfig.alftools.durability.sword.max_durability()));
         MinecraftForge.EVENT_BUS.addListener(this::onLeftClick);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.getDamage(), AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", 2.4, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", MythicConfig.alftools.tool_values.sword_speed, AttributeModifier.Operation.ADDITION));
         this.attributeModifiers = builder.build();
     }
 
@@ -58,7 +58,7 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
 
     @Override
     public float getDamage() {
-        return 12;
+        return (float) MythicConfig.alftools.tool_values.sword_damage;
     }
 
     @Nonnull
@@ -79,7 +79,7 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
 
     @Override
     public int getRepairManaPerTick(ItemStack stack) {
-        return (int) (2.5 * MANA_PER_DURABILITY);
+        return (int) (2.5 * this.getManaPerDamage());
     }
 
     @Override
@@ -99,7 +99,7 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
     }
     
     public void trySpawnAlfBurst(Player player) {
-        if ((player.getItemBySlot(EquipmentSlot.MAINHAND).getItem() == ModItems.alfsteelSword || player.getItemBySlot(EquipmentSlot.OFFHAND).getItem() == ModItems.alfsteelSword) && player.getAttackStrengthScale(0) == 1) {
+        if ((player.getItemBySlot(EquipmentSlot.MAINHAND).getItem() == ModItems.alfsteelSword) && player.getAttackStrengthScale(0) == 1) {
             EntityManaBurst burst = this.getAlfBurst(player, player.getMainHandItem());
             player.level.addFreshEntity(burst);
             player.getMainHandItem().hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));

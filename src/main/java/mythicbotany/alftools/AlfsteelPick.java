@@ -5,6 +5,7 @@ import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.MythicCap;
+import mythicbotany.config.MythicConfig;
 import mythicbotany.pylon.PylonRepairable;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
@@ -42,7 +43,7 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
     private static final Set<Material> MATERIALS = ImmutableSet.of(Material.STONE, Material.METAL, Material.ICE, Material.GLASS, Material.PISTON, Material.HEAVY_METAL, Material.GRASS, Material.DIRT, Material.SAND, Material.TOP_SNOW, Material.SNOW, Material.CLAY);
     
     public AlfsteelPick(Properties props) {
-        super(props.durability(4600));
+        super(props.durability(MythicConfig.alftools.durability.pickaxe.max_durability()));
     }
 
     @Override
@@ -56,7 +57,7 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
 
     @Override
     public int getManaPerDamage() {
-        return 2 * super.getManaPerDamage();
+        return MythicConfig.alftools.durability.pickaxe.mana_per_durability();
     }
 
     @Override
@@ -105,7 +106,7 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
 
     @Override
     public int getRepairManaPerTick(ItemStack stack) {
-        return (int) (2.5 * AlfsteelSword.MANA_PER_DURABILITY);
+        return (int) (2.5 * this.getManaPerDamage());
     }
 
     @Override

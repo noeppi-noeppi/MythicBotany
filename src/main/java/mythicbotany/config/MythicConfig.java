@@ -82,6 +82,35 @@ public class MythicConfig {
         @Config("Jump boost modifier for the alfsteel boots")
         @FloatRange(min = 0)
         public static float jump_modifier = 0.025f;
+        
+        @Group({
+                "Durability stats for alfsteel tools.",
+                "  max_durability      is the maximum durability, a tool has",
+                "  mana_per_durability is the amount of mana consumed per durability loss"
+        })
+        public static class durability {
+            @Config public static ToolDamageStats sword = new ToolDamageStats(4600, 200);
+            @Config public static ToolDamageStats axe = new ToolDamageStats(4600, 200);
+            @Config public static ToolDamageStats pickaxe = new ToolDamageStats(4600, 200);
+            @Config public static ToolDamageStats armor = new ToolDamageStats(5200, 100);
+        }
+        
+        public static class tool_values {
+            
+            @Config("The attack damage dealt by the alf blade")
+            public static double sword_damage = 12;
+            
+            @Config("The attack speed modifier for the alf blade")
+            public static double sword_speed = 2.4;
+        }
+        
+        @Group("Armor stats for alfsteel armor.")
+        public static class armor_values {
+            @Config public static ArmorStats helmet = new ArmorStats(3, 3);
+            @Config public static ArmorStats chestplate = new ArmorStats(8, 3);
+            @Config public static ArmorStats leggings = new ArmorStats(6, 3);
+            @Config public static ArmorStats boots = new ArmorStats(3, 3);
+        }
     }
     
     public static class mjoellnir {
@@ -142,7 +171,7 @@ public class MythicConfig {
             @Config public static int max = 10;
         }
 
-        @Group("Spawn configuration for the withes in alfheim.")
+        @Group("Spawn configuration for the witches in alfheim.")
         public static class witch {
             @Config public static int weight = 2;
             @Config public static int min = 1;
@@ -156,7 +185,4 @@ public class MythicConfig {
             @Config public static int max = 1;
         }
     }
-    
-    @Config("Whether rituals and infusions that are cancelled will drop solidified mana that can be used to get the mana back.")
-    public static boolean solidified_mana = true;
 }

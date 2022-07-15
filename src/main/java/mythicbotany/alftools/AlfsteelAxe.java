@@ -3,6 +3,7 @@ package mythicbotany.alftools;
 import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
+import mythicbotany.config.MythicConfig;
 import mythicbotany.pylon.PylonRepairable;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -30,13 +31,18 @@ public class AlfsteelAxe extends ItemTerraAxe implements PylonRepairable, Regist
     public static final int ITEM_COLLECT_RANGE = 8;
 
     public AlfsteelAxe(Properties props) {
-        super(props.durability(4600));
+        super(props.durability(MythicConfig.alftools.durability.axe.max_durability()));
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
         defer.accept(() -> ItemProperties.register(ModItems.alfsteelAxe, MythicBotany.getInstance().resource("active"), (stack, world, entity, seed) -> entity instanceof Player && !shouldBreak((Player) entity) ? 0 : 1));
+    }
+
+    @Override
+    public int getManaPerDamage() {
+        return MythicConfig.alftools.durability.axe.mana_per_durability();
     }
 
     @Nonnull
@@ -81,7 +87,7 @@ public class AlfsteelAxe extends ItemTerraAxe implements PylonRepairable, Regist
 
     @Override
     public int getRepairManaPerTick(ItemStack stack) {
-        return (int) (2.5 * AlfsteelSword.MANA_PER_DURABILITY);
+        return (int) (2.5 * this.getManaPerDamage());
     }
 
     @Override

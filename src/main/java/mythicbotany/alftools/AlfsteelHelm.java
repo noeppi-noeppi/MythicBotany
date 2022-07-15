@@ -1,126 +1,80 @@
 package mythicbotany.alftools;
 
-import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.noeppi_noeppi.libx.util.LazyValue;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
+import mythicbotany.config.MythicConfig;
 import mythicbotany.pylon.PylonRepairable;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.registries.ForgeRegistries;
+import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.equipment.armor.terrasteel.ItemTerrasteelHelm;
+import vazkii.botania.common.item.equipment.tool.ToolCommons;
 import vazkii.botania.common.lib.ModTags;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.UUID;
+import java.util.function.Consumer;
 
 public class AlfsteelHelm extends ItemTerrasteelHelm implements PylonRepairable {
 
-    private static final float JUMP_FACTOR = 0.025f;
     private static final LazyValue<ItemStack[]> armorSet = new LazyValue<>(() -> new ItemStack[]{new ItemStack(ModItems.alfsteelHelmet), new ItemStack(ModItems.alfsteelChestplate), new ItemStack(ModItems.alfsteelLeggings), new ItemStack(ModItems.alfsteelBoots)});
 
     public AlfsteelHelm(Properties props) {
-        super(props.durability(5200));
-        MinecraftForge.EVENT_BUS.addListener(this::onJump);
+        super(props.durability(MythicConfig.alftools.durability.armor.max_durability()));
     }
 
     public String getArmorTextureAfterInk(ItemStack stack, EquipmentSlot slot) {
         return MythicBotany.getInstance().modid + ":textures/model/armor_alfsteel.png";
     }
 
-    private void onJump(LivingEvent.LivingJumpEvent event) {
-        if (event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET).getItem() == ModItems.alfsteelBoots) {
-            LivingEntity entity = event.getEntityLiving();
-
-            float rot = entity.getYRot() * ((float)Math.PI / 180F);
-            float xzFactor = entity.isSprinting() ? JUMP_FACTOR : 0;
-            entity.setDeltaMovement(entity.getDeltaMovement().add(-Mth.sin(rot) * xzFactor, JUMP_FACTOR, Mth.cos(rot) * xzFactor));
-        }
-    }
-
     @Nonnull
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@Nonnull EquipmentSlot slot) {
-        Multimap<Attribute, AttributeModifier> ret = LinkedHashMultimap.create(super.getDefaultAttributeModifiers(slot));
-        ret.removeAll(Attributes.KNOCKBACK_RESISTANCE); // Remove knockback resistance from terrasteel armor.
-        if (slot == this.getSlot()) {
-            @SuppressWarnings("ConstantConditions")
-            UUID uuid = new UUID(ForgeRegistries.ITEMS.getKey(this).hashCode() + slot.toString().hashCode(), 0L);
-            if (this == ModItems.alfsteelHelmet) {
-                Attribute reachDistance = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("forge", "reach_distance"));
-                if (reachDistance != null)
-                    ret.put(reachDistance, new AttributeModifier(uuid, "Alfsteel modifier " + this.type, 2, AttributeModifier.Operation.ADDITION));
-            } else if (this == ModItems.alfsteelChestplate) {
-                ret.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Alfsteel modifier " + this.type, 1, AttributeModifier.Operation.ADDITION));
-            } else if (this == ModItems.alfsteelLeggings) {
-                ret.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(uuid, "Alfsteel modifier " + this.type, 0.05, AttributeModifier.Operation.ADDITION));
-                Attribute swimSpeed = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("forge", "swim_speed"));
-                if (swimSpeed != null) {
-                    @SuppressWarnings("ConstantConditions")
-                    UUID uuid2 = new UUID(ForgeRegistries.ITEMS.getKey(this).hashCode() + slot.toString().hashCode(), 1L);
-                    ret.put(swimSpeed, new AttributeModifier(uuid2, "Alfsteel modifier swim " + this.type, 0.05, AttributeModifier.Operation.ADDITION));
-                }
-            }
-        }
-        return ret;
+        return CommonAlfsteelArmor.applyModifiers(this, super.getDefaultAttributeModifiers(slot), slot);
     }
 
+    public int getManaPerDamage() {
+        return MythicConfig.alftools.durability.armor.mana_per_durability();
+    }
+
+
+    @Override
+    public void onArmorTick(ItemStack stack, Level world, Player player) {
+        if (!world.isClientSide && stack.getDamageValue() > 0 && ManaItemHandler.instance().requestManaExact(stack, player, this.getManaPerDamage() * 2, true)) {
+            stack.setDamageValue(stack.getDamageValue() - 1);
+        }
+    }
+
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
+        return ToolCommons.damageItemIfPossible(stack, amount, entity, this.getManaPerDamage());
+    }
+
+    @Override
     public ItemStack[] getArmorSetStacks() {
         return armorSet.get();
     }
 
+
+    @Override
     public boolean hasArmorSetItem(Player player, EquipmentSlot slot) {
-        if (player == null) {
-            return false;
-        } else {
-            ItemStack stack = player.getItemBySlot(slot);
-            if (stack.isEmpty()) {
-                return false;
-            } else {
-                return switch (slot) {
-                    case HEAD -> stack.getItem() == ModItems.alfsteelHelmet;
-                    case CHEST -> stack.getItem() == ModItems.alfsteelChestplate;
-                    case LEGS -> stack.getItem() == ModItems.alfsteelLeggings;
-                    case FEET -> stack.getItem() == ModItems.alfsteelBoots;
-                    default -> false;
-                };
-            }
-        }
+        return CommonAlfsteelArmor.hasArmorSetItem(player, slot);
     }
-
-    public MutableComponent getArmorSetName() {
-        return new TranslatableComponent("botania.armorset.terrasteel.name");
-    }
-
+    
     @OnlyIn(Dist.CLIENT)
     public void addArmorSetDescription(ItemStack stack, List<Component> list) {
         super.addArmorSetDescription(stack, list);
-        if (stack.getItem() == ModItems.alfsteelHelmet) {
-            list.add((new TranslatableComponent("item.mythicbotany.alfsteel_helmet.description")).withStyle(ChatFormatting.GOLD));
-        } else if (stack.getItem() == ModItems.alfsteelChestplate) {
-            list.add((new TranslatableComponent("item.mythicbotany.alfsteel_chestplate.description")).withStyle(ChatFormatting.GOLD));
-        } else if (stack.getItem() == ModItems.alfsteelLeggings) {
-            list.add((new TranslatableComponent("item.mythicbotany.alfsteel_leggings.description")).withStyle(ChatFormatting.GOLD));
-        } else if (stack.getItem() == ModItems.alfsteelBoots) {
-            list.add((new TranslatableComponent("item.mythicbotany.alfsteel_boots.description")).withStyle(ChatFormatting.GOLD));
-        }
+        CommonAlfsteelArmor.addArmorSetDescription(stack, list);
     }
 
     @Override
@@ -135,12 +89,22 @@ public class AlfsteelHelm extends ItemTerrasteelHelm implements PylonRepairable 
 
     @Override
     public int getRepairManaPerTick(ItemStack stack) {
-        return (int) (2.5 * AlfsteelSword.MANA_PER_DURABILITY);
+        return (int) (2.5 * this.getManaPerDamage());
     }
 
     @Override
     public ItemStack repairOneTick(ItemStack stack) {
         stack.setDamageValue(Math.max(0, stack.getDamageValue() - 5));
         return stack;
+    }
+
+    @Override
+    public int getDefense() {
+        return CommonAlfsteelArmor.getDefense(this.getSlot());
+    }
+
+    @Override
+    public float getToughness() {
+        return CommonAlfsteelArmor.getToughness(this.getSlot());
     }
 }
