@@ -51,6 +51,8 @@
   "block.mythicbotany.raindeletia_floating": "Schwebendes Regengewächs",
   "block.mythicbotany.feysythia": "Feesythie",
   "block.mythicbotany.feysythia_floating": "Schwebende Feesythie",
+  "block.mythicbotany.petrunia": "Petrunie",
+  "block.mythicbotany.petrunia_floating": "Schwebende Petrunie",
   "block.mythicbotany.yggdrasil_branch": "Ableger von Yggdrasil",
   "block.mythicbotany.rune_holder": "Runenhalter",
   "block.mythicbotany.central_rune_holder": "Zentraler Runenhalter",
@@ -76,6 +78,7 @@
   "block.mythicbotany.petrunia.description": "Gepflückt im Ligusterweg",
 
   "enchantment.mythicbotany.hammer_mobility": "Dynamischer Hammer",
+  "enchantment.mythicbotany.hammer_mobility.desc": "Erhöht die Angriffsgeschwindigkeit des Hammers.",
   "entity.mythicbotany.mjoellnir": "Mjöllnir",
   "entity.mythicbotany.alf_pixie": "Alfheim Fee",
   "biome.mythicbotany.alfheim_plains": "Alfheim Flachland",
@@ -84,6 +87,8 @@
   "biome.mythicbotany.golden_fields": "Goldene Felder",
   "biome.mythicbotany.alfheim_lakes": "Alfheim Seen",
 
+  "tooltip.mythicbotany.cost_pools": "%s Mana Pools",
+  "tooltip.mythicbotany.reverse_ratio": "%sx Zoom (hover to zoom in)",
   "tooltip.mythicbotany.rune_ritual": "Runen-Ritual",
   "tooltip.mythicbotany.rune_central": "Rune für den zentralen Runenhalter.",
   "tooltip.mythicbotany.rune_consume": "Diese Rune wird verbraucht.",
