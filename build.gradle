@@ -14,11 +14,11 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.18.2-3.2.15')
+    annotationProcessor fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.18.2-3.2.18')
 
     coremods 'io.github.noeppi_noeppi.misc:CoreModTypes:5.0.2-1'
     
-    implementation fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.18.2-3.2.15')
+    implementation fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.18.2-3.2.18')
     implementation fg.deobf('vazkii.botania:Botania:1.18.2-434')
     implementation fg.deobf('vazkii.patchouli:Patchouli:1.18.2-71.1')
     implementation fg.deobf('top.theillusivec4.curios:curios-forge:1.18.2-5.0.6.3')
