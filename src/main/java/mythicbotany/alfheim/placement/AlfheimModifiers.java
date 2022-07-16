@@ -44,7 +44,7 @@ public class AlfheimModifiers {
     
     public static List<PlacementModifier> ore(int count, VerticalAnchor min, VerticalAnchor max) {
         ImmutableList.Builder<PlacementModifier> list = ImmutableList.builder();
-        if (count > 1) list.add(CountPlacement.of(5));
+        if (count > 1) list.add(CountPlacement.of(count));
         list.add(InSquarePlacement.spread());
         list.add(HeightRangePlacement.triangle(min, max));
         return list.build();
