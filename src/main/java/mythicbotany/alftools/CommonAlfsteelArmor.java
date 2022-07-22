@@ -22,11 +22,25 @@ import java.util.List;
 import java.util.UUID;
 
 public class CommonAlfsteelArmor {
-    
+
+    private static final List<UUID> ARMOR_ATTRIBUTE_SLOT_UIDS = List.of(
+            UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"),
+            UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"),
+            UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"),
+            UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150")
+    );
+
+
     public static Multimap<Attribute, AttributeModifier> applyModifiers(ItemTerrasteelArmor item, Multimap<Attribute, AttributeModifier> map, @Nullable EquipmentSlot slot) {
         Multimap<Attribute, AttributeModifier> ret = LinkedHashMultimap.create(map);
+        
+        ret.removeAll(Attributes.ARMOR); // Remove armor attributes as these use the material stats
+        ret.removeAll(Attributes.ARMOR_TOUGHNESS);
         ret.removeAll(Attributes.KNOCKBACK_RESISTANCE); // Remove knockback resistance from terrasteel armor.
         if (slot == item.getSlot()) {
+            ret.put(Attributes.ARMOR, new AttributeModifier(ARMOR_ATTRIBUTE_SLOT_UIDS.get(slot.getIndex()), "Armor modifier", item.getDefense(), AttributeModifier.Operation.ADDITION));
+            ret.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ARMOR_ATTRIBUTE_SLOT_UIDS.get(slot.getIndex()), "Armor toughness", item.getToughness(), AttributeModifier.Operation.ADDITION));
+
             @SuppressWarnings("ConstantConditions")
             UUID uuid = new UUID(ForgeRegistries.ITEMS.getKey(item).hashCode() + slot.toString().hashCode(), 0L);
             if (item == ModItems.alfsteelHelmet) {
