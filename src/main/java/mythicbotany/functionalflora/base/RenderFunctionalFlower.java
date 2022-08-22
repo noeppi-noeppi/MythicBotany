@@ -25,7 +25,7 @@ public class RenderFunctionalFlower<T extends FunctionalFlowerBase> implements B
     @Override
     public void render(@Nonnull T blockEntity, float partialTicks, @Nonnull PoseStack poseStack, @Nonnull MultiBufferSource buffer, int light, int overlay) {
         if (blockEntity.isFloating() && !BotaniaConfig.client().staticFloaters()) {
-            RenderTileFloatingFlower.renderFloatingIsland(blockEntity, partialTicks, poseStack, buffer, light, overlay);
+            RenderTileFloatingFlower.renderFloatingIsland(blockEntity, partialTicks, poseStack, buffer, overlay);
         }
         if (Minecraft.getInstance().cameraEntity instanceof LivingEntity view) {
             if (ItemMonocle.hasMonocle(view)) {
