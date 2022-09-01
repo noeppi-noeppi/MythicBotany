@@ -21,14 +21,14 @@
     },
     {
       "type": "mythicbotany:ritual_pattern",
-      "title": "item.mythicbotany.mjoellnir",
+      "title": "block.mythicbotany.mjoellnir",
       "recipe": "mythicbotany:mythicbotany_rune_rituals/mjoellnir"
     },
     {
       "type": "mythicbotany:ritual_info",
       "title": "",
       "recipe": "mythicbotany:mythicbotany_rune_rituals/mjoellnir",
-      "text": "Creating a replica of the legendary weapon Mjöllnir."
+      "text": "lexicon.entry.mythicbotany.mythic_botany.mjoellnir.page5.text0"
     }
   ]
 }
