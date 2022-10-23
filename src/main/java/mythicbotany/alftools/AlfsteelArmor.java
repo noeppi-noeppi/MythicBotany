@@ -60,12 +60,11 @@ public class AlfsteelArmor extends ItemTerrasteelArmor implements PylonRepairabl
     public int getManaPerDamage() {
         return MythicConfig.alftools.durability.armor.mana_per_durability();
     }
-
-
+    
     @Override
     public void onArmorTick(ItemStack stack, Level world, Player player) {
         if (!world.isClientSide && stack.getDamageValue() > 0 && ManaItemHandler.instance().requestManaExact(stack, player, this.getManaPerDamage() * 2, true)) {
-            stack.setDamageValue(stack.getDamageValue() - 1);
+            stack.setDamageValue(Math.max(0, stack.getDamageValue() - 2));
         }
     }
 

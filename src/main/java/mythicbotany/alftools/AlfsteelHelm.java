@@ -50,8 +50,17 @@ public class AlfsteelHelm extends ItemTerrasteelHelm implements PylonRepairable 
 
     @Override
     public void onArmorTick(ItemStack stack, Level world, Player player) {
-        if (!world.isClientSide && stack.getDamageValue() > 0 && ManaItemHandler.instance().requestManaExact(stack, player, this.getManaPerDamage() * 2, true)) {
-            stack.setDamageValue(stack.getDamageValue() - 1);
+        if (!world.isClientSide) {
+            if (stack.getDamageValue() > 0 && ManaItemHandler.instance().requestManaExact(stack, player, this.getManaPerDamage() * 2, true)) {
+                stack.setDamageValue(Math.max(0, stack.getDamageValue() - 2));
+            }
+            int food = player.getFoodData().getFoodLevel();
+            if (food > 0 && food < 18 && player.isHurt() && player.tickCount % 80 == 0) {
+                player.heal(1);
+            }
+            if (player.tickCount % 10 == 0) {
+                ManaItemHandler.instance().dispatchManaExact(stack, player, 10, true);
+            }
         }
     }
 
