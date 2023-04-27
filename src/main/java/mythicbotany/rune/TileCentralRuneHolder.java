@@ -2,8 +2,8 @@ package mythicbotany.rune;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Either;
-import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
-import io.github.noeppi_noeppi.libx.util.NBTX;
+import org.moddingx.libx.base.tile.TickingBlock;
+import org.moddingx.libx.util.data.NbtX;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModItems;
 import mythicbotany.ModRecipes;
@@ -45,7 +45,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class TileCentralRuneHolder extends TileRuneHolder implements TickableBlock {
+public class TileCentralRuneHolder extends TileRuneHolder implements TickingBlock {
 
     private static final ResourceLocation MISSIGNO = new ResourceLocation("minecraft", "missingno");
     private static final Map<Item, Integer> RUNE_COLORS = ImmutableMap.<Item, Integer>builder()
@@ -373,7 +373,7 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickableBlo
     @Override
     public void load(@Nonnull CompoundTag nbt) {
         super.load(nbt);
-        ResourceLocation id = NBTX.getRL(nbt, "recipe", MISSIGNO);
+        ResourceLocation id = NbtX.getResource(nbt, "recipe", MISSIGNO);
         this.recipeId = id == MISSIGNO ? null : id;
         this.progress = nbt.getInt("progress");
         this.transformId = nbt.getInt("transform");
@@ -395,7 +395,7 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickableBlo
     @Override
     public void saveAdditional(@Nonnull CompoundTag nbt) {
         super.saveAdditional(nbt);
-        NBTX.putRL(nbt, "recipe", this.recipe == null ? MISSIGNO : this.recipe.getId());
+        NbtX.putResource(nbt, "recipe", this.recipe == null ? MISSIGNO : this.recipe.getId());
         nbt.putInt("progress", this.progress);
         nbt.putInt("transform", this.transformId);
         ListTag consumed = new ListTag();
@@ -412,7 +412,7 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickableBlo
         CompoundTag nbt = super.getUpdateTag();
         //noinspection ConstantConditions
         if (!this.level.isClientSide) {
-            NBTX.putRL(nbt, "recipe", this.recipe == null ? MISSIGNO : this.recipe.getId());
+            NbtX.putResource(nbt, "recipe", this.recipe == null ? MISSIGNO : this.recipe.getId());
             nbt.putInt("progress", this.progress);
             nbt.putInt("transform", this.transformId);
         }
@@ -424,7 +424,7 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickableBlo
         super.handleUpdateTag(nbt);
         //noinspection ConstantConditions
         if (this.level.isClientSide) {
-            ResourceLocation id = NBTX.getRL(nbt, "recipe", MISSIGNO);
+            ResourceLocation id = NbtX.getResource(nbt, "recipe", MISSIGNO);
             this.recipeId = id == MISSIGNO ? null : id;
             this.progress = nbt.getInt("progress");
             this.transformId = nbt.getInt("transform");

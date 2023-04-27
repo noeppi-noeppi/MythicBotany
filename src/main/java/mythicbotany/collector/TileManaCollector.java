@@ -1,6 +1,6 @@
 package mythicbotany.collector;
 
-import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
+import org.moddingx.libx.base.tile.TickingBlock;
 import mythicbotany.base.BlockEntityMana;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -13,7 +13,7 @@ import vazkii.botania.api.mana.ManaNetworkAction;
 import vazkii.botania.api.mana.ManaNetworkEvent;
 import vazkii.botania.common.handler.ManaNetworkHandler;
 
-public class TileManaCollector extends BlockEntityMana implements IManaCollector, TickableBlock {
+public class TileManaCollector extends BlockEntityMana implements IManaCollector, TickingBlock {
 
     public TileManaCollector(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, 10000, true, true);

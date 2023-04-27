@@ -1,9 +1,9 @@
 package mythicbotany.mjoellnir;
 
 import com.google.common.collect.ImmutableSet;
-import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
-import io.github.noeppi_noeppi.libx.mod.ModX;
-import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
+import org.moddingx.libx.base.tile.BlockBE;
+import org.moddingx.libx.mod.ModX;
+import org.moddingx.libx.registration.Registerable;
 import mythicbotany.ModBlocks;
 import mythicbotany.MythicBotany;
 import mythicbotany.config.MythicConfig;
@@ -45,6 +45,8 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerable {
 

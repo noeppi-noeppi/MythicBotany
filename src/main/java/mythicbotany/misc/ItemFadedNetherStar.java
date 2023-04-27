@@ -5,6 +5,8 @@ import mythicbotany.functionalflora.WitherAconite;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class ItemFadedNetherStar extends Item {
 
     public ItemFadedNetherStar() {

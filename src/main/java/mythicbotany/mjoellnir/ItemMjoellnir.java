@@ -30,6 +30,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class ItemMjoellnir extends BlockItem {
     
     public ItemMjoellnir(Block blockIn, Properties builder) {

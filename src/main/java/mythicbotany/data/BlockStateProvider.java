@@ -1,9 +1,9 @@
 package mythicbotany.data;
 
-import io.github.noeppi_noeppi.libx.annotation.data.Datagen;
-import io.github.noeppi_noeppi.libx.data.AlwaysExistentModelFile;
-import io.github.noeppi_noeppi.libx.data.provider.BlockStateProviderBase;
-import io.github.noeppi_noeppi.libx.mod.ModX;
+import org.moddingx.libx.annotation.data.Datagen;
+import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
+import org.moddingx.libx.datagen.provider.BlockStateProviderBase;
+import org.moddingx.libx.mod.ModX;
 import mythicbotany.ModBlocks;
 import mythicbotany.data.custom.FloatingFlowerModelBuilder;
 import mythicbotany.functionalflora.base.BlockFloatingFunctionalFlower;
@@ -39,13 +39,13 @@ public class BlockStateProvider extends BlockStateProviderBase {
     @Override
     protected ModelFile defaultModel(ResourceLocation id, Block block) {
         if (block instanceof BlockFunctionalFlower<?>) {
-            return this.models().getBuilder(id.getPath()).parent(new AlwaysExistentModelFile(new ResourceLocation("botania", "block/shapes/cross")))
+            return this.models().getBuilder(id.getPath()).parent(new UncheckedModelFile(new ResourceLocation("botania", "block/shapes/cross")))
                     .texture("cross", new ResourceLocation(id.getNamespace(), "block/" + id.getPath()));
         } else if (block instanceof BlockFloatingFunctionalFlower<?>) {
             //noinspection ConstantConditions
             return FloatingFlowerModelBuilder.create(this.models(), id.getPath())
                     .flower(((BlockFloatingFunctionalFlower<?>) block).getNonFloatingBlock().getRegistryName())
-                    .parent(new AlwaysExistentModelFile(new ResourceLocation("minecraft", "block/block")));
+                    .parent(new UncheckedModelFile(new ResourceLocation("minecraft", "block/block")));
         } else {
             return super.defaultModel(id, block);
         }

@@ -1,8 +1,8 @@
 package mythicbotany.data;
 
-import io.github.noeppi_noeppi.libx.annotation.data.Datagen;
-import io.github.noeppi_noeppi.libx.data.provider.ItemModelProviderBase;
-import io.github.noeppi_noeppi.libx.mod.ModX;
+import org.moddingx.libx.annotation.data.Datagen;
+import org.moddingx.libx.datagen.provider.ItemModelProviderBase;
+import org.moddingx.libx.mod.ModX;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModItems;
 import mythicbotany.functionalflora.base.BlockFunctionalFlower;

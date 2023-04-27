@@ -1,7 +1,7 @@
 package mythicbotany.alfheim.placement;
 
-import io.github.noeppi_noeppi.libx.annotation.registration.NoReg;
-import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
+import org.moddingx.libx.annotation.registration.Reg.Exclude;
+import org.moddingx.libx.annotation.registration.RegisterClass;
 import mythicbotany.ModBlockTags;
 import mythicbotany.alfheim.feature.AbandonedApothecaryFeature;
 import mythicbotany.alfheim.feature.ManaCrystalFeature;
@@ -27,8 +27,8 @@ public class AlfheimWorldGen {
 
     public static final StructureFeature<JigsawConfiguration> andwariCave = new AndwariCave();
 
-    @NoReg public static final RuleTest livingrock = new BlockMatchTest(vazkii.botania.common.block.ModBlocks.livingrock);
-    @NoReg public static final RuleTest alfheimStone = new TagMatchTest(ModBlockTags.BASE_STONE_ALFHEIM);
+    @Exclude public static final RuleTest livingrock = new BlockMatchTest(vazkii.botania.common.block.ModBlocks.livingrock);
+    @Exclude public static final RuleTest alfheimStone = new TagMatchTest(ModBlockTags.BASE_STONE_ALFHEIM);
     
-    @NoReg public static final JigsawConfiguration dummyJigsaw = new JigsawConfiguration(PlainVillagePools.START, 0);
+    @Exclude public static final JigsawConfiguration dummyJigsaw = new JigsawConfiguration(PlainVillagePools.START, 0);
 }

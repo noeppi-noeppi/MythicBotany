@@ -2,8 +2,8 @@ package mythicbotany.data.recipes.extension;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import io.github.noeppi_noeppi.libx.crafting.CraftingHelper2;
-import io.github.noeppi_noeppi.libx.data.provider.recipe.RecipeExtension;
+import org.moddingx.libx.crafting.CraftingHelper2;
+import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
 import mythicbotany.ModRecipes;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;

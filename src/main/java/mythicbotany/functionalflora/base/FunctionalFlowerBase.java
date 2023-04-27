@@ -1,9 +1,9 @@
 package mythicbotany.functionalflora.base;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import io.github.noeppi_noeppi.libx.LibX;
-import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
-import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
+import org.moddingx.libx.LibX;
+import org.moddingx.libx.base.tile.BlockEntityBase;
+import org.moddingx.libx.base.tile.TickingBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
@@ -40,7 +40,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IWandHUD.class)
-public abstract class FunctionalFlowerBase extends BlockEntityBase implements TickableBlock, IWandBindable, IWandable, IWandHUD {
+public abstract class FunctionalFlowerBase extends BlockEntityBase implements TickingBlock, IWandBindable, IWandable, IWandHUD {
 
     public static final ResourceLocation POOL_ID = new ResourceLocation("botania", "mana_pool");
     public static final ResourceLocation SPREADER_ID = new ResourceLocation("botania", "mana_spreader");

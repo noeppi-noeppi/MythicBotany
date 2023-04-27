@@ -1,6 +1,6 @@
 package mythicbotany.alfheim.biome;
 
-import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
+import org.moddingx.libx.annotation.registration.RegisterClass;
 import mythicbotany.alfheim.placement.AlfheimPlacements;
 import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.world.level.biome.Biome;

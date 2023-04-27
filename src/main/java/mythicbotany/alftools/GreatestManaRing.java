@@ -13,6 +13,9 @@ import vazkii.botania.common.item.equipment.bauble.ItemManaRing;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.world.item.Item.Properties;
+import vazkii.botania.common.item.equipment.bauble.ItemManaRing.ManaItem;
+
 public class GreatestManaRing extends ItemManaRing {
 
     private static final int MAX_MANA = 4000000;

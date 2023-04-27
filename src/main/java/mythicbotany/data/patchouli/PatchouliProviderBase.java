@@ -2,7 +2,7 @@ package mythicbotany.data.patchouli;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.github.noeppi_noeppi.libx.mod.ModX;
+import org.moddingx.libx.mod.ModX;
 import mythicbotany.data.patchouli.translate.TranslationManager;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;

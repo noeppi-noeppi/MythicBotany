@@ -1,7 +1,7 @@
 package mythicbotany.kvasir;
 
-import io.github.noeppi_noeppi.libx.base.ItemBase;
-import io.github.noeppi_noeppi.libx.mod.ModX;
+import org.moddingx.libx.base.ItemBase;
+import org.moddingx.libx.mod.ModX;
 import mythicbotany.MythicPlayerData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -19,6 +19,8 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemKvasirMead extends ItemBase {
 

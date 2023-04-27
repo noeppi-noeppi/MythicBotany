@@ -1,7 +1,7 @@
 package mythicbotany.network;
 
-import io.github.noeppi_noeppi.libx.mod.ModX;
-import io.github.noeppi_noeppi.libx.network.NetworkX;
+import org.moddingx.libx.mod.ModX;
+import org.moddingx.libx.network.NetworkX;
 import mythicbotany.network.ParticleSerializer.ParticleMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -10,6 +10,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
+
+import org.moddingx.libx.network.NetworkX.Protocol;
 
 public class MythicNetwork extends NetworkX {
 

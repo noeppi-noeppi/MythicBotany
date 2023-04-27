@@ -1,7 +1,7 @@
 package mythicbotany.functionalflora.base;
 
-import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
-import io.github.noeppi_noeppi.libx.mod.ModX;
+import org.moddingx.libx.base.tile.BlockBE;
+import org.moddingx.libx.mod.ModX;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -29,6 +29,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> extends BlockBE<T> {
 

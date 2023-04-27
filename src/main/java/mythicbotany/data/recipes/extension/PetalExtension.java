@@ -1,6 +1,6 @@
 package mythicbotany.data.recipes.extension;
 
-import io.github.noeppi_noeppi.libx.data.provider.recipe.RecipeExtension;
+import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
@@ -12,6 +12,8 @@ import vazkii.botania.data.recipes.PetalProvider;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
+
+import vazkii.botania.data.recipes.PetalProvider.FinishedRecipe;
 
 public interface PetalExtension extends RecipeExtension {
 

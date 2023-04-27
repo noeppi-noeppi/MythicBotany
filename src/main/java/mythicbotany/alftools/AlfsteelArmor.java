@@ -1,7 +1,7 @@
 package mythicbotany.alftools;
 
 import com.google.common.collect.Multimap;
-import io.github.noeppi_noeppi.libx.util.LazyValue;
+import org.moddingx.libx.util.lazy.LazyValue;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.config.MythicConfig;
@@ -29,6 +29,8 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.function.Consumer;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class AlfsteelArmor extends ItemTerrasteelArmor implements PylonRepairable {
 
     private static final LazyValue<ItemStack[]> armorSet = new LazyValue<>(() -> new ItemStack[]{new ItemStack(ModItems.alfsteelHelmet), new ItemStack(ModItems.alfsteelChestplate), new ItemStack(ModItems.alfsteelLeggings), new ItemStack(ModItems.alfsteelBoots)});
@@ -43,8 +45,8 @@ public class AlfsteelArmor extends ItemTerrasteelArmor implements PylonRepairabl
     }
 
     private void onJump(LivingEvent.LivingJumpEvent event) {
-        if (event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET).getItem() == ModItems.alfsteelBoots) {
-            LivingEntity entity = event.getEntityLiving();
+        if (event.getEntity().getItemBySlot(EquipmentSlot.FEET).getItem() == ModItems.alfsteelBoots) {
+            LivingEntity entity = event.getEntity();
 
             float rot = entity.getYRot() * ((float)Math.PI / 180F);
             float xzFactor = entity.isSprinting() ? MythicConfig.alftools.jump_modifier : 0;

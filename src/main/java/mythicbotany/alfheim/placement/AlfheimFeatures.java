@@ -1,6 +1,6 @@
 package mythicbotany.alfheim.placement;
 
-import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
+import org.moddingx.libx.annotation.registration.RegisterClass;
 import mythicbotany.ModBiomeTags;
 import mythicbotany.ModBlocks;
 import mythicbotany.alfheim.featuregen.RandomFoliagePlacer;

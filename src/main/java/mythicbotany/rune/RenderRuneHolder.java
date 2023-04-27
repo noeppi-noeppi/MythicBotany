@@ -2,7 +2,7 @@ package mythicbotany.rune;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import io.github.noeppi_noeppi.libx.render.ClientTickHandler;
+import org.moddingx.libx.render.ClientTickHandler;
 import mythicbotany.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;

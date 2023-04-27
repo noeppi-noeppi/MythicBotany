@@ -1,6 +1,6 @@
 package mythicbotany.alftools;
 
-import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
+import org.moddingx.libx.registration.Registerable;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.config.MythicConfig;
@@ -25,6 +25,8 @@ import vazkii.botania.common.lib.ModTags;
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.function.Consumer;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class AlfsteelAxe extends ItemTerraAxe implements PylonRepairable, Registerable {
 

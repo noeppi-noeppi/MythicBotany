@@ -1,6 +1,6 @@
 package mythicbotany.network;
 
-import io.github.noeppi_noeppi.libx.network.PacketSerializer;
+import org.moddingx.libx.network.PacketSerializer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

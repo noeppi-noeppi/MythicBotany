@@ -6,6 +6,8 @@ import net.minecraft.world.item.ItemStack;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.equipment.bauble.ItemBauble;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class GreatestAuraRing extends ItemBauble {
 
     public GreatestAuraRing(Properties properties) {

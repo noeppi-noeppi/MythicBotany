@@ -1,11 +1,11 @@
 package mythicbotany.config;
 
-import io.github.noeppi_noeppi.libx.annotation.config.RegisterConfig;
-import io.github.noeppi_noeppi.libx.config.Config;
-import io.github.noeppi_noeppi.libx.config.Group;
-import io.github.noeppi_noeppi.libx.config.validator.DoubleRange;
-import io.github.noeppi_noeppi.libx.config.validator.FloatRange;
-import io.github.noeppi_noeppi.libx.config.validator.IntRange;
+import org.moddingx.libx.annotation.config.RegisterConfig;
+import org.moddingx.libx.config.Config;
+import org.moddingx.libx.config.Group;
+import org.moddingx.libx.config.validate.DoubleRange;
+import org.moddingx.libx.config.validate.FloatRange;
+import org.moddingx.libx.config.validate.IntRange;
 import mythicbotany.functionalflora.WitherAconite;
 import mythicbotany.mjoellnir.MjoellnirHoldRequirement;
 

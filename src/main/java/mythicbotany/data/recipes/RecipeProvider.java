@@ -1,12 +1,12 @@
 package mythicbotany.data.recipes;
 
-import io.github.noeppi_noeppi.libx.annotation.data.Datagen;
-import io.github.noeppi_noeppi.libx.data.provider.recipe.RecipeProviderBase;
-import io.github.noeppi_noeppi.libx.data.provider.recipe.SmeltingExtension;
-import io.github.noeppi_noeppi.libx.data.provider.recipe.SmithingExtension;
-import io.github.noeppi_noeppi.libx.data.provider.recipe.crafting.CompressionExtension;
-import io.github.noeppi_noeppi.libx.data.provider.recipe.crafting.CraftingExtension;
-import io.github.noeppi_noeppi.libx.mod.ModX;
+import org.moddingx.libx.annotation.data.Datagen;
+import org.moddingx.libx.datagen.provider.recipe.RecipeProviderBase;
+import org.moddingx.libx.datagen.provider.recipe.SmeltingExtension;
+import org.moddingx.libx.datagen.provider.recipe.SmithingExtension;
+import org.moddingx.libx.datagen.provider.recipe.crafting.CompressionExtension;
+import org.moddingx.libx.datagen.provider.recipe.crafting.CraftingExtension;
+import org.moddingx.libx.mod.ModX;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;

@@ -1,7 +1,7 @@
 package mythicbotany.functionalflora;
 
 import com.google.common.collect.ImmutableSet;
-import io.github.noeppi_noeppi.libx.LibX;
+import org.moddingx.libx.LibX;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

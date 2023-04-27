@@ -2,8 +2,8 @@ package mythicbotany.base;
 
 import com.google.common.base.Predicates;
 import com.mojang.blaze3d.vertex.PoseStack;
-import io.github.noeppi_noeppi.libx.LibX;
-import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
+import org.moddingx.libx.LibX;
+import org.moddingx.libx.base.tile.BlockEntityBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;

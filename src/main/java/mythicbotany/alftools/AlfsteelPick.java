@@ -1,7 +1,7 @@
 package mythicbotany.alftools;
 
 import com.google.common.collect.ImmutableSet;
-import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
+import org.moddingx.libx.registration.Registerable;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.MythicCap;
@@ -37,6 +37,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Set;
 import java.util.function.Consumer;
+
+import net.minecraft.world.item.Item.Properties;
+import vazkii.botania.common.item.equipment.tool.terrasteel.ItemTerraPick.ManaItem;
 
 public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Registerable {
 

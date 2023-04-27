@@ -30,8 +30,8 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.SleepFinishedTimeEvent;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.SleepFinishedTimeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -56,13 +56,13 @@ public class EventListener {
     public void onDamage(LivingHurtEvent event) {
         if (event.getSource().getEntity() instanceof Player) {
             if (CuriosApi.getCuriosHelper().findFirstCurio((LivingEntity) event.getSource().getEntity(), ModItems.fireRing).isPresent()) {
-                if (event.getEntityLiving().getRemainingFireTicks() <= 1) {
-                    event.getEntityLiving().setSecondsOnFire(1);
+                if (event.getEntity().getRemainingFireTicks() <= 1) {
+                    event.getEntity().setSecondsOnFire(1);
                 }
             }
             if (CuriosApi.getCuriosHelper().findFirstCurio((LivingEntity) event.getSource().getEntity(), ModItems.iceRing).isPresent()) {
-                if (!event.getEntityLiving().hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
-                    event.getEntityLiving().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 99));
+                if (!event.getEntity().hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
+                    event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 99));
                 }
             }
         }
@@ -71,38 +71,38 @@ public class EventListener {
     @SubscribeEvent(priority = EventPriority.LOW)
     public void citicalHit(CriticalHitEvent event) {
         if (event.getResult() == Event.Result.ALLOW || (event.getResult() == Event.Result.DEFAULT && event.isVanillaCritical())) {
-            if (((AlfsteelHelm) ModItems.alfsteelHelmet).hasArmorSet(event.getPlayer())) {
-                if (((AlfsteelHelm) ModItems.alfsteelHelmet).hasAncientWill(event.getPlayer().getItemBySlot(EquipmentSlot.HEAD), IAncientWillContainer.AncientWillType.DHAROK)) {
-                    float calculatedModifier = event.getDamageModifier() * (1f + (1f - event.getPlayer().getHealth() / event.getPlayer().getMaxHealth()) * 0.5f);
+            if (((AlfsteelHelm) ModItems.alfsteelHelmet).hasArmorSet(event.getEntity())) {
+                if (((AlfsteelHelm) ModItems.alfsteelHelmet).hasAncientWill(event.getEntity().getItemBySlot(EquipmentSlot.HEAD), IAncientWillContainer.AncientWillType.DHAROK)) {
+                    float calculatedModifier = event.getDamageModifier() * (1f + (1f - event.getEntity().getHealth() / event.getEntity().getMaxHealth()) * 0.5f);
                     if (calculatedModifier != 1 && calculatedModifier != 0 && Float.isFinite(calculatedModifier)) {
                         event.setDamageModifier(calculatedModifier);
                     }
                 }
-                this.crittingPlayers.add(event.getPlayer().getUUID());
+                this.crittingPlayers.add(event.getEntity().getUUID());
             }
         }
     }
 
     @SubscribeEvent
     public void attackEntity(LivingAttackEvent event) {
-        if (event.getSource() == DamageSource.LIGHTNING_BOLT && event.getEntityLiving() == lightningImmuneEntity) {
+        if (event.getSource() == DamageSource.LIGHTNING_BOLT && event.getEntity() == lightningImmuneEntity) {
             event.setCanceled(true);
             return;
         }
         if (event.getSource().isFire()) {
-            if (CuriosApi.getCuriosHelper().findFirstCurio(event.getEntityLiving(), ModItems.fireRing).isPresent()) {
+            if (CuriosApi.getCuriosHelper().findFirstCurio(event.getEntity(), ModItems.fireRing).isPresent()) {
                 event.setCanceled(true);
                 return;
             }
         }
         if (event.getSource() == DamageSource.CRAMMING && event.getSource() == DamageSource.DRY_OUT && event.getSource() == DamageSource.IN_WALL) {
-            if (CuriosApi.getCuriosHelper().findFirstCurio(event.getEntityLiving(), ModItems.iceRing).isPresent()) {
+            if (CuriosApi.getCuriosHelper().findFirstCurio(event.getEntity(), ModItems.iceRing).isPresent()) {
                 event.setCanceled(true);
                 return;
             }
         }
         if (event.getSource().getEntity() instanceof Player && this.crittingPlayers.contains(event.getSource().getEntity().getUUID())) {
-            ItemTerrasteelHelm.onEntityAttacked(event.getSource(), event.getAmount(), ((Player) event.getSource().getEntity()), event.getEntityLiving());
+            ItemTerrasteelHelm.onEntityAttacked(event.getSource(), event.getAmount(), ((Player) event.getSource().getEntity()), event.getEntity());
         }
     }
 
@@ -115,12 +115,12 @@ public class EventListener {
 
     @SubscribeEvent
     public void playerClone(PlayerEvent.Clone event) {
-        MythicPlayerData.copy(event.getOriginal(), event.getPlayer());
+        MythicPlayerData.copy(event.getOriginal(), event.getEntity());
     }
 
     @SubscribeEvent
     public void placeBlock(BlockEvent.EntityPlaceEvent event) {
-        if (!event.getWorld().isClientSide() && event.getPlacedBlock().getBlock() == Blocks.GOLD_BLOCK && event.getEntity() instanceof LivingEntity) {
+        if (!event.getLevel().isClientSide() && event.getPlacedBlock().getBlock() == Blocks.GOLD_BLOCK && event.getEntity() instanceof LivingEntity) {
             CuriosApi.getCuriosHelper().findFirstCurio((LivingEntity) event.getEntity(), ModItems.andwariRing).ifPresent(result -> {
                 boolean hasMana = true;
                 if (event.getEntity() instanceof Player) {
@@ -140,7 +140,7 @@ public class EventListener {
                         });
                     }
                     if (event.getEntity() != null) {
-                        ItemStack drop = Andwari.randomAndwariItem(event.getWorld().getRandom());
+                        ItemStack drop = Andwari.randomAndwariItem(event.getLevel().getRandom());
                         event.getEntity().spawnAtLocation(drop);
                     }
                 }
@@ -153,7 +153,7 @@ public class EventListener {
         if (!event.getItem().getCommandSenderWorld().isClientSide) {
             // YEP. Sometimes method names are weird.
             if (event.getItem().getItem().getItem() == ModBlocks.mjoellnir.asItem()) {
-                if (!BlockMjoellnir.canHold(event.getPlayer())) {
+                if (!BlockMjoellnir.canHold(event.getEntity())) {
                     event.setCanceled(true);
                 }
             }
@@ -191,12 +191,12 @@ public class EventListener {
     
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void itemDespawn(ItemExpireEvent event) {
-        if (!event.getEntityItem().level.isClientSide && Alfheim.DIMENSION.equals(event.getEntityItem().level.dimension())) {
-            if (event.getEntityItem().getItem().getItem() == vazkii.botania.common.item.ModItems.dragonstone || event.getEntityItem().getItem().getItem() == vazkii.botania.common.item.ModItems.pixieDust) {
-                BlockPos pos = event.getEntityItem().blockPosition();
-                if (TileReturnPortal.validPortal(event.getEntityItem().level, pos)) {
-                    event.getEntityItem().level.setBlock(pos, ModBlocks.returnPortal.defaultBlockState(), 3);
-                    event.getEntityItem().remove(Entity.RemovalReason.DISCARDED);
+        if (!event.getEntity().level.isClientSide && Alfheim.DIMENSION.equals(event.getEntity().level.dimension())) {
+            if (event.getEntity().getItem().getItem() == vazkii.botania.common.item.ModItems.dragonstone || event.getEntity().getItem().getItem() == vazkii.botania.common.item.ModItems.pixieDust) {
+                BlockPos pos = event.getEntity().blockPosition();
+                if (TileReturnPortal.validPortal(event.getEntity().level, pos)) {
+                    event.getEntity().level.setBlock(pos, ModBlocks.returnPortal.defaultBlockState(), 3);
+                    event.getEntity().remove(Entity.RemovalReason.DISCARDED);
                 }
             }
         }
@@ -214,7 +214,7 @@ public class EventListener {
     
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void sleepFinished(SleepFinishedTimeEvent event) {
-        if (event.getWorld() instanceof ServerLevel level && !level.isClientSide) {
+        if (event.getLevel() instanceof ServerLevel level && !level.isClientSide) {
             if (Alfheim.DIMENSION.equals(level.dimension())) {
                 level.getServer().overworld().setDayTime(event.getNewTime());
             }

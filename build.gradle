@@ -7,23 +7,23 @@ apply from: 'https://moddingx.github.io/ModUtils/v4/mod.gradle'
 apply plugin: 'org.moddingx.modgradle.coremods'
 
 repositories {
-    maven { url = 'https://dvs1.progwml6.com/files/maven/' }
-    maven { url = 'https://maven.blamejared.com/' }
-    maven { url = 'https://maven.theillusivec4.top/' }
     maven { url = 'https://maven.moddingx.org/' }
     maven { url = 'https://maven.melanx.de/' }
+    maven { url = 'https://maven.blamejared.com/' }
+    maven { url = 'https://maven.theillusivec4.top/' }
 }
 
 dependencies {
-    annotationProcessor fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.18.2-3.2.18')
+    annotationProcessor fg.deobf('org.moddingx:LibX:1.19.2-4.2.8')
 
     coremods 'org.moddingx:CoreModTypes:5.0.2-2'
     
-    implementation fg.deobf('io.github.noeppi_noeppi.mods:LibX:1.18.2-3.2.18')
-    implementation fg.deobf('vazkii.botania:Botania:1.18.2-435')
-    implementation fg.deobf('vazkii.patchouli:Patchouli:1.18.2-71.1')
-    implementation fg.deobf('top.theillusivec4.curios:curios-forge:1.18.2-5.0.6.3')
-
-    compileOnly fg.deobf('mezz.jei:jei-1.18.2:9.7.0.180:api')
-    runtimeOnly fg.deobf('mezz.jei:jei-1.18.2:9.7.0.180')
+    implementation fg.deobf('org.moddingx:LibX:1.19.2-4.2.8')
+    implementation fg.deobf('vazkii.botania:Botania:1.19.2-437-FORGE')
+    implementation fg.deobf('vazkii.patchouli:Patchouli:1.19.2-77')
+    implementation fg.deobf('top.theillusivec4.curios:curios-forge:1.19.2-5.1.4.0')
+    
+    implementation fg.deobf("mezz.jei:jei-1.19.2-common-api:11.6.0.1015")
+    implementation fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.6.0.1015")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.19.2-forge:11.6.0.1015")
 }

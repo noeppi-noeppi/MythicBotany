@@ -9,6 +9,8 @@ import net.minecraft.world.item.ItemStack;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.equipment.bauble.ItemBauble;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class ItemAndwariRingCursed extends ItemBauble {
 
     public ItemAndwariRingCursed(Properties props) {

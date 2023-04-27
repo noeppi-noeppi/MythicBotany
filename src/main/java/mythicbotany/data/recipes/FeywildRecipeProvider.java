@@ -1,8 +1,8 @@
 package mythicbotany.data.recipes;
 
-import io.github.noeppi_noeppi.libx.annotation.data.Datagen;
-import io.github.noeppi_noeppi.libx.data.provider.recipe.RecipeProviderBase;
-import io.github.noeppi_noeppi.libx.mod.ModX;
+import org.moddingx.libx.annotation.data.Datagen;
+import org.moddingx.libx.datagen.provider.recipe.RecipeProviderBase;
+import org.moddingx.libx.mod.ModX;
 import mythicbotany.ModBlocks;
 import mythicbotany.ModItems;
 import mythicbotany.data.recipes.extension.PetalExtension;

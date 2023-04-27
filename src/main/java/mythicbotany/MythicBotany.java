@@ -1,7 +1,7 @@
 package mythicbotany;
 
-import io.github.noeppi_noeppi.libx.mod.registration.ModXRegistration;
-import io.github.noeppi_noeppi.libx.mod.registration.RegistrationBuilder;
+import org.moddingx.libx.mod.ModXRegistration;
+import org.moddingx.libx.registration.RegistrationBuilder;
 import mythicbotany.advancement.ModCriteria;
 import mythicbotany.alfheim.Alfheim;
 import mythicbotany.alfheim.AlfheimDimension;

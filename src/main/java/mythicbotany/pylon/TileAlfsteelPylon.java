@@ -1,6 +1,6 @@
 package mythicbotany.pylon;
 
-import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
+import org.moddingx.libx.base.tile.TickingBlock;
 import mythicbotany.MythicBotany;
 import mythicbotany.advancement.ModCriteria;
 import mythicbotany.base.BlockEntityMana;
@@ -18,7 +18,7 @@ import net.minecraftforge.network.PacketDistributor;
 import java.util.List;
 import java.util.UUID;
 
-public class TileAlfsteelPylon extends BlockEntityMana implements TickableBlock {
+public class TileAlfsteelPylon extends BlockEntityMana implements TickingBlock {
 
     public static final int MAX_MANA = 100000;
 

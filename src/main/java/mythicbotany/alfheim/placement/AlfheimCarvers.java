@@ -1,6 +1,6 @@
 package mythicbotany.alfheim.placement;
 
-import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
+import org.moddingx.libx.annotation.registration.RegisterClass;
 import mythicbotany.alfheim.carver.AlfheimCanyonCarver;
 import mythicbotany.alfheim.carver.AlfheimCaveCarver;
 import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;

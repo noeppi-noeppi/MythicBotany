@@ -1,8 +1,8 @@
 package mythicbotany.infuser;
 
 import com.google.common.base.Predicates;
-import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
-import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
+import org.moddingx.libx.base.tile.BlockEntityBase;
+import org.moddingx.libx.base.tile.TickingBlock;
 import mythicbotany.MythicBotany;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable, IManaReceiver, TickableBlock {
+public class TileManaInfuser extends BlockEntityBase implements ISparkAttachable, IManaReceiver, TickingBlock {
 
     private int mana;
     private boolean active;

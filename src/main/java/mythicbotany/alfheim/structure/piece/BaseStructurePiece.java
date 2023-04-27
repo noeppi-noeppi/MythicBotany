@@ -3,7 +3,7 @@ package mythicbotany.alfheim.structure.piece;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.noeppi_noeppi.libx.fi.Function3;
+import org.moddingx.libx.fi.Function3;
 import mythicbotany.MythicBotany;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;

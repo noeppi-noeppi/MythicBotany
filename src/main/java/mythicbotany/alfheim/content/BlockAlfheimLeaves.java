@@ -1,9 +1,9 @@
 package mythicbotany.alfheim.content;
 
 import com.google.common.collect.ImmutableSet;
-import io.github.noeppi_noeppi.libx.mod.ModX;
-import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
-import io.github.noeppi_noeppi.libx.util.TagAccess;
+import org.moddingx.libx.mod.ModX;
+import org.moddingx.libx.registration.Registerable;
+import org.moddingx.libx.util.data.TagAccess;
 import mythicbotany.ModBlockTags;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;

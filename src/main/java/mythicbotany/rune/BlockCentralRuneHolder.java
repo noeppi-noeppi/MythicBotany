@@ -1,6 +1,6 @@
 package mythicbotany.rune;
 
-import io.github.noeppi_noeppi.libx.mod.ModX;
+import org.moddingx.libx.mod.ModX;
 import mythicbotany.MythicPlayerData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -16,6 +16,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import vazkii.botania.common.item.ItemTwigWand;
 
 import javax.annotation.Nonnull;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockCentralRuneHolder extends BlockRuneHolder<TileCentralRuneHolder> {
 

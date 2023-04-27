@@ -35,7 +35,7 @@ public class EntityContent extends CaptionContent {
     protected void specialPage(PageBuilder builder, @Nullable String caption) {
         JsonObject json = new JsonObject();
         json.addProperty("type", "patchouli:entity");
-        json.addProperty("entity", Objects.requireNonNull(ForgeRegistries.ENTITIES.getKey(this.entity), "Entity not registered: " + this.entity).toString());
+        json.addProperty("entity", Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(this.entity), "Entity not registered: " + this.entity).toString());
         if (caption != null) {
             json.addProperty("text", builder.translate(caption));
         }

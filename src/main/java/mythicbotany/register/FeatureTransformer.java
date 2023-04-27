@@ -1,7 +1,7 @@
 package mythicbotany.register;
 
-import io.github.noeppi_noeppi.libx.mod.registration.Registerable;
-import io.github.noeppi_noeppi.libx.mod.registration.RegistryTransformer;
+import org.moddingx.libx.registration.Registerable;
+import org.moddingx.libx.registration.RegistryTransformer;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;

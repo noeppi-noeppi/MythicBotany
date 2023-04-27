@@ -1,11 +1,11 @@
 package mythicbotany.alfheim.featuregen;
 
 import com.mojang.serialization.Codec;
-import io.github.noeppi_noeppi.libx.annotation.api.Codecs;
-import io.github.noeppi_noeppi.libx.annotation.codec.PrimaryConstructor;
-import io.github.noeppi_noeppi.libx.annotation.registration.NoReg;
-import io.github.noeppi_noeppi.libx.annotation.registration.RegName;
-import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
+import org.moddingx.libx.annotation.api.Codecs;
+import org.moddingx.libx.annotation.codec.PrimaryConstructor;
+import org.moddingx.libx.annotation.registration.Reg.Exclude;
+import org.moddingx.libx.annotation.registration.Reg.Name;
+import org.moddingx.libx.annotation.registration.RegisterClass;
 import mythicbotany.MythicBotany;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -21,11 +21,13 @@ import javax.annotation.Nonnull;
 import java.util.Random;
 import java.util.function.BiConsumer;
 
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer.FoliageAttachment;
+
 @RegisterClass
 public class RandomFoliagePlacer extends FoliagePlacer {
 
-    @NoReg public static final Codec<RandomFoliagePlacer> CODEC = Codecs.get(MythicBotany.class, RandomFoliagePlacer.class);
-    @RegName("random_foliage") public static final FoliagePlacerType<RandomFoliagePlacer> TYPE = new FoliagePlacerType<>(CODEC);
+    @Exclude public static final Codec<RandomFoliagePlacer> CODEC = Codecs.get(MythicBotany.class, RandomFoliagePlacer.class);
+    @Name("random_foliage") public static final FoliagePlacerType<RandomFoliagePlacer> TYPE = new FoliagePlacerType<>(CODEC);
 
     @PrimaryConstructor
     public RandomFoliagePlacer(IntProvider radius, IntProvider offset) {

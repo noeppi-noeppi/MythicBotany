@@ -1,11 +1,11 @@
 package mythicbotany.alfheim.featuregen;
 
 import com.mojang.serialization.Codec;
-import io.github.noeppi_noeppi.libx.annotation.api.Codecs;
-import io.github.noeppi_noeppi.libx.annotation.codec.PrimaryConstructor;
-import io.github.noeppi_noeppi.libx.annotation.registration.NoReg;
-import io.github.noeppi_noeppi.libx.annotation.registration.RegName;
-import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
+import org.moddingx.libx.annotation.api.Codecs;
+import org.moddingx.libx.annotation.codec.PrimaryConstructor;
+import org.moddingx.libx.annotation.registration.Reg.Exclude;
+import org.moddingx.libx.annotation.registration.Reg.Name;
+import org.moddingx.libx.annotation.registration.RegisterClass;
 import mythicbotany.ModBlockTags;
 import mythicbotany.MythicBotany;
 import net.minecraft.core.BlockPos;
@@ -29,8 +29,8 @@ import java.util.function.BiConsumer;
 @RegisterClass
 public class ShatteredTrunkPlacer extends TrunkPlacer {
 
-    @NoReg public static final Codec<ShatteredTrunkPlacer> CODEC = Codecs.get(MythicBotany.class, ShatteredTrunkPlacer.class);
-    @RegName("shattered_trunk") public static final TrunkPlacerType<ShatteredTrunkPlacer> TYPE = new TrunkPlacerType<>(CODEC);
+    @Exclude public static final Codec<ShatteredTrunkPlacer> CODEC = Codecs.get(MythicBotany.class, ShatteredTrunkPlacer.class);
+    @Name("shattered_trunk") public static final TrunkPlacerType<ShatteredTrunkPlacer> TYPE = new TrunkPlacerType<>(CODEC);
 
     @PrimaryConstructor
     public ShatteredTrunkPlacer(int baseHeight, int heightRandA, int heightRandB) {

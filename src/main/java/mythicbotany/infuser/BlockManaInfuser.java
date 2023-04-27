@@ -1,8 +1,8 @@
 package mythicbotany.infuser;
 
-import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
-import io.github.noeppi_noeppi.libx.crafting.recipe.RecipeHelper;
-import io.github.noeppi_noeppi.libx.mod.ModX;
+import org.moddingx.libx.base.tile.BlockBE;
+import org.moddingx.libx.crafting.recipe.RecipeHelper;
+import org.moddingx.libx.mod.ModX;
 import mythicbotany.ModRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -19,6 +19,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockManaInfuser extends BlockBE<TileManaInfuser> {
 

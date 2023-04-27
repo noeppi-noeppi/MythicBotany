@@ -1,8 +1,8 @@
 package mythicbotany.mimir;
 
-import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
-import io.github.noeppi_noeppi.libx.capability.ItemCapabilities;
-import io.github.noeppi_noeppi.libx.inventory.BaseItemStackHandler;
+import org.moddingx.libx.base.tile.TickingBlock;
+import org.moddingx.libx.capability.ItemCapabilities;
+import org.moddingx.libx.inventory.BaseItemStackHandler;
 import mythicbotany.ModItems;
 import mythicbotany.base.BlockEntityMana;
 import net.minecraft.core.BlockPos;
@@ -21,7 +21,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileYggdrasilBranch extends BlockEntityMana implements TickableBlock {
+public class TileYggdrasilBranch extends BlockEntityMana implements TickingBlock {
 
     private final BaseItemStackHandler inventory = BaseItemStackHandler.builder(1)
             .contentsChanged(() -> {

@@ -1,6 +1,6 @@
 package mythicbotany.data.recipes.extension;
 
-import io.github.noeppi_noeppi.libx.data.provider.recipe.RecipeExtension;
+import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -9,6 +9,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import vazkii.botania.data.recipes.ManaInfusionProvider;
+
+import vazkii.botania.data.recipes.ManaInfusionProvider.FinishedRecipe;
 
 public interface ManaInfusionExtension extends RecipeExtension {
 

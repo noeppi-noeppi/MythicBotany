@@ -1,6 +1,6 @@
 package mythicbotany.alfheim.placement;
 
-import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
+import org.moddingx.libx.annotation.registration.RegisterClass;
 import mythicbotany.register.HackyHolder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;

@@ -1,8 +1,8 @@
 package mythicbotany.rune;
 
-import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
-import io.github.noeppi_noeppi.libx.capability.ItemCapabilities;
-import io.github.noeppi_noeppi.libx.inventory.BaseItemStackHandler;
+import org.moddingx.libx.base.tile.BlockEntityBase;
+import org.moddingx.libx.capability.ItemCapabilities;
+import org.moddingx.libx.inventory.BaseItemStackHandler;
 import mythicbotany.ModItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,7 +1,7 @@
 package mythicbotany.rune;
 
-import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
-import io.github.noeppi_noeppi.libx.mod.ModX;
+import org.moddingx.libx.base.tile.BlockBE;
+import org.moddingx.libx.mod.ModX;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,6 +27,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockRuneHolder<T extends TileRuneHolder> extends BlockBE<T> {
 

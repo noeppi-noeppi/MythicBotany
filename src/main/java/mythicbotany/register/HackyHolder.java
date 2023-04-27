@@ -1,7 +1,7 @@
 package mythicbotany.register;
 
 import com.mojang.datafixers.util.Either;
-import io.github.noeppi_noeppi.libx.util.Misc;
+import org.moddingx.libx.util.Misc;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -13,6 +13,9 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import net.minecraft.core.Holder.Kind;
+import net.minecraft.core.Holder.Reference;
 
 public class HackyHolder<T> implements Holder<T> {
     

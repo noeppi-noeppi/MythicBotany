@@ -2,8 +2,8 @@ package mythicbotany.kvasir;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Either;
-import io.github.noeppi_noeppi.libx.crafting.ingredient.NbtIngredient;
-import io.github.noeppi_noeppi.libx.util.Misc;
+import org.moddingx.libx.crafting.ingredient.NbtIngredient;
+import org.moddingx.libx.util.Misc;
 import mythicbotany.MythicBotany;
 import mythicbotany.rune.RuneRitualRecipe;
 import mythicbotany.rune.SpecialRuneInput;

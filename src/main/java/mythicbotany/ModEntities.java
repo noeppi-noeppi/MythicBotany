@@ -1,6 +1,6 @@
 package mythicbotany;
 
-import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
+import org.moddingx.libx.annotation.registration.RegisterClass;
 import mythicbotany.alfheim.content.AlfPixie;
 import mythicbotany.alfheim.content.AlfPixieRender;
 import net.minecraft.client.renderer.entity.EntityRenderers;

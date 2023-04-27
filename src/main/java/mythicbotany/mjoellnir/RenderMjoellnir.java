@@ -3,7 +3,7 @@ package mythicbotany.mjoellnir;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
-import io.github.noeppi_noeppi.libx.annotation.model.Model;
+import org.moddingx.libx.annotation.model.Model;
 import mythicbotany.ModBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;

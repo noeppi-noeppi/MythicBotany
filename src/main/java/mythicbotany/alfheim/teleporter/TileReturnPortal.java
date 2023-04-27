@@ -1,7 +1,7 @@
 package mythicbotany.alfheim.teleporter;
 
-import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
-import io.github.noeppi_noeppi.libx.base.tile.TickableBlock;
+import org.moddingx.libx.base.tile.BlockEntityBase;
+import org.moddingx.libx.base.tile.TickingBlock;
 import mythicbotany.alfheim.Alfheim;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,7 +16,7 @@ import vazkii.botania.common.block.ModBlocks;
 
 import java.util.List;
 
-public class TileReturnPortal extends BlockEntityBase implements TickableBlock {
+public class TileReturnPortal extends BlockEntityBase implements TickingBlock {
 
     public TileReturnPortal(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);

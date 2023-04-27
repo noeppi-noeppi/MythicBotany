@@ -1,9 +1,9 @@
 package mythicbotany.mimir;
 
-import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
-import io.github.noeppi_noeppi.libx.block.RotationShape;
-import io.github.noeppi_noeppi.libx.mod.ModX;
-import io.github.noeppi_noeppi.libx.render.ItemStackRenderer;
+import org.moddingx.libx.base.tile.BlockBE;
+import org.moddingx.libx.block.RotationShape;
+import org.moddingx.libx.mod.ModX;
+import org.moddingx.libx.render.ItemStackRenderer;
 import mythicbotany.ModItems;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
@@ -26,12 +26,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import vazkii.botania.common.item.ItemTwigWand;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockYggdrasilBranch extends BlockBE<TileYggdrasilBranch> {
 
@@ -55,7 +57,7 @@ public class BlockYggdrasilBranch extends BlockBE<TileYggdrasilBranch> {
 
     @Override
 //    @OnlyIn(Dist.CLIENT)
-    public void initializeItemClient(@Nonnull Consumer<IItemRenderProperties> consumer) {
+    public void initializeItemClient(@Nonnull Consumer<IClientItemExtensions> consumer) {
         consumer.accept(ItemStackRenderer.createProperties());
     }
 

@@ -1,7 +1,7 @@
 package mythicbotany;
 
-import io.github.noeppi_noeppi.libx.annotation.registration.RegisterClass;
-import io.github.noeppi_noeppi.libx.base.ItemBase;
+import org.moddingx.libx.annotation.registration.RegisterClass;
+import org.moddingx.libx.base.ItemBase;
 import mythicbotany.alftools.*;
 import mythicbotany.bauble.ItemAndwariRingCursed;
 import mythicbotany.bauble.ItemFireRing;

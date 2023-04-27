@@ -9,6 +9,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.botania.common.item.equipment.bauble.ItemBauble;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class ItemIceRing extends ItemBauble {
 
     public ItemIceRing(Properties props) {

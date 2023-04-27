@@ -1,7 +1,7 @@
 package mythicbotany.alftools;
 
 import com.google.common.collect.Multimap;
-import io.github.noeppi_noeppi.libx.util.LazyValue;
+import org.moddingx.libx.util.lazy.LazyValue;
 import mythicbotany.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.config.MythicConfig;
@@ -25,6 +25,8 @@ import vazkii.botania.common.lib.ModTags;
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.function.Consumer;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class AlfsteelHelm extends ItemTerrasteelHelm implements PylonRepairable {
 

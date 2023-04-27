@@ -1,8 +1,8 @@
 package mythicbotany.alfheim.teleporter;
 
 import com.google.common.collect.ImmutableSet;
-import io.github.noeppi_noeppi.libx.base.tile.BlockBE;
-import io.github.noeppi_noeppi.libx.mod.ModX;
+import org.moddingx.libx.base.tile.BlockBE;
+import org.moddingx.libx.mod.ModX;
 import mythicbotany.register.HackyHolder;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.Registry;
@@ -17,6 +17,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nonnull;
 import java.util.Set;
 import java.util.function.Consumer;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockReturnPortal extends BlockBE<TileReturnPortal> {
 

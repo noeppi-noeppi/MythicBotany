@@ -1,6 +1,6 @@
 package mythicbotany.mjoellnir;
 
-import io.github.noeppi_noeppi.libx.base.tile.BlockEntityBase;
+import org.moddingx.libx.base.tile.BlockEntityBase;
 import mythicbotany.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

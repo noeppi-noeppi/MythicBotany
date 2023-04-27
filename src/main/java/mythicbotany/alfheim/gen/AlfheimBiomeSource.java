@@ -19,6 +19,8 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
+import net.minecraft.world.level.biome.MultiNoiseBiomeSource.PresetInstance;
+
 public class AlfheimBiomeSource {
 
     public static final Codec<Source> CODEC = RecordCodecBuilder.create(instance -> instance.group(

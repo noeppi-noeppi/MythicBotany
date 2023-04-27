@@ -36,6 +36,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
+import net.minecraft.world.entity.Entity.RemovalReason;
+
 public class Mjoellnir extends Projectile {
 
     private static final EntityDataAccessor<Boolean> RETURNING = SynchedEntityData.defineId(Mjoellnir.class, EntityDataSerializers.BOOLEAN);

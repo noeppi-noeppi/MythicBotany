@@ -2,7 +2,7 @@ package mythicbotany.alfheim.teleporter;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import io.github.noeppi_noeppi.libx.render.RenderHelper;
+import org.moddingx.libx.render.RenderHelper;
 import mythicbotany.MythicBotany;
 import mythicbotany.alfheim.Alfheim;
 import mythicbotany.config.MythicConfig;
@@ -17,7 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import vazkii.botania.client.core.handler.MiscellaneousModels;
@@ -98,8 +98,8 @@ public class AlfheimPortalHandler {
     }
     
     @OnlyIn(Dist.CLIENT)
-    public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
-        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && clientInPortalTime > 0 && !(Minecraft.getInstance().screen instanceof PauseScreen)) {
+    public static void renderGameOverlay(RenderGuiOverlayEvent.Post event) {
+        if (event.getType() == RenderGuiOverlayEvent.ElementType.ALL && clientInPortalTime > 0 && !(Minecraft.getInstance().screen instanceof PauseScreen)) {
             PoseStack poseStack = event.getMatrixStack();
             poseStack.pushPose();
             int w = Minecraft.getInstance().getWindow().getGuiScaledWidth();

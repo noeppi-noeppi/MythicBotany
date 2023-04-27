@@ -1,6 +1,6 @@
 package mythicbotany;
 
-import io.github.noeppi_noeppi.libx.util.LazyValue;
+import org.moddingx.libx.util.lazy.LazyValue;
 import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;

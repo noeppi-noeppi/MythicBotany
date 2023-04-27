@@ -32,6 +32,8 @@ import vazkii.botania.common.lib.ModTags;
 import javax.annotation.Nonnull;
 import java.util.List;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
 
     private final Multimap<Attribute, AttributeModifier> attributeModifiers;
