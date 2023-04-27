@@ -122,10 +122,10 @@ public class ItemMjoellnir extends BlockItem {
         if (slot == EquipmentSlot.MAINHAND) {
             float dmgModifier = EnchantmentHelper.getDamageBonus(stack, MobType.UNDEFINED);
             float speedModifier = MythicConfig.mjoellnir.attack_speed_multiplier * EnchantmentHelper.getItemEnchantmentLevel(ModMisc.hammerMobility, stack);
-                ImmutableMultimap.Builder<Attribute, AttributeModifier> attributeBuilder = ImmutableMultimap.builder();
-                attributeBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "mjoellnir_damage_modifier", (MythicConfig.mjoellnir.base_damage_melee - 1) + ((MythicConfig.mjoellnir.enchantment_multiplier - 1) * dmgModifier), AttributeModifier.Operation.ADDITION));
-                attributeBuilder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "mjoellnir_attack_speed_modifier", MythicConfig.mjoellnir.base_attack_speed + speedModifier, AttributeModifier.Operation.ADDITION));
-                return attributeBuilder.build();
+            ImmutableMultimap.Builder<Attribute, AttributeModifier> attributeBuilder = ImmutableMultimap.builder();
+            attributeBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "mjoellnir_damage_modifier", (MythicConfig.mjoellnir.base_damage_melee - 1) + ((MythicConfig.mjoellnir.enchantment_multiplier - 1) * dmgModifier), AttributeModifier.Operation.ADDITION));
+            attributeBuilder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "mjoellnir_attack_speed_modifier", MythicConfig.mjoellnir.base_attack_speed + speedModifier, AttributeModifier.Operation.ADDITION));
+            return attributeBuilder.build();
         } else {
             return super.getAttributeModifiers(slot, stack);
         }

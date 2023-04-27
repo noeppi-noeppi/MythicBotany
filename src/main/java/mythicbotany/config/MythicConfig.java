@@ -146,7 +146,7 @@ public class MythicConfig {
         @FloatRange(min = 0, max = 1)
         public static float secondary_target_multiplier = 0.4f;
         
-        @Config("The chance for secondary targets to get lightning effects  applied as well on ranged attacks.")
+        @Config("The chance for secondary targets to get lightning effects applied as well on ranged attacks.")
         @FloatRange(min = 0, max = 1)
         public static float secondary_lightning_chance = 0.25f;
         
