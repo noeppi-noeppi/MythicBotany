@@ -1,16 +1,11 @@
 package mythicbotany.functionalflora.base;
 
-import com.google.common.collect.ImmutableMap;
-import org.moddingx.libx.base.tile.BlockBE;
-import org.moddingx.libx.mod.ModX;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -30,16 +25,16 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IPlantable;
-import vazkii.botania.common.block.ModBlocks;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.moddingx.libx.base.tile.BlockBE;
+import org.moddingx.libx.mod.ModX;
+import org.moddingx.libx.registration.RegistrationContext;
+import org.moddingx.libx.registration.SetupContext;
+import vazkii.botania.common.block.BotaniaBlocks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.OffsetType;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends BlockBE<T> implements IPlantable {
     
@@ -55,21 +50,22 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
     public BlockFunctionalFlower(ModX mod, Class<T> beClass, Properties properties, Item.Properties itemProperties, boolean isGenerating) {
         super(mod, beClass, properties.noCollission()
                 .isRedstoneConductor((state, world, pos) -> false)
-                .instabreak().sound(SoundType.GRASS), itemProperties);
+                .instabreak().sound(SoundType.GRASS)
+                .offsetType(OffsetType.XZ), itemProperties);
         this.isGenerating = isGenerating;
         this.floatingBlock = new BlockFloatingFunctionalFlower<>(mod, beClass, this);
     }
 
     @Override
-    public Map<String, Object> getNamedAdditionalRegisters(ResourceLocation id) {
-        return ImmutableMap.of("floating", this.floatingBlock);
+    public void registerAdditional(RegistrationContext ctx, EntryCollector builder) {
+        super.registerAdditional(ctx, builder);
+        builder.registerNamed(Registry.BLOCK_REGISTRY, "floating", this.floatingBlock);
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderFunctionalFlower<>());
-        ItemBlockRenderTypes.setRenderLayer(this, RenderType.cutoutMipped());
+    public void registerClient(SetupContext ctx) {
+        ctx.enqueue(() -> BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderFunctionalFlower<>()));
     }
 
     @SuppressWarnings("deprecation")
@@ -96,11 +92,6 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
         return SHAPE.move(shift.x, shift.y, shift.z);
     }
 
-    @Nonnull
-    public OffsetType getOffsetType() {
-        return OffsetType.XZ;
-    }
-
     @SuppressWarnings("deprecation")
     @Nonnull
     public BlockState updateShape(BlockState state, @Nonnull Direction facing, @Nonnull BlockState facingState, @Nonnull LevelAccessor level, @Nonnull BlockPos currentPos, @Nonnull BlockPos facingPos) {
@@ -109,7 +100,7 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
 
     protected boolean isValidGround(BlockState state, BlockGetter level, BlockPos pos) {
         return state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.DIRT) || state.is(Blocks.COARSE_DIRT)
-                || state.is(Blocks.PODZOL) || state.is(Blocks.FARMLAND) || state.is(ModBlocks.enchantedSoil)
+                || state.is(Blocks.PODZOL) || state.is(Blocks.FARMLAND) || state.is(BotaniaBlocks.enchantedSoil)
                 || state.is(Blocks.MYCELIUM) || state.canSustainPlant(level, pos, Direction.UP, this);
     }
 
@@ -135,13 +126,15 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
     public void appendHoverText(@Nonnull ItemStack stack, @Nullable BlockGetter level, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         if (this.isGenerating) {
-            tooltip.add(new TranslatableComponent("botania.flowerType.generating").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
+            tooltip.add(Component.translatable("botania.flowerType.generating").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
         } else {
-            tooltip.add(new TranslatableComponent("botania.flowerType.functional").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
+            tooltip.add(Component.translatable("botania.flowerType.functional").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
 
         }
-        //noinspection ConstantConditions
-        tooltip.add(new TranslatableComponent("block." + this.mod.modid + "." + this.getRegistryName().getPath() + ".description").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        ResourceLocation id = ForgeRegistries.BLOCKS.getKey(this);
+        if (id != null) {
+            tooltip.add(Component.translatable("block." + id.getNamespace() + "." + id.getPath() + ".description").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        }
     }
 
     @Override

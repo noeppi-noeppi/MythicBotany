@@ -1,8 +1,7 @@
 {
-  "name": "lexicon.entry.mythicbotany.mythic_botany.functional",
   "category": "mythicbotany:mythic_botany",
   "icon": "mythicbotany:hellebore",
-  "entry_color": "aa00",
+  "name": "lexicon.entry.mythicbotany.mythic_botany.functional",
   "pages": [
     {
       "type": "botania:petal_apothecary",

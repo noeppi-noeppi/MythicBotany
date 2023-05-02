@@ -1,25 +1,24 @@
 package mythicbotany;
 
-import org.moddingx.libx.mod.ModXRegistration;
-import org.moddingx.libx.registration.RegistrationBuilder;
 import mythicbotany.advancement.ModCriteria;
-import mythicbotany.alfheim.Alfheim;
-import mythicbotany.alfheim.AlfheimDimension;
-import mythicbotany.alfheim.structure.piece.ModStructurePieces;
 import mythicbotany.alfheim.teleporter.AlfheimPortalHandler;
+import mythicbotany.alfheim.worldgen.placement.AlfheimGroundModifier;
 import mythicbotany.config.ClientConfig;
 import mythicbotany.kvasir.WanderingTraderRuneInput;
+import mythicbotany.loot.AlfsteelDisposeModifier;
+import mythicbotany.loot.FimbultyrModifier;
 import mythicbotany.mjoellnir.MjoellnirRuneOutput;
 import mythicbotany.network.MythicNetwork;
 import mythicbotany.patchouli.PageRitualInfo;
 import mythicbotany.patchouli.PageRitualPattern;
 import mythicbotany.pylon.PylonRepairables;
-import mythicbotany.register.FeatureTransformer;
-import mythicbotany.register.TrunkPlacerTransformer;
+import mythicbotany.register.ModEnchantments;
+import mythicbotany.register.ModEntities;
+import mythicbotany.register.ModItems;
 import mythicbotany.rune.RuneRitualRecipe;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,6 +35,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
+import org.moddingx.libx.mod.ModXRegistration;
+import org.moddingx.libx.registration.RegistrationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.theillusivec4.curios.api.SlotTypePreset;
@@ -43,6 +46,7 @@ import vazkii.patchouli.client.book.ClientBookRegistry;
 
 import javax.annotation.Nonnull;
 
+// TODO textures
 @Mod("mythicbotany")
 public final class MythicBotany extends ModXRegistration {
 
@@ -64,17 +68,11 @@ public final class MythicBotany extends ModXRegistration {
         network = new MythicNetwork(this);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.CLIENT_CONFIG);
-
-        this.addRegistrationHandler(ModRecipes::register);
-        this.addRegistrationHandler(ModMisc::register);
-        this.addRegistrationHandler(Alfheim::register);
-
+        
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerMisc);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::sendIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ModEntities::createAttributes);
-        
-        // Event is an IModBusEvent but still fired on the forge bus. Just register it to both
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, MythicMappings::remapItems);
-        MinecraftForge.EVENT_BUS.addGenericListener(Item.class, MythicMappings::remapItems);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModEntities::createSpawnPlacement);
 
         MinecraftForge.EVENT_BUS.addListener(this::serverStart);
         MinecraftForge.EVENT_BUS.addListener(this::datapacksReloaded);
@@ -100,9 +98,13 @@ public final class MythicBotany extends ModXRegistration {
 
     @Override
     protected void initRegistration(RegistrationBuilder builder) {
-        builder.setVersion(1);
-        builder.addTransformer(TrunkPlacerTransformer.INSTANCE);
-        builder.addTransformer(FeatureTransformer.INSTANCE);
+        // TODO 1.19.4 proper registry tracking support
+    }
+    
+    private void registerMisc(RegisterEvent event) {
+        event.register(Registry.PLACEMENT_MODIFIER_REGISTRY, this.resource("alfheim_ground"), () -> AlfheimGroundModifier.TYPE);
+        event.register(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, this.resource("dispose"), () -> AlfsteelDisposeModifier.CODEC);
+        event.register(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, this.resource("fimbultyr"), () -> FimbultyrModifier.CODEC);
     }
 
     @Override
@@ -110,8 +112,6 @@ public final class MythicBotany extends ModXRegistration {
         logger.info("Loading MythicBotany");
         
         event.enqueueWork(() -> {
-            ModStructurePieces.setup();
-            ModEntities.setup();
             ModCriteria.setup();
             
             PylonRepairables.register(new PylonRepairables.ItemPylonRepairable(), PylonRepairables.PRIORITY_ITEM_WITH_INTERFACE);
@@ -119,15 +119,13 @@ public final class MythicBotany extends ModXRegistration {
 
             RuneRitualRecipe.registerSpecialInput(WanderingTraderRuneInput.INSTANCE);
             RuneRitualRecipe.registerSpecialOutput(MjoellnirRuneOutput.INSTANCE);
-            
-            AlfheimDimension.setup();
         });
     }
 
     @Override
     protected void clientSetup(FMLClientSetupEvent event) {
-        ModEntities.clientSetup();
         event.enqueueWork(() -> {
+            ModEntities.clientSetup();
             ClientBookRegistry.INSTANCE.pageTypes.put(new ResourceLocation(this.modid, "ritual_pattern"), PageRitualPattern.class);
             ClientBookRegistry.INSTANCE.pageTypes.put(new ResourceLocation(this.modid, "ritual_info"), PageRitualInfo.class);
         });
@@ -135,7 +133,7 @@ public final class MythicBotany extends ModXRegistration {
 
     private void sendIMC(final InterModEnqueueEvent event) {
         InterModComms.sendTo("curios", "register_type", () -> SlotTypePreset.RING.getMessageBuilder().size(3).build());
-        InterModComms.sendTo("apotheosis", "set_ench_hard_cap", () -> new EnchantmentInstance(ModMisc.hammerMobility, 5));
+        InterModComms.sendTo("apotheosis", "set_ench_hard_cap", () -> new EnchantmentInstance(ModEnchantments.hammerMobility, 5));
     }
 
     public void serverStart(ServerStartingEvent event) {

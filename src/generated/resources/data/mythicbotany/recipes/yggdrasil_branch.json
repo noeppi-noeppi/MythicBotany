@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "lll",
-    "ttt",
-    "lll"
-  ],
   "key": {
     "l": {
       "tag": "botania:livingwood_logs"
@@ -13,6 +8,11 @@
       "tag": "botania:terrasteel_nuggets"
     }
   },
+  "pattern": [
+    "lll",
+    "ttt",
+    "lll"
+  ],
   "result": {
     "item": "mythicbotany:yggdrasil_branch"
   }

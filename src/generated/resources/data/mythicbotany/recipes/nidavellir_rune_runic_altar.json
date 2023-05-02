@@ -1,9 +1,5 @@
 {
   "type": "botania:runic_altar",
-  "output": {
-    "item": "mythicbotany:nidavellir_rune"
-  },
-  "mana": 16000,
   "ingredients": [
     {
       "tag": "forge:ingots/copper"
@@ -20,5 +16,9 @@
     {
       "item": "minecraft:iron_block"
     }
-  ]
+  ],
+  "mana": 16000,
+  "output": {
+    "item": "mythicbotany:nidavellir_rune"
+  }
 }

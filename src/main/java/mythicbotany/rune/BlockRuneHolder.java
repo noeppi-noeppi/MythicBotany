@@ -1,11 +1,8 @@
 package mythicbotany.rune;
 
-import org.moddingx.libx.base.tile.BlockBE;
-import org.moddingx.libx.mod.ModX;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -24,11 +21,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.moddingx.libx.base.tile.BlockBE;
+import org.moddingx.libx.mod.ModX;
+import org.moddingx.libx.registration.SetupContext;
 
 import javax.annotation.Nonnull;
-import java.util.function.Consumer;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockRuneHolder<T extends TileRuneHolder> extends BlockBE<T> {
 
@@ -44,11 +41,11 @@ public class BlockRuneHolder<T extends TileRuneHolder> extends BlockBE<T> {
     public BlockRuneHolder(ModX mod, Class<T> tileClass, Properties properties, Item.Properties itemProperties) {
         super(mod, tileClass, properties, itemProperties);
     }
-    
+
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderRuneHolder());
+    public void registerClient(SetupContext ctx) {
+        ctx.enqueue(() -> BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderRuneHolder()));
     }
 
     @Nonnull

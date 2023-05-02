@@ -2,9 +2,12 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "main",
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:alternatives",
@@ -13,90 +16,111 @@
               "type": "minecraft:item",
               "conditions": [
                 {
-                  "condition": "minecraft:alternative",
-                  "terms": [
-                    {
-                      "condition": "minecraft:match_tool",
-                      "predicate": {
-                        "enchantments": [
-                          {
-                            "enchantment": "minecraft:silk_touch",
-                            "levels": {
-                              "min": 1
-                            }
-                          }
-                        ]
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "enchantments": [
+                      {
+                        "enchantment": "minecraft:silk_touch",
+                        "levels": {
+                          "min": 1
+                        }
                       }
-                    },
-                    {
-                      "condition": "minecraft:match_tool",
-                      "predicate": {
-                        "tag": "forge:shears"
-                      }
-                    }
-                  ]
+                    ]
+                  }
                 }
               ],
               "name": "mythicbotany:dreamwood_leaves"
             },
             {
-              "type": "libx:all",
+              "type": "minecraft:alternatives",
               "children": [
                 {
                   "type": "minecraft:item",
                   "conditions": [
                     {
-                      "condition": "minecraft:table_bonus",
-                      "enchantment": "minecraft:fortune",
-                      "chances": [
-                        0.06,
-                        0.06666667,
-                        0.074999996,
-                        0.099999994,
-                        0.29999998
+                      "condition": "minecraft:alternative",
+                      "terms": [
+                        {
+                          "condition": "minecraft:match_tool",
+                          "predicate": {
+                            "enchantments": [
+                              {
+                                "enchantment": "minecraft:silk_touch",
+                                "levels": {
+                                  "min": 1
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "condition": "minecraft:match_tool",
+                          "predicate": {
+                            "tag": "forge:shears"
+                          }
+                        }
                       ]
                     }
                   ],
-                  "functions": [
-                    {
-                      "function": "minecraft:set_count",
-                      "count": {
-                        "type": "minecraft:uniform",
-                        "min": 1.0,
-                        "max": 2.0
-                      },
-                      "add": false
-                    }
-                  ],
-                  "name": "botania:dreamwood_twig"
+                  "name": "mythicbotany:dreamwood_leaves"
                 },
                 {
-                  "type": "minecraft:item",
-                  "conditions": [
+                  "type": "libx:all",
+                  "children": [
                     {
-                      "condition": "minecraft:table_bonus",
-                      "enchantment": "minecraft:fortune",
-                      "chances": [
-                        0.015,
-                        0.016666668,
-                        0.018749999,
-                        0.024999999,
-                        0.074999996
-                      ]
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "chances": [
+                            0.06,
+                            0.06666667,
+                            0.074999996,
+                            0.099999994,
+                            0.29999998
+                          ],
+                          "condition": "minecraft:table_bonus",
+                          "enchantment": "minecraft:fortune"
+                        }
+                      ],
+                      "functions": [
+                        {
+                          "add": false,
+                          "count": {
+                            "type": "minecraft:uniform",
+                            "max": 2.0,
+                            "min": 1.0
+                          },
+                          "function": "minecraft:set_count"
+                        }
+                      ],
+                      "name": "botania:dreamwood_twig"
+                    },
+                    {
+                      "type": "minecraft:item",
+                      "conditions": [
+                        {
+                          "chances": [
+                            0.015,
+                            0.016666668,
+                            0.018749999,
+                            0.024999999,
+                            0.074999996
+                          ],
+                          "condition": "minecraft:table_bonus",
+                          "enchantment": "minecraft:fortune"
+                        }
+                      ],
+                      "name": "mythicbotany:dream_cherry"
                     }
-                  ],
-                  "name": "mythicbotany:dream_cherry"
+                  ]
                 }
               ]
             }
           ]
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ]
+      "name": "main",
+      "rolls": 1.0
     }
   ]
 }

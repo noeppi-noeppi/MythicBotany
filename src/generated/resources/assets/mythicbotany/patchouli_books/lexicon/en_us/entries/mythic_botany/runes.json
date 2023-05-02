@@ -1,8 +1,7 @@
 {
-  "name": "lexicon.entry.mythicbotany.mythic_botany.runes",
   "category": "mythicbotany:mythic_botany",
   "icon": "mythicbotany:niflheim_rune",
-  "entry_color": "aa00",
+  "name": "lexicon.entry.mythicbotany.mythic_botany.runes",
   "pages": [
     {
       "type": "patchouli:text",

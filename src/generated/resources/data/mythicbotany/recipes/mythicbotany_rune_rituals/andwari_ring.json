@@ -1,77 +1,9 @@
 {
   "type": "mythicbotany:rune_ritual",
-  "group": "rune_rituals",
   "center": {
     "item": "botania:rune_mana"
   },
-  "runes": [
-    {
-      "rune": {
-        "item": "botania:rune_greed"
-      },
-      "x": -2,
-      "z": -2,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "botania:rune_greed"
-      },
-      "x": -2,
-      "z": 2,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "botania:rune_greed"
-      },
-      "x": 2,
-      "z": -2,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "botania:rune_greed"
-      },
-      "x": 2,
-      "z": 2,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "mythicbotany:alfheim_rune"
-      },
-      "x": -3,
-      "z": 0,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "mythicbotany:alfheim_rune"
-      },
-      "x": 3,
-      "z": 0,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "botania:rune_greed"
-      },
-      "x": 0,
-      "z": -3,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "botania:rune_greed"
-      },
-      "x": 0,
-      "z": 3,
-      "consume": false
-    }
-  ],
-  "mana": 0,
-  "ticks": 200,
+  "group": "rune_rituals",
   "inputs": [
     [
       {
@@ -85,11 +17,79 @@
       "item": "botania:manaweave_cloth"
     }
   ],
+  "mana": 0,
   "outputs": [
     {
-      "item": "mythicbotany:andwari_ring",
       "count": 1,
+      "item": "mythicbotany:andwari_ring",
       "nbt": "{Damage:0}"
     }
-  ]
+  ],
+  "runes": [
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_greed"
+      },
+      "x": -2,
+      "z": -2
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_greed"
+      },
+      "x": -2,
+      "z": 2
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_greed"
+      },
+      "x": 2,
+      "z": -2
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_greed"
+      },
+      "x": 2,
+      "z": 2
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "mythicbotany:alfheim_rune"
+      },
+      "x": -3,
+      "z": 0
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "mythicbotany:alfheim_rune"
+      },
+      "x": 3,
+      "z": 0
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_greed"
+      },
+      "x": 0,
+      "z": -3
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_greed"
+      },
+      "x": 0,
+      "z": 3
+    }
+  ],
+  "ticks": 200
 }

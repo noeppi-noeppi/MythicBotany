@@ -1,8 +1,7 @@
 {
-  "name": "lexicon.entry.mythicbotany.mythic_botany.manaband",
   "category": "mythicbotany:mythic_botany",
   "icon": "mythicbotany:mana_ring_greatest",
-  "entry_color": "aa00",
+  "name": "lexicon.entry.mythicbotany.mythic_botany.manaband",
   "pages": [
     {
       "type": "patchouli:spotlight",

@@ -10,7 +10,9 @@ import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import vazkii.botania.api.subtile.RadiusDescriptor;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import vazkii.botania.api.block_entity.RadiusDescriptor;
 
 import java.util.List;
 
@@ -54,6 +56,7 @@ public class Hellebore extends FunctionalFlowerBase {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public RadiusDescriptor getRadius() {
         return RadiusDescriptor.Rectangle.square(this.worldPosition, 5);
     }

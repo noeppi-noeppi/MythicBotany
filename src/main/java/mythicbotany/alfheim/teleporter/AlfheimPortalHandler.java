@@ -2,7 +2,6 @@ package mythicbotany.alfheim.teleporter;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import org.moddingx.libx.render.RenderHelper;
 import mythicbotany.MythicBotany;
 import mythicbotany.alfheim.Alfheim;
 import mythicbotany.config.MythicConfig;
@@ -17,9 +16,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
+import org.moddingx.libx.render.RenderHelper;
 import vazkii.botania.client.core.handler.MiscellaneousModels;
 
 import java.util.*;
@@ -40,9 +40,16 @@ public class AlfheimPortalHandler {
     
     public static void endTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            timesInPortal.keySet().removeIf(p -> !inPortal.contains(p));
+            Iterator<ServerPlayer> itr = timesInPortal.keySet().iterator();
+            while (itr.hasNext()) {
+                ServerPlayer player = itr.next();
+                if (!inPortal.contains(player)) {
+                    MythicBotany.getNetwork().updatePortalTime(player, 0);
+                    itr.remove();
+                }
+            }
             
-            Iterator<ServerPlayer> itr = portalBlocked.iterator();
+            itr = portalBlocked.iterator();
             while (itr.hasNext()) {
                 ServerPlayer player = itr.next();
                 if (canRemovePortalBlocked(player)) {
@@ -98,9 +105,9 @@ public class AlfheimPortalHandler {
     }
     
     @OnlyIn(Dist.CLIENT)
-    public static void renderGameOverlay(RenderGuiOverlayEvent.Post event) {
-        if (event.getType() == RenderGuiOverlayEvent.ElementType.ALL && clientInPortalTime > 0 && !(Minecraft.getInstance().screen instanceof PauseScreen)) {
-            PoseStack poseStack = event.getMatrixStack();
+    public static void renderGameOverlay(RenderGuiEvent.Post event) {
+        if (clientInPortalTime > 0 && !(Minecraft.getInstance().screen instanceof PauseScreen)) {
+            PoseStack poseStack = event.getPoseStack();
             poseStack.pushPose();
             int w = Minecraft.getInstance().getWindow().getGuiScaledWidth();
             int h = Minecraft.getInstance().getWindow().getGuiScaledHeight();

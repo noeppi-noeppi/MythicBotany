@@ -1,109 +1,9 @@
 {
   "type": "mythicbotany:rune_ritual",
-  "group": "rune_rituals",
   "center": {
     "item": "mythicbotany:fimbultyr_tablet"
   },
-  "runes": [
-    {
-      "rune": {
-        "item": "mythicbotany:midgard_rune"
-      },
-      "x": -2,
-      "z": -2,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "mythicbotany:midgard_rune"
-      },
-      "x": 2,
-      "z": 2,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "mythicbotany:helheim_rune"
-      },
-      "x": 2,
-      "z": -2,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "mythicbotany:helheim_rune"
-      },
-      "x": -2,
-      "z": 2,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "botania:rune_summer"
-      },
-      "x": -1,
-      "z": -3,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "botania:rune_summer"
-      },
-      "x": 1,
-      "z": 3,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "botania:rune_summer"
-      },
-      "x": -3,
-      "z": -1,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "botania:rune_summer"
-      },
-      "x": 3,
-      "z": 1,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "botania:rune_fire"
-      },
-      "x": 1,
-      "z": -3,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "botania:rune_fire"
-      },
-      "x": -1,
-      "z": 3,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "botania:rune_fire"
-      },
-      "x": 3,
-      "z": -1,
-      "consume": false
-    },
-    {
-      "rune": {
-        "item": "botania:rune_fire"
-      },
-      "x": -3,
-      "z": 1,
-      "consume": false
-    }
-  ],
-  "mana": 20000,
-  "ticks": 200,
+  "group": "rune_rituals",
   "inputs": [
     {
       "item": "botania:ender_dagger"
@@ -115,11 +15,111 @@
       "item": "botania:vial"
     }
   ],
+  "mana": 20000,
   "outputs": [
     {
-      "item": "mythicbotany:kvasir_blood",
-      "count": 1
+      "count": 1,
+      "item": "mythicbotany:kvasir_blood"
     }
   ],
-  "special_input": "mythicbotany:wandering_trader"
+  "runes": [
+    {
+      "consume": false,
+      "rune": {
+        "item": "mythicbotany:midgard_rune"
+      },
+      "x": -2,
+      "z": -2
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "mythicbotany:midgard_rune"
+      },
+      "x": 2,
+      "z": 2
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "mythicbotany:helheim_rune"
+      },
+      "x": 2,
+      "z": -2
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "mythicbotany:helheim_rune"
+      },
+      "x": -2,
+      "z": 2
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_summer"
+      },
+      "x": -1,
+      "z": -3
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_summer"
+      },
+      "x": 1,
+      "z": 3
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_summer"
+      },
+      "x": -3,
+      "z": -1
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_summer"
+      },
+      "x": 3,
+      "z": 1
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_fire"
+      },
+      "x": 1,
+      "z": -3
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_fire"
+      },
+      "x": -1,
+      "z": 3
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_fire"
+      },
+      "x": 3,
+      "z": -1
+    },
+    {
+      "consume": false,
+      "rune": {
+        "item": "botania:rune_fire"
+      },
+      "x": -3,
+      "z": 1
+    }
+  ],
+  "special_input": "mythicbotany:wandering_trader",
+  "ticks": 200
 }

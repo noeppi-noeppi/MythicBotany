@@ -4,11 +4,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import vazkii.botania.api.mana.ManaItemHandler;
-import vazkii.botania.common.item.equipment.bauble.ItemBauble;
 
-import net.minecraft.world.item.Item.Properties;
+import vazkii.botania.common.item.equipment.bauble.BaubleItem;
 
-public class GreatestAuraRing extends ItemBauble {
+public class GreatestAuraRing extends BaubleItem {
 
     public GreatestAuraRing(Properties properties) {
         super(properties);

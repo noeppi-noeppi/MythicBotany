@@ -1,12 +1,11 @@
 {
-  "replace": false,
   "values": [
-    "mythicbotany:exoblaze_floating",
-    "mythicbotany:wither_aconite_floating",
     "mythicbotany:aquapanthus_floating",
-    "mythicbotany:hellebore_floating",
-    "mythicbotany:raindeletia_floating",
+    "mythicbotany:exoblaze_floating",
     "mythicbotany:feysythia_floating",
-    "mythicbotany:petrunia_floating"
+    "mythicbotany:hellebore_floating",
+    "mythicbotany:petrunia_floating",
+    "mythicbotany:raindeletia_floating",
+    "mythicbotany:wither_aconite_floating"
   ]
 }

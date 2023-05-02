@@ -28,19 +28,19 @@ import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.BotaniaAPIClient;
 import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.BotaniaForgeClientCapabilities;
-import vazkii.botania.api.block.IWandBindable;
-import vazkii.botania.api.block.IWandHUD;
-import vazkii.botania.api.block.IWandable;
-import vazkii.botania.api.internal.IManaNetwork;
-import vazkii.botania.api.mana.IManaCollector;
-import vazkii.botania.api.mana.IManaPool;
-import vazkii.botania.api.subtile.RadiusDescriptor;
+import vazkii.botania.api.block.WandBindable;
+import vazkii.botania.api.block.WandHUD;
+import vazkii.botania.api.block.Wandable;
+import vazkii.botania.api.block_entity.RadiusDescriptor;
+import vazkii.botania.api.internal.ManaNetwork;
+import vazkii.botania.api.mana.ManaCollector;
+import vazkii.botania.api.mana.ManaPool;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-@OnlyIn(value = Dist.CLIENT, _interface = IWandHUD.class)
-public abstract class FunctionalFlowerBase extends BlockEntityBase implements TickingBlock, IWandBindable, IWandable, IWandHUD {
+@OnlyIn(value = Dist.CLIENT, _interface = WandHUD.class)
+public abstract class FunctionalFlowerBase extends BlockEntityBase implements TickingBlock, WandBindable, Wandable, WandHUD {
 
     public static final ResourceLocation POOL_ID = new ResourceLocation("botania", "mana_pool");
     public static final ResourceLocation SPREADER_ID = new ResourceLocation("botania", "mana_spreader");
@@ -56,9 +56,9 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
     @Nullable
     private BlockPos pool = null;
     @Nullable
-    private IManaPool poolTile = null;
+    private ManaPool poolTile = null;
     @Nullable
-    private IManaCollector spreaderTile = null;
+    private ManaCollector spreaderTile = null;
     protected int mana = 0;
     private boolean floating = false;
 
@@ -113,7 +113,7 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
                         this.spreaderTile.receiveMana(manaTransfer);
                         this.mana = Mth.clamp(this.mana - manaTransfer, 0, this.maxMana);
                         this.setChanged();
-                        this.markPoolDirty();
+                        this.setPoolChanged();
                     }
                 }
             } else {
@@ -123,7 +123,7 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
                         this.poolTile.receiveMana(-manaTransfer);
                         this.mana = Mth.clamp(this.mana + manaTransfer, 0, this.maxMana);
                         this.setChanged();
-                        this.markPoolDirty();
+                        this.setPoolChanged();
                     }
                 }
             }
@@ -166,15 +166,15 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
         double dist = pos.distSqr(this.getBlockPos());
         if ((double) range >= dist) {
             BlockEntity tile = player.level.getBlockEntity(pos);
-            if (this.isGenerating && tile instanceof IManaCollector) {
+            if (this.isGenerating && tile instanceof ManaCollector) {
                 this.pool = tile.getBlockPos();
-                this.spreaderTile = (IManaCollector) tile;
+                this.spreaderTile = (ManaCollector) tile;
                 this.poolTile = null;
                 this.setChanged();
                 return true;
-            } else if (!this.isGenerating && tile instanceof IManaPool) {
+            } else if (!this.isGenerating && tile instanceof ManaPool) {
                 this.pool = tile.getBlockPos();
-                this.poolTile = (IManaPool) tile;
+                this.poolTile = (ManaPool) tile;
                 this.spreaderTile = null;
                 this.setChanged();
                 return true;
@@ -205,16 +205,16 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
             BlockEntity te = this.level.getBlockEntity(this.pool);
             if (this.isGenerating) {
                 this.poolTile = null;
-                if (!(te instanceof IManaCollector)) {
+                if (!(te instanceof ManaCollector)) {
                     this.spreaderTile = null;
                 } else {
-                    this.spreaderTile = (IManaCollector) te;
+                    this.spreaderTile = (ManaCollector) te;
                 }
             } else {
-                if (!(te instanceof IManaPool)) {
+                if (!(te instanceof ManaPool)) {
                     this.poolTile = null;
                 } else {
-                    this.poolTile = (IManaPool) te;
+                    this.poolTile = (ManaPool) te;
                 }
                 this.spreaderTile = null;
             }
@@ -222,10 +222,10 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
 
         if (this.pool == null) {
             if (this.isGenerating) {
-                IManaNetwork network = BotaniaAPI.instance().getManaNetworkInstance();
+                ManaNetwork network = BotaniaAPI.instance().getManaNetworkInstance();
                 int size = network.getAllCollectorsInWorld(this.getLevel()).size();
                 if (size != this.sizeLastCheck) {
-                    IManaCollector te = network.getClosestCollector(this.getBlockPos(), this.getLevel(), 10);
+                    ManaCollector te = network.getClosestCollector(this.getBlockPos(), this.getLevel(), 10);
                     if (te != null) {
                         this.pool = te.getManaReceiverPos();
                         this.poolTile = null;
@@ -235,10 +235,10 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
                     this.sizeLastCheck = size;
                 }
             } else {
-                IManaNetwork network = BotaniaAPI.instance().getManaNetworkInstance();
+                ManaNetwork network = BotaniaAPI.instance().getManaNetworkInstance();
                 int size = network.getAllPoolsInWorld(this.getLevel()).size();
                 if (size != this.sizeLastCheck) {
-                    IManaPool te = network.getClosestPool(this.getBlockPos(), this.getLevel(), 10);
+                    ManaPool te = network.getClosestPool(this.getBlockPos(), this.getLevel(), 10);
                     if (te != null) {
                         this.pool = te.getManaReceiverPos();
                         this.poolTile = te;
@@ -369,7 +369,7 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
         BotaniaAPIClient.instance().drawComplexManaHUD(poseStack, this.color, this.getCurrentMana(), this.maxMana, name, new ItemStack(ForgeRegistries.ITEMS.getValue(this.isGenerating ? SPREADER_ID : POOL_ID)), this.isValidBinding());
     }
     
-    private void markPoolDirty() {
+    private void setPoolChanged() {
         if (this.poolTile instanceof BlockEntity) {
             ((BlockEntity) this.poolTile).setChanged();
         }

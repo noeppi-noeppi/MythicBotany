@@ -1,15 +1,15 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "aaa",
-    "aaa",
-    "aaa"
-  ],
   "key": {
     "a": {
       "item": "mythicbotany:raw_elementium"
     }
   },
+  "pattern": [
+    "aaa",
+    "aaa",
+    "aaa"
+  ],
   "result": {
     "item": "mythicbotany:raw_elementium_block"
   }

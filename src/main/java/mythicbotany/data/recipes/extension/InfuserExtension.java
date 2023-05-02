@@ -2,9 +2,9 @@ package mythicbotany.data.recipes.extension;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import mythicbotany.infuser.InfuserRecipe;
 import org.moddingx.libx.crafting.CraftingHelper2;
 import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
-import mythicbotany.ModRecipes;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -89,7 +89,7 @@ public interface InfuserExtension extends RecipeExtension {
         }
 
         public void build() {
-            this.build(this.result.getItem().getRegistryName());
+            this.build(this.ext.provider().loc(this.result.getItem()));
         }
 
         public void build(ResourceLocation id) {
@@ -103,6 +103,7 @@ public interface InfuserExtension extends RecipeExtension {
             }
         }
 
+        @SuppressWarnings("ClassCanBeRecord")
         private static class TheRecipe implements FinishedRecipe {
 
             private final ResourceLocation id;
@@ -148,7 +149,7 @@ public interface InfuserExtension extends RecipeExtension {
             @Nonnull
             @Override
             public RecipeSerializer<?> getType() {
-                return ModRecipes.INFUSER_SERIALIZER;
+                return InfuserRecipe.Serializer.INSTANCE;
             }
 
             @Nullable

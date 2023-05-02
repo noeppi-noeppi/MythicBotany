@@ -2,10 +2,10 @@ package mythicbotany.mjoellnir;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import mythicbotany.ModMisc;
+import mythicbotany.register.ModEnchantments;
 import mythicbotany.config.MythicConfig;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -29,8 +29,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class ItemMjoellnir extends BlockItem {
     
@@ -74,7 +72,7 @@ public class ItemMjoellnir extends BlockItem {
             if (!BlockMjoellnir.canHold(player)) {
                 BlockMjoellnir.putInWorld(stack.copy(), level, player.blockPosition());
                 stack.shrink(stack.getCount());
-                player.sendMessage(new TranslatableComponent("message.mythicbotany.mjoellnir_heavy_drop").withStyle(ChatFormatting.GRAY), player.getUUID());
+                player.sendSystemMessage(Component.translatable("message.mythicbotany.mjoellnir_heavy_drop").withStyle(ChatFormatting.GRAY));
             }
         }
     }
@@ -101,7 +99,7 @@ public class ItemMjoellnir extends BlockItem {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return (enchantment.category == EnchantmentCategory.WEAPON || enchantment.category == ModMisc.MJOELLNIR_ENCHANTS
+        return (enchantment.category == EnchantmentCategory.WEAPON || enchantment.category == ModEnchantments.MJOELLNIR_ENCHANTS
                 || enchantment == Enchantments.POWER_ARROWS || enchantment == Enchantments.PUNCH_ARROWS
                 || enchantment == Enchantments.FLAMING_ARROWS || enchantment == Enchantments.LOYALTY)
                 && enchantment != Enchantments.SWEEPING_EDGE && enchantment != Enchantments.SMITE
@@ -109,7 +107,7 @@ public class ItemMjoellnir extends BlockItem {
     }
 
     @Override
-    public int getEnchantmentValue() {
+    public int getEnchantmentValue(ItemStack stack) {
         return 1;
     }
 
@@ -123,7 +121,7 @@ public class ItemMjoellnir extends BlockItem {
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         if (slot == EquipmentSlot.MAINHAND) {
             float dmgModifier = EnchantmentHelper.getDamageBonus(stack, MobType.UNDEFINED);
-            float speedModifier = MythicConfig.mjoellnir.attack_speed_multiplier * EnchantmentHelper.getItemEnchantmentLevel(ModMisc.hammerMobility, stack);
+            float speedModifier = MythicConfig.mjoellnir.attack_speed_multiplier * stack.getEnchantmentLevel(ModEnchantments.hammerMobility);
             ImmutableMultimap.Builder<Attribute, AttributeModifier> attributeBuilder = ImmutableMultimap.builder();
             attributeBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "mjoellnir_damage_modifier", (MythicConfig.mjoellnir.base_damage_melee - 1) + ((MythicConfig.mjoellnir.enchantment_multiplier - 1) * dmgModifier), AttributeModifier.Operation.ADDITION));
             attributeBuilder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "mjoellnir_attack_speed_modifier", MythicConfig.mjoellnir.base_attack_speed + speedModifier, AttributeModifier.Operation.ADDITION));

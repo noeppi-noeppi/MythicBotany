@@ -9,13 +9,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemStack;
-import vazkii.botania.common.item.ModItems;
+import vazkii.botania.common.item.BotaniaItems;
 
 import javax.annotation.Nonnull;
 
 public class RenderYggdrasilBranch extends RotatedBlockRenderer<TileYggdrasilBranch> {
 
-    private final LazyValue<ItemStack> twig = new LazyValue<>(() -> new ItemStack(ModItems.livingwoodTwig));
+    private final LazyValue<ItemStack> twig = new LazyValue<>(() -> new ItemStack(BotaniaItems.livingwoodTwig));
 
     @Override
     protected void doRender(@Nonnull TileYggdrasilBranch tile, float partialTicks, @Nonnull PoseStack poseStack, @Nonnull MultiBufferSource buffer, int light, int overlay) {

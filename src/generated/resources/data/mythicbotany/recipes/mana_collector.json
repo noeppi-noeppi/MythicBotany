@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "dgd",
-    "dpd",
-    "dmd"
-  ],
   "key": {
     "d": {
       "item": "botania:glimmering_dreamwood"
@@ -12,13 +7,18 @@
     "g": {
       "item": "botania:gaia_ingot"
     },
-    "p": {
-      "item": "botania:pixie_dust"
-    },
     "m": {
       "item": "mythicbotany:vanaheim_rune"
+    },
+    "p": {
+      "item": "botania:pixie_dust"
     }
   },
+  "pattern": [
+    "dgd",
+    "dpd",
+    "dmd"
+  ],
   "result": {
     "item": "mythicbotany:mana_collector"
   }

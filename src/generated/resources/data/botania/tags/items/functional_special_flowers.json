@@ -1,8 +1,7 @@
 {
-  "replace": false,
   "values": [
-    "mythicbotany:exoblaze",
     "mythicbotany:aquapanthus",
+    "mythicbotany:exoblaze",
     "mythicbotany:hellebore",
     "mythicbotany:petrunia"
   ]

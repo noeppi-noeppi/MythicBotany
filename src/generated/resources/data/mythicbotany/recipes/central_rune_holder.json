@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "d": {
+      "tag": "botania:mana_dusts"
+    },
+    "w": {
+      "tag": "forge:gems/emerald"
+    }
+  },
   "pattern": [
     " w ",
     "wdw"
   ],
-  "key": {
-    "w": {
-      "tag": "forge:gems/emerald"
-    },
-    "d": {
-      "tag": "botania:mana_dusts"
-    }
-  },
   "result": {
     "item": "mythicbotany:central_rune_holder"
   }

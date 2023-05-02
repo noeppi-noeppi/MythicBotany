@@ -1,9 +1,5 @@
 {
   "type": "botania:runic_altar",
-  "output": {
-    "item": "mythicbotany:asgard_rune"
-  },
-  "mana": 16000,
   "ingredients": [
     {
       "tag": "forge:ingots/netherite"
@@ -20,5 +16,9 @@
     {
       "item": "botania:rainbow_rod"
     }
-  ]
+  ],
+  "mana": 16000,
+  "output": {
+    "item": "mythicbotany:asgard_rune"
+  }
 }

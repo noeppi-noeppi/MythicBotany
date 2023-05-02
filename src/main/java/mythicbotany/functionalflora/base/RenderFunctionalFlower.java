@@ -9,12 +9,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import vazkii.botania.client.render.tile.RenderTileFloatingFlower;
-import vazkii.botania.client.render.tile.RenderTileSpecialFlower;
+import vazkii.botania.client.render.block_entity.FloatingFlowerBlockEntityRenderer;
+import vazkii.botania.client.render.block_entity.SpecialFlowerBlockEntityRenderer;
 import vazkii.botania.common.helper.PlayerHelper;
-import vazkii.botania.common.item.ItemTwigWand;
-import vazkii.botania.common.item.ModItems;
-import vazkii.botania.common.item.equipment.bauble.ItemMonocle;
+import vazkii.botania.common.item.BotaniaItems;
+import vazkii.botania.common.item.WandOfTheForestItem;
+import vazkii.botania.common.item.equipment.bauble.ManaseerMonocleItem;
 import vazkii.botania.xplat.BotaniaConfig;
 
 import javax.annotation.Nonnull;
@@ -25,10 +25,10 @@ public class RenderFunctionalFlower<T extends FunctionalFlowerBase> implements B
     @Override
     public void render(@Nonnull T blockEntity, float partialTicks, @Nonnull PoseStack poseStack, @Nonnull MultiBufferSource buffer, int light, int overlay) {
         if (blockEntity.isFloating() && !BotaniaConfig.client().staticFloaters()) {
-            RenderTileFloatingFlower.renderFloatingIsland(blockEntity, partialTicks, poseStack, buffer, overlay);
+            FloatingFlowerBlockEntityRenderer.renderFloatingIsland(blockEntity, partialTicks, poseStack, buffer, overlay);
         }
         if (Minecraft.getInstance().cameraEntity instanceof LivingEntity view) {
-            if (ItemMonocle.hasMonocle(view)) {
+            if (ManaseerMonocleItem.hasMonocle(view)) {
                 HitResult ray = Minecraft.getInstance().hitResult;
                 if (ray != null && ray.getType() == HitResult.Type.BLOCK) {
                     BlockPos pos = ((BlockHitResult) ray).getBlockPos();
@@ -37,9 +37,9 @@ public class RenderFunctionalFlower<T extends FunctionalFlowerBase> implements B
                         if (hasBindingAttempt(view, blockEntity.getBlockPos())) {
                             poseStack.translate(0, 0.005, 0);
                         }
-                        RenderTileSpecialFlower.renderRadius(blockEntity, poseStack, buffer, blockEntity.getRadius());
+                        SpecialFlowerBlockEntityRenderer.renderRadius(blockEntity, poseStack, buffer, blockEntity.getRadius());
                         poseStack.translate(0, 0.002, 0);
-                        RenderTileSpecialFlower.renderRadius(blockEntity, poseStack, buffer, blockEntity.getSecondaryRadius());
+                        SpecialFlowerBlockEntityRenderer.renderRadius(blockEntity, poseStack, buffer, blockEntity.getSecondaryRadius());
                         poseStack.popPose();
                     }
                 }
@@ -48,9 +48,9 @@ public class RenderFunctionalFlower<T extends FunctionalFlowerBase> implements B
     }
 
     public static boolean hasBindingAttempt(LivingEntity view, BlockPos tilePos) {
-        ItemStack stackHeld = PlayerHelper.getFirstHeldItem(view, ModItems.twigWand);
-        if (!stackHeld.isEmpty() && ItemTwigWand.getBindMode(stackHeld)) {
-            Optional<BlockPos> coords = ItemTwigWand.getBindingAttempt(stackHeld);
+        ItemStack stackHeld = PlayerHelper.getFirstHeldItem(view, BotaniaItems.twigWand);
+        if (!stackHeld.isEmpty() && WandOfTheForestItem.getBindMode(stackHeld)) {
+            Optional<BlockPos> coords = WandOfTheForestItem.getBindingAttempt(stackHeld);
             return coords.isPresent() && coords.get().equals(tilePos);
         } else {
             return false;

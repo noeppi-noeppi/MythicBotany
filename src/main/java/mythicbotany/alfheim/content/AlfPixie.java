@@ -1,10 +1,11 @@
 package mythicbotany.alfheim.content;
 
-import mythicbotany.ModEntities;
-import mythicbotany.alfheim.util.AlfheimWorldGenUtil;
+import mythicbotany.alfheim.worldgen.AlfheimWorldGen;
+import mythicbotany.register.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -25,7 +26,6 @@ import vazkii.botania.client.fx.SparkleParticleData;
 
 import javax.annotation.Nonnull;
 import java.util.EnumSet;
-import java.util.Random;
 
 public class AlfPixie extends PathfinderMob {
 
@@ -110,7 +110,7 @@ public class AlfPixie extends PathfinderMob {
                 .build();
     }
 
-    public static boolean canSpawnAt(EntityType<AlfPixie> type, LevelAccessor level, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canSpawnAt(EntityType<AlfPixie> type, LevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return level.getBlockState(pos).isAir();
     }
 
@@ -211,12 +211,12 @@ public class AlfPixie extends PathfinderMob {
         public void start() {
             int aboveGround = 0;
             BlockPos.MutableBlockPos mpos = this.entity.blockPosition().below().mutable();
-            while (mpos.getY() > 0 && AlfheimWorldGenUtil.passReplaceableAndDreamWood(this.entity.level.getBlockState(mpos))) {
+            while (mpos.getY() > 0 && AlfheimWorldGen.passthrough(this.entity.level.getBlockState(mpos))) {
                 mpos.move(Direction.DOWN);
                 aboveGround += 1;
                 if (aboveGround >= 10) break;
             }
-            Random random = this.entity.getRandom();
+            RandomSource random = this.entity.getRandom();
             double x = this.entity.getX() + ((random.nextDouble() * 2) - 1) * 16;
             double y = this.entity.getY() + (((random.nextDouble() * 2) - 1) * 16) - (2 * (aboveGround - 5));
             double z = this.entity.getZ() + ((random.nextDouble() * 2) - 1) * 16;

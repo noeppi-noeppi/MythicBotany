@@ -1,6 +1,6 @@
 package mythicbotany.functionalflora;
 
-import mythicbotany.ModItems;
+import mythicbotany.register.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
 import net.minecraft.core.BlockPos;

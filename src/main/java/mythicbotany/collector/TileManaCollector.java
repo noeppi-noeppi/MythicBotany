@@ -6,14 +6,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
-import vazkii.botania.api.internal.IManaBurst;
-import vazkii.botania.api.mana.IManaCollector;
+import vazkii.botania.api.internal.ManaBurst;
 import vazkii.botania.api.mana.ManaBlockType;
+import vazkii.botania.api.mana.ManaCollector;
 import vazkii.botania.api.mana.ManaNetworkAction;
 import vazkii.botania.api.mana.ManaNetworkEvent;
 import vazkii.botania.common.handler.ManaNetworkHandler;
 
-public class TileManaCollector extends BlockEntityMana implements IManaCollector, TickingBlock {
+public class TileManaCollector extends BlockEntityMana implements ManaCollector, TickingBlock {
 
     public TileManaCollector(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, 10000, true, true);
@@ -30,7 +30,7 @@ public class TileManaCollector extends BlockEntityMana implements IManaCollector
     }
 
     @Override
-    public float getManaYieldMultiplier(IManaBurst iManaBurst) {
+    public float getManaYieldMultiplier(ManaBurst iManaBurst) {
         return 1;
     }
 

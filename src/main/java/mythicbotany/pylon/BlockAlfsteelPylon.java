@@ -1,11 +1,8 @@
 package mythicbotany.pylon;
 
-import org.moddingx.libx.base.tile.BlockBE;
-import org.moddingx.libx.mod.ModX;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -23,11 +20,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.moddingx.libx.base.tile.BlockBE;
+import org.moddingx.libx.mod.ModX;
+import org.moddingx.libx.registration.SetupContext;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockAlfsteelPylon extends BlockBE<TileAlfsteelPylon> {
 
@@ -39,18 +37,17 @@ public class BlockAlfsteelPylon extends BlockBE<TileAlfsteelPylon> {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        BlockEntityRenderers.register(this.getBlockEntityType(), RenderAlfsteelPylon::new);
+    public void registerClient(SetupContext ctx) {
+        ctx.enqueue(() -> BlockEntityRenderers.register(this.getBlockEntityType(), RenderAlfsteelPylon::new));
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     public void initializeItemClient(@Nonnull Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
-            
+
             @Override
-            public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-                // TODO maybe this can use ItemStackRenderer?
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 return new RenderAlfsteelPylon.ItemRenderer();
             }
         });

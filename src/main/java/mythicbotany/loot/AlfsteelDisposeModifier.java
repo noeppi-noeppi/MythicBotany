@@ -1,29 +1,41 @@
 package mythicbotany.loot;
 
-import com.google.gson.JsonObject;
-import mythicbotany.ModItems;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import mythicbotany.register.ModItems;
 import mythicbotany.alftools.AlfsteelPick;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
-import vazkii.botania.common.lib.ModTags;
+import vazkii.botania.common.lib.BotaniaTags;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
+// TODO 1.19.4 datagen
 public class AlfsteelDisposeModifier extends LootModifier {
+    
+    public static final Codec<AlfsteelDisposeModifier> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            LOOT_CONDITIONS_CODEC.fieldOf("conditions").forGetter(lm -> lm.conditions)
+    ).apply(instance, AlfsteelDisposeModifier::new));
 
-    private AlfsteelDisposeModifier(LootItemCondition[] conditions) {
+    public AlfsteelDisposeModifier(LootItemCondition... conditions) {
         super(conditions);
     }
 
+    @Override
+    public Codec<? extends IGlobalLootModifier> codec() {
+        return CODEC;
+    }
+
     @Nonnull
-    protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
+    @Override
+    protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         Entity entity = context.getParamOrNull(LootContextParams.THIS_ENTITY);
         ItemStack tool = context.getParamOrNull(LootContextParams.TOOL);
         if (entity != null && tool != null && !tool.isEmpty()) {
@@ -34,24 +46,7 @@ public class AlfsteelDisposeModifier extends LootModifier {
 
     public static void filterDisposable(List<ItemStack> drops, Entity entity, ItemStack stack) {
         if (!stack.isEmpty() && stack.getItem() == ModItems.alfsteelPick && AlfsteelPick.isTipped(stack)) {
-            drops.removeIf((loot) -> !loot.isEmpty() && (loot.is(ModTags.Items.DISPOSABLE) || loot.is(ModTags.Items.SEMI_DISPOSABLE) && !entity.isShiftKeyDown()));
-        }
-    }
-
-    public static class Serializer extends GlobalLootModifierSerializer<AlfsteelDisposeModifier> {
-
-        public static final Serializer INSTANCE = new Serializer();
-
-        private Serializer() {
-
-        }
-
-        public AlfsteelDisposeModifier read(ResourceLocation location, JsonObject object, LootItemCondition[] conditions) {
-            return new AlfsteelDisposeModifier(conditions);
-        }
-
-        public JsonObject write(AlfsteelDisposeModifier modifier) {
-            return this.makeConditions(modifier.conditions);
+            drops.removeIf((loot) -> !loot.isEmpty() && (loot.is(BotaniaTags.Items.DISPOSABLE) || (loot.is(BotaniaTags.Items.SEMI_DISPOSABLE) && !entity.isShiftKeyDown())));
         }
     }
 }

@@ -1,14 +1,15 @@
 package mythicbotany.alfheim.teleporter;
 
-import mythicbotany.ModBlocks;
+import mythicbotany.alfheim.worldgen.AlfheimWorldGen;
+import mythicbotany.register.ModBlocks;
 import mythicbotany.alfheim.Alfheim;
-import mythicbotany.alfheim.util.AlfheimWorldGenUtil;
-import mythicbotany.alfheim.util.HorizontalPos;
+import mythicbotany.util.HorizontalPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Block;
+import vazkii.botania.common.block.BotaniaBlocks;
 
 import javax.annotation.Nullable;
 
@@ -17,17 +18,17 @@ public class AlfheimTeleporter {
     public static boolean teleportToAlfheim(ServerPlayer player, BlockPos sourcePos) {
         ServerLevel target = player.getLevel().getServer().getLevel(Alfheim.DIMENSION);
         if (target != null) {
-            BlockPos pos = findBlock(target, HorizontalPos.from(sourcePos), ModBlocks.returnPortal);
+            BlockPos pos = findBlock(target, new HorizontalPos(sourcePos), ModBlocks.returnPortal);
             if (pos == null) {
-                pos = AlfheimWorldGenUtil.highestFreeBlock(target, HorizontalPos.from(sourcePos), AlfheimWorldGenUtil::passReplaceableAndDreamWood).below();
-                target.setBlock(pos.north(), vazkii.botania.common.block.ModBlocks.livingwoodGlimmering.defaultBlockState(), 3);
-                target.setBlock(pos.south(), vazkii.botania.common.block.ModBlocks.livingwoodGlimmering.defaultBlockState(), 3);
-                target.setBlock(pos.east(), vazkii.botania.common.block.ModBlocks.livingwoodGlimmering.defaultBlockState(), 3);
-                target.setBlock(pos.west(), vazkii.botania.common.block.ModBlocks.livingwoodGlimmering.defaultBlockState(), 3);
-                target.setBlock(pos.offset(-1, 0, -1), vazkii.botania.common.block.ModBlocks.livingwood.defaultBlockState(), 3);
-                target.setBlock(pos.offset(-1, 0, 1), vazkii.botania.common.block.ModBlocks.livingwood.defaultBlockState(), 3);
-                target.setBlock(pos.offset(1, 0, -1), vazkii.botania.common.block.ModBlocks.livingwood.defaultBlockState(), 3);
-                target.setBlock(pos.offset(1, 0, 1), vazkii.botania.common.block.ModBlocks.livingwood.defaultBlockState(), 3);
+                pos = AlfheimWorldGen.highestFreeBlock(target, new HorizontalPos(sourcePos)).below();
+                target.setBlock(pos.north(), BotaniaBlocks.livingwoodGlimmering.defaultBlockState(), 3);
+                target.setBlock(pos.south(), BotaniaBlocks.livingwoodGlimmering.defaultBlockState(), 3);
+                target.setBlock(pos.east(), BotaniaBlocks.livingwoodGlimmering.defaultBlockState(), 3);
+                target.setBlock(pos.west(), BotaniaBlocks.livingwoodGlimmering.defaultBlockState(), 3);
+                target.setBlock(pos.offset(-1, 0, -1), BotaniaBlocks.livingwood.defaultBlockState(), 3);
+                target.setBlock(pos.offset(-1, 0, 1), BotaniaBlocks.livingwood.defaultBlockState(), 3);
+                target.setBlock(pos.offset(1, 0, -1), BotaniaBlocks.livingwood.defaultBlockState(), 3);
+                target.setBlock(pos.offset(1, 0, 1), BotaniaBlocks.livingwood.defaultBlockState(), 3);
                 target.setBlock(pos, ModBlocks.returnPortal.defaultBlockState(), 3);
             }
             player.teleportTo(target, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, player.getYRot(), player.getXRot());
@@ -41,11 +42,11 @@ public class AlfheimTeleporter {
     
     public static void teleportToOverworld(ServerPlayer player, BlockPos sourcePos) {
         ServerLevel target = player.getLevel().getServer().overworld();
-        BlockPos pos = findBlock(target, HorizontalPos.from(sourcePos), vazkii.botania.common.block.ModBlocks.alfPortal);
+        BlockPos pos = findBlock(target, new HorizontalPos(sourcePos), BotaniaBlocks.alfPortal);
         if (pos != null) {
             pos = pos.above();
         } else {
-            pos = AlfheimWorldGenUtil.highestFreeBlock(target, HorizontalPos.from(sourcePos), AlfheimWorldGenUtil::passReplaceableAndDreamWood);
+            pos = AlfheimWorldGen.highestFreeBlock(target, new HorizontalPos(sourcePos));
         }
         player.teleportTo(target, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, player.getYRot(), player.getXRot());
         player.setPortalCooldown();

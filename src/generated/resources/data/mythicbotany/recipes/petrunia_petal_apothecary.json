@@ -1,8 +1,5 @@
 {
   "type": "botania:petal_apothecary",
-  "output": {
-    "item": "mythicbotany:petrunia"
-  },
   "ingredients": [
     {
       "tag": "botania:petals/red"
@@ -22,5 +19,11 @@
     {
       "item": "botania:phantom_ink"
     }
-  ]
+  ],
+  "output": {
+    "item": "mythicbotany:petrunia"
+  },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  }
 }

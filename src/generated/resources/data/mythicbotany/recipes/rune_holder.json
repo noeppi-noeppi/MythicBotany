@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "d": {
+      "tag": "botania:mana_dusts"
+    },
+    "w": {
+      "tag": "forge:ingots/iron"
+    }
+  },
   "pattern": [
     " w ",
     "wdw"
   ],
-  "key": {
-    "w": {
-      "tag": "forge:ingots/iron"
-    },
-    "d": {
-      "tag": "botania:mana_dusts"
-    }
-  },
   "result": {
     "item": "mythicbotany:rune_holder"
   }

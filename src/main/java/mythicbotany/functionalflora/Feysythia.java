@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
@@ -37,10 +38,11 @@ public class Feysythia extends FunctionalFlowerBase {
                 ItemStack stack = ie.getItem();
                 if (!stack.isEmpty()) {
                     int level = 0;
-                    if (FEY_DUST_ITEM.equals(stack.getItem().getRegistryName())) {
+                    ResourceLocation id = ForgeRegistries.ITEMS.getKey(stack.getItem());
+                    if (FEY_DUST_ITEM.equals(id)) {
                         level = 1;
-                    } else if (FEY_GEM_ITEMS.contains(stack.getItem().getRegistryName())) {
-                        level = 1 + FEY_GEM_ITEMS.indexOf(stack.getItem().getRegistryName());
+                    } else if (FEY_GEM_ITEMS.contains(id)) {
+                        level = 1 + FEY_GEM_ITEMS.indexOf(id);
                     }
                     if (level > 0) {
                         stack.shrink(1);

@@ -1,8 +1,5 @@
 {
   "type": "botania:petal_apothecary",
-  "output": {
-    "item": "mythicbotany:raindeletia"
-  },
   "ingredients": [
     {
       "tag": "botania:petals/light_blue"
@@ -19,5 +16,11 @@
     {
       "item": "botania:rune_water"
     }
-  ]
+  ],
+  "output": {
+    "item": "mythicbotany:raindeletia"
+  },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  }
 }

@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import vazkii.botania.common.block.ModBlocks;
+import vazkii.botania.common.block.BotaniaBlocks;
 
 public class Raindeletia extends FunctionalFlowerBase {
 
@@ -22,11 +22,11 @@ public class Raindeletia extends FunctionalFlowerBase {
             if (this.level.isRainingAt(this.worldPosition)) {
                 multiplier = this.level.isThundering() ? MythicConfig.flowers.raindeletia.thunder : MythicConfig.flowers.raindeletia.rain;
             }
-            if (this.level.getBlockState(this.worldPosition.below()).getBlock() == ModBlocks.enchantedSoil) {
+            if (this.level.getBlockState(this.worldPosition.below()).getBlock() == BotaniaBlocks.enchantedSoil) {
                 multiplier = multiplier * MythicConfig.flowers.raindeletia.enchanted_soil;
-            } else if (this.level.getBlockState(this.worldPosition.below()).getBlock() == ModBlocks.vividGrass) {
+            } else if (this.level.getBlockState(this.worldPosition.below()).getBlock() == BotaniaBlocks.vividGrass) {
                 multiplier = multiplier * MythicConfig.flowers.raindeletia.vivid_grass;
-            }  else if (this.level.getBlockState(this.worldPosition.below()).getBlock() == ModBlocks.dryGrass) {
+            }  else if (this.level.getBlockState(this.worldPosition.below()).getBlock() == BotaniaBlocks.dryGrass) {
                 multiplier = multiplier * MythicConfig.flowers.raindeletia.dry_grass;
             }
 

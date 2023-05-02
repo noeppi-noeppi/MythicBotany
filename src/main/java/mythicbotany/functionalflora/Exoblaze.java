@@ -6,7 +6,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import vazkii.botania.api.subtile.RadiusDescriptor;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import vazkii.botania.api.block_entity.RadiusDescriptor;
 
 public class Exoblaze extends FunctionalFlowerBase {
 
@@ -50,6 +52,7 @@ public class Exoblaze extends FunctionalFlowerBase {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public RadiusDescriptor getRadius() {
         return RadiusDescriptor.Rectangle.square(this.worldPosition, 3);
     }

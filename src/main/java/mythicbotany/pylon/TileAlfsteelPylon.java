@@ -1,10 +1,10 @@
 package mythicbotany.pylon;
 
+import mythicbotany.network.PylonMessage;
 import org.moddingx.libx.base.tile.TickingBlock;
 import mythicbotany.MythicBotany;
 import mythicbotany.advancement.ModCriteria;
 import mythicbotany.base.BlockEntityMana;
-import mythicbotany.network.PylonSerializer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -57,7 +57,7 @@ public class TileAlfsteelPylon extends BlockEntityMana implements TickingBlock {
                             MythicBotany.getNetwork().removeItemMagnetImmune(item);
                         }
                         this.setChanged();
-                        MythicBotany.getNetwork().channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> this.level.getChunkAt(this.worldPosition)), new PylonSerializer.PylonMessage(this.level.dimension().getRegistryName(), this.worldPosition));
+                        MythicBotany.getNetwork().channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> this.level.getChunkAt(this.worldPosition)), new PylonMessage(this.worldPosition));
                     }
                 }
             }

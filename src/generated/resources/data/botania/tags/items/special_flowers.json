@@ -1,12 +1,11 @@
 {
-  "replace": false,
   "values": [
-    "mythicbotany:exoblaze",
-    "mythicbotany:wither_aconite",
     "mythicbotany:aquapanthus",
-    "mythicbotany:hellebore",
-    "mythicbotany:raindeletia",
+    "mythicbotany:exoblaze",
     "mythicbotany:feysythia",
-    "mythicbotany:petrunia"
+    "mythicbotany:hellebore",
+    "mythicbotany:petrunia",
+    "mythicbotany:raindeletia",
+    "mythicbotany:wither_aconite"
   ]
 }

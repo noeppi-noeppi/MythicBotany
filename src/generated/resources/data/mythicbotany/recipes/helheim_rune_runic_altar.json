@@ -1,9 +1,5 @@
 {
   "type": "botania:runic_altar",
-  "output": {
-    "item": "mythicbotany:helheim_rune"
-  },
-  "mana": 16000,
   "ingredients": [
     {
       "tag": "forge:ingots/gold"
@@ -34,5 +30,9 @@
         "item": "minecraft:zombie_head"
       }
     ]
-  ]
+  ],
+  "mana": 16000,
+  "output": {
+    "item": "mythicbotany:helheim_rune"
+  }
 }

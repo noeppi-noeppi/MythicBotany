@@ -1,36 +1,31 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "mythicbotany:yggdrasil_branch"
-    ]
-  },
   "criteria": {
     "criterion0": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "tag": "botania:livingwood_logs"
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "criterion1": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "tag": "botania:terrasteel_nuggets"
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
       "conditions": {
         "recipe": "mythicbotany:yggdrasil_branch"
-      }
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
@@ -39,5 +34,10 @@
       "criterion1",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mythicbotany:yggdrasil_branch"
+    ]
+  }
 }

@@ -3,7 +3,7 @@ package mythicbotany.rune;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import mythicbotany.ModRecipes;
+import mythicbotany.register.ModRecipes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -14,7 +14,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -23,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 public class RuneRitualRecipe implements Recipe<Container> {
-
-    public static final int DEFAULT_TICKS = 200;
     
     private static final Map<ResourceLocation, SpecialRuneInput> specialInputs = new HashMap<>();
     private static final Map<ResourceLocation, SpecialRuneOutput> specialOutputs = new HashMap<>();
@@ -71,6 +68,24 @@ public class RuneRitualRecipe implements Recipe<Container> {
         this.specialOutput = specialOutput;
     }
 
+    @Nonnull
+    @Override
+    public RecipeType<?> getType() {
+        return ModRecipes.runeRitual;
+    }
+
+    @Nonnull
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+        return Serializer.INSTANCE;
+    }
+
+    @Nonnull
+    @Override
+    public ResourceLocation getId() {
+        return this.id;
+    }
+    
     @Override
     public boolean matches(@Nonnull Container inv, @Nonnull Level level) {
         return false;
@@ -94,24 +109,6 @@ public class RuneRitualRecipe implements Recipe<Container> {
             return this.outputs.get(0);
         }
         return ItemStack.EMPTY;
-    }
-
-    @Nonnull
-    @Override
-    public ResourceLocation getId() {
-        return this.id;
-    }
-
-    @Nonnull
-    @Override
-    public RecipeType<?> getType() {
-        return ModRecipes.RUNE_RITUAL;
-    }
-
-    @Nonnull
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.RUNE_RITUAL_SERIALIZER;
     }
 
     public Ingredient getCenterRune() {
@@ -215,7 +212,13 @@ public class RuneRitualRecipe implements Recipe<Container> {
         }
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<RuneRitualRecipe> {
+    public static class Serializer implements RecipeSerializer<RuneRitualRecipe> {
+        
+        public static Serializer INSTANCE = new Serializer();
+        
+        private Serializer() {
+            
+        }
 
         @Nonnull
         @Override
@@ -231,7 +234,7 @@ public class RuneRitualRecipe implements Recipe<Container> {
             }
 
             int mana = json.has("mana") ? json.get("mana").getAsInt() : 0;
-            int ticks = json.has("ticks") ? json.get("ticks").getAsInt() : DEFAULT_TICKS;
+            int ticks = json.has("ticks") ? json.get("ticks").getAsInt() : 200;
 
             ImmutableList.Builder<Ingredient> inputs = ImmutableList.builder();
             if (json.has("inputs")) {

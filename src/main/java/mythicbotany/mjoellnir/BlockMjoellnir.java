@@ -1,22 +1,14 @@
 package mythicbotany.mjoellnir;
 
-import com.google.common.collect.ImmutableSet;
-import org.moddingx.libx.base.tile.BlockBE;
-import org.moddingx.libx.mod.ModX;
-import org.moddingx.libx.registration.Registerable;
-import mythicbotany.ModBlocks;
+import mythicbotany.register.ModBlocks;
 import mythicbotany.MythicBotany;
 import mythicbotany.config.MythicConfig;
-import mythicbotany.register.HackyHolder;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -39,14 +31,15 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.botania.common.item.relic.ItemThorRing;
+import org.moddingx.libx.base.tile.BlockBE;
+import org.moddingx.libx.mod.ModX;
+import org.moddingx.libx.registration.Registerable;
+import org.moddingx.libx.registration.RegistrationContext;
+import org.moddingx.libx.registration.SetupContext;
+import vazkii.botania.common.item.relic.RingOfThorItem;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerable {
 
@@ -59,7 +52,7 @@ public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerab
     private final EntityType<Mjoellnir> entityType;
 
     public BlockMjoellnir(ModX mod, Properties properties, Item.Properties itemProperties) {
-        super(mod, TileMjoellnir.class, properties, itemProperties);
+        super(mod, TileMjoellnir.class, properties, null);
         this.item = new ItemMjoellnir(this, itemProperties);
         this.entityType = EntityType.Builder.<Mjoellnir>of(Mjoellnir::new, MobCategory.MISC).sized(0.6f, 0.9f).clientTrackingRange(20).build(MythicBotany.getInstance().modid + "_mjoellnir");
     }
@@ -69,21 +62,17 @@ public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerab
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public Set<Object> getAdditionalRegisters(ResourceLocation id) {
-        Set<Object> parent = super.getAdditionalRegisters(id);
-        parent.stream().filter(e -> e instanceof Item).forEach(e -> HackyHolder.bindIntrusive(Registry.ITEM_REGISTRY, ((Item) e).builtInRegistryHolder()));
-        return ImmutableSet.builder()
-                .addAll(parent.stream().filter(e -> !(e instanceof Item)).toList())
-                .add(this.item, this.entityType).build();
+    public void registerAdditional(RegistrationContext ctx, EntryCollector builder) {
+        super.registerAdditional(ctx, builder);
+        builder.register(Registry.ITEM_REGISTRY, this.item);
+        builder.register(Registry.ENTITY_TYPE_REGISTRY, this.entityType);
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        ItemBlockRenderTypes.setRenderLayer(this, RenderType.cutout());
-        BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderMjoellnir());
-        EntityRenderers.register(this.entityType, RenderEntityMjoellnir::new);
+    public void registerClient(SetupContext ctx) {
+        ctx.enqueue(() -> BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderMjoellnir()));
+        ctx.enqueue(() -> EntityRenderers.register(this.entityType, RenderEntityMjoellnir::new));
     }
 
     @Nonnull
@@ -99,7 +88,7 @@ public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerab
                     return InteractionResult.FAIL;
                 }
             } else {
-                player.sendMessage(new TranslatableComponent("message.mythicbotany.mjoellnir_heavy_pick").withStyle(ChatFormatting.GRAY), player.getUUID());
+                player.sendSystemMessage(Component.translatable("message.mythicbotany.mjoellnir_heavy_pick").withStyle(ChatFormatting.GRAY));
             }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
@@ -165,7 +154,7 @@ public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerab
 
     public static boolean canHold(Player player) {
         return player.isCreative() || player.isSpectator() || MythicConfig.mjoellnir.requirement.test(player)
-                || (!ItemThorRing.getThorRing(player).isEmpty() && MythicConfig.mjoellnir.requirement_thor.test(player));
+                || (!RingOfThorItem.getThorRing(player).isEmpty() && MythicConfig.mjoellnir.requirement_thor.test(player));
     }
 
     public static boolean putInInventory(Player player, ItemStack stack, int hotbarSlot) {

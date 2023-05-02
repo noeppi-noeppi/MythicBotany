@@ -36,6 +36,13 @@ Dive deeper into the world of botania.
     side="BOTH"
 
 [[dependencies.mythicbotany]]
+    modId="sandbox"
+    mandatory=true
+    versionRange="[1.19.2-1.0.1,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.mythicbotany]]
     modId="botania"
     mandatory=true
     versionRange="[1.19.2-437,)"

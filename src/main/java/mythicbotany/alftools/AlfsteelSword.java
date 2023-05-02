@@ -2,10 +2,10 @@ package mythicbotany.alftools;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import mythicbotany.ModItems;
+import mythicbotany.register.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.config.MythicConfig;
-import mythicbotany.network.AlfSwordLeftClickSerializer;
+import mythicbotany.network.AlfSwordLeftClickMessage;
 import mythicbotany.pylon.PylonRepairable;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -23,18 +23,16 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import vazkii.botania.api.internal.IManaBurst;
-import vazkii.botania.common.entity.EntityManaBurst;
-import vazkii.botania.common.handler.ModSounds;
-import vazkii.botania.common.item.equipment.tool.terrasteel.ItemTerraSword;
-import vazkii.botania.common.lib.ModTags;
+import vazkii.botania.api.internal.ManaBurst;
+import vazkii.botania.common.entity.ManaBurstEntity;
+import vazkii.botania.common.handler.BotaniaSounds;
+import vazkii.botania.common.item.equipment.tool.terrasteel.TerraBladeItem;
+import vazkii.botania.common.lib.BotaniaTags;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-import net.minecraft.world.item.Item.Properties;
-
-public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
+public class AlfsteelSword extends TerraBladeItem implements PylonRepairable {
 
     private final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
@@ -49,7 +47,7 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
 
     private void onLeftClick(PlayerInteractEvent.LeftClickEmpty evt) {
         if (!evt.getItemStack().isEmpty() && evt.getItemStack().getItem() == this) {
-            MythicBotany.getNetwork().channel.sendToServer(new AlfSwordLeftClickSerializer.AlfSwordLeftClickMessage());
+            MythicBotany.getNetwork().channel.sendToServer(new AlfSwordLeftClickMessage());
         }
     }
 
@@ -71,12 +69,7 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
 
     @Override
     public boolean isValidRepairItem(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
-        return repair.getItem() == ModItems.alfsteelIngot || (!Ingredient.of(ModTags.Items.INGOTS_TERRASTEEL).test(repair) && super.isValidRepairItem(toRepair, repair));
-    }
-
-    @Override
-    public boolean canRepairPylon(ItemStack stack) {
-        return stack.getDamageValue() > 0;
+        return repair.getItem() == ModItems.alfsteelIngot || (!Ingredient.of(BotaniaTags.Items.INGOTS_TERRASTEEL).test(repair) && super.isValidRepairItem(toRepair, repair));
     }
 
     @Override
@@ -90,8 +83,8 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
         return stack;
     }
 
-    public EntityManaBurst getAlfBurst(Player player, ItemStack stack) {
-        EntityManaBurst burst = ItemTerraSword.getBurst(player, stack);
+    public ManaBurstEntity getAlfBurst(Player player, ItemStack stack) {
+        ManaBurstEntity burst = TerraBladeItem.getBurst(player, stack);
         burst.setColor(0xF79100);
         burst.setMana(this.getManaPerDamage());
         burst.setStartingMana(this.getManaPerDamage());
@@ -102,15 +95,15 @@ public class AlfsteelSword extends ItemTerraSword implements PylonRepairable {
     
     public void trySpawnAlfBurst(Player player) {
         if ((player.getItemBySlot(EquipmentSlot.MAINHAND).getItem() == ModItems.alfsteelSword) && player.getAttackStrengthScale(0) == 1) {
-            EntityManaBurst burst = this.getAlfBurst(player, player.getMainHandItem());
+            ManaBurstEntity burst = this.getAlfBurst(player, player.getMainHandItem());
             player.level.addFreshEntity(burst);
             player.getMainHandItem().hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
-            player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.terraBlade, SoundSource.PLAYERS, 1, 1);
+            player.level.playSound(null, player.getX(), player.getY(), player.getZ(), BotaniaSounds.terraBlade, SoundSource.PLAYERS, 1, 1);
         }
     }
 
     @Override
-    public void updateBurst(IManaBurst burst, ItemStack stack) {
+    public void updateBurst(ManaBurst burst, ItemStack stack) {
         ThrowableProjectile entity = burst.entity();
         AABB aabb = new AABB(
                 entity.getX(), entity.getY(), entity.getZ(),

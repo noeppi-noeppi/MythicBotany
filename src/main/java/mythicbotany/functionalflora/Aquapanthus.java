@@ -1,6 +1,11 @@
 package mythicbotany.functionalflora;
 
 import com.google.common.collect.ImmutableSet;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.moddingx.libx.LibX;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
 import net.minecraft.core.BlockPos;
@@ -14,12 +19,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import vazkii.botania.api.block.IPetalApothecary;
-import vazkii.botania.api.subtile.RadiusDescriptor;
+import vazkii.botania.api.block.PetalApothecary;
+import vazkii.botania.api.block_entity.RadiusDescriptor;
 import vazkii.botania.client.fx.WispParticleData;
 
 import javax.annotation.Nonnull;
@@ -117,20 +120,18 @@ public class Aquapanthus extends FunctionalFlowerBase {
     private boolean canFill(BlockState state, @Nullable BlockEntity te) {
         if (state.getBlock() == Blocks.CAULDRON || (state.getBlock() == Blocks.WATER_CAULDRON && state.getValue(LayeredCauldronBlock.LEVEL) < 3)) {
             return true;
-        } else if (te instanceof IPetalApothecary && ((IPetalApothecary) te).getFluid() == IPetalApothecary.State.EMPTY) {
+        } else if (te instanceof PetalApothecary && ((PetalApothecary) te).getFluid() == PetalApothecary.State.EMPTY) {
             return true;
-        } else if ((FILLING_SLOW_IDS.contains(state.getBlock().getRegistryName())
-                || FILLING_FAST_IDS.contains(state.getBlock().getRegistryName()))
-                && te != null) {
+        } else if ((FILLING_SLOW_IDS.contains(ForgeRegistries.BLOCKS.getKey(state.getBlock())) || FILLING_FAST_IDS.contains(ForgeRegistries.BLOCKS.getKey(state.getBlock()))) && te != null) {
             //noinspection ConstantConditions
-            IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP).orElse(null);
+            IFluidHandler handler = te.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.UP).orElse(null);
             //noinspection ConstantConditions
             if (handler != null) {
                 int filled;
-                if (FILLING_FAST_IDS.contains(state.getBlock().getRegistryName())) {
-                    filled = handler.fill(new FluidStack(Fluids.WATER, FluidAttributes.BUCKET_VOLUME), IFluidHandler.FluidAction.SIMULATE);
+                if (FILLING_FAST_IDS.contains(ForgeRegistries.BLOCKS.getKey(state.getBlock()))) {
+                    filled = handler.fill(new FluidStack(Fluids.WATER, FluidType.BUCKET_VOLUME), IFluidHandler.FluidAction.SIMULATE);
                 } else {
-                    filled = handler.fill(new FluidStack(Fluids.WATER, (FluidAttributes.BUCKET_VOLUME / 3) + 1), IFluidHandler.FluidAction.SIMULATE);
+                    filled = handler.fill(new FluidStack(Fluids.WATER, (FluidType.BUCKET_VOLUME / 3) + 1), IFluidHandler.FluidAction.SIMULATE);
                 }
                 // extra check for capacity is required as excompressum seems to accept more fluid even if full
                 return filled > 0 && handler.getFluidInTank(0).getAmount() < handler.getTankCapacity(0);
@@ -146,29 +147,29 @@ public class Aquapanthus extends FunctionalFlowerBase {
         //noinspection ConstantConditions
         BlockState state = this.level.getBlockState(this.currentlyFilling);
         BlockEntity be = this.level.getBlockEntity(this.currentlyFilling);
-        if (state.getBlock() == Blocks.CAULDRON || (state.getBlock() == Blocks.WATER_CAULDRON && state.getValue(LayeredCauldronBlock.LEVEL) < 3) || (be instanceof IPetalApothecary && ((IPetalApothecary) be).getFluid() == IPetalApothecary.State.EMPTY)) {
+        if (state.getBlock() == Blocks.CAULDRON || (state.getBlock() == Blocks.WATER_CAULDRON && state.getValue(LayeredCauldronBlock.LEVEL) < 3) || (be instanceof PetalApothecary && ((PetalApothecary) be).getFluid() == PetalApothecary.State.EMPTY)) {
             if (this.fillingSince >= TICKS_TO_FILL) {
                 if (state.getBlock() == Blocks.CAULDRON) {
                     this.level.setBlockAndUpdate(this.currentlyFilling, Blocks.WATER_CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 1));
                 } else if (state.getBlock() == Blocks.WATER_CAULDRON) {
                     this.level.setBlockAndUpdate(this.currentlyFilling, state.setValue(LayeredCauldronBlock.LEVEL, Mth.clamp(state.getValue(LayeredCauldronBlock.LEVEL) + 1, 0, 3)));
-                } else if (be instanceof IPetalApothecary) {
-                    ((IPetalApothecary) be).setFluid(IPetalApothecary.State.WATER);
+                } else if (be instanceof PetalApothecary) {
+                    ((PetalApothecary) be).setFluid(PetalApothecary.State.WATER);
                     be.setChanged();
                 }
                 return false;
             }
             return true;
-        } else if ((FILLING_SLOW_IDS.contains(state.getBlock().getRegistryName()) || FILLING_FAST_IDS.contains(state.getBlock().getRegistryName())) && be != null) {
+        } else if ((FILLING_SLOW_IDS.contains(ForgeRegistries.BLOCKS.getKey(state.getBlock())) || FILLING_FAST_IDS.contains(ForgeRegistries.BLOCKS.getKey(state.getBlock()))) && be != null) {
             if (this.fillingSince >= TICKS_TO_FILL) {
                 //noinspection ConstantConditions
-                IFluidHandler handler = be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP).orElse(null);
+                IFluidHandler handler = be.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.UP).orElse(null);
                 //noinspection ConstantConditions
                 if (handler != null) {
-                    if (FILLING_FAST_IDS.contains(state.getBlock().getRegistryName())) {
-                        handler.fill(new FluidStack(Fluids.WATER, FluidAttributes.BUCKET_VOLUME), IFluidHandler.FluidAction.EXECUTE);
+                    if (FILLING_FAST_IDS.contains(ForgeRegistries.BLOCKS.getKey(state.getBlock()))) {
+                        handler.fill(new FluidStack(Fluids.WATER, FluidType.BUCKET_VOLUME), IFluidHandler.FluidAction.EXECUTE);
                     } else {
-                        handler.fill(new FluidStack(Fluids.WATER, (FluidAttributes.BUCKET_VOLUME / 3) + 1), IFluidHandler.FluidAction.EXECUTE);
+                        handler.fill(new FluidStack(Fluids.WATER, (FluidType.BUCKET_VOLUME / 3) + 1), IFluidHandler.FluidAction.EXECUTE);
                     }
                     be.setChanged();
                 }
@@ -182,6 +183,7 @@ public class Aquapanthus extends FunctionalFlowerBase {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public RadiusDescriptor getRadius() {
         return RadiusDescriptor.Rectangle.square(this.worldPosition, 3);
     }

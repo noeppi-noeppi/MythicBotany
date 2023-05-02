@@ -1,8 +1,9 @@
 package mythicbotany.network;
 
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.moddingx.libx.mod.ModX;
 import org.moddingx.libx.network.NetworkX;
-import mythicbotany.network.ParticleSerializer.ParticleMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,8 +11,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
-
-import org.moddingx.libx.network.NetworkX.Protocol;
 
 public class MythicNetwork extends NetworkX {
 
@@ -21,18 +20,18 @@ public class MythicNetwork extends NetworkX {
 
     @Override
     protected Protocol getProtocol() {
-        return Protocol.of("6");
+        return Protocol.of("7");
     }
 
     @Override
     public void registerPackets() {
-        this.register(new ParticleSerializer(), () -> ParticleHandler::handle, NetworkDirection.PLAY_TO_CLIENT);
-        this.register(new InfusionSerializer(), () -> InfusionHandler::handle, NetworkDirection.PLAY_TO_CLIENT);
-        this.register(new PylonSerializer(), () -> PylonHandler::handle, NetworkDirection.PLAY_TO_CLIENT);
-        this.register(new UpdatePortalTimeSerializer(), () -> UpdatePortalTimeHandler::handle, NetworkDirection.PLAY_TO_CLIENT);
-        this.register(new ItemMagnetImmunitySerializer(), () -> ItemMagnetImmunityHandler::handle, NetworkDirection.PLAY_TO_CLIENT);
-
-        this.register(new AlfSwordLeftClickSerializer(), () -> AlfSwordLeftClickHandler::handle, NetworkDirection.PLAY_TO_SERVER);
+        this.registerGame(NetworkDirection.PLAY_TO_CLIENT, new ParticleMessage.Serializer(), () -> ParticleMessage.Handler::new);
+        this.registerGame(NetworkDirection.PLAY_TO_CLIENT, new InfusionMessage.Serializer(), () -> InfusionMessage.Handler::new);
+        this.registerGame(NetworkDirection.PLAY_TO_CLIENT, new PylonMessage.Serializer(), () -> PylonMessage.Handler::new);
+        this.registerGame(NetworkDirection.PLAY_TO_CLIENT, new UpdatePortalTimeMessage.Serializer(), () -> UpdatePortalTimeMessage.Handler::new);
+        this.registerGame(NetworkDirection.PLAY_TO_CLIENT, new MagnetImmunityMessage.Serializer(), () -> MagnetImmunityMessage.Handler::new);
+        
+        this.registerGame(NetworkDirection.PLAY_TO_SERVER, new AlfSwordLeftClickMessage.Serializer(), () -> AlfSwordLeftClickMessage.Handler::new);
     }
 
     public void spawnParticle(Level level, SimpleParticleType particle, int amount, double x, double y, double z, double xm, double ym, double zm, double xd, double yd, double zd) {
@@ -56,34 +55,36 @@ public class MythicNetwork extends NetworkX {
                 }
             }
         } else {
+            ResourceLocation id = ForgeRegistries.PARTICLE_TYPES.getKey(particle);
+            if (id == null) return;
             this.channel.send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(x, y, z, 100, level.dimension())),
-                    new ParticleMessage(particle.getRegistryName(), level.dimension().getRegistryName(), x, y, z, amount, xm, ym, zm, xd, yd, zd, randomizePosition));
+                    new ParticleMessage(id, x, y, z, amount, xm, ym, zm, xd, yd, zd, randomizePosition));
         }
     }
 
     public void spawnInfusionParticles(Level level, BlockPos pos, double progress, int fromColor, int toColor) {
         if (!level.isClientSide) {
-            this.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(pos)), new InfusionSerializer.InfusionMessage(pos.getX(), pos.getY(), pos.getZ(), level.dimension().getRegistryName(), progress, fromColor, toColor));
+            this.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(pos)), new InfusionMessage(pos, progress, fromColor, toColor));
         }
     }
     
     public void updatePortalTime(ServerPlayer player, int portalTime) {
         if (!player.getCommandSenderWorld().isClientSide) {
-            this.channel.send(PacketDistributor.PLAYER.with(() -> player), new UpdatePortalTimeSerializer.UpdatePortalTimeMessage(portalTime));
+            this.channel.send(PacketDistributor.PLAYER.with(() -> player), new UpdatePortalTimeMessage(portalTime));
         }
     }
     
     public void setItemMagnetImmune(ItemEntity ie) {
         if (!ie.level.isClientSide && !ie.getPersistentData().getBoolean("PreventRemoteMovement")) {
             ie.getPersistentData().putBoolean("PreventRemoteMovement", true);
-            this.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ie), new ItemMagnetImmunitySerializer.ItemMagnetImmunityMessage(ie.getId(), true, ie.getX(), ie.getY(), ie.getZ()));
+            this.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ie), new MagnetImmunityMessage(ie.getId(), true, ie.getX(), ie.getY(), ie.getZ()));
         }
     }
     
     public void removeItemMagnetImmune(ItemEntity ie) {
         if (!ie.level.isClientSide && ie.getPersistentData().getBoolean("PreventRemoteMovement")) {
             ie.getPersistentData().putBoolean("PreventRemoteMovement", false);
-            this.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ie), new ItemMagnetImmunitySerializer.ItemMagnetImmunityMessage(ie.getId(), false, ie.getX(), ie.getY(), ie.getZ()));
+            this.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ie), new MagnetImmunityMessage(ie.getId(), false, ie.getX(), ie.getY(), ie.getZ()));
         }
     }
 }

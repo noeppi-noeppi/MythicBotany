@@ -161,28 +161,4 @@ public class MythicConfig {
         @IntRange(min = 0)
         public static int ranged_cooldown = 120;
     }
-    
-    public static class spawns {
-        
-        @Group("Spawn configuration for the alf pixie.")
-        public static class pixies {
-            @Config public static int weight = 5;
-            @Config public static int min = 4;
-            @Config public static int max = 10;
-        }
-
-        @Group("Spawn configuration for the witches in alfheim.")
-        public static class witch {
-            @Config public static int weight = 2;
-            @Config public static int min = 1;
-            @Config public static int max = 2;
-        }
-        
-        @Group("Spawn configuration for the illusioner in alfheim.")
-        public static class illusioner {
-            @Config public static int weight = 1;
-            @Config public static int min = 1;
-            @Config public static int max = 1;
-        }
-    }
 }

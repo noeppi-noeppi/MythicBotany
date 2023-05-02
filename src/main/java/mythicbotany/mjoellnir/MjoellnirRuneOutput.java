@@ -1,7 +1,7 @@
 package mythicbotany.mjoellnir;
 
 import com.google.common.collect.ImmutableList;
-import mythicbotany.ModBlocks;
+import mythicbotany.register.ModBlocks;
 import mythicbotany.MythicBotany;
 import mythicbotany.rune.SpecialRuneOutput;
 import net.minecraft.core.BlockPos;

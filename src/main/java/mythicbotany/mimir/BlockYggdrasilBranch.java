@@ -3,12 +3,12 @@ package mythicbotany.mimir;
 import org.moddingx.libx.base.tile.BlockBE;
 import org.moddingx.libx.block.RotationShape;
 import org.moddingx.libx.mod.ModX;
+import org.moddingx.libx.registration.SetupContext;
 import org.moddingx.libx.render.ItemStackRenderer;
-import mythicbotany.ModItems;
+import mythicbotany.register.ModItems;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -27,13 +27,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import vazkii.botania.common.item.ItemTwigWand;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import vazkii.botania.common.item.WandOfTheForestItem;
 
 public class BlockYggdrasilBranch extends BlockBE<TileYggdrasilBranch> {
 
@@ -44,19 +43,19 @@ public class BlockYggdrasilBranch extends BlockBE<TileYggdrasilBranch> {
     }
 
     public BlockYggdrasilBranch(ModX mod, Properties properties, Item.Properties itemProperties) {
-        super(mod, TileYggdrasilBranch.class, properties);
+        super(mod, TileYggdrasilBranch.class, properties, itemProperties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderYggdrasilBranch());
-        ItemStackRenderer.addRenderBlock(this.getBlockEntityType(), false);
+    public void registerClient(SetupContext ctx) {
+        ctx.enqueue(() -> BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderYggdrasilBranch()));
+        ctx.enqueue(() -> ItemStackRenderer.addRenderBlock(this.getBlockEntityType(), false));
     }
 
     @Override
-//    @OnlyIn(Dist.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void initializeItemClient(@Nonnull Consumer<IClientItemExtensions> consumer) {
         consumer.accept(ItemStackRenderer.createProperties());
     }
@@ -77,7 +76,7 @@ public class BlockYggdrasilBranch extends BlockBE<TileYggdrasilBranch> {
     @SuppressWarnings("deprecation")
     public InteractionResult use(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult hit) {
         TileYggdrasilBranch tile = this.getBlockEntity(level, pos);
-        if (player.getItemInHand(hand).getItem() instanceof ItemTwigWand) {
+        if (player.getItemInHand(hand).getItem() instanceof WandOfTheForestItem) {
             return InteractionResult.PASS;
         } else if (!tile.getInventory().getStackInSlot(0).isEmpty()) {
             if (!level.isClientSide) {

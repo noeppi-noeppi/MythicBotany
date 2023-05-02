@@ -1,9 +1,10 @@
 package mythicbotany.mimir;
 
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.moddingx.libx.base.tile.TickingBlock;
 import org.moddingx.libx.capability.ItemCapabilities;
 import org.moddingx.libx.inventory.BaseItemStackHandler;
-import mythicbotany.ModItems;
+import mythicbotany.register.ModItems;
 import mythicbotany.base.BlockEntityMana;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nonnull;
@@ -48,7 +48,7 @@ public class TileYggdrasilBranch extends BlockEntityMana implements TickingBlock
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         //noinspection unchecked
-        return cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (LazyOptional<T>) this.itemCap : super.getCapability(cap, side);
+        return cap == ForgeCapabilities.ITEM_HANDLER ? (LazyOptional<T>) this.itemCap : super.getCapability(cap, side);
     }
 
     @Override

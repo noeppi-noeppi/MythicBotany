@@ -1,12 +1,10 @@
 package mythicbotany.alftools;
 
-import org.moddingx.libx.registration.Registerable;
-import mythicbotany.ModItems;
+import mythicbotany.register.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.config.MythicConfig;
 import mythicbotany.pylon.PylonRepairable;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -19,16 +17,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.botania.common.item.equipment.tool.terrasteel.ItemTerraAxe;
-import vazkii.botania.common.lib.ModTags;
+import org.moddingx.libx.registration.Registerable;
+import org.moddingx.libx.registration.SetupContext;
+import vazkii.botania.common.item.equipment.tool.terrasteel.TerraTruncatorItem;
+import vazkii.botania.common.lib.BotaniaTags;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.function.Consumer;
 
-import net.minecraft.world.item.Item.Properties;
-
-public class AlfsteelAxe extends ItemTerraAxe implements PylonRepairable, Registerable {
+public class AlfsteelAxe extends TerraTruncatorItem implements PylonRepairable, Registerable {
 
     public static final int ITEM_COLLECT_RANGE = 8;
 
@@ -38,8 +35,8 @@ public class AlfsteelAxe extends ItemTerraAxe implements PylonRepairable, Regist
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        defer.accept(() -> ItemProperties.register(ModItems.alfsteelAxe, MythicBotany.getInstance().resource("active"), (stack, world, entity, seed) -> entity instanceof Player && !shouldBreak((Player) entity) ? 0 : 1));
+    public void registerClient(SetupContext ctx) {
+        ctx.enqueue(() -> ItemProperties.register(ModItems.alfsteelAxe, MythicBotany.getInstance().resource("active"), (stack, world, entity, seed) -> entity instanceof Player && !shouldBreak((Player) entity) ? 0 : 1));
     }
 
     @Override
@@ -79,12 +76,7 @@ public class AlfsteelAxe extends ItemTerraAxe implements PylonRepairable, Regist
 
     @Override
     public boolean isValidRepairItem(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
-        return repair.getItem() == ModItems.alfsteelIngot || (!Ingredient.of(ModTags.Items.INGOTS_TERRASTEEL).test(repair) && super.isValidRepairItem(toRepair, repair));
-    }
-
-    @Override
-    public boolean canRepairPylon(ItemStack stack) {
-        return stack.getDamageValue() > 0;
+        return repair.getItem() == ModItems.alfsteelIngot || (!Ingredient.of(BotaniaTags.Items.INGOTS_TERRASTEEL).test(repair) && super.isValidRepairItem(toRepair, repair));
     }
 
     @Override

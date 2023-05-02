@@ -1,9 +1,5 @@
 {
   "type": "botania:runic_altar",
-  "output": {
-    "item": "mythicbotany:vanaheim_rune"
-  },
-  "mana": 16000,
   "ingredients": [
     {
       "tag": "botania:terrasteel_ingots"
@@ -20,5 +16,9 @@
     {
       "item": "botania:alfheim_portal"
     }
-  ]
+  ],
+  "mana": 16000,
+  "output": {
+    "item": "mythicbotany:vanaheim_rune"
+  }
 }

@@ -3,7 +3,7 @@ package mythicbotany.infuser;
 import org.moddingx.libx.base.tile.BlockBE;
 import org.moddingx.libx.crafting.recipe.RecipeHelper;
 import org.moddingx.libx.mod.ModX;
-import mythicbotany.ModRecipes;
+import mythicbotany.register.ModRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -19,8 +19,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockManaInfuser extends BlockBE<TileManaInfuser> {
 
@@ -63,7 +61,7 @@ public class BlockManaInfuser extends BlockBE<TileManaInfuser> {
     public InteractionResult use(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult hit) {
         if (!level.isClientSide) {
             ItemStack stack = player.getItemInHand(hand);
-            if (!stack.isEmpty() && RecipeHelper.isItemValidInput(level.getRecipeManager(), ModRecipes.INFUSER, stack)) {
+            if (!stack.isEmpty() && RecipeHelper.isItemValidInput(level.getRecipeManager(), ModRecipes.infuser, stack)) {
                 ItemStack copy = stack.copy();
                 stack.shrink(1);
                 player.setItemInHand(hand, stack);

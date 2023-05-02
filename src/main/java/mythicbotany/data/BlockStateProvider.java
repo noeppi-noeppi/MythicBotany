@@ -1,10 +1,11 @@
 package mythicbotany.data;
 
+import net.minecraftforge.registries.ForgeRegistries;
 import org.moddingx.libx.annotation.data.Datagen;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import org.moddingx.libx.datagen.provider.BlockStateProviderBase;
 import org.moddingx.libx.mod.ModX;
-import mythicbotany.ModBlocks;
+import mythicbotany.register.ModBlocks;
 import mythicbotany.data.custom.FloatingFlowerModelBuilder;
 import mythicbotany.functionalflora.base.BlockFloatingFunctionalFlower;
 import mythicbotany.functionalflora.base.BlockFunctionalFlower;
@@ -32,7 +33,7 @@ public class BlockStateProvider extends BlockStateProviderBase {
         this.manualModel(ModBlocks.runeHolder);
         this.manualModel(ModBlocks.centralRuneHolder);
         this.manualModel(ModBlocks.mjoellnir);
-        this.manualModel(ModBlocks.returnPortal, this.models().getBuilder(Objects.requireNonNull(ModBlocks.returnPortal.getRegistryName()).getPath())
+        this.manualModel(ModBlocks.returnPortal, this.models().getBuilder(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(ModBlocks.returnPortal)).getPath())
                 .texture("particle", blockTexture(Blocks.GLASS)));
     }
 
@@ -40,11 +41,13 @@ public class BlockStateProvider extends BlockStateProviderBase {
     protected ModelFile defaultModel(ResourceLocation id, Block block) {
         if (block instanceof BlockFunctionalFlower<?>) {
             return this.models().getBuilder(id.getPath()).parent(new UncheckedModelFile(new ResourceLocation("botania", "block/shapes/cross")))
+                    .renderType(RenderTypes.CUTOUT_MIPPED)
                     .texture("cross", new ResourceLocation(id.getNamespace(), "block/" + id.getPath()));
         } else if (block instanceof BlockFloatingFunctionalFlower<?>) {
             //noinspection ConstantConditions
             return FloatingFlowerModelBuilder.create(this.models(), id.getPath())
-                    .flower(((BlockFloatingFunctionalFlower<?>) block).getNonFloatingBlock().getRegistryName())
+                    .flower(ForgeRegistries.BLOCKS.getKey(((BlockFloatingFunctionalFlower<?>) block).getNonFloatingBlock()))
+                    .renderType(RenderTypes.CUTOUT_MIPPED)
                     .parent(new UncheckedModelFile(new ResourceLocation("minecraft", "block/block")));
         } else {
             return super.defaultModel(id, block);

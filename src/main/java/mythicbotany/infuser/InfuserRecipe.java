@@ -3,7 +3,7 @@ package mythicbotany.infuser;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import mythicbotany.ModRecipes;
+import mythicbotany.register.ModRecipes;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -13,9 +13,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class InfuserRecipe implements IInfuserRecipe {
-
+public class InfuserRecipe implements Recipe<Container> {
+    
     private final ResourceLocation id;
     private final ItemStack output;
     private final NonNullList<Ingredient> inputs;
@@ -42,17 +42,32 @@ public class InfuserRecipe implements IInfuserRecipe {
         this.inputs = NonNullList.of(Ingredient.EMPTY, inputs);
     }
 
+    @Nonnull
     @Override
+    public RecipeType<?> getType() {
+        return ModRecipes.infuser;
+    }
+
+    @Nonnull
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+        return Serializer.INSTANCE;
+    }
+
+    @Nonnull
+    @Override
+    public ResourceLocation getId() {
+        return this.id;
+    }
+
     public int getManaUsage() {
         return this.mana;
     }
 
-    @Override
     public int fromColor() {
         return this.fromColor;
     }
 
-    @Override
     public int toColor() {
         return this.toColor;
     }
@@ -74,17 +89,15 @@ public class InfuserRecipe implements IInfuserRecipe {
 
     @Nonnull
     @Override
-    public ResourceLocation getId() {
-        return this.id;
-    }
-
-    @Nonnull
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.INFUSER_SERIALIZER;
+    public ItemStack assemble(@Nonnull Container container) {
+        return ItemStack.EMPTY;
     }
 
     @Override
+    public boolean canCraftInDimensions(int width, int height) {
+        return false;
+    }
+
     public ItemStack result(List<ItemStack> inputs) {
         if (inputs.size() != this.inputs.size())
             return ItemStack.EMPTY;
@@ -105,24 +118,29 @@ public class InfuserRecipe implements IInfuserRecipe {
     }
 
     @Nullable
-    public static Pair<IInfuserRecipe, ItemStack> getOutput(Level level, List<ItemStack> inputs) {
+    public static Pair<InfuserRecipe, ItemStack> getOutput(Level level, List<ItemStack> inputs) {
         if (!inputs.isEmpty()) {
             if (inputs.stream().anyMatch(stack -> stack.getCount() != 1)) {
                 return null;
             }
-            for (Recipe<?> recipe : level.getRecipeManager().byType(ModRecipes.INFUSER).values()) {
-                if (recipe instanceof IInfuserRecipe) {
-                    ItemStack stack = ((IInfuserRecipe) recipe).result(inputs);
-                    if (!stack.isEmpty())
-                        return Pair.of((IInfuserRecipe) recipe, stack.copy());
+            for (Recipe<?> recipe : level.getRecipeManager().byType(ModRecipes.infuser).values()) {
+                if (recipe instanceof InfuserRecipe infuserRecipe) {
+                    ItemStack stack = infuserRecipe.result(inputs);
+                    if (!stack.isEmpty()) return Pair.of(infuserRecipe, stack.copy());
                 }
             }
         }
         return null;
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<InfuserRecipe> {
-        
+    public static class Serializer implements RecipeSerializer<InfuserRecipe> {
+
+        public static Serializer INSTANCE = new Serializer();
+
+        private Serializer() {
+
+        }
+
         @Nonnull
         @Override
         public InfuserRecipe fromJson(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {

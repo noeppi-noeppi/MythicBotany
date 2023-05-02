@@ -7,11 +7,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.botania.common.item.equipment.bauble.ItemBauble;
+import vazkii.botania.common.item.equipment.bauble.BaubleItem;
 
-import net.minecraft.world.item.Item.Properties;
-
-public class ItemFireRing extends ItemBauble {
+public class ItemFireRing extends BaubleItem {
 
     public ItemFireRing(Properties props) {
         super(props);

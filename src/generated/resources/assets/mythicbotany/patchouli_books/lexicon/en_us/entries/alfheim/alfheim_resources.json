@@ -1,8 +1,7 @@
 {
-  "name": "lexicon.entry.mythicbotany.alfheim.alfheim_resources",
   "category": "mythicbotany:alfheim",
   "icon": "mythicbotany:elementium_ore",
-  "entry_color": "aa00",
+  "name": "lexicon.entry.mythicbotany.alfheim.alfheim_resources",
   "pages": [
     {
       "type": "patchouli:spotlight",

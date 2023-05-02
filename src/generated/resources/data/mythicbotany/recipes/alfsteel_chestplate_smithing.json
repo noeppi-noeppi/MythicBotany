@@ -1,10 +1,10 @@
 {
   "type": "minecraft:smithing",
-  "base": {
-    "item": "botania:terrasteel_chestplate"
-  },
   "addition": {
     "item": "mythicbotany:alfsteel_ingot"
+  },
+  "base": {
+    "item": "botania:terrasteel_chestplate"
   },
   "result": {
     "item": "mythicbotany:alfsteel_chestplate"

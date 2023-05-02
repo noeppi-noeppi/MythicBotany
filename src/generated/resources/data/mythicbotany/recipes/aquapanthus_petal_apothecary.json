@@ -1,8 +1,5 @@
 {
   "type": "botania:petal_apothecary",
-  "output": {
-    "item": "mythicbotany:aquapanthus"
-  },
   "ingredients": [
     {
       "tag": "botania:petals/blue"
@@ -19,5 +16,11 @@
     {
       "tag": "botania:petals/cyan"
     }
-  ]
+  ],
+  "output": {
+    "item": "mythicbotany:aquapanthus"
+  },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  }
 }

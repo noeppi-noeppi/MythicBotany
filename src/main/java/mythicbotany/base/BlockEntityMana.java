@@ -26,18 +26,18 @@ import net.minecraftforge.fml.DistExecutor;
 import vazkii.botania.api.BotaniaAPIClient;
 import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.BotaniaForgeClientCapabilities;
-import vazkii.botania.api.block.IWandHUD;
-import vazkii.botania.api.block.IWandable;
-import vazkii.botania.api.mana.IManaReceiver;
-import vazkii.botania.api.mana.spark.IManaSpark;
-import vazkii.botania.api.mana.spark.ISparkAttachable;
+import vazkii.botania.api.block.WandHUD;
+import vazkii.botania.api.block.Wandable;
+import vazkii.botania.api.mana.ManaReceiver;
+import vazkii.botania.api.mana.spark.ManaSpark;
+import vazkii.botania.api.mana.spark.SparkAttachable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-@OnlyIn(value = Dist.CLIENT, _interface = IWandHUD.class)
-public abstract class BlockEntityMana extends BlockEntityBase implements ISparkAttachable, IManaReceiver, IWandHUD, IWandable {
+@OnlyIn(value = Dist.CLIENT, _interface = WandHUD.class)
+public abstract class BlockEntityMana extends BlockEntityBase implements SparkAttachable, ManaReceiver, WandHUD, Wandable {
 
     public final int maxMana;
     private final boolean bursts;
@@ -78,12 +78,12 @@ public abstract class BlockEntityMana extends BlockEntityBase implements ISparkA
     }
 
     @Override
-    public IManaSpark getAttachedSpark() {
+    public ManaSpark getAttachedSpark() {
         @SuppressWarnings("ConstantConditions")
-        List<Entity> sparks = this.level.getEntitiesOfClass(Entity.class, new AABB(this.worldPosition.above(), this.worldPosition.above().offset(1, 1, 1)), Predicates.instanceOf(IManaSpark.class));
+        List<Entity> sparks = this.level.getEntitiesOfClass(Entity.class, new AABB(this.worldPosition.above(), this.worldPosition.above().offset(1, 1, 1)), Predicates.instanceOf(ManaSpark.class));
         if (sparks.size() == 1) {
             Entity e = sparks.get(0);
-            return (IManaSpark) e;
+            return (ManaSpark) e;
         } else {
             return null;
         }

@@ -6,7 +6,7 @@ function initializeCoreMod() {
         'fancy_sky_check': {
             'target': {
                 'type': 'METHOD',
-                'class': 'vazkii.botania.mixin.client.MixinLevelRenderer',
+                'class': 'vazkii.botania.mixin.client.LevelRendererMixin',
                 'methodName': 'isGogSky',
                 'methodDesc': '()Z'
             },

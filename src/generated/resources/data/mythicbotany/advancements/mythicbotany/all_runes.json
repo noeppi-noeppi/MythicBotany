@@ -1,131 +1,7 @@
 {
   "parent": "mythicbotany:mythicbotany/root",
-  "display": {
-    "icon": {
-      "item": "mythicbotany:joetunheim_rune"
-    },
-    "title": {
-      "translate": "advancements.mythicbotany.mythicbotany.all_runes.title"
-    },
-    "description": {
-      "translate": "advancements.mythicbotany.mythicbotany.all_runes.description"
-    },
-    "frame": "task",
-    "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
   "criteria": {
-    "inventory_changed13": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "botania:rune_summer"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed12": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "botania:rune_spring"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed11": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "botania:rune_sloth"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed10": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "botania:rune_pride"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed17": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "mythicbotany:asgard_rune"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed16": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "botania:rune_wrath"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed15": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "botania:rune_winter"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed14": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "botania:rune_water"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed19": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "mythicbotany:alfheim_rune"
-            ]
-          }
-        ]
-      }
-    },
     "inventory_changed": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -134,10 +10,106 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed10": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_pride"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed11": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_sloth"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed12": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_spring"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed13": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_summer"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed14": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_water"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed15": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_winter"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed16": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_wrath"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed17": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "mythicbotany:asgard_rune"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "inventory_changed18": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -146,130 +118,22 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     },
-    "inventory_changed7": {
-      "trigger": "minecraft:inventory_changed",
+    "inventory_changed19": {
       "conditions": {
         "items": [
           {
             "items": [
-              "botania:rune_greed"
+              "mythicbotany:alfheim_rune"
             ]
           }
         ]
-      }
-    },
-    "inventory_changed24": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "mythicbotany:nidavellir_rune"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed8": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "botania:rune_lust"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed23": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "mythicbotany:niflheim_rune"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed5": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "botania:rune_fire"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed22": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "mythicbotany:muspelheim_rune"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed6": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "botania:rune_gluttony"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed21": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "mythicbotany:joetunheim_rune"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed3": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "botania:rune_earth"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed4": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "botania:rune_envy"
-            ]
-          }
-        ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "inventory_changed2": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -278,34 +142,10 @@
             ]
           }
         ]
-      }
-    },
-    "inventory_changed25": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "mythicbotany:helheim_rune"
-            ]
-          }
-        ]
-      }
-    },
-    "inventory_changed9": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "botania:rune_mana"
-            ]
-          }
-        ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "inventory_changed20": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -314,7 +154,167 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed21": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "mythicbotany:joetunheim_rune"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed22": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "mythicbotany:muspelheim_rune"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed23": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "mythicbotany:niflheim_rune"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed24": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "mythicbotany:nidavellir_rune"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed25": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "mythicbotany:helheim_rune"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed3": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_earth"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed4": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_envy"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed5": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_fire"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed6": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_gluttony"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed7": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_greed"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed8": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_lust"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "inventory_changed9": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botania:rune_mana"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.mythicbotany.mythicbotany.all_runes.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "mythicbotany:joetunheim_rune"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.mythicbotany.mythicbotany.all_runes.title"
     }
   },
   "requirements": [

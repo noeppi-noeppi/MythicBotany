@@ -1,9 +1,5 @@
 {
   "type": "botania:runic_altar",
-  "output": {
-    "item": "mythicbotany:joetunheim_rune"
-  },
-  "mana": 16000,
   "ingredients": [
     {
       "tag": "forge:ingots/brick"
@@ -20,5 +16,9 @@
     {
       "item": "minecraft:blackstone"
     }
-  ]
+  ],
+  "mana": 16000,
+  "output": {
+    "item": "mythicbotany:joetunheim_rune"
+  }
 }

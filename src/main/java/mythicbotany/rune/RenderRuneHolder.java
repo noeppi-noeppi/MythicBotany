@@ -3,7 +3,7 @@ package mythicbotany.rune;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import org.moddingx.libx.render.ClientTickHandler;
-import mythicbotany.ModItems;
+import mythicbotany.register.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;

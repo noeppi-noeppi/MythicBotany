@@ -1,16 +1,11 @@
 package mythicbotany.alfheim.content;
 
-import com.google.common.collect.ImmutableSet;
-import org.moddingx.libx.mod.ModX;
-import org.moddingx.libx.registration.Registerable;
-import org.moddingx.libx.util.data.TagAccess;
-import mythicbotany.ModBlockTags;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
+import mythicbotany.register.tags.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -20,13 +15,12 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import org.moddingx.libx.mod.ModX;
+import org.moddingx.libx.registration.Registerable;
+import org.moddingx.libx.registration.RegistrationContext;
+import org.moddingx.libx.util.data.TagAccess;
 
 import javax.annotation.Nonnull;
-import java.util.Random;
-import java.util.Set;
-import java.util.function.Consumer;
 
 public class BlockAlfheimLeaves extends LeavesBlock implements Registerable {
 
@@ -47,14 +41,8 @@ public class BlockAlfheimLeaves extends LeavesBlock implements Registerable {
     }
 
     @Override
-    public Set<Object> getAdditionalRegisters(ResourceLocation id) {
-        return ImmutableSet.of(this.item);
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        ItemBlockRenderTypes.setRenderLayer(this, RenderType.cutoutMipped());
+    public void registerAdditional(RegistrationContext ctx, EntryCollector builder) {
+        builder.register(Registry.ITEM_REGISTRY, this.item);
     }
 
     @Nonnull
@@ -68,7 +56,7 @@ public class BlockAlfheimLeaves extends LeavesBlock implements Registerable {
     }
 
     @Override
-    public void tick(@Nonnull BlockState state, @Nonnull ServerLevel level, @Nonnull BlockPos pos, @Nonnull Random random) {
+    public void tick(@Nonnull BlockState state, @Nonnull ServerLevel level, @Nonnull BlockPos pos, @Nonnull RandomSource random) {
         level.setBlock(pos, this.updateDistance(state, level, pos), 3);
     }
 

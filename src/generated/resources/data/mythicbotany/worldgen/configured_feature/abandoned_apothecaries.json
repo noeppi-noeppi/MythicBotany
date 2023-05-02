@@ -1,0 +1,85 @@
+{
+  "type": "mythicbotany:abandoned_apothecaries",
+  "config": {
+    "petals": [
+      "botania:white_petal",
+      "botania:orange_petal",
+      "botania:magenta_petal",
+      "botania:light_blue_petal",
+      "botania:yellow_petal",
+      "botania:lime_petal",
+      "botania:pink_petal",
+      "botania:gray_petal",
+      "botania:light_gray_petal",
+      "botania:cyan_petal",
+      "botania:purple_petal",
+      "botania:blue_petal",
+      "botania:brown_petal",
+      "botania:green_petal",
+      "botania:red_petal",
+      "botania:black_petal"
+    ],
+    "states": [
+      {
+        "Name": "botania:apothecary_default",
+        "Properties": {
+          "fluid": "empty"
+        }
+      },
+      {
+        "Name": "botania:apothecary_forest",
+        "Properties": {
+          "fluid": "empty"
+        }
+      },
+      {
+        "Name": "botania:apothecary_plains",
+        "Properties": {
+          "fluid": "empty"
+        }
+      },
+      {
+        "Name": "botania:apothecary_mountain",
+        "Properties": {
+          "fluid": "empty"
+        }
+      },
+      {
+        "Name": "botania:apothecary_fungal",
+        "Properties": {
+          "fluid": "empty"
+        }
+      },
+      {
+        "Name": "botania:apothecary_swamp",
+        "Properties": {
+          "fluid": "empty"
+        }
+      },
+      {
+        "Name": "botania:apothecary_desert",
+        "Properties": {
+          "fluid": "empty"
+        }
+      },
+      {
+        "Name": "botania:apothecary_taiga",
+        "Properties": {
+          "fluid": "empty"
+        }
+      },
+      {
+        "Name": "botania:apothecary_mesa",
+        "Properties": {
+          "fluid": "empty"
+        }
+      },
+      {
+        "Name": "botania:apothecary_mossy",
+        "Properties": {
+          "fluid": "empty"
+        }
+      }
+    ]
+  }
+}

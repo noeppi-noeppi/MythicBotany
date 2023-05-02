@@ -10,8 +10,6 @@ import vazkii.botania.data.recipes.ElvenTradeProvider;
 
 import java.util.Arrays;
 
-import vazkii.botania.data.recipes.ElvenTradeProvider.FinishedRecipe;
-
 public interface ElvenTradeExtension extends RecipeExtension {
 
     default void elvenTrade(ItemLike output, ItemLike... inputs) {

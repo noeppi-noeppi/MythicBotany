@@ -5,9 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Vector3f;
-import org.moddingx.libx.render.ClientTickHandler;
-import org.moddingx.libx.util.lazy.LazyValue;
-import mythicbotany.ModBlocks;
+import mythicbotany.register.ModBlocks;
 import mythicbotany.MythicBotany;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -21,11 +19,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import org.moddingx.libx.render.ClientTickHandler;
+import org.moddingx.libx.util.lazy.LazyValue;
 import vazkii.botania.client.core.helper.CoreShaders;
-import vazkii.botania.client.model.IPylonModel;
-import vazkii.botania.client.model.ModModelLayers;
-import vazkii.botania.client.model.ModelPylonNatura;
-import vazkii.botania.mixin.client.AccessorRenderType;
+import vazkii.botania.client.model.BotaniaModelLayers;
+import vazkii.botania.client.model.NaturaPylonModel;
+import vazkii.botania.client.model.PylonModel;
+import vazkii.botania.mixin.client.RenderTypeAccessor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,11 +37,11 @@ public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylo
     public static final RenderType TARGET = createRenderType(false);
     public static final RenderType DIRECT_TARGET = createRenderType(true);
     
-    private final ModelPylonNatura model;
+    private final NaturaPylonModel model;
     private ItemTransforms.TransformType forceTransform = ItemTransforms.TransformType.NONE;
 
     public RenderAlfsteelPylon(BlockEntityRendererProvider.Context ctx) {
-        this.model = new ModelPylonNatura(ctx.bakeLayer(ModModelLayers.PYLON_NATURA));
+        this.model = new NaturaPylonModel(ctx.bakeLayer(BotaniaModelLayers.PYLON_NATURA));
     }
     
     public void render(@Nonnull TileAlfsteelPylon blockEntity, float partialTicks, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
@@ -65,7 +65,7 @@ public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylo
 
         RenderType layer = RenderType.entityTranslucent(TEXTURE);
         VertexConsumer vertex = buffer.getBuffer(layer);
-        ((IPylonModel) this.model).renderRing(poseStack, vertex, light, overlay);
+        ((PylonModel) this.model).renderRing(poseStack, vertex, light, overlay);
         if (pylon != null) {
             poseStack.translate(0.0D, Math.sin((double) worldTime / 20.0D) / 20.0D - 0.025D, 0.0D);
         }
@@ -82,7 +82,7 @@ public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylo
         }
 
         vertex = buffer.getBuffer(glow);
-        ((IPylonModel) this.model).renderCrystal(poseStack, vertex, light, overlay);
+        ((PylonModel) this.model).renderCrystal(poseStack, vertex, light, overlay);
         poseStack.popPose();
         poseStack.popPose();
     }
@@ -115,7 +115,7 @@ public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylo
                 .setLightmapState(RenderStateShard.LIGHTMAP)
                 .setOverlayState(RenderStateShard.OVERLAY);
         if (!direct) state = state.setOutputState(RenderStateShard.ITEM_ENTITY_TARGET);
-        return AccessorRenderType.create(
+        return RenderTypeAccessor.create(
                 "mythicbotany_pylon" + (direct ? "_direct" : ""), DefaultVertexFormat.NEW_ENTITY,
                 VertexFormat.Mode.QUADS, 128, false, false,
                 state.createCompositeState(false)

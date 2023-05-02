@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Either;
 import org.moddingx.libx.base.tile.TickingBlock;
 import org.moddingx.libx.util.data.NbtX;
-import mythicbotany.ModBlocks;
-import mythicbotany.ModItems;
-import mythicbotany.ModRecipes;
+import mythicbotany.register.ModBlocks;
+import mythicbotany.register.ModItems;
+import mythicbotany.register.ModRecipes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -17,7 +17,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -37,6 +36,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.client.fx.SparkleParticleData;
 import vazkii.botania.client.fx.WispParticleData;
+import vazkii.botania.common.item.BotaniaItems;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -49,18 +49,18 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickingBloc
 
     private static final ResourceLocation MISSIGNO = new ResourceLocation("minecraft", "missingno");
     private static final Map<Item, Integer> RUNE_COLORS = ImmutableMap.<Item, Integer>builder()
-            .put(vazkii.botania.common.item.ModItems.runeAir, 0x68B0EA)
-            .put(vazkii.botania.common.item.ModItems.runeSpring, 0xFF919F)
-            .put(vazkii.botania.common.item.ModItems.runeSummer, 0x00DDED)
-            .put(vazkii.botania.common.item.ModItems.runeAutumn, 0xE5C200)
-            .put(vazkii.botania.common.item.ModItems.runeWinter, 0xE0DBD5)
-            .put(vazkii.botania.common.item.ModItems.runeLust, 0xF346D1)
-            .put(vazkii.botania.common.item.ModItems.runeGluttony, 0x6E6E6E)
-            .put(vazkii.botania.common.item.ModItems.runeGreed, 0x009431)
-            .put(vazkii.botania.common.item.ModItems.runeSloth, 0xBB9661)
-            .put(vazkii.botania.common.item.ModItems.runeWrath, 0xFF2424)
-            .put(vazkii.botania.common.item.ModItems.runeEnvy, 0xC858E6)
-            .put(vazkii.botania.common.item.ModItems.runePride, 0x2C3237)
+            .put(BotaniaItems.runeAir, 0x68B0EA)
+            .put(BotaniaItems.runeSpring, 0xFF919F)
+            .put(BotaniaItems.runeSummer, 0x00DDED)
+            .put(BotaniaItems.runeAutumn, 0xE5C200)
+            .put(BotaniaItems.runeWinter, 0xE0DBD5)
+            .put(BotaniaItems.runeLust, 0xF346D1)
+            .put(BotaniaItems.runeGluttony, 0x6E6E6E)
+            .put(BotaniaItems.runeGreed, 0x009431)
+            .put(BotaniaItems.runeSloth, 0xBB9661)
+            .put(BotaniaItems.runeWrath, 0xFF2424)
+            .put(BotaniaItems.runeEnvy, 0xC858E6)
+            .put(BotaniaItems.runePride, 0x2C3237)
             .put(ModItems.asgardRune, 0xE1C500)
             .put(ModItems.vanaheimRune, 0x5FC748)
             .put(ModItems.alfheimRune, 0xFF76F7)
@@ -197,7 +197,7 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickingBloc
 
     public void tryStartRitual(Player player) {
         this.tryStartRitual(
-                msg -> player.sendMessage(msg, player.getUUID()),
+                player::sendSystemMessage,
                 mana -> ManaItemHandler.instance().requestManaExact(new ItemStack(Items.COBBLESTONE), player, mana, false),
                 mana -> ManaItemHandler.instance().requestManaExact(new ItemStack(Items.COBBLESTONE), player, mana, true)
         );
@@ -205,11 +205,11 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickingBloc
     
     public void tryStartRitual(Consumer<Component> messages, Function<Integer, Boolean> manaBest, Consumer<Integer> manaRequest) {
         if (this.recipe != null) {
-            messages.accept(new TranslatableComponent("message.mythicbotany.ritual_running").withStyle(ChatFormatting.GRAY));
+            messages.accept(Component.translatable("message.mythicbotany.ritual_running").withStyle(ChatFormatting.GRAY));
         } else {
             Pair<RuneRitualRecipe, Integer> recipe = this.findRecipe();
             if (recipe == null) {
-                messages.accept(new TranslatableComponent("message.mythicbotany.ritual_wrong_shape").withStyle(ChatFormatting.GRAY));
+                messages.accept(Component.translatable("message.mythicbotany.ritual_wrong_shape").withStyle(ChatFormatting.GRAY));
             } else {
                 this.tryStart(recipe.getLeft(), recipe.getRight(), messages, manaBest, manaRequest);
             }
@@ -221,7 +221,7 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickingBloc
         if (this.level == null) {
             return null;
         }
-        return this.level.getRecipeManager().getAllRecipesFor(ModRecipes.RUNE_RITUAL).stream()
+        return this.level.getRecipeManager().getAllRecipesFor(ModRecipes.runeRitual).stream()
                 .flatMap(this::recipeMatches)
                 .findFirst().orElse(null);
     }
@@ -249,7 +249,7 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickingBloc
             // We need to give a stack here or the request will always fail. The stack may not be empty.
             // So we just pass a piece of cobblestone.
             if (!manaBest.apply(recipe.getMana())) {
-                messages.accept(new TranslatableComponent("message.mythicbotany.ritual_less_mana").withStyle(ChatFormatting.GRAY));
+                messages.accept(Component.translatable("message.mythicbotany.ritual_less_mana").withStyle(ChatFormatting.GRAY));
                 return;
             }
         }
@@ -271,7 +271,7 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickingBloc
                     continue ingredientLoop;
                 }
             }
-            messages.accept(new TranslatableComponent("message.mythicbotany.ritual_wrong_items").withStyle(ChatFormatting.GRAY));
+            messages.accept(Component.translatable("message.mythicbotany.ritual_wrong_items").withStyle(ChatFormatting.GRAY));
             return;
         }
 
@@ -395,7 +395,7 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickingBloc
     @Override
     public void saveAdditional(@Nonnull CompoundTag nbt) {
         super.saveAdditional(nbt);
-        NbtX.putResource(nbt, "recipe", this.recipe == null ? MISSIGNO : this.recipe.getId());
+        NbtX.putRL(nbt, "recipe", this.recipe == null ? MISSIGNO : this.recipe.getId());
         nbt.putInt("progress", this.progress);
         nbt.putInt("transform", this.transformId);
         ListTag consumed = new ListTag();
@@ -412,7 +412,7 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickingBloc
         CompoundTag nbt = super.getUpdateTag();
         //noinspection ConstantConditions
         if (!this.level.isClientSide) {
-            NbtX.putResource(nbt, "recipe", this.recipe == null ? MISSIGNO : this.recipe.getId());
+            NbtX.putRL(nbt, "recipe", this.recipe == null ? MISSIGNO : this.recipe.getId());
             nbt.putInt("progress", this.progress);
             nbt.putInt("transform", this.transformId);
         }
@@ -434,15 +434,15 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickingBloc
     private ParticleOptions getParticle(Item rune) {
         if (rune == ModItems.fimbultyrTablet) {
             return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.GOLD_BLOCK));
-        } else if (rune == vazkii.botania.common.item.ModItems.runeMana) {
+        } else if (rune == BotaniaItems.runeMana) {
             return WispParticleData.wisp(0.2f, 0, 0, 1, 0.3f);
-        } else if (rune == vazkii.botania.common.item.ModItems.runeFire) {
+        } else if (rune == BotaniaItems.runeFire) {
             return ParticleTypes.FLAME;
-        } else if (rune == vazkii.botania.common.item.ModItems.runeAir) {
+        } else if (rune == BotaniaItems.runeAir) {
             return ParticleTypes.CLOUD;
-        } else if (rune == vazkii.botania.common.item.ModItems.runeEarth) {
+        } else if (rune == BotaniaItems.runeEarth) {
             return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.DIRT));
-        } else if (rune == vazkii.botania.common.item.ModItems.runeWater) {
+        } else if (rune == BotaniaItems.runeWater) {
             return ParticleTypes.DOLPHIN;
         } else {
             int color = RUNE_COLORS.getOrDefault(rune, 0xFFFFFF);

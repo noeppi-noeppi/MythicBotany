@@ -1,8 +1,7 @@
 package mythicbotany.alftools;
 
 import com.google.common.collect.ImmutableSet;
-import org.moddingx.libx.registration.Registerable;
-import mythicbotany.ModItems;
+import mythicbotany.register.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.MythicCap;
 import mythicbotany.config.MythicConfig;
@@ -12,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
@@ -24,24 +22,22 @@ import net.minecraft.world.level.material.Material;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import org.moddingx.libx.registration.Registerable;
+import org.moddingx.libx.registration.SetupContext;
 import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.common.helper.PlayerHelper;
-import vazkii.botania.common.item.ItemTemperanceStone;
+import vazkii.botania.common.item.StoneOfTemperanceItem;
 import vazkii.botania.common.item.equipment.tool.ToolCommons;
-import vazkii.botania.common.item.equipment.tool.terrasteel.ItemTerraPick;
-import vazkii.botania.common.item.relic.ItemThorRing;
-import vazkii.botania.common.lib.ModTags;
+import vazkii.botania.common.item.equipment.tool.terrasteel.TerraShattererItem;
+import vazkii.botania.common.item.relic.RingOfThorItem;
+import vazkii.botania.common.lib.BotaniaTags;
 import vazkii.botania.common.lib.ResourceLocationHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Set;
-import java.util.function.Consumer;
 
-import net.minecraft.world.item.Item.Properties;
-import vazkii.botania.common.item.equipment.tool.terrasteel.ItemTerraPick.ManaItem;
-
-public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Registerable {
+public class AlfsteelPick extends TerraShattererItem implements PylonRepairable, Registerable {
 
     private static final Set<Material> MATERIALS = ImmutableSet.of(Material.STONE, Material.METAL, Material.ICE, Material.GLASS, Material.PISTON, Material.HEAVY_METAL, Material.GRASS, Material.DIRT, Material.SAND, Material.TOP_SNOW, Material.SNOW, Material.CLAY);
     
@@ -51,8 +47,8 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        defer.accept(() -> {
+    public void registerClient(SetupContext ctx) {
+        ctx.enqueue(() -> {
             ItemProperties.register(ModItems.alfsteelPick, MythicBotany.getInstance().resource("tipped"), (stack, level, entity, seed) -> isTipped(stack) ? 1 : 0);
             ItemProperties.register(ModItems.alfsteelPick, MythicBotany.getInstance().resource("active"), (stack, level, entity, seed) -> isEnabled(stack) ? 1 : 0);
         });
@@ -70,14 +66,14 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
             BlockState state = level.getBlockState(pos);
             if (MATERIALS.contains(state.getMaterial()) || stack.getDestroySpeed(state) > 1) {
                 if (!level.isEmptyBlock(pos)) {
-                    boolean thor = !ItemThorRing.getThorRing(player).isEmpty();
+                    boolean thor = !RingOfThorItem.getThorRing(player).isEmpty();
                     boolean doX = thor || side.getStepX() == 0;
                     boolean doY = thor || side.getStepY() == 0;
                     boolean doZ = thor || side.getStepZ() == 0;
                     int origLevel = getLevel(stack);
                     int miningLevel = origLevel + (thor ? 1 : 0);
                     int rangeDepth = miningLevel / 2;
-                    if (ItemTemperanceStone.hasTemperanceActive(player) && miningLevel > 2) {
+                    if (StoneOfTemperanceItem.hasTemperanceActive(player) && miningLevel > 2) {
                         miningLevel = 2;
                         rangeDepth = 0;
                     }
@@ -99,12 +95,7 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
 
     @Override
     public boolean isValidRepairItem(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
-        return repair.getItem() == ModItems.alfsteelIngot || (!Ingredient.of(ModTags.Items.INGOTS_TERRASTEEL).test(repair) && super.isValidRepairItem(toRepair, repair));
-    }
-
-    @Override
-    public boolean canRepairPylon(ItemStack stack) {
-        return stack.getDamageValue() > 0;
+        return repair.getItem() == ModItems.alfsteelIngot || (!Ingredient.of(BotaniaTags.Items.INGOTS_TERRASTEEL).test(repair) && super.isValidRepairItem(toRepair, repair));
     }
 
     @Override
@@ -126,6 +117,6 @@ public class AlfsteelPick extends ItemTerraPick implements PylonRepairable, Regi
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new MythicCap<>(super.initCapabilities(stack, nbt), BotaniaForgeCapabilities.MANA_ITEM, () -> new ManaItem(stack));
+        return new MythicCap<>(super.initCapabilities(stack, nbt), BotaniaForgeCapabilities.MANA_ITEM, () -> new ManaItemImpl(stack));
     }
 }

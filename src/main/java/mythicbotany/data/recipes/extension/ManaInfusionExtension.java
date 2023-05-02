@@ -10,8 +10,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import vazkii.botania.data.recipes.ManaInfusionProvider;
 
-import vazkii.botania.data.recipes.ManaInfusionProvider.FinishedRecipe;
-
 public interface ManaInfusionExtension extends RecipeExtension {
 
     default void manaInfusion(ItemLike input, ItemLike result, int mana) {

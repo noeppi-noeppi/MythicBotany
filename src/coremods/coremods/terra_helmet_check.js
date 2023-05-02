@@ -6,7 +6,7 @@ function initializeCoreMod() {
         'terra_helmet_check': {
             'target': {
                 'type': 'METHOD',
-                'class': 'vazkii.botania.common.item.equipment.armor.terrasteel.ItemTerrasteelHelm',
+                'class': 'vazkii.botania.common.item.equipment.armor.terrasteel.TerrasteelHelmItem',
                 'methodName': 'hasTerraArmorSet',
                 'methodDesc': '(Lnet/minecraft/world/entity/player/Player;)Z'
             },

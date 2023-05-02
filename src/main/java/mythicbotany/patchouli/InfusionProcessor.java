@@ -1,7 +1,7 @@
 package mythicbotany.patchouli;
 
 import mythicbotany.MythicBotany;
-import mythicbotany.infuser.IInfuserRecipe;
+import mythicbotany.infuser.InfuserRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
@@ -24,7 +24,7 @@ public class InfusionProcessor extends PetalApothecaryProcessor {
         Minecraft.getInstance().level.getRecipeManager().byKey(id).ifPresent(recipe -> this.recipe = recipe);
         if (this.recipe == null) {
             MythicBotany.logger.warn("Missing mythicbotany infusion recipe: " + id);
-        } else if (!(this.recipe instanceof IInfuserRecipe)) {
+        } else if (!(this.recipe instanceof InfuserRecipe)) {
             MythicBotany.logger.warn("Recipe is not a mythicbotany infusion recipe: " + id);
             this.recipe = null;
         }
@@ -39,7 +39,7 @@ public class InfusionProcessor extends PetalApothecaryProcessor {
                 case "output" -> IVariable.from(this.recipe.getResultItem());
                 case "recipe" -> IVariable.wrap(this.recipe.getId().toString());
                 case "heading" -> IVariable.from(this.recipe.getResultItem().getHoverName());
-                case "mana" -> IVariable.wrap(((IInfuserRecipe) this.recipe).getManaUsage());
+                case "mana" -> IVariable.wrap(((InfuserRecipe) this.recipe).getManaUsage());
                 default -> null;
             };
         }

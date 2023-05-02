@@ -6,12 +6,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import vazkii.botania.data.recipes.RuneProvider;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 
-import vazkii.botania.data.recipes.RuneProvider.FinishedRecipe;
+import vazkii.botania.data.recipes.RunicAltarProvider;
 
 public interface RuneExtension extends RecipeExtension {
 
@@ -31,7 +30,7 @@ public interface RuneExtension extends RecipeExtension {
         this.consumer().accept(Wrapper.create(this.provider().loc(output.getItem(), "runic_altar"), output, mana, inputs));
     }
 
-    class Wrapper extends RuneProvider {
+    class Wrapper extends RunicAltarProvider {
 
         public Wrapper(DataGenerator gen) {
             super(gen);

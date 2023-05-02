@@ -1,8 +1,7 @@
 {
-  "name": "lexicon.entry.mythicbotany.mythic_botany.rings",
   "category": "mythicbotany:mythic_botany",
   "icon": "mythicbotany:fire_ring",
-  "entry_color": "aa00",
+  "name": "lexicon.entry.mythicbotany.mythic_botany.rings",
   "pages": [
     {
       "type": "patchouli:crafting",

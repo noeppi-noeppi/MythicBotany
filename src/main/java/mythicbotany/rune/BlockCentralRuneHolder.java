@@ -1,10 +1,10 @@
 package mythicbotany.rune;
 
+import net.minecraft.network.chat.Component;
 import org.moddingx.libx.mod.ModX;
 import mythicbotany.MythicPlayerData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -13,11 +13,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import vazkii.botania.common.item.ItemTwigWand;
+import vazkii.botania.common.item.WandOfTheForestItem;
 
 import javax.annotation.Nonnull;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockCentralRuneHolder extends BlockRuneHolder<TileCentralRuneHolder> {
 
@@ -32,10 +30,10 @@ public class BlockCentralRuneHolder extends BlockRuneHolder<TileCentralRuneHolde
     @Nonnull
     @Override
     public InteractionResult use(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult hit) {
-        if (player.getItemInHand(hand).getItem() instanceof ItemTwigWand) {
+        if (player.getItemInHand(hand).getItem() instanceof WandOfTheForestItem) {
             if (!level.isClientSide) {
                 if (!MythicPlayerData.getData(player).getBoolean("MimirKnowledge")) {
-                    player.sendMessage(new TranslatableComponent("message.mythicbotany.mimir_unknown").withStyle(ChatFormatting.GRAY), player.getUUID());
+                    player.sendSystemMessage(Component.translatable("message.mythicbotany.mimir_unknown").withStyle(ChatFormatting.GRAY));
                 } else {
                     TileCentralRuneHolder tile = this.getBlockEntity(level, pos);
                     tile.tryStartRitual(player);

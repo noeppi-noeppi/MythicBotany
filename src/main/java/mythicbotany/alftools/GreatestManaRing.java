@@ -8,15 +8,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import vazkii.botania.api.BotaniaForgeCapabilities;
-import vazkii.botania.common.item.equipment.bauble.ItemManaRing;
+import vazkii.botania.common.item.equipment.bauble.BandOfManaItem;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.world.item.Item.Properties;
-import vazkii.botania.common.item.equipment.bauble.ItemManaRing.ManaItem;
-
-public class GreatestManaRing extends ItemManaRing {
+public class GreatestManaRing extends BandOfManaItem {
 
     private static final int MAX_MANA = 4000000;
 
@@ -32,7 +29,7 @@ public class GreatestManaRing extends ItemManaRing {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new MythicCap<>(super.initCapabilities(stack, nbt), BotaniaForgeCapabilities.MANA_ITEM, () -> new ManaItem(stack) {
+        return new MythicCap<>(super.initCapabilities(stack, nbt), BotaniaForgeCapabilities.MANA_ITEM, () -> new ManaItemImpl(stack) {
 
             @Override
             public int getMaxMana() {
@@ -43,7 +40,7 @@ public class GreatestManaRing extends ItemManaRing {
 
     @Override
     public void fillItemCategory(@Nonnull CreativeModeTab tab, @Nonnull NonNullList<ItemStack> stacks) {
-        if (allowdedIn(tab)) {
+        if (allowedIn(tab)) {
             stacks.add(new ItemStack(this));
 
             ItemStack full = new ItemStack(this);

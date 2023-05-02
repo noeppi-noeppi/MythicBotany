@@ -1,9 +1,10 @@
 package mythicbotany.rune;
 
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.moddingx.libx.base.tile.BlockEntityBase;
 import org.moddingx.libx.capability.ItemCapabilities;
 import org.moddingx.libx.inventory.BaseItemStackHandler;
-import mythicbotany.ModItemTags;
+import mythicbotany.register.tags.ModItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nonnull;
@@ -45,7 +45,7 @@ public class TileRuneHolder extends BlockEntityBase {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         //noinspection unchecked
-        return cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (LazyOptional<T>) this.itemCap : super.getCapability(cap, side);
+        return cap == ForgeCapabilities.ITEM_HANDLER ? (LazyOptional<T>) this.itemCap : super.getCapability(cap, side);
     }
 
     public BaseItemStackHandler getInventory() {

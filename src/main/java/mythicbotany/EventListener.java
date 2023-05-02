@@ -8,8 +8,10 @@ import mythicbotany.alftools.AlfsteelHelm;
 import mythicbotany.config.MythicConfig;
 import mythicbotany.misc.Andwari;
 import mythicbotany.mjoellnir.BlockMjoellnir;
+import mythicbotany.register.ModBlocks;
+import mythicbotany.register.ModItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -36,11 +38,12 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import top.theillusivec4.curios.api.CuriosApi;
-import vazkii.botania.api.item.IAncientWillContainer;
+import vazkii.botania.api.item.AncientWillContainer;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.api.recipe.ElvenPortalUpdateEvent;
-import vazkii.botania.common.block.tile.TileAlfPortal;
-import vazkii.botania.common.item.equipment.armor.terrasteel.ItemTerrasteelHelm;
+import vazkii.botania.common.block.block_entity.AlfheimPortalBlockEntity;
+import vazkii.botania.common.item.BotaniaItems;
+import vazkii.botania.common.item.equipment.armor.terrasteel.TerrasteelHelmItem;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -72,7 +75,7 @@ public class EventListener {
     public void citicalHit(CriticalHitEvent event) {
         if (event.getResult() == Event.Result.ALLOW || (event.getResult() == Event.Result.DEFAULT && event.isVanillaCritical())) {
             if (((AlfsteelHelm) ModItems.alfsteelHelmet).hasArmorSet(event.getEntity())) {
-                if (((AlfsteelHelm) ModItems.alfsteelHelmet).hasAncientWill(event.getEntity().getItemBySlot(EquipmentSlot.HEAD), IAncientWillContainer.AncientWillType.DHAROK)) {
+                if (((AlfsteelHelm) ModItems.alfsteelHelmet).hasAncientWill(event.getEntity().getItemBySlot(EquipmentSlot.HEAD), AncientWillContainer.AncientWillType.DHAROK)) {
                     float calculatedModifier = event.getDamageModifier() * (1f + (1f - event.getEntity().getHealth() / event.getEntity().getMaxHealth()) * 0.5f);
                     if (calculatedModifier != 1 && calculatedModifier != 0 && Float.isFinite(calculatedModifier)) {
                         event.setDamageModifier(calculatedModifier);
@@ -102,7 +105,7 @@ public class EventListener {
             }
         }
         if (event.getSource().getEntity() instanceof Player && this.crittingPlayers.contains(event.getSource().getEntity().getUUID())) {
-            ItemTerrasteelHelm.onEntityAttacked(event.getSource(), event.getAmount(), ((Player) event.getSource().getEntity()), event.getEntity());
+            TerrasteelHelmItem.onEntityAttacked(event.getSource(), event.getAmount(), ((Player) event.getSource().getEntity()), event.getEntity());
         }
     }
 
@@ -166,7 +169,7 @@ public class EventListener {
         if (event.isOpen() && portal.getLevel() != null && !portal.getLevel().isClientSide) {
             if (Alfheim.DIMENSION.equals(portal.getLevel().dimension())) {
                 // Alfheim portals in alfheim make no sense. better close this one.
-                if (portal instanceof TileAlfPortal alfPortal) {
+                if (portal instanceof AlfheimPortalBlockEntity alfPortal) {
                     // A portal will close if it tries to consume mana without pylons.
                     // So we just let it consume 0 mana with 0 pylons which should close
                     // the portal.
@@ -180,7 +183,7 @@ public class EventListener {
                     if (player instanceof ServerPlayer && MythicPlayerData.getData(player).getBoolean("KvasirKnowledge")) {
                         if (AlfheimPortalHandler.setInPortal(portal.getLevel(), player)) {
                             if (!AlfheimTeleporter.teleportToAlfheim((ServerPlayer) player, portal.getBlockPos())) {
-                                player.sendMessage(new TranslatableComponent("message.mythicbotany.alfheim_not_loaded"), player.getUUID());
+                                player.sendSystemMessage(Component.translatable("message.mythicbotany.alfheim_not_loaded"));
                             }
                         }
                     }
@@ -192,7 +195,7 @@ public class EventListener {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void itemDespawn(ItemExpireEvent event) {
         if (!event.getEntity().level.isClientSide && Alfheim.DIMENSION.equals(event.getEntity().level.dimension())) {
-            if (event.getEntity().getItem().getItem() == vazkii.botania.common.item.ModItems.dragonstone || event.getEntity().getItem().getItem() == vazkii.botania.common.item.ModItems.pixieDust) {
+            if (event.getEntity().getItem().getItem() == BotaniaItems.pixieDust) {
                 BlockPos pos = event.getEntity().blockPosition();
                 if (TileReturnPortal.validPortal(event.getEntity().level, pos)) {
                     event.getEntity().level.setBlock(pos, ModBlocks.returnPortal.defaultBlockState(), 3);

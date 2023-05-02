@@ -6,13 +6,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,9 +44,22 @@ public class LittleBoxItemRenderer implements IIngredientRenderer<ItemStack> {
     }
 
     @Override
-    public void render(@Nonnull PoseStack poseStack, int x, int y, @Nullable ItemStack stack) {
+    public int getWidth() {
+        return 12;
+    }
+
+    @Override
+    public int getHeight() {
+        return 12;
+    }
+
+    @Override
+    public void render(@Nonnull PoseStack poseStack, @Nonnull ItemStack stack) {
         if (parent != null) {
-            parent.render(poseStack, x - 2, y - 2, stack);
+            poseStack.pushPose();
+            poseStack.translate(-2, -2, 0);
+            parent.render(poseStack, stack);
+            poseStack.popPose();
         }
     }
 
@@ -59,14 +70,14 @@ public class LittleBoxItemRenderer implements IIngredientRenderer<ItemStack> {
             tooltip.addAll(parent.getTooltip(stack, flag));
         }
         if (this.x != 0 || this.z != 0) {
-            tooltip.add(new TranslatableComponent("tooltip.mythicbotany.rune_offset", this.x, this.z).withStyle(ChatFormatting.GOLD));
+            tooltip.add(Component.translatable("tooltip.mythicbotany.rune_offset", this.x, this.z).withStyle(ChatFormatting.GOLD));
         } else {
-            tooltip.add(new TranslatableComponent("tooltip.mythicbotany.rune_central").withStyle(ChatFormatting.GOLD));
+            tooltip.add(Component.translatable("tooltip.mythicbotany.rune_central").withStyle(ChatFormatting.GOLD));
         }
         if (this.consume) {
-            tooltip.add(new TranslatableComponent("tooltip.mythicbotany.rune_consume").withStyle(ChatFormatting.DARK_RED));
+            tooltip.add(Component.translatable("tooltip.mythicbotany.rune_consume").withStyle(ChatFormatting.DARK_RED));
         } else {
-            tooltip.add(new TranslatableComponent("tooltip.mythicbotany.rune_keep").withStyle(ChatFormatting.DARK_GREEN));
+            tooltip.add(Component.translatable("tooltip.mythicbotany.rune_keep").withStyle(ChatFormatting.DARK_GREEN));
         }
         return tooltip;
     }

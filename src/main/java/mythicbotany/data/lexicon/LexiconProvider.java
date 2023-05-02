@@ -1,19 +1,22 @@
 package mythicbotany.data.lexicon;
 
-import org.moddingx.libx.annotation.data.Datagen;
-import org.moddingx.libx.mod.ModX;
-import mythicbotany.ModBlocks;
-import mythicbotany.ModEntities;
-import mythicbotany.ModItems;
-import mythicbotany.data.patchouli.PatchouliProviderBase;
+import mythicbotany.register.ModBlocks;
+import mythicbotany.register.ModEntities;
+import mythicbotany.register.ModItems;
+import mythicbotany.data.lexicon.page.*;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.server.packs.PackType;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.moddingx.libx.annotation.data.Datagen;
+import org.moddingx.libx.datagen.provider.patchouli.BookProperties;
+import org.moddingx.libx.datagen.provider.patchouli.PatchouliProviderBase;
+import org.moddingx.libx.mod.ModX;
 
 @Datagen
 public class LexiconProvider extends PatchouliProviderBase {
 
     public LexiconProvider(ModX mod, DataGenerator generator, ExistingFileHelper fileHelper) {
-        super(mod, generator, fileHelper, "lexicon");
+        super(mod, generator, fileHelper, new BookProperties("lexicon", PackType.CLIENT_RESOURCES, true));
     }
 
     @Override
@@ -32,15 +35,15 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("Those new runes unleash great power but can be dangerous if not used correctly.")
                 .text("Handle them with caution.")
                 .flip()
-                .rune("midgard_rune_runic_altar").caption("Midgard is the world of the humans.")
-                .rune("alfheim_rune_runic_altar").caption("Alfheim is the world of the elves.")
-                .rune("nidavellir_rune_runic_altar").caption("Nidavellir is the world of the dwarves.")
-                .rune("joetunheim_rune_runic_altar").caption("Jötunheim is the world of the giants.")
-                .rune("muspelheim_rune_runic_altar").caption("Muspelheim is the world of the fire giants.")
-                .rune("niflheim_rune_runic_altar").caption("Niflheim is the world of the frost giants.")
-                .rune("asgard_rune_runic_altar").caption("Asgard is the world of the Aesir.")
-                .rune("vanaheim_rune_runic_altar").caption("Vanaheim is the world of the Vanir.")
-                .rune("helheim_rune_runic_altar").caption("Helheim is the world of the dead.");
+                .add(new RunePage(this.mod.resource("midgard_rune_runic_altar"))).caption("Midgard is the world of the humans.")
+                .add(new RunePage(this.mod.resource("alfheim_rune_runic_altar"))).caption("Alfheim is the world of the elves.")
+                .add(new RunePage(this.mod.resource("nidavellir_rune_runic_altar"))).caption("Nidavellir is the world of the dwarves.")
+                .add(new RunePage(this.mod.resource("joetunheim_rune_runic_altar"))).caption("Jötunheim is the world of the giants.")
+                .add(new RunePage(this.mod.resource("muspelheim_rune_runic_altar"))).caption("Muspelheim is the world of the fire giants.")
+                .add(new RunePage(this.mod.resource("niflheim_rune_runic_altar"))).caption("Niflheim is the world of the frost giants.")
+                .add(new RunePage(this.mod.resource("asgard_rune_runic_altar"))).caption("Asgard is the world of the Aesir.")
+                .add(new RunePage(this.mod.resource("vanaheim_rune_runic_altar"))).caption("Vanaheim is the world of the Vanir.")
+                .add(new RunePage(this.mod.resource("helheim_rune_runic_altar"))).caption("Helheim is the world of the dead.");
         
         this.entry("infuser")
                 .name("The Mana Infuser")
@@ -69,8 +72,8 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .item(ModItems.alfsteelIngot)
                 .text("Alfsteel is created like terrasteel but with resources from Alfheim.")
                 .text("It requires much more mana but can be used to create various powerful things.")
-                .infuser("botania", "mythicbotany_infusion/terrasteel_ingot")
-                .infuser("mythicbotany_infusion/alfsteel_ingot");
+                .add(new InfuserPage(this.mod.resource("mythicbotany_infusion/terrasteel_ingot")))
+                .add(new InfuserPage(this.mod.resource("mythicbotany_infusion/alfsteel_ingot")));
         
         this.entry("tools")
                 .name("Alfsteel Tools")
@@ -113,10 +116,10 @@ public class LexiconProvider extends PatchouliProviderBase {
         this.entry("generating")
                 .name("Generating Flora")
                 .icon(ModBlocks.witherAconite)
-                .petal("wither_aconite_petal_apothecary")
+                .add(new PetalPage(this.mod.resource("wither_aconite_petal_apothecary")))
                 .text("The wither aconite uses up nether stars dropped on it to create mana from them.")
                 .text("If the wither aconite can't use up the nether star after 5 minutes, it will despawn like any other item.")
-                .petal("raindeletia_petal_apothecary")
+                .add(new PetalPage(this.mod.resource("raindeletia_petal_apothecary")))
                 .text("The raindeletia produces mana when it's raining and even more mana when it's thundering.")
                 .text("Planting it on vivid grass or enchanted soil makes it generate much more.")
                 .text("On regular soil, it even is too weak to generate mana during normal rain.")
@@ -129,18 +132,18 @@ public class LexiconProvider extends PatchouliProviderBase {
         this.entry("functional")
                 .name("Functional Flora")
                 .icon(ModBlocks.hellebore)
-                .petal("aquapanthus_petal_apothecary")
+                .add(new PetalPage(this.mod.resource("aquapanthus_petal_apothecary")))
                 .text("The Aquapanthus uses a very small amount of mana to fill nearby cauldrons and petal apothecaries with water.")
                 .text("It can also fill some other fluid containers that are mostly unknown to the average botanist.")
-                .petal("exoblaze_petal_apothecary")
+                .add(new PetalPage(this.mod.resource("exoblaze_petal_apothecary")))
                 .text("The Exoblaze uses mana to fill the fuel of nearby brewing stands.")
                 .text("Never put blaze powder in again when brewing your potions.")
                 .text("Still a pretty primitive flower as powerful botanists have better devices that brewing stands...")
-                .petal("hellebore_petal_apothecary")
+                .add(new PetalPage(this.mod.resource("hellebore_petal_apothecary")))
                 .text("Piglins and Hoglins will transform int ozombies in the overworld.")
                 .text("While the exact reason is not yet known, botanists have foudn a way to use mana to keep these creatures safe in the overworld.")
                 .text("Any Piglins or Hoglins n the range of the flower won't zombify when outside of the nether, as lon gas the flower has sufficient mana.")
-                .petal("petrunia_petal_apothecary")
+                .add(new PetalPage(this.mod.resource("petrunia_petal_apothecary")))
                 .text("The Petrunia can activate rune rituals if provided with enough mana and placed near the central rune holder.");
         
         this.entry("mimir")
@@ -153,7 +156,7 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("You think you can achieve this too.")
                 .crafting("yggdrasil_branch")
                 .caption("However catching the water will need a special type of container.")
-                .mana("gjallar_horn_empty_mana_infusion")
+                .add(new ManaPage(this.mod.resource("gjallar_horn_empty_mana_infusion")))
                 .caption("Creating an empty Gjallarhorn")
                 .item(ModItems.gjallarHornFull)
                 .text("With a gjallarhorn, you are able to catch the water. For this, you need to place it in the branch.")
@@ -204,7 +207,7 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("It can also be enchanted with most bow enchantments.")
                 .text("They only affect ranged attacks.")
                 .text("It can also be anchanted with Loyalty, which makes it return faster after throwing it.")
-                .ritual(ModBlocks.mjoellnir, "mythicbotany_rune_rituals/mjoellnir")
+                .add(new RitualPage(ModBlocks.mjoellnir, this.mod.resource("mythicbotany_rune_rituals/mjoellnir")))
                 .caption("Creating a replica of the legendary weapon Mjöllnir.");
         
         this.category("alfheim")
@@ -220,7 +223,7 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("Dream cherries are dropped by Dreamwood Leaves.")
                 .text("Those leaves generate on Dreamwood trees all throughout Alfheim.")
                 .text("Eating a dream cherry will give you a big saturation boost, which means it takes much longer before your hunger goes down again.")
-                .trade("dreamwood_leaves_elven_trade")
+                .add(new TradePage(this.mod.resource("dreamwood_leaves_elven_trade")))
                 .caption("Trading for Dreamwood Leaves.")
                 .item(ModBlocks.elementiumOre)
                 .text("Elementium Ore can be found underground roughly on the same levels as iron in the overworld.")
@@ -260,7 +263,7 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("If cou could only find the ring...")
                 .image("Andwari Cave", "textures/image/andwari_entrance.png", "textures/image/andwari_cave.png")
                 .caption("Andwari caves generate only in the Golden Fields biome.")
-                .ritual(ModItems.andwariRing, "mythicbotany_rune_rituals/andwari_ring")
+                .add(new RitualPage(ModItems.andwariRing, this.mod.resource("mythicbotany_rune_rituals/andwari_ring")))
                 .caption("After removing the curse you can use it for a time.")
                 .caption("Just place a gold block and get a reward.")
                 .caption("However, this requires some mana.")
@@ -277,9 +280,9 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("Drinking this mead will allow you to travel the worlds like Kvasir.")
                 .crafting("kvasir_mead")
                 .caption("After drinking the mead you'll be able to step in the Portal to Alfheim and travel to Alfheim yourself.")
-                .caption("If you accidentally break your portal in Alfheim you can fix the frame and throw a dragonstone or some pixie dust in.")
+                .caption("If you accidentally break your portal in Alfheim you can fix the frame and throw some pixie dust in.")
                 .caption("When it despawns, the portal will reopen.")
-                .ritual(ModItems.kvasirBlood, "mythicbotany_rune_rituals/kvasir_blood")
+                .add(new RitualPage(ModItems.kvasirBlood, this.mod.resource("mythicbotany_rune_rituals/kvasir_blood")))
                 .caption("By using a wandering trader as a symbol for Kvasir you should be able to get blood to form the Mead of Kvasir.");
     }
 }

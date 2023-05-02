@@ -1,36 +1,31 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "mythicbotany:central_rune_holder"
-    ]
-  },
   "criteria": {
     "criterion0": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "tag": "forge:gems/emerald"
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "criterion1": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "tag": "botania:mana_dusts"
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
       "conditions": {
         "recipe": "mythicbotany:central_rune_holder"
-      }
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
@@ -39,5 +34,10 @@
       "criterion1",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mythicbotany:central_rune_holder"
+    ]
+  }
 }

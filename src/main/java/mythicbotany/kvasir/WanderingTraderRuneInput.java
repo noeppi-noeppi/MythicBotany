@@ -2,7 +2,7 @@ package mythicbotany.kvasir;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Either;
-import org.moddingx.libx.crafting.ingredient.NbtIngredient;
+import net.minecraftforge.common.crafting.StrictNBTIngredient;
 import org.moddingx.libx.util.Misc;
 import mythicbotany.MythicBotany;
 import mythicbotany.rune.RuneRitualRecipe;
@@ -15,7 +15,6 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.item.ItemStack;
@@ -50,11 +49,11 @@ public class WanderingTraderRuneInput extends SpecialRuneInput {
         nbt.put("SkullOwner", skullOwner);
         CompoundTag display = new CompoundTag();
         ListTag tooltipNBT = new ListTag();
-        tooltipNBT.add(StringTag.valueOf(Component.Serializer.toJson(new TranslatableComponent("tooltip.mythicbotany.sacrifice_entity1").withStyle(ChatFormatting.RESET).withStyle(Style.EMPTY.withItalic(false)).withStyle(ChatFormatting.AQUA))));
-        tooltipNBT.add(StringTag.valueOf(Component.Serializer.toJson(new TranslatableComponent("tooltip.mythicbotany.sacrifice_entity2").withStyle(ChatFormatting.RESET).withStyle(Style.EMPTY.withItalic(false)).withStyle(ChatFormatting.AQUA))));
+        tooltipNBT.add(StringTag.valueOf(Component.Serializer.toJson(Component.translatable("tooltip.mythicbotany.sacrifice_entity1").withStyle(ChatFormatting.RESET).withStyle(Style.EMPTY.withItalic(false)).withStyle(ChatFormatting.AQUA))));
+        tooltipNBT.add(StringTag.valueOf(Component.Serializer.toJson(Component.translatable("tooltip.mythicbotany.sacrifice_entity2").withStyle(ChatFormatting.RESET).withStyle(Style.EMPTY.withItalic(false)).withStyle(ChatFormatting.AQUA))));
         display.put("Lore", tooltipNBT);
         nbt.put("display", display);
-        this.traderStack.setHoverName(new TranslatableComponent("entity.minecraft.wandering_trader").withStyle(Style.EMPTY.withItalic(false)).withStyle(ChatFormatting.DARK_AQUA));
+        this.traderStack.setHoverName(Component.translatable("entity.minecraft.wandering_trader").withStyle(Style.EMPTY.withItalic(false)).withStyle(ChatFormatting.DARK_AQUA));
     }
 
     @Override
@@ -63,7 +62,7 @@ public class WanderingTraderRuneInput extends SpecialRuneInput {
         AABB aabb = new AABB(center, center).inflate(3);
         List<WanderingTrader> traders = level.getEntities(EntityType.WANDERING_TRADER, aabb, e -> true);
         if (traders.isEmpty()) {
-            return Either.left(new TranslatableComponent("message.mythicbotany.ritual_no_trader"));
+            return Either.left(Component.translatable("message.mythicbotany.ritual_no_trader"));
         }
         WanderingTrader trader = traders.get(0);
         if (trader.getVehicle() != null) {
@@ -91,6 +90,6 @@ public class WanderingTraderRuneInput extends SpecialRuneInput {
 
     @Override
     public List<Ingredient> getJeiInputItems() {
-        return ImmutableList.of(new NbtIngredient(this.traderStack));
+        return ImmutableList.of(StrictNBTIngredient.of(this.traderStack));
     }
 }

@@ -5,7 +5,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.moddingx.libx.crafting.CraftingHelper2;
 import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
-import mythicbotany.ModRecipes;
 import mythicbotany.rune.RuneRitualRecipe;
 import mythicbotany.rune.SpecialRuneInput;
 import mythicbotany.rune.SpecialRuneOutput;
@@ -43,7 +42,7 @@ public interface RuneRitualExtension extends RecipeExtension {
         private final Ingredient centerRune;
         private final List<RuneRitualRecipe.RunePosition> runes = new ArrayList<>();
         private int manaCost = 0;
-        private int tickTime = RuneRitualRecipe.DEFAULT_TICKS;
+        private int tickTime = 200;
         private final List<Ingredient> inputs = new ArrayList<>();
         private final List<ItemStack> outputs = new ArrayList<>();
         @Nullable
@@ -231,12 +230,12 @@ public interface RuneRitualExtension extends RecipeExtension {
         public void build() {
             ResourceLocation rl = null;
             if (this.outputs.size() == 1) {
-                rl = this.outputs.get(0).getItem().getRegistryName();
+                rl = this.ext.provider().loc(this.outputs.get(0).getItem());
             } else if (this.specialOutput != null) {
                 rl = this.specialOutput.id;
             }
             if (rl == null) {
-                throw new IllegalStateException("Failed to infer recipe id for rune ritual recipe.w");
+                throw new IllegalStateException("Failed to infer recipe id for rune ritual recipe.");
             }
             this.build(rl);
         }
@@ -245,6 +244,7 @@ public interface RuneRitualExtension extends RecipeExtension {
             this.ext.consumer().accept(new TheRecipe(new ResourceLocation(id.getNamespace(), "mythicbotany_rune_rituals/" + id.getPath()), this.centerRune, this.runes, this.manaCost, this.tickTime, this.inputs, this.outputs, this.specialInput, this.specialOutput));
         }
 
+        @SuppressWarnings("ClassCanBeRecord")
         private static class TheRecipe implements FinishedRecipe {
 
             private final ResourceLocation id;
@@ -315,7 +315,7 @@ public interface RuneRitualExtension extends RecipeExtension {
             @Nonnull
             @Override
             public RecipeSerializer<?> getType() {
-                return ModRecipes.RUNE_RITUAL_SERIALIZER;
+                return RuneRitualRecipe.Serializer.INSTANCE;
             }
 
             @Nullable

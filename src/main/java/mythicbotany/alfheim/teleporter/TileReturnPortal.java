@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import vazkii.botania.common.block.ModBlocks;
+import vazkii.botania.common.block.BotaniaBlocks;
 
 import java.util.List;
 
@@ -51,8 +51,8 @@ public class TileReturnPortal extends BlockEntityBase implements TickingBlock {
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
                 if (x != 0 || z != 0) {
-                    Block required1 = x == 0 || z == 0 ? ModBlocks.livingwoodGlimmering : ModBlocks.livingwood;
-                    Block required2 = x == 0 || z == 0 ? ModBlocks.dreamwoodGlimmering : ModBlocks.dreamwood;
+                    Block required1 = x == 0 || z == 0 ? BotaniaBlocks.livingwoodGlimmering : BotaniaBlocks.livingwood;
+                    Block required2 = x == 0 || z == 0 ? BotaniaBlocks.dreamwoodGlimmering : BotaniaBlocks.dreamwood;
                     Block actual = level.getBlockState(pos.offset(x, 0, z)).getBlock();
                     if (isDreamwood == null) {
                         if (actual == required1) {

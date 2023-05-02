@@ -1,8 +1,7 @@
 {
-  "name": "lexicon.entry.mythicbotany.mythic_botany.mimir",
   "category": "mythicbotany:mythic_botany",
   "icon": "mythicbotany:gjallar_horn_full",
-  "entry_color": "aa00",
+  "name": "lexicon.entry.mythicbotany.mythic_botany.mimir",
   "pages": [
     {
       "type": "patchouli:text",

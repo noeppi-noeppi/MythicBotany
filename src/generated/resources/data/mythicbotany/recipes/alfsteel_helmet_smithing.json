@@ -1,10 +1,10 @@
 {
   "type": "minecraft:smithing",
-  "base": {
-    "item": "botania:terrasteel_helmet"
-  },
   "addition": {
     "item": "mythicbotany:alfsteel_ingot"
+  },
+  "base": {
+    "item": "botania:terrasteel_helmet"
   },
   "result": {
     "item": "mythicbotany:alfsteel_helmet"

@@ -3,9 +3,9 @@ package mythicbotany.data;
 import org.moddingx.libx.annotation.data.Datagen;
 import org.moddingx.libx.datagen.provider.AdvancementProviderBase;
 import org.moddingx.libx.mod.ModX;
-import mythicbotany.ModBlocks;
-import mythicbotany.ModEntities;
-import mythicbotany.ModItems;
+import mythicbotany.register.ModBlocks;
+import mythicbotany.register.ModEntities;
+import mythicbotany.register.ModItems;
 import mythicbotany.advancement.AlfRepairTrigger;
 import mythicbotany.advancement.MjoellnirTrigger;
 import mythicbotany.alfheim.Alfheim;
@@ -13,7 +13,8 @@ import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
-import vazkii.botania.common.lib.ModTags;
+import vazkii.botania.common.item.BotaniaItems;
+import vazkii.botania.common.lib.BotaniaTags;
 
 @Datagen
 public class AdvancementProvider extends AdvancementProviderBase {
@@ -26,26 +27,26 @@ public class AdvancementProvider extends AdvancementProviderBase {
     public void setup() {
         this.root().display(wandIcon())
                 .background(this.mod.resource("textures/block/alfsteel_block.png"))
-                .task(this.items(ModTags.Items.INGOTS_TERRASTEEL));
+                .task(this.items(BotaniaTags.Items.INGOTS_TERRASTEEL));
 
         this.advancement("all_runes").display(ModItems.joetunheimRune)
                 .tasks(this.itemTasks(
-                        vazkii.botania.common.item.ModItems.runeAir,
-                        vazkii.botania.common.item.ModItems.runeAutumn,
-                        vazkii.botania.common.item.ModItems.runeEarth,
-                        vazkii.botania.common.item.ModItems.runeEnvy,
-                        vazkii.botania.common.item.ModItems.runeFire,
-                        vazkii.botania.common.item.ModItems.runeGluttony,
-                        vazkii.botania.common.item.ModItems.runeGreed,
-                        vazkii.botania.common.item.ModItems.runeLust,
-                        vazkii.botania.common.item.ModItems.runeMana,
-                        vazkii.botania.common.item.ModItems.runePride,
-                        vazkii.botania.common.item.ModItems.runeSloth,
-                        vazkii.botania.common.item.ModItems.runeSpring,
-                        vazkii.botania.common.item.ModItems.runeSummer,
-                        vazkii.botania.common.item.ModItems.runeWater,
-                        vazkii.botania.common.item.ModItems.runeWinter,
-                        vazkii.botania.common.item.ModItems.runeWrath,
+                        BotaniaItems.runeAir,
+                        BotaniaItems.runeAutumn,
+                        BotaniaItems.runeEarth,
+                        BotaniaItems.runeEnvy,
+                        BotaniaItems.runeFire,
+                        BotaniaItems.runeGluttony,
+                        BotaniaItems.runeGreed,
+                        BotaniaItems.runeLust,
+                        BotaniaItems.runeMana,
+                        BotaniaItems.runePride,
+                        BotaniaItems.runeSloth,
+                        BotaniaItems.runeSpring,
+                        BotaniaItems.runeSummer,
+                        BotaniaItems.runeWater,
+                        BotaniaItems.runeWinter,
+                        BotaniaItems.runeWrath,
                         ModItems.asgardRune, ModItems.vanaheimRune, ModItems.alfheimRune,
                         ModItems.midgardRune, ModItems.joetunheimRune, ModItems.muspelheimRune,
                         ModItems.niflheimRune, ModItems.nidavellirRune, ModItems.helheimRune
@@ -74,7 +75,7 @@ public class AdvancementProvider extends AdvancementProviderBase {
     }
     
     private static ItemStack wandIcon() {
-        ItemStack stack = new ItemStack(vazkii.botania.common.item.ModItems.dreamwoodWand);
+        ItemStack stack = new ItemStack(BotaniaItems.dreamwoodWand);
         stack.getOrCreateTag().putInt("color1", 4);
         stack.getOrCreateTag().putInt("color2", 3);
         return stack;

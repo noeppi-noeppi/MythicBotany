@@ -1,14 +1,9 @@
 package mythicbotany.functionalflora.base;
 
-import org.moddingx.libx.base.tile.BlockBE;
-import org.moddingx.libx.mod.ModX;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -23,14 +18,15 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.moddingx.libx.base.tile.BlockBE;
+import org.moddingx.libx.mod.ModX;
+import org.moddingx.libx.registration.SetupContext;
 import vazkii.botania.xplat.BotaniaConfig;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Consumer;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> extends BlockBE<T> {
 
@@ -46,9 +42,8 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void registerClient(ResourceLocation id, Consumer<Runnable> defer) {
-        BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderFunctionalFlower<>());
-        ItemBlockRenderTypes.setRenderLayer(this, RenderType.cutoutMipped());
+    public void registerClient(SetupContext ctx) {
+        ctx.enqueue(() -> BlockEntityRenderers.register(this.getBlockEntityType(), mgr -> new RenderFunctionalFlower<>()));
     }
 
     public BlockFunctionalFlower<T> getNonFloatingBlock() {
@@ -87,14 +82,16 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
     public void appendHoverText(@Nonnull ItemStack stack, @Nullable BlockGetter level, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         if (this.getNonFloatingBlock().isGenerating) {
-            tooltip.add(new TranslatableComponent("botania.flowerType.generating").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
+            tooltip.add(Component.translatable("botania.flowerType.generating").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
 
         } else {
-            tooltip.add(new TranslatableComponent("botania.flowerType.functional").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
+            tooltip.add(Component.translatable("botania.flowerType.functional").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
 
         }
-        //noinspection ConstantConditions
-        tooltip.add(new TranslatableComponent("block." + this.mod.modid + "." + this.getNonFloatingBlock().getRegistryName().getPath() + ".description").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        ResourceLocation id = ForgeRegistries.BLOCKS.getKey(this.getNonFloatingBlock());
+        if (id != null) {
+            tooltip.add(Component.translatable("block." + id.getNamespace() + "." + id.getPath() + ".description").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        }
     }
 
     @SuppressWarnings("deprecation")

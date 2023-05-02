@@ -1,8 +1,5 @@
 {
   "type": "botania:petal_apothecary",
-  "output": {
-    "item": "mythicbotany:hellebore"
-  },
   "ingredients": [
     {
       "tag": "botania:petals/red"
@@ -19,5 +16,11 @@
     {
       "item": "botania:rune_fire"
     }
-  ]
+  ],
+  "output": {
+    "item": "mythicbotany:hellebore"
+  },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  }
 }

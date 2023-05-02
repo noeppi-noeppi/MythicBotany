@@ -7,11 +7,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import vazkii.botania.api.mana.ManaItemHandler;
-import vazkii.botania.common.item.equipment.bauble.ItemBauble;
+import vazkii.botania.common.item.equipment.bauble.BaubleItem;
 
-import net.minecraft.world.item.Item.Properties;
-
-public class ItemAndwariRingCursed extends ItemBauble {
+public class ItemAndwariRingCursed extends BaubleItem {
 
     public ItemAndwariRingCursed(Properties props) {
         //noinspection ConstantConditions

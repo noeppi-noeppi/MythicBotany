@@ -1,8 +1,7 @@
 {
-  "name": "lexicon.entry.mythicbotany.mythic_botany.pylons",
   "category": "mythicbotany:mythic_botany",
   "icon": "mythicbotany:alfsteel_pylon",
-  "entry_color": "aa00",
+  "name": "lexicon.entry.mythicbotany.mythic_botany.pylons",
   "pages": [
     {
       "type": "patchouli:text",

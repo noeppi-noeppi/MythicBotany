@@ -3,8 +3,8 @@
   "input": {
     "item": "botania:horn_grass"
   },
+  "mana": 20000,
   "output": {
     "item": "mythicbotany:gjallar_horn_empty"
-  },
-  "mana": 20000
+  }
 }

@@ -1,10 +1,10 @@
 {
   "type": "minecraft:smithing",
-  "base": {
-    "item": "botania:terrasteel_leggings"
-  },
   "addition": {
     "item": "mythicbotany:alfsteel_ingot"
+  },
+  "base": {
+    "item": "botania:terrasteel_leggings"
   },
   "result": {
     "item": "mythicbotany:alfsteel_leggings"

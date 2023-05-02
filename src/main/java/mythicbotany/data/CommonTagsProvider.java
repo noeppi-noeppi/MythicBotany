@@ -3,10 +3,10 @@ package mythicbotany.data;
 import org.moddingx.libx.annotation.data.Datagen;
 import org.moddingx.libx.datagen.provider.CommonTagsProviderBase;
 import org.moddingx.libx.mod.ModX;
-import mythicbotany.ModBlockTags;
-import mythicbotany.ModBlocks;
-import mythicbotany.ModItemTags;
-import mythicbotany.ModItems;
+import mythicbotany.register.tags.ModBlockTags;
+import mythicbotany.register.ModBlocks;
+import mythicbotany.register.tags.ModItemTags;
+import mythicbotany.register.ModItems;
 import mythicbotany.functionalflora.base.BlockFloatingFunctionalFlower;
 import mythicbotany.functionalflora.base.BlockFunctionalFlower;
 import net.minecraft.data.DataGenerator;
@@ -17,9 +17,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import vazkii.botania.common.block.ModFluffBlocks;
-import vazkii.botania.common.item.material.ItemRune;
-import vazkii.botania.common.lib.ModTags;
+import vazkii.botania.common.block.BotaniaBlocks;
+import vazkii.botania.common.block.BotaniaFluffBlocks;
+import vazkii.botania.common.item.material.RuneItem;
+import vazkii.botania.common.lib.BotaniaTags;
 
 import javax.annotation.Nullable;
 
@@ -32,26 +33,26 @@ public class CommonTagsProvider extends CommonTagsProviderBase {
 
     @Override
     public void setup() {
-        this.item(ModTags.Items.TERRA_PICK_BLACKLIST).add(ModItems.auraRingGreatest);
-        this.item(ModTags.Items.TERRA_PICK_BLACKLIST).add(ModItems.alfsteelHelmet);
-        this.item(ModItemTags.RITUAL_RUNES).addTag(ModTags.Items.RUNES);
+        this.item(BotaniaTags.Items.TERRA_PICK_BLACKLIST).add(ModItems.auraRingGreatest);
+        this.item(BotaniaTags.Items.TERRA_PICK_BLACKLIST).add(ModItems.alfsteelHelmet);
+        this.item(ModItemTags.RITUAL_RUNES).addTag(BotaniaTags.Items.RUNES);
         this.item(ModItemTags.RITUAL_RUNES).add(ModItems.fimbultyrTablet);
         this.item(ItemTags.GOLD_ORES).add(ModBlocks.goldOre.asItem());
         this.item(Tags.Items.ORES).addTag(ModItemTags.ALFHEIM_ORES);
         this.item(Tags.Items.RAW_MATERIALS).add(ModItems.rawElementium);
 
         this.block(BlockTags.BEACON_BASE_BLOCKS).add(ModBlocks.alfsteelBlock);
-        this.block(ModBlockTags.ALFHEIM_LOGS).add(vazkii.botania.common.block.ModBlocks.dreamwood);
+        this.block(ModBlockTags.ALFHEIM_LOGS).add(BotaniaBlocks.dreamwood);
         this.block(ModBlockTags.ALFHEIM_LEAVES).add(ModBlocks.dreamwoodLeaves);
         this.block(ModBlockTags.BASE_STONE_ALFHEIM).add(
-                vazkii.botania.common.block.ModBlocks.livingrock,
-                ModFluffBlocks.biomeStoneForest,
-                ModFluffBlocks.biomeStoneMountain,
-                ModFluffBlocks.biomeStoneFungal,
-                ModFluffBlocks.biomeStoneSwamp,
-                ModFluffBlocks.biomeStoneDesert,
-                ModFluffBlocks.biomeStoneTaiga,
-                ModFluffBlocks.biomeStoneMesa
+                BotaniaBlocks.livingrock,
+                BotaniaFluffBlocks.biomeStoneForest,
+                BotaniaFluffBlocks.biomeStoneMountain,
+                BotaniaFluffBlocks.biomeStoneFungal,
+                BotaniaFluffBlocks.biomeStoneSwamp,
+                BotaniaFluffBlocks.biomeStoneDesert,
+                BotaniaFluffBlocks.biomeStoneTaiga,
+                BotaniaFluffBlocks.biomeStoneMesa
         );
         this.block(BlockTags.GOLD_ORES).add(ModBlocks.goldOre);
         this.block(ModBlockTags.ALFHEIM_ORES).add(
@@ -79,23 +80,23 @@ public class CommonTagsProvider extends CommonTagsProviderBase {
 
     @Override
     public void defaultItemTags(Item item) {
-        if (item instanceof ItemRune) {
-            this.item(ModTags.Items.RUNES).add(item);
+        if (item instanceof RuneItem) {
+            this.item(BotaniaTags.Items.RUNES).add(item);
         }
     }
 
     @Override
     public void defaultBlockTags(Block block) {
         if (block instanceof BlockFunctionalFlower<?>) {
-            this.item(ModTags.Items.SPECIAL_FLOWERS).add(block.asItem());
+            this.item(BotaniaTags.Items.SPECIAL_FLOWERS).add(block.asItem());
             if (((BlockFunctionalFlower<?>) block).isGenerating) {
-                this.item(ModTags.Items.GENERATING_SPECIAL_FLOWERS).add(block.asItem());
+                this.item(BotaniaTags.Items.GENERATING_SPECIAL_FLOWERS).add(block.asItem());
             } else {
-                this.item(ModTags.Items.FUNCTIONAL_SPECIAL_FLOWERS).add(block.asItem());
+                this.item(BotaniaTags.Items.FUNCTIONAL_SPECIAL_FLOWERS).add(block.asItem());
             }
         } else if (block instanceof BlockFloatingFunctionalFlower<?>) {
-            this.item(ModTags.Items.FLOATING_FLOWERS).add(block.asItem());
-            this.item(ModTags.Items.SPECIAL_FLOATING_FLOWERS).add(block.asItem());
+            this.item(BotaniaTags.Items.FLOATING_FLOWERS).add(block.asItem());
+            this.item(BotaniaTags.Items.SPECIAL_FLOATING_FLOWERS).add(block.asItem());
         }
     }
 

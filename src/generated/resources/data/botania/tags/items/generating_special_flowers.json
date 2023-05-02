@@ -1,8 +1,7 @@
 {
-  "replace": false,
   "values": [
-    "mythicbotany:wither_aconite",
+    "mythicbotany:feysythia",
     "mythicbotany:raindeletia",
-    "mythicbotany:feysythia"
+    "mythicbotany:wither_aconite"
   ]
 }

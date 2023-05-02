@@ -1,9 +1,5 @@
 {
   "type": "botania:runic_altar",
-  "output": {
-    "item": "mythicbotany:niflheim_rune"
-  },
-  "mana": 16000,
   "ingredients": [
     {
       "tag": "forge:ingots/iron"
@@ -20,5 +16,9 @@
     {
       "item": "minecraft:blue_ice"
     }
-  ]
+  ],
+  "mana": 16000,
+  "output": {
+    "item": "mythicbotany:niflheim_rune"
+  }
 }

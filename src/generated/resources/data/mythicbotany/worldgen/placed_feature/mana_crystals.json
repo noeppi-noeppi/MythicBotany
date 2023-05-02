@@ -1,0 +1,28 @@
+{
+  "feature": "mythicbotany:mana_crystals",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": {
+        "type": "minecraft:uniform",
+        "value": {
+          "max_inclusive": 3,
+          "min_inclusive": 1
+        }
+      }
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 2
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "mythicbotany:alfheim_ground"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

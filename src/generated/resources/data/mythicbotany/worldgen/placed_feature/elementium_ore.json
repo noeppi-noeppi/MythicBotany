@@ -1,0 +1,24 @@
+{
+  "feature": "mythicbotany:elementium_ore",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:trapezoid",
+        "max_inclusive": {
+          "absolute": 70
+        },
+        "min_inclusive": {
+          "above_bottom": 0
+        }
+      }
+    }
+  ]
+}

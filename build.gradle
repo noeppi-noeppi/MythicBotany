@@ -19,6 +19,7 @@ dependencies {
     coremods 'org.moddingx:CoreModTypes:5.0.2-2'
     
     implementation fg.deobf('org.moddingx:LibX:1.19.2-4.2.8')
+    implementation fg.deobf('io.github.noeppi_noeppi.mods:SandBox:1.19.2-1.0.1')
     implementation fg.deobf('vazkii.botania:Botania:1.19.2-437-FORGE')
     implementation fg.deobf('vazkii.patchouli:Patchouli:1.19.2-77')
     implementation fg.deobf('top.theillusivec4.curios:curios-forge:1.19.2-5.1.4.0')
@@ -27,3 +28,9 @@ dependencies {
     implementation fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.6.0.1015")
     runtimeOnly fg.deobf("mezz.jei:jei-1.19.2-forge:11.6.0.1015")
 }
+
+compileJava.options.compilerArgs += [
+        '-Amod.properties.strict_onlyin=true',
+        '-Amod.properties.strict_super=true',
+        '-Amod.properties.force_findbugs=true'
+]

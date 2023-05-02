@@ -1,9 +1,9 @@
 package mythicbotany.mjoellnir;
 
 import mythicbotany.EventListener;
-import mythicbotany.ModBlocks;
 import mythicbotany.advancement.ModCriteria;
 import mythicbotany.config.MythicConfig;
+import mythicbotany.register.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -22,7 +22,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -35,8 +34,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
-
-import net.minecraft.world.entity.Entity.RemovalReason;
 
 public class Mjoellnir extends Projectile {
 
@@ -197,7 +194,7 @@ public class Mjoellnir extends Projectile {
             Vec3 position = this.position();
             Vec3 returnVec = new Vec3(returnPoint.x - position.x, returnPoint.y - position.y, returnPoint.z - position.z).normalize().multiply(0.6, 0.6, 0.6);
             // clamp because some mods think, it's a good idea to over enchant stuff on any type of tool they don't know about
-            double loyalty = 1 + (0.07 * Mth.clamp(EnchantmentHelper.getItemEnchantmentLevel(Enchantments.LOYALTY, this.stack), 0, 3));
+            double loyalty = 1 + (0.07 * Mth.clamp(this.stack.getEnchantmentLevel(Enchantments.LOYALTY), 0, 3));
             Vec3 newMotion = new Vec3(((3 * motion.x) + returnVec.x) / 4, ((3 * motion.y) + returnVec.y) / 4, ((3 * motion.z) + returnVec.z) / 4).multiply(loyalty, loyalty, loyalty);
             this.setDeltaMovement(newMotion);
         }
@@ -252,17 +249,17 @@ public class Mjoellnir extends Projectile {
     @Nullable
     private LightningBolt attackEntity(LivingEntity target) {
         if (!this.level.isClientSide) {
-            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, this.stack) >= 1) {
+            if (this.stack.getEnchantmentLevel(Enchantments.FLAMING_ARROWS) >= 1) {
                 target.setSecondsOnFire(5);
             }
-            int knockback = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, this.stack);
+            int knockback = this.stack.getEnchantmentLevel(Enchantments.PUNCH_ARROWS);
             if (knockback > 0) {
                 Vec3 vector3d = this.getDeltaMovement().multiply(1, 0, 1).normalize().scale(knockback * 0.6);
                 if (vector3d.lengthSqr() > 0) {
                     target.push(vector3d.x, 0.1D, vector3d.z);
                 }
             }
-            int power = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, this.stack);
+            int power = this.stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
             float dmg = MythicConfig.mjoellnir.base_damage_ranged + 1;
             if (power > 0) {
                 dmg += (MythicConfig.mjoellnir.enchantment_multiplier * Enchantments.SHARPNESS.getDamageBonus(power, target.getMobType(), this.stack));
@@ -295,10 +292,10 @@ public class Mjoellnir extends Projectile {
     }
 
     private void areaDamage(LivingEntity target, @Nullable LightningBolt lightning) {
-        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, this.stack) >= 1) {
+        if (this.stack.getEnchantmentLevel(Enchantments.FLAMING_ARROWS) >= 1) {
             target.setSecondsOnFire(2);
         }
-        int power = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, this.stack);
+        int power = this.stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
         float dmg = MythicConfig.mjoellnir.base_damage_ranged + 1;
         if (power > 0) {
             dmg += (MythicConfig.mjoellnir.enchantment_multiplier * Enchantments.SHARPNESS.getDamageBonus(power, target.getMobType(), this.stack));

@@ -1,19 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "eee",
-    "wdz",
-    "xay"
-  ],
   "key": {
-    "e": {
-      "tag": "botania:elementium_ingots"
+    "a": {
+      "item": "mythicbotany:asgard_rune"
     },
     "d": {
       "item": "botania:glimmering_dreamwood"
     },
-    "a": {
-      "item": "mythicbotany:asgard_rune"
+    "e": {
+      "tag": "botania:elementium_ingots"
     },
     "w": {
       "item": "botania:rune_spring"
@@ -28,6 +23,11 @@
       "item": "botania:rune_winter"
     }
   },
+  "pattern": [
+    "eee",
+    "wdz",
+    "xay"
+  ],
   "result": {
     "item": "mythicbotany:mana_infuser"
   }

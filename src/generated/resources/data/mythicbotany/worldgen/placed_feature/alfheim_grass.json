@@ -1,0 +1,18 @@
+{
+  "feature": "mythicbotany:alfheim_grass",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 15
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "mythicbotany:alfheim_ground"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

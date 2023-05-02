@@ -1,12 +1,12 @@
 package mythicbotany.kvasir;
 
+import net.minecraft.network.chat.Component;
 import org.moddingx.libx.base.ItemBase;
 import org.moddingx.libx.mod.ModX;
 import mythicbotany.MythicPlayerData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -17,10 +17,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import vazkii.botania.common.item.BotaniaItems;
 
 import javax.annotation.Nonnull;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class ItemKvasirMead extends ItemBase {
 
@@ -38,18 +37,18 @@ public class ItemKvasirMead extends ItemBase {
             if (!level.isClientSide) {
                 CompoundTag nbt = MythicPlayerData.getData(player);
                 if (nbt.getBoolean("KvasirKnowledge")) {
-                    player.sendMessage(new TranslatableComponent("message.mythicbotany.kvasir_known").withStyle(ChatFormatting.GRAY), player.getUUID());
+                    player.sendSystemMessage(Component.translatable("message.mythicbotany.kvasir_known").withStyle(ChatFormatting.GRAY));
                 } else {
                     nbt.putBoolean("KvasirKnowledge", true);
-                    player.sendMessage(new TranslatableComponent("message.mythicbotany.kvasir_knowledge").withStyle(ChatFormatting.GRAY), player.getUUID());
+                    player.sendSystemMessage(Component.translatable("message.mythicbotany.kvasir_knowledge").withStyle(ChatFormatting.GRAY));
                 }
             }
             if (!player.isCreative()) {
                 stack.shrink(1);
                 if (stack.isEmpty()) {
-                    return new ItemStack(vazkii.botania.common.item.ModItems.vial);
+                    return new ItemStack(BotaniaItems.vial);
                 } else {
-                    player.getInventory().add(new ItemStack(vazkii.botania.common.item.ModItems.vial));
+                    player.getInventory().add(new ItemStack(BotaniaItems.vial));
                 }
             }
         }

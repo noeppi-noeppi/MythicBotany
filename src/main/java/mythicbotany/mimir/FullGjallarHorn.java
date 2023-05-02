@@ -1,13 +1,13 @@
 package mythicbotany.mimir;
 
+import net.minecraft.network.chat.Component;
 import org.moddingx.libx.base.ItemBase;
 import org.moddingx.libx.mod.ModX;
-import mythicbotany.ModItems;
+import mythicbotany.register.ModItems;
 import mythicbotany.MythicPlayerData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -20,8 +20,6 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class FullGjallarHorn extends ItemBase {
 
@@ -39,10 +37,10 @@ public class FullGjallarHorn extends ItemBase {
             if (!level.isClientSide) {
                 CompoundTag nbt = MythicPlayerData.getData(player);
                 if (nbt.getBoolean("MimirKnowledge")) {
-                    player.sendMessage(new TranslatableComponent("message.mythicbotany.mimir_known").withStyle(ChatFormatting.GRAY), player.getUUID());
+                    player.sendSystemMessage(Component.translatable("message.mythicbotany.mimir_known").withStyle(ChatFormatting.GRAY));
                 } else {
                     nbt.putBoolean("MimirKnowledge", true);
-                    player.sendMessage(new TranslatableComponent("message.mythicbotany.mimir_knowledge").withStyle(ChatFormatting.GRAY), player.getUUID());
+                    player.sendSystemMessage(Component.translatable("message.mythicbotany.mimir_knowledge").withStyle(ChatFormatting.GRAY));
                 }
             }
             if (!player.isCreative()) {

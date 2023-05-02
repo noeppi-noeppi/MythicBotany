@@ -2,9 +2,12 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "main",
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:alternatives",
@@ -32,9 +35,9 @@
               "type": "minecraft:item",
               "functions": [
                 {
-                  "function": "minecraft:apply_bonus",
                   "enchantment": "minecraft:fortune",
-                  "formula": "minecraft:ore_drops"
+                  "formula": "minecraft:ore_drops",
+                  "function": "minecraft:apply_bonus"
                 }
               ],
               "name": "minecraft:raw_gold"
@@ -42,11 +45,8 @@
           ]
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ]
+      "name": "main",
+      "rolls": 1.0
     }
   ]
 }
