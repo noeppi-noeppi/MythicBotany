@@ -1,6 +1,5 @@
 package mythicbotany.alfheim.datagen;
 
-import com.mojang.datafixers.util.Either;
 import io.github.noeppi_noeppi.mods.sandbox.datagen.ext.NoiseData;
 import mythicbotany.util.density.MoreDensityFunctions;
 import net.minecraft.core.Holder;
@@ -10,8 +9,6 @@ import net.minecraft.util.CubicSpline;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import vazkii.botania.common.block.BotaniaBlocks;
-
-import javax.annotation.Nonnull;
 
 public class AlfheimNoise extends NoiseData {
 
@@ -25,10 +22,10 @@ public class AlfheimNoise extends NoiseData {
     private static final double WEIRDNESS_SHIFT = 7;
 
     // Basic noise to sample terrain height
-    public final Holder<DensityFunction> alfheimContinentalness = this.density(this.shifted(Noises.BADLANDS_SURFACE, 0.088));
+    public final Holder<DensityFunction> alfheimContinentalness = this.density(DensityFunctions.cache2d(this.shifted(Noises.BADLANDS_SURFACE, 0.088)));
     
     // Noise to lerp between terrain shapes
-    public final Holder<DensityFunction> alfheimErosion = this.density(this.shifted(Noises.CONTINENTALNESS, 2));
+    public final Holder<DensityFunction> alfheimErosion = this.density(DensityFunctions.cache2d(this.shifted(Noises.CONTINENTALNESS, 2)));
 
     // Terrain shaper for low erosion (beaches, plateaus)
     public final Holder<DensityFunction> alfheimLow = this.density(DensityFunctions.spline(
@@ -65,12 +62,12 @@ public class AlfheimNoise extends NoiseData {
     
     // Base terrain height. Combines low and high shaper (slightly biased towards the low shaper)
     public final Holder<DensityFunction> alfheimHeight = this.density(MoreDensityFunctions.smashY(
-            MoreDensityFunctions.lerp(
+            DensityFunctions.interpolated(MoreDensityFunctions.lerp(
                     new DensityFunctions.HolderHolder(alfheimLow),
                     new DensityFunctions.HolderHolder(alfheimHigh),
                     new DensityFunctions.HolderHolder(alfheimErosion),
                     0.15, 0.4
-            )
+            ))
     ));
 
     // Influences squashing for terrain 3d noise. -1 is maximum squashing, 1 is minimum squashing
@@ -120,21 +117,10 @@ public class AlfheimNoise extends NoiseData {
     public final Holder<DensityFunction> alfheimHumidity = this.density(this.clampNormal(DensityFunctions.zero()));
 
     // Caves. Values less than 0 will be empty blocks.
-    public final Holder<DensityFunction> alfheimCaves = this.density(NoiseRouterData.underground(
+    public final Holder<DensityFunction> alfheimCaves = this.density(DensityFunctions.interpolated(NoiseRouterData.underground(
             this.registries.registry(Registry.DENSITY_FUNCTION_REGISTRY),
             NoiseRouterData.entrances(this.registries.registry(Registry.DENSITY_FUNCTION_REGISTRY))
-    ).mapAll(new DensityFunction.Visitor() {
-            @Nonnull
-            @Override
-            public DensityFunction apply(@Nonnull DensityFunction density) {
-                if (density instanceof DensityFunctions.HolderHolder ref) {
-                    Either<ResourceKey<DensityFunction>, DensityFunction> unwrapped = ref.function().unwrap();
-                    if (unwrapped.left().isPresent()) return AlfheimNoise.this.registries.registry(Registry.DENSITY_FUNCTION_REGISTRY).getOrThrow(unwrapped.left().get());
-                    if (unwrapped.right().isPresent()) return unwrapped.right().get();
-                }
-                return density instanceof DensityFunctions.MarkerOrMarked marker ? apply(marker.wrapped()) : density;
-            }
-    }));
+    )));
     
     public final Holder<DensityFunction> alfheimFinal = this.density(DensityFunctions.min(
             new DensityFunctions.HolderHolder(this.alfheimInitial),
@@ -164,8 +150,8 @@ public class AlfheimNoise extends NoiseData {
 
     private DensityFunction shifted(Holder<NormalNoise.NoiseParameters> noise, double scale) {
         return DensityFunctions.shiftedNoise2d(
-                DensityFunctions.shiftA(this.holder(Noises.SHIFT)),
-                DensityFunctions.shiftB(this.holder(Noises.SHIFT)),
+                DensityFunctions.cacheOnce(DensityFunctions.shiftA(this.holder(Noises.SHIFT))),
+                DensityFunctions.cacheOnce(DensityFunctions.shiftB(this.holder(Noises.SHIFT))),
                 scale, noise
         );
     }
