@@ -16,6 +16,7 @@ import mythicbotany.register.ModEnchantments;
 import mythicbotany.register.ModEntities;
 import mythicbotany.register.ModItems;
 import mythicbotany.rune.RuneRitualRecipe;
+import mythicbotany.util.density.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -102,6 +103,10 @@ public final class MythicBotany extends ModXRegistration {
     }
     
     private void registerMisc(RegisterEvent event) {
+        event.register(Registry.DENSITY_FUNCTION_TYPE_REGISTRY, this.resource("smash"), DensitySmash.CODEC::codec);
+        event.register(Registry.DENSITY_FUNCTION_TYPE_REGISTRY, this.resource("debug"), DensityDebug.CODEC::codec);
+        event.register(Registry.DENSITY_FUNCTION_TYPE_REGISTRY, this.resource("lerp"), DensityLerp.CODEC::codec);
+        event.register(Registry.DENSITY_FUNCTION_TYPE_REGISTRY, this.resource("clamp"), DensityClamp.CODEC::codec);
         event.register(Registry.PLACEMENT_MODIFIER_REGISTRY, this.resource("alfheim_ground"), () -> AlfheimGroundModifier.TYPE);
         event.register(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, this.resource("dispose"), () -> AlfsteelDisposeModifier.CODEC);
         event.register(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, this.resource("fimbultyr"), () -> FimbultyrModifier.CODEC);

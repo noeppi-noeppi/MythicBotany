@@ -1,122 +1,32 @@
 {
   "biomes": [
     {
-      "biome": "mythicbotany:alfheim_plains",
+      "biome": "mythicbotany:alfheim_lakes",
       "parameters": {
         "continentalness": [
-          -0.02,
-          0.05
+          -1.0,
+          0.0
         ],
         "depth": [
-          0.01,
-          0.03
+          -1.0,
+          1.0
         ],
         "erosion": [
-          -0.5,
-          -0.3
+          -1.0,
+          1.0
         ],
         "humidity": [
-          0.89,
-          0.91
+          -1.0,
+          1.0
         ],
         "offset": 0.0,
         "temperature": [
-          0.89,
-          0.91
+          -1.0,
+          1.0
         ],
         "weirdness": [
-          -0.6,
-          -0.3
-        ]
-      }
-    },
-    {
-      "biome": "mythicbotany:alfheim_hills",
-      "parameters": {
-        "continentalness": [
-          0.5,
-          0.8
-        ],
-        "depth": [
-          0.03,
-          0.2
-        ],
-        "erosion": [
-          -0.3,
-          0.2
-        ],
-        "humidity": [
-          0.89,
-          0.91
-        ],
-        "offset": 0.0,
-        "temperature": [
-          0.89,
-          0.91
-        ],
-        "weirdness": [
-          -0.3,
-          0.2
-        ]
-      }
-    },
-    {
-      "biome": "mythicbotany:dreamwood_forest",
-      "parameters": {
-        "continentalness": [
-          0.02,
-          0.06
-        ],
-        "depth": [
-          0.02,
-          0.04
-        ],
-        "erosion": [
-          -0.4,
-          -0.1
-        ],
-        "humidity": [
-          0.89,
-          0.91
-        ],
-        "offset": 0.0,
-        "temperature": [
-          0.89,
-          0.91
-        ],
-        "weirdness": [
-          -0.6,
-          -0.3
-        ]
-      }
-    },
-    {
-      "biome": "mythicbotany:golden_fields",
-      "parameters": {
-        "continentalness": [
-          -0.02,
-          0.05
-        ],
-        "depth": [
-          0.015,
-          0.03
-        ],
-        "erosion": [
-          -0.5,
-          -0.3
-        ],
-        "humidity": [
-          0.89,
-          0.91
-        ],
-        "offset": 0.0,
-        "temperature": [
-          0.89,
-          0.91
-        ],
-        "weirdness": [
-          -0.2,
-          0.4
+          -1.0,
+          1.0
         ]
       }
     },
@@ -124,29 +34,179 @@
       "biome": "mythicbotany:alfheim_lakes",
       "parameters": {
         "continentalness": [
-          -0.04,
-          -0.01
+          0.0,
+          0.1
         ],
         "depth": [
-          -0.1,
-          -0.02
+          -1.0,
+          1.0
         ],
         "erosion": [
-          -0.01,
-          1.01
+          -1.0,
+          0.0
         ],
         "humidity": [
-          0.89,
-          0.91
+          -1.0,
+          1.0
         ],
         "offset": 0.0,
         "temperature": [
-          0.89,
-          0.91
+          -1.0,
+          1.0
         ],
         "weirdness": [
-          -0.8,
-          -0.4
+          -1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "biome": "mythicbotany:alfheim_plains",
+      "parameters": {
+        "continentalness": [
+          0.1,
+          0.15
+        ],
+        "depth": [
+          -1.0,
+          1.0
+        ],
+        "erosion": [
+          -1.0,
+          0.0
+        ],
+        "humidity": [
+          -1.0,
+          1.0
+        ],
+        "offset": 0.0,
+        "temperature": [
+          -1.0,
+          1.0
+        ],
+        "weirdness": [
+          -1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "biome": "mythicbotany:alfheim_plains",
+      "parameters": {
+        "continentalness": [
+          0.0,
+          0.15
+        ],
+        "depth": [
+          -1.0,
+          1.0
+        ],
+        "erosion": [
+          0.0,
+          1.0
+        ],
+        "humidity": [
+          -1.0,
+          1.0
+        ],
+        "offset": 0.0,
+        "temperature": [
+          -1.0,
+          1.0
+        ],
+        "weirdness": [
+          -1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "biome": "mythicbotany:dreamwood_forest",
+      "parameters": {
+        "continentalness": [
+          0.15,
+          0.4
+        ],
+        "depth": [
+          -1.0,
+          1.0
+        ],
+        "erosion": [
+          -1.0,
+          1.0
+        ],
+        "humidity": [
+          -1.0,
+          1.0
+        ],
+        "offset": 0.0,
+        "temperature": [
+          -1.0,
+          1.0
+        ],
+        "weirdness": [
+          -1.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "biome": "mythicbotany:golden_fields",
+      "parameters": {
+        "continentalness": [
+          0.15,
+          0.4
+        ],
+        "depth": [
+          -1.0,
+          1.0
+        ],
+        "erosion": [
+          -1.0,
+          1.0
+        ],
+        "humidity": [
+          -1.0,
+          1.0
+        ],
+        "offset": 0.0,
+        "temperature": [
+          -1.0,
+          1.0
+        ],
+        "weirdness": [
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "biome": "mythicbotany:alfheim_hills",
+      "parameters": {
+        "continentalness": [
+          0.4,
+          1.0
+        ],
+        "depth": [
+          -1.0,
+          1.0
+        ],
+        "erosion": [
+          -1.0,
+          1.0
+        ],
+        "humidity": [
+          -1.0,
+          1.0
+        ],
+        "offset": 0.0,
+        "temperature": [
+          -1.0,
+          1.0
+        ],
+        "weirdness": [
+          0.0,
+          1.0
         ]
       }
     }

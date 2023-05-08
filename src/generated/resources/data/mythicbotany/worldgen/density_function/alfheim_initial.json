@@ -1,0 +1,56 @@
+{
+  "type": "minecraft:add",
+  "argument1": "mythicbotany:alfheim_variation",
+  "argument2": {
+    "type": "minecraft:mul",
+    "argument1": -33.333333333333336,
+    "argument2": {
+      "type": "minecraft:mul",
+      "argument1": {
+        "type": "minecraft:mul",
+        "argument1": -0.875,
+        "argument2": {
+          "type": "minecraft:add",
+          "argument1": 0.2857142857142857,
+          "argument2": {
+            "type": "minecraft:add",
+            "argument1": {
+              "type": "minecraft:y_clamped_gradient",
+              "from_value": 0.2857142857142857,
+              "from_y": -64,
+              "to_value": -1.4285714285714286,
+              "to_y": 320
+            },
+            "argument2": {
+              "type": "mythicbotany:clamp",
+              "density": {
+                "type": "minecraft:quarter_negative",
+                "argument": "mythicbotany:alfheim_height"
+              },
+              "max": 1.0,
+              "min": -1.0
+            }
+          }
+        }
+      },
+      "argument2": {
+        "type": "minecraft:add",
+        "argument1": 0.21,
+        "argument2": {
+          "type": "minecraft:mul",
+          "argument1": -0.5,
+          "argument2": {
+            "type": "minecraft:add",
+            "argument1": -1.0,
+            "argument2": {
+              "type": "mythicbotany:clamp",
+              "density": "mythicbotany:alfheim_weirdness",
+              "max": 1.0,
+              "min": -1.0
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "minecraft:y_clamped_gradient",
+    "from_value": 0.5,
+    "from_y": -64,
+    "to_value": -1.0,
+    "to_y": 320
+  },
+  "argument2": {
+    "type": "mythicbotany:clamp",
+    "density": "mythicbotany:alfheim_height",
+    "max": 1.0,
+    "min": -1.0
+  }
+}

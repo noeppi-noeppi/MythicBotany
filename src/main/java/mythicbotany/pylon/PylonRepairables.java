@@ -1,7 +1,6 @@
 package mythicbotany.pylon;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -63,17 +62,17 @@ public class PylonRepairables {
 
         @Override
         public int getRepairManaPerTick(ItemStack stack) {
-            return EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, stack) > 0 ? MANA_PER_DURABILITY * DURABILITY_PER_TICK : 0;
+            return stack.getEnchantmentLevel(Enchantments.MENDING) > 0 ? MANA_PER_DURABILITY * DURABILITY_PER_TICK : 0;
         }
 
         @Override
         public boolean canRepairPylon(ItemStack stack) {
-            return EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, stack) > 0 && stack.getDamageValue() > 0;
+            return stack.getEnchantmentLevel(Enchantments.MENDING) > 0 && stack.getDamageValue() > 0;
         }
 
         @Override
         public ItemStack repairOneTick(ItemStack stack) {
-            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, stack) > 0 && stack.getDamageValue() > 0) {
+            if (stack.getEnchantmentLevel(Enchantments.MENDING) > 0 && stack.getDamageValue() > 0) {
                 stack.setDamageValue(stack.getDamageValue() - DURABILITY_PER_TICK);
             }
             return stack;

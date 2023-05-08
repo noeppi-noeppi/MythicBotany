@@ -29,7 +29,7 @@ public class AlfheimSurface extends SurfaceData {
     public AlfheimSurface(Properties properties) {
         super(properties);
         this.biome(this.biomes.goldenFields, this.defaultAlfheimSurface(BotaniaBlocks.goldenGrass.defaultBlockState(), Blocks.DIRT.defaultBlockState()));
-        this.biome(this.biomes.alfheimPlains, SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.yBlockCheck(VerticalAnchor.absolute(68), 0)), defaultAlfheimSurface(Blocks.SAND.defaultBlockState(), Blocks.GRAVEL.defaultBlockState())));
+        this.biome(this.biomes.alfheimLakes, SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.yBlockCheck(VerticalAnchor.absolute(68), 0)), defaultAlfheimSurface(Blocks.SAND.defaultBlockState(), Blocks.GRAVEL.defaultBlockState())));
     }
 
     private SurfaceRules.RuleSource defaultAlfheimSurface(BlockState top, BlockState below) {

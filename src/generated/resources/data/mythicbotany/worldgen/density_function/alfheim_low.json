@@ -1,0 +1,68 @@
+{
+  "type": "minecraft:spline",
+  "spline": {
+    "coordinate": "mythicbotany:alfheim_continentalness",
+    "points": [
+      {
+        "derivative": 0.0,
+        "location": -1.0,
+        "value": -0.8
+      },
+      {
+        "derivative": 1.0,
+        "location": -0.4,
+        "value": -0.2
+      },
+      {
+        "derivative": 0.0,
+        "location": 0.0,
+        "value": 0.0
+      },
+      {
+        "derivative": 0.0,
+        "location": 0.2,
+        "value": 0.02
+      },
+      {
+        "derivative": 0.0,
+        "location": 0.25,
+        "value": 0.095
+      },
+      {
+        "derivative": 0.0,
+        "location": 0.37,
+        "value": 0.1
+      },
+      {
+        "derivative": 0.0,
+        "location": 0.38,
+        "value": 0.18
+      },
+      {
+        "derivative": 0.0,
+        "location": 0.42,
+        "value": 0.18
+      },
+      {
+        "derivative": 0.0,
+        "location": 0.58,
+        "value": 0.38
+      },
+      {
+        "derivative": 0.0,
+        "location": 0.65,
+        "value": 0.38
+      },
+      {
+        "derivative": 0.0,
+        "location": 0.75,
+        "value": 0.7
+      },
+      {
+        "derivative": 0.0,
+        "location": 1.0,
+        "value": 0.7
+      }
+    ]
+  }
+}
