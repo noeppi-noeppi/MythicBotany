@@ -13,7 +13,7 @@
       "item": "botania:pixie_dust"
     }
   ],
-  "mana": 2000000,
+  "mana": 1500000,
   "output": {
     "count": 1,
     "item": "mythicbotany:alfsteel_ingot"

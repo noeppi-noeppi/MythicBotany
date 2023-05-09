@@ -110,7 +110,7 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
                 .addIngredient(BotaniaTags.Items.INGOTS_ELEMENTIUM)
                 .addIngredient(BotaniaTags.Items.GEMS_DRAGONSTONE)
                 .addIngredient(BotaniaItems.pixieDust)
-                .setManaCost(2000000)
+                .setManaCost(1500000)
                 .setColors(0xFF008D, 0xFF9600)
                 .build();
 

@@ -38,6 +38,7 @@ public class FloatingFlowerModelBuilder extends BlockModelBuilder {
         if (this.flower != null) {
             JsonObject flowerObj = new JsonObject();
             flowerObj.addProperty("parent", this.flower.toString());
+            flowerObj.addProperty("render_type", this.renderType);
             json.add("flower", flowerObj);
         }
         return json;

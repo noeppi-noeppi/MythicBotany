@@ -87,8 +87,8 @@ public class RuneRitualCategory implements IRecipeCategory<RuneRitualRecipe> {
     }
     
     private void initRunePositioned(@Nonnull IRecipeLayoutBuilder builder, RuneRitualRecipe.RunePosition rune) {
-        int realX = 3 + (12 * (rune.getX() + 5));
-        int realZ = 3 + (12 * ((-rune.getZ()) + 5));
+        int realX = 2 + (12 * (rune.getX() + 5));
+        int realZ = 2 + (12 * ((-rune.getZ()) + 5));
         builder.addSlot(rune.isConsumed() ? RecipeIngredientRole.INPUT : RecipeIngredientRole.CATALYST, realX, realZ)
                 .setCustomRenderer(VanillaTypes.ITEM_STACK, LittleBoxItemRenderer.getRenderer(rune.getX(), rune.getZ(), rune.isConsumed()))
                 .addIngredients(rune.getRune());

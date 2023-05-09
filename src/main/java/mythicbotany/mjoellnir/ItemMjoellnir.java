@@ -2,6 +2,7 @@ package mythicbotany.mjoellnir;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import mythicbotany.MythicBotany;
 import mythicbotany.register.ModEnchantments;
 import mythicbotany.config.MythicConfig;
 import net.minecraft.ChatFormatting;
@@ -29,11 +30,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public class ItemMjoellnir extends BlockItem {
     
     public ItemMjoellnir(Block blockIn, Properties builder) {
-        super(blockIn, builder);
+        super(blockIn, builder.tab(Objects.requireNonNull(MythicBotany.getInstance().tab)));
     }
 
     @Nonnull

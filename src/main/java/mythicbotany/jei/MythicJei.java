@@ -2,9 +2,11 @@ package mythicbotany.jei;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.runtime.IJeiRuntime;
 import mythicbotany.MythicBotany;
 import mythicbotany.register.ModBlocks;
 import mythicbotany.register.ModRecipes;
@@ -48,5 +50,10 @@ public class MythicJei implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.manaInfuser), InfusionCategory.TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.centralRuneHolder), RuneRitualCategory.TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.runeHolder), RuneRitualCategory.TYPE);
+    }
+
+    @Override
+    public void onRuntimeAvailable(@Nonnull IJeiRuntime runtime) {
+        LittleBoxItemRenderer.setParent(runtime.getIngredientManager().getIngredientRenderer(VanillaTypes.ITEM_STACK));
     }
 }

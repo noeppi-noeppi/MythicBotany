@@ -81,7 +81,7 @@ public class InfusionCategory implements IRecipeCategory<InfuserRecipe> {
         Vec2 point = new Vec2(49, 6);
         Vec2 center = new Vec2(49, 38);
         for (int i = 1; i <= recipe.getIngredients().size(); i++) {
-            builder.addSlot(RecipeIngredientRole.INPUT, Math.round(point.x), Math.round(point.y)).addIngredients(recipe.getIngredients().get(i));
+            builder.addSlot(RecipeIngredientRole.INPUT, Math.round(point.x), Math.round(point.y)).addIngredients(recipe.getIngredients().get(i - 1));
             point = PetalApothecaryRecipeCategory.rotatePointAbout(point, center, angle);
         }
         builder.addSlot(RecipeIngredientRole.CATALYST, 49, 93).addItemStack(new ItemStack(ModBlocks.manaInfuser));
