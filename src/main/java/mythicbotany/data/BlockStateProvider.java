@@ -35,6 +35,11 @@ public class BlockStateProvider extends BlockStateProviderBase {
         this.manualModel(ModBlocks.mjoellnir);
         this.manualModel(ModBlocks.returnPortal, this.models().getBuilder(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(ModBlocks.returnPortal)).getPath())
                 .texture("particle", blockTexture(Blocks.GLASS)));
+        this.manualModel(ModBlocks.manaCollector, this.models().cubeBottomTop(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(ModBlocks.manaCollector)).getPath(),
+                this.mod.resource("block/mana_collector_side"),
+                new ResourceLocation("botania", "block/dreamwood_log"),
+                this.mod.resource("block/mana_collector_top")
+        ));
     }
 
     @Override

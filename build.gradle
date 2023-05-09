@@ -34,3 +34,11 @@ compileJava.options.compilerArgs += [
         '-Amod.properties.strict_super=true',
         '-Amod.properties.force_findbugs=true'
 ]
+
+minecraft {
+    runs {
+        data {
+            args '--existing-mod', 'botania'
+        }
+    }
+}

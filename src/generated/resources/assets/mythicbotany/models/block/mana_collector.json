@@ -1,6 +1,8 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "all": "mythicbotany:block/mana_collector"
+    "bottom": "botania:block/dreamwood_log",
+    "side": "mythicbotany:block/mana_collector_side",
+    "top": "mythicbotany:block/mana_collector_top"
   }
 }
