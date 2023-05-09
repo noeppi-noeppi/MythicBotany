@@ -68,7 +68,7 @@ public class AlfheimBiomeLayers extends BiomeLayerData {
             .biome(this.biomes.alfheimHills)
             .continentalness(0.4f, 1)
             .erosion(-1, 1)
-            .weirdness(0, 1)
+            .weirdness(-1, 1)
             .depth(-1, 1)
             .temperature(-1, 1)
             .humidity(-1, 1)

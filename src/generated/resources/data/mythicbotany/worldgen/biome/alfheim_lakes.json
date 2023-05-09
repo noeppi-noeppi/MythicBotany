@@ -6,10 +6,10 @@
     ]
   },
   "creature_spawn_probability": 0.2,
-  "downfall": 0.7,
+  "downfall": 1.0,
   "effects": {
     "fog_color": 12638463,
-    "sky_color": 7907327,
+    "sky_color": 7842047,
     "water_color": 4566514,
     "water_fog_color": 267827
   },
@@ -18,9 +18,7 @@
     [],
     [],
     [],
-    [
-      "mythicbotany:mana_crystals"
-    ],
+    [],
     [],
     [
       "mythicbotany:metamorphic_forest_stone",
@@ -37,7 +35,8 @@
     [],
     [],
     [
-      "mythicbotany:alfheim_grass"
+      "mythicbotany:alfheim_grass",
+      "mythicbotany:motif_flowers"
     ]
   ],
   "precipitation": "rain",
@@ -96,5 +95,5 @@
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": 0.8
+  "temperature": 0.9
 }

@@ -54,7 +54,7 @@ public class AlfheimPlacements extends FeatureData {
             .build();
     
     public final Holder<PlacedFeature> manaCrystals = this.placement(this.features.manaCrystals)
-            .count(1, 3)
+            .count(1, 4)
             .rarity(2)
             .spread()
             .add(AlfheimGroundModifier.INSTANCE)

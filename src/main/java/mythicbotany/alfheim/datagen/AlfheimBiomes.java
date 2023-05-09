@@ -58,7 +58,7 @@ public class AlfheimBiomes extends BiomeData {
                             .addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, this.placements.abandonedApothecaries)
             ).build();
 
-    public final Holder<Biome> alfheimLakes = this.alfheimBiome(Alfheim.ALFHEIM_LAKES, 0.8f, 0.7f)
+    public final Holder<Biome> alfheimLakes = this.alfheimBiome(Alfheim.ALFHEIM_LAKES, 0.9f, 1f)
             .effects(
                     this.alfheimEffects()
                             .waterColor(0x45adf2)
@@ -67,7 +67,7 @@ public class AlfheimBiomes extends BiomeData {
             ).generation(
                     alfheimGen()
                             .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, this.placements.alfheimGrass)
-                            .addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, this.placements.manaCrystals)
+                            .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, this.placements.motifFlowers)
             ).build();
     
     public AlfheimBiomes(Properties properties) {
