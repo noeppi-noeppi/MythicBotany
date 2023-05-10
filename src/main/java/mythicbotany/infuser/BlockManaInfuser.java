@@ -1,5 +1,6 @@
 package mythicbotany.infuser;
 
+import mythicbotany.MythicBotany;
 import org.moddingx.libx.base.tile.BlockBE;
 import org.moddingx.libx.crafting.recipe.RecipeHelper;
 import org.moddingx.libx.mod.ModX;
@@ -71,6 +72,7 @@ public class BlockManaInfuser extends BlockBE<TileManaInfuser> {
                 entity.setThrower(player.getUUID());
                 entity.setPickUpDelay(40);
                 level.addFreshEntity(entity);
+                MythicBotany.getNetwork().setItemMagnetImmune(entity);
                 return InteractionResult.SUCCESS;
             } else {
                 return super.use(state, level, pos, player, hand, hit);

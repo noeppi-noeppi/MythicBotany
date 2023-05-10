@@ -65,6 +65,7 @@ public class TileManaInfuser extends BlockEntityBase implements SparkAttachable,
             MythicBotany.getNetwork().spawnInfusionParticles(this.level, this.worldPosition, this.mana / (float) this.recipe.getManaUsage(), this.recipe.fromColor(), this.recipe.toColor());
         }
         List<ItemEntity> items = this.getItems();
+        items.forEach(MythicBotany.getNetwork()::setItemMagnetImmune);
         List<ItemStack> stacks = items.stream().map(ItemEntity::getItem).collect(Collectors.toList());
         if (this.active && this.recipe != null && this.output != null) {
             if (this.recipe.result(stacks).isEmpty()) {
@@ -87,6 +88,7 @@ public class TileManaInfuser extends BlockEntityBase implements SparkAttachable,
                 items.forEach(ie -> ie.remove(Entity.RemovalReason.DISCARDED));
                 ItemEntity outItem = new ItemEntity(this.level, this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5, this.output);
                 this.level.addFreshEntity(outItem);
+                MythicBotany.getNetwork().setItemMagnetImmune(outItem);
                 this.output = null;
                 this.setChanged();
             } else {
@@ -108,7 +110,6 @@ public class TileManaInfuser extends BlockEntityBase implements SparkAttachable,
                 this.toColor = this.recipe.toColor();
                 this.output = match.getRight();
                 this.level.updateNeighbourForOutputSignal(this.worldPosition, this.getBlockState().getBlock());
-                items.forEach(ie -> MythicBotany.getNetwork().setItemMagnetImmune(ie));
                 this.setChanged();
             } else if (this.active || this.recipe != null || this.output != null) {
                 this.active = false;
