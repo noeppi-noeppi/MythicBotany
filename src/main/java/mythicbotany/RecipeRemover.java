@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -17,6 +18,7 @@ public class RecipeRemover {
 
     public static final ResourceLocation GAIA_PYLON = new ResourceLocation("botania", "gaia_pylon");
     public static final ResourceLocation HARD_PYLON = MythicBotany.getInstance().resource("gaia_pylon");
+    public static final ResourceLocation GAIA_MANA_RING = new ResourceLocation("botanicadds", "mana_ring_gaia");
 
     private RecipeRemover() {
 
@@ -28,6 +30,10 @@ public class RecipeRemover {
             recipesToRemove.add(GAIA_PYLON);
         } else {
             recipesToRemove.add(HARD_PYLON);
+        }
+        
+        if (ModList.get().isLoaded(GAIA_MANA_RING.getNamespace())) {
+            recipesToRemove.add(GAIA_MANA_RING);
         }
         
         Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> recipes = ObfuscationReflectionHelper.getPrivateValue(RecipeManager.class, rm, "f_44007_");

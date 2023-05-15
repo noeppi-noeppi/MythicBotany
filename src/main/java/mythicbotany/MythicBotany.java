@@ -40,6 +40,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import org.moddingx.libx.mod.ModXRegistration;
 import org.moddingx.libx.registration.RegistrationBuilder;
+import org.moddingx.libx.util.ClassUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.theillusivec4.curios.api.SlotTypePreset;
@@ -76,7 +77,7 @@ public final class MythicBotany extends ModXRegistration {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ModEntities::createSpawnPlacement);
 
         MinecraftForge.EVENT_BUS.addListener(this::serverStart);
-        MinecraftForge.EVENT_BUS.addListener(this::datapacksReloaded);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, this::datapacksReloaded);
 
         MinecraftForge.EVENT_BUS.register(new EventListener());
         //noinspection CodeBlock2Expr
@@ -85,6 +86,15 @@ public final class MythicBotany extends ModXRegistration {
         });
         MinecraftForge.EVENT_BUS.addListener(AlfheimPortalHandler::serverStarted);
         MinecraftForge.EVENT_BUS.addListener(AlfheimPortalHandler::endTick);
+        
+        Class<?> extra = ClassUtil.forName("mythicbotany.MythicBotanyExtra");
+        if (extra != null) {
+            try {
+                extra.getMethod("init").invoke(null);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Nonnull

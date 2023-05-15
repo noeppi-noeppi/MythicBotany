@@ -1,6 +1,5 @@
 package mythicbotany.data.recipes;
 
-import org.moddingx.libx.annotation.data.Datagen;
 import org.moddingx.libx.datagen.provider.recipe.RecipeProviderBase;
 import org.moddingx.libx.mod.ModX;
 import mythicbotany.register.ModBlocks;
@@ -14,7 +13,6 @@ import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 
 import java.util.List;
 
-@Datagen
 public class FeywildRecipeProvider extends RecipeProviderBase implements PetalExtension {
 
     public FeywildRecipeProvider(ModX mod, DataGenerator generator) {
