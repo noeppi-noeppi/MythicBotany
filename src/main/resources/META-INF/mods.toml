@@ -45,7 +45,7 @@ Dive deeper into the world of botania.
 [[dependencies.mythicbotany]]
     modId="botania"
     mandatory=true
-    versionRange="[1.19.2-437,)"
+    versionRange="[1.19.2-439,)"
     ordering="NONE"
     side="BOTH"
 

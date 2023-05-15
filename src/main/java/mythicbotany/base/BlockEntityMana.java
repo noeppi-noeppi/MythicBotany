@@ -31,6 +31,7 @@ import vazkii.botania.api.block.Wandable;
 import vazkii.botania.api.mana.ManaReceiver;
 import vazkii.botania.api.mana.spark.ManaSpark;
 import vazkii.botania.api.mana.spark.SparkAttachable;
+import vazkii.botania.client.core.helper.RenderHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -154,6 +155,13 @@ public abstract class BlockEntityMana extends BlockEntityBase implements SparkAt
     @Override
     public void renderHUD(PoseStack poseStack, Minecraft minecraft) {
         String name = I18n.get(this.blockState.getBlock().getDescriptionId());
+
+        int centerX = minecraft.getWindow().getGuiScaledWidth() / 2;
+        int centerY = minecraft.getWindow().getGuiScaledHeight() / 2;
+
+        int width = Math.max(102, minecraft.font.width(name)) + 4;
+
+        RenderHelper.renderHUDBox(poseStack, centerX - width / 2, centerY + 8, centerX + width / 2, centerY + 30);
         BotaniaAPIClient.instance().drawSimpleManaHUD(poseStack, this.getManaColor(), this.getCurrentMana(), this.maxMana, name);
     }
 

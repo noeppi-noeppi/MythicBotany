@@ -35,6 +35,7 @@ import vazkii.botania.api.block_entity.RadiusDescriptor;
 import vazkii.botania.api.internal.ManaNetwork;
 import vazkii.botania.api.mana.ManaCollector;
 import vazkii.botania.api.mana.ManaPool;
+import vazkii.botania.client.core.helper.RenderHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -361,11 +362,18 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
         }
         return true;
     }
-    
+
     @Override
     public void renderHUD(PoseStack poseStack, Minecraft minecraft) {
         if (this.level == null) return;
         String name = I18n.get(this.blockState.getBlock().getDescriptionId());
+
+        int centerX = minecraft.getWindow().getGuiScaledWidth() / 2;
+        int centerY = minecraft.getWindow().getGuiScaledHeight() / 2;
+        int left = (Math.max(102, minecraft.font.width(name)) + 4) / 2;
+        int right = left + 20;
+
+        RenderHelper.renderHUDBox(poseStack, centerX - left, centerY + 8, centerX + right, centerY + 30);
         BotaniaAPIClient.instance().drawComplexManaHUD(poseStack, this.color, this.getCurrentMana(), this.maxMana, name, new ItemStack(ForgeRegistries.ITEMS.getValue(this.isGenerating ? SPREADER_ID : POOL_ID)), this.isValidBinding());
     }
     
