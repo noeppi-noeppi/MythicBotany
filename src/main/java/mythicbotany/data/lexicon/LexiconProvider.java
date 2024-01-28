@@ -1,22 +1,17 @@
 package mythicbotany.data.lexicon;
 
+import mythicbotany.data.lexicon.page.*;
 import mythicbotany.register.ModBlocks;
 import mythicbotany.register.ModEntities;
 import mythicbotany.register.ModItems;
-import mythicbotany.data.lexicon.page.*;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.server.packs.PackType;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import org.moddingx.libx.annotation.data.Datagen;
+import org.moddingx.libx.datagen.DatagenContext;
 import org.moddingx.libx.datagen.provider.patchouli.BookProperties;
 import org.moddingx.libx.datagen.provider.patchouli.PatchouliProviderBase;
-import org.moddingx.libx.mod.ModX;
 
-@Datagen
 public class LexiconProvider extends PatchouliProviderBase {
 
-    public LexiconProvider(ModX mod, DataGenerator generator, ExistingFileHelper fileHelper) {
-        super(mod, generator, fileHelper, new BookProperties("lexicon", PackType.CLIENT_RESOURCES, true));
+    public LexiconProvider(DatagenContext ctx) {
+        super(ctx, new BookProperties("botania", "lexicon", true));
     }
 
     @Override
@@ -30,8 +25,8 @@ public class LexiconProvider extends PatchouliProviderBase {
         this.entry("runes")
                 .name("Runes of the Nine Worlds")
                 .icon(ModItems.niflheimRune)
-                .text("You can create runes that represent the $(thing)Nine World$(0) in the $(item)Runic Altar$(0).")
-                .text("They're tier 4 runes and require the Runes of the $(thing)Deadly sins$(0).")
+                .text("You can create runes that represent the $(thing)Nine Worlds$(0) in the $(item)Runic Altar$(0).")
+                .text("They're tier 4 runes and require the Runes of the $(thing)Deadly sins$(0) to make.")
                 .text("Those new runes unleash great power, but can be dangerous if not used correctly.")
                 .text("Handle them with caution.")
                 .flip()
@@ -81,8 +76,12 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("For a long time now you thought diamond was the best you could reach without the power of a botanist.")
                 .text("Then came netherite.")
                 .text("It's the same with terrasteel and alfsteel.")
-                .text("So just like diamond, you can upgrade terrasteel tools and armor to their alfsteel counterparts via smithing.")
+                .text("So just like with diamond, you can upgrade terrasteel tools and armor to their alfsteel counterparts via smithing.")
                 .text("This improvement, however, comes with higher mana costs to use those tools.")
+                .crafting("alfsteel_template")
+                .caption("This template encodes the information on how to upgrade your tools.")
+                .caption("To obtain it, you'll need to slay a magical creature using a weapon not from this world.")
+                .caption("Witches and evokers will occasionally drop this template when killed using an elementium sword.")
                 .item(ModItems.alfsteelSword).text("This sword does much more damage, and you can swing it much faster.")
                 .item(ModItems.alfsteelAxe).text("Despite being able to chop down whole trees in just seconds, this axe can pull nearby items towards you when pressing shift and right-click.")
                 .item(ModItems.alfsteelPick).text("This pickaxe is able to area-mine even more blocks at once. It mines multiple blocks in the direction you're looking as well. (This only works horizontally to prevent fall damage when mining down)")
@@ -101,7 +100,7 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .name("Alfsteel Pylons")
                 .icon(ModBlocks.alfsteelPylon)
                 .text("Those pylons are required to craft the Gaia Pylon.")
-                .text("They can also receive mana from spreaders and repair alfsteel tools and tools enchanted with mending that are thrown on top of it.")
+                .text("They can also receive mana from spreaders and repair alfsteel tools and tools enchanted with mending that are thrown on top of them.")
                 .text("When repairing alfsteel tools, you pay less mana than when using a mana tablet in your inventory.")
                 .crafting("alfsteel_pylon")
                 .crafting("gaia_pylon");
@@ -109,7 +108,7 @@ public class LexiconProvider extends PatchouliProviderBase {
         this.entry("rings")
                 .name("Elemental Rings")
                 .icon(ModItems.fireRing)
-                .crafting("fire_ring").caption("This ring makes you immune to all kind of fire damage and makes you ignite your enemy.")
+                .crafting("fire_ring").caption("This ring makes you immune to all kinds of fire damage and makes you ignite your enemy.")
                 .flip()
                 .crafting("ice_ring").caption("Applies a very strong slowness effect to your enemy for a short time while making you immune to cramming and in-wall damage.");
         
@@ -118,14 +117,14 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .icon(ModBlocks.witherAconite)
                 .add(new PetalPage(this.mod.resource("wither_aconite_petal_apothecary")))
                 .text("The wither aconite uses up nether stars dropped on it to create mana from them.")
-                .text("If the wither aconite can't use up the nether star after 5 minutes, it will despawn like any other item.")
+                .text("If the wither aconite can't use up the nether star after 5 minutes, it will despawn like any ordinary item.")
                 .add(new PetalPage(this.mod.resource("raindeletia_petal_apothecary")))
                 .text("The raindeletia produces mana when it's raining and even more mana when it's thundering.")
                 .text("Planting it on vivid grass or enchanted soil makes it generate much more.")
-                .text("On regular soil, it even is too weak to generate mana during normal rain.")
+                .text("On regular soil, it is even too weak to generate mana during normal rain.")
                 .crafting("mana_collector")
-                .text("At some point in time your flowers will create mana that fast that spreaders are not enough to handle it.")
-                .text("With the mana collector, you can put mana generated from flowers into the spark network directly.")
+                .text("At some point in your progression as a botanist, your flowers will create mana so fast, that spreaders are not enough to handle it.")
+                .text("With the mana collector, you can put mana generated from flowers directly into a spark network.")
                 .text("The mana collector acts as a little mana storage that can receive mana from flowers and interact with sparks.")
                 .text("To extract the mana from the collector, you'll most likely need a recessive spark augment.");
         
@@ -138,11 +137,11 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .add(new PetalPage(this.mod.resource("exoblaze_petal_apothecary")))
                 .text("The Exoblaze uses mana to fill the fuel of nearby brewing stands.")
                 .text("Never put blaze powder in again when brewing your potions.")
-                .text("Still a pretty primitive flower, as powerful botanists have better devices that brewing stands...")
+                .text("It's still a pretty primitive flower, as powerful botanists have better devices than brewing stands...")
                 .add(new PetalPage(this.mod.resource("hellebore_petal_apothecary")))
-                .text("Piglins and Hoglins will transform into zombies in the overworld.")
-                .text("While the exact reason is not yet known, botanists have found a way to use mana to keep these creatures safe in the overworld.")
-                .text("Any Piglins or Hoglins in range of the flower won't zombify when outside the nether, as long as the flower has sufficient mana.")
+                .text("Piglins and Hoglins usually transform into zombies when in the overworld.")
+                .text("While the exact reason is not yet known, botanists have found a way to use mana to keep these creatures safe.")
+                .text("Any Piglins or Hoglins in range of the flower won't zombify when the nether, as long as the flower has sufficient mana.")
                 .add(new PetalPage(this.mod.resource("petrunia_petal_apothecary")))
                 .text("The Petrunia can activate rune rituals if provided with enough mana and placed near the central rune holder.");
         
@@ -177,7 +176,7 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("Some rituals also require mana.")
                 .text("You can provide this through mana tablets and mana bands $(thing)in your inventory.$(0)")
                 .text("To start a ritual, right-click the central rune holder with a Wand of the Forest.")
-                .text("If a ritual gets interrupted it'll be reset, and you'll get back everything except the mana you paid.")
+                .text("If a ritual gets interrupted, it'll be reset, and you'll get back everything except the mana you paid.")
                 .crafting("rune_holder")
                 .crafting("central_rune_holder")
                 .flip()
@@ -200,13 +199,13 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("As the gods get their powers from the golden apples of Idun, you'll need the absorption effect to hold Mjöllnir.")
                 .text("When the absorption effect runs out, the hammer will get placed in the world at your position.")
                 .text("Having the Ring of Thor equipped will also allow you to hold Mjöllnir.")
-                .text("To manually place the hammer in the world, use a shift right click.")
+                .text("To manually place the hammer in the world, use a shif-right click.")
                 .text("To pick it up again, do a right click on the placed hammer.")
                 .text("Mjöllnir can be enchanted with most sword enchantments.")
-                .text("They only affect the melee damage.")
+                .text("They only affect melee damage.")
                 .text("It can also be enchanted with most bow enchantments.")
                 .text("They only affect ranged attacks.")
-                .text("It can also be enchanted with Loyalty, which makes it return faster after throwing it.")
+                .text("Enchanting Mjöllnir with Loyalty lets it return faster after being thrown.")
                 .add(new RitualPage(ModBlocks.mjoellnir, this.mod.resource("mythicbotany_rune_rituals/mjoellnir")))
                 .caption("Creating a replica of the legendary weapon Mjöllnir.");
         
@@ -231,7 +230,7 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("There's no need to infuse them with mana.")
                 .item(ModBlocks.dragonstoneOre)
                 .text("Dragonstone Ore is also found in Alfheim but way lower than Elementium.")
-                .text("Just like diamonds, there's no need to smelt the ore, it'll drop Dragonstone directly.")
+                .text("Just like diamonds, there's no need to smelt the ore; it'll drop Dragonstone directly.")
                 .item(ModBlocks.goldOre)
                 .text("Gold, as the material of the gods, can also be found in Alfheim.")
                 .text("In the golden-fields biome, you can find way much more gold than usual.")
@@ -244,14 +243,14 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("In Alfheim you can find some dreamwood trees everywhere.")
                 .text("Also, abandoned petal apothecaries are found throughout the world.")
                 .text("They sometimes even contain a few petals.")
-                .text("Alfheim is rich of animals, but when it gets dark you'll need to face hordes of witches and illusioners.")
+                .text("Alfheim is rich of animals, but when it gets dark, you'll need to face hordes of witches and illusioners.")
                 .image("Mana Crystals", "textures/image/alfheim_hills.png")
                 .caption("On the hills in Alfheim mana crystals may spawn.")
                 .caption("They're made out of bifrost blocks and contain a bit of mana.")
                 .image("Dreamwood Forest", "textures/image/dreamwood_forest.png")
-                .caption("In a dreamwood forest dreamwood trees are found more densely.")
+                .caption("In a dreamwood forest, dreamwood trees grow more densely.")
                 .image("Golden Fields", "textures/image/golden_fields.png")
-                .caption("In the golden-fields biome you can find much more gold ore and occasionally an Andwari Cave.");
+                .caption("In the golden-fields biome, you can find much more gold ore and occasionally an Andwari Cave.");
         
         this.entry("andwari")
                 .name("Ring of Andwari")
@@ -264,11 +263,11 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .image("Andwari Cave", "textures/image/andwari_entrance.png", "textures/image/andwari_cave.png")
                 .caption("Andwari caves generate only in the golden-fields biome.")
                 .add(new RitualPage(ModItems.andwariRing, this.mod.resource("mythicbotany_rune_rituals/andwari_ring")))
-                .caption("After removing the curse you can use it for a time.")
+                .caption("After removing the curse, you can use it for a time.")
                 .caption("Just place a gold block and get a reward.")
                 .caption("However, this requires some mana.")
                 .caption("The curse will also come back slowly.")
-                .caption("Make sufre it never comes back completely, or it will consume huge amounts of mana and poison you.");
+                .caption("Make sure it never comes back completely, or it will consume huge amounts of mana and poison you.");
         
         this.entry("kvasir")
                 .name("The Mead of Kvasir")
@@ -279,7 +278,7 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .text("So they killed him and mixed his blood with honey to form a mead.")
                 .text("Drinking this mead will allow you to travel the worlds like Kvasir.")
                 .crafting("kvasir_mead")
-                .caption("After drinking the mead you'll be able to step in the Portal to Alfheim and travel to Alfheim yourself.")
+                .caption("After drinking the mead, you'll be able to step in the Portal to Alfheim and travel to Alfheim yourself.")
                 .caption("If you accidentally break your portal in Alfheim you can fix the frame and throw some pixie dust in.")
                 .caption("When it despawns, the portal will reopen.")
                 .add(new RitualPage(ModItems.kvasirBlood, this.mod.resource("mythicbotany_rune_rituals/kvasir_blood")))

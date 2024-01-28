@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mythicbotany.register.ModRecipes;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -82,15 +83,20 @@ public class InfuserRecipe implements Recipe<Container> {
     }
 
     @Nonnull
-    @Override
     public ItemStack getResultItem() {
         return this.output;
+    }
+    
+    @Nonnull
+    @Override
+    public ItemStack getResultItem(@Nonnull RegistryAccess registryAccess) {
+        return this.getResultItem();
     }
 
     @Nonnull
     @Override
-    public ItemStack assemble(@Nonnull Container container) {
-        return ItemStack.EMPTY;
+    public ItemStack assemble(@Nonnull Container container, @Nonnull RegistryAccess registryAccess) {
+        return this.getResultItem();
     }
 
     @Override

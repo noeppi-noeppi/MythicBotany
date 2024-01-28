@@ -1,7 +1,7 @@
 package mythicbotany.functionalflora;
 
-import mythicbotany.register.ModBlocks;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
+import mythicbotany.register.ModBlocks;
 import mythicbotany.rune.TileCentralRuneHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

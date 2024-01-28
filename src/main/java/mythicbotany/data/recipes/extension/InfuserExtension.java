@@ -3,8 +3,6 @@ package mythicbotany.data.recipes.extension;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import mythicbotany.infuser.InfuserRecipe;
-import org.moddingx.libx.crafting.CraftingHelper2;
-import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -13,6 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import org.moddingx.libx.crafting.RecipeHelper;
+import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -129,7 +129,7 @@ public interface InfuserExtension extends RecipeExtension {
                 if (!this.group.isEmpty()) {
                     json.addProperty("group", this.group);
                 }
-                json.add("output", CraftingHelper2.serializeItemStack(this.output, true));
+                json.add("output", RecipeHelper.serializeItemStack(this.output, true));
                 JsonArray ingredients = new JsonArray();
                 for (Ingredient ingredient : this.inputs) {
                     ingredients.add(ingredient.toJson());

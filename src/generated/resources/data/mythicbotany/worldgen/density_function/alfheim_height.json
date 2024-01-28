@@ -1,10 +1,10 @@
 {
-  "type": "mythicbotany:smash",
+  "type": "libx:smash",
   "axis": "y",
   "density": {
     "type": "minecraft:interpolated",
     "argument": {
-      "type": "mythicbotany:lerp",
+      "type": "libx:lerp",
       "argument1": "mythicbotany:alfheim_low",
       "argument2": "mythicbotany:alfheim_high",
       "deviation": 0.4,

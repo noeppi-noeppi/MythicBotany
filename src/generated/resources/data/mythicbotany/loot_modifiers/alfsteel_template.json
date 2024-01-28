@@ -1,0 +1,19 @@
+{
+  "type": "libx:addition",
+  "conditions": [
+    {
+      "condition": "minecraft:any_of",
+      "terms": [
+        {
+          "condition": "forge:loot_table_id",
+          "loot_table_id": "minecraft:entities/witch"
+        },
+        {
+          "condition": "forge:loot_table_id",
+          "loot_table_id": "minecraft:entities/evoker"
+        }
+      ]
+    }
+  ],
+  "loot_table": "mythicbotany:entity_addition/alfsteel_template"
+}

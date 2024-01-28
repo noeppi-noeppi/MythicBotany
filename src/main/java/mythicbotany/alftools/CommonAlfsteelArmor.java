@@ -2,8 +2,8 @@ package mythicbotany.alftools;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import mythicbotany.register.ModItems;
 import mythicbotany.config.MythicConfig;
+import mythicbotany.register.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.common.item.equipment.armor.terrasteel.TerrasteelArmorItem;
@@ -35,12 +36,12 @@ public class CommonAlfsteelArmor {
         ret.removeAll(Attributes.ARMOR); // Remove armor attributes as these use the material stats
         ret.removeAll(Attributes.ARMOR_TOUGHNESS);
         ret.removeAll(Attributes.KNOCKBACK_RESISTANCE); // Remove knockback resistance from terrasteel armor.
-        if (slot == item.getSlot()) {
+        if (slot == item.getType().getSlot()) {
             ret.put(Attributes.ARMOR, new AttributeModifier(ARMOR_ATTRIBUTE_SLOT_UIDS.get(slot.getIndex()), "Armor modifier", item.getDefense(), AttributeModifier.Operation.ADDITION));
             ret.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ARMOR_ATTRIBUTE_SLOT_UIDS.get(slot.getIndex()), "Armor toughness", item.getToughness(), AttributeModifier.Operation.ADDITION));
 
             @SuppressWarnings("ConstantConditions")
-            UUID uuid = new UUID(ForgeRegistries.ITEMS.getKey(item).hashCode() + slot.toString().hashCode(), 0L);
+            UUID uuid = new UUID(ForgeRegistries.ITEMS.getKey(item).hashCode() + slot.name().hashCode(), 0L);
             if (item == ModItems.alfsteelHelmet) {
                 Attribute reachDistance = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("forge", "reach_distance"));
                 if (reachDistance != null)
@@ -52,7 +53,7 @@ public class CommonAlfsteelArmor {
                 Attribute swimSpeed = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("forge", "swim_speed"));
                 if (swimSpeed != null) {
                     @SuppressWarnings("ConstantConditions")
-                    UUID uuid2 = new UUID(ForgeRegistries.ITEMS.getKey(item).hashCode() + slot.toString().hashCode(), 1L);
+                    UUID uuid2 = new UUID(ForgeRegistries.ITEMS.getKey(item).hashCode() + slot.name().hashCode(), 1L);
                     ret.put(swimSpeed, new AttributeModifier(uuid2, "Alfsteel modifier swim " + item.type, MythicConfig.alftools.speed_modifier, AttributeModifier.Operation.ADDITION));
                 }
             }
@@ -91,23 +92,21 @@ public class CommonAlfsteelArmor {
         }
     }
     
-    public static int getDefense(EquipmentSlot slot) {
-        return switch (slot) {
-            case HEAD -> MythicConfig.alftools.armor_values.helmet.defense();
-            case CHEST -> MythicConfig.alftools.armor_values.chestplate.defense();
-            case LEGS -> MythicConfig.alftools.armor_values.leggings.defense();
-            case FEET -> MythicConfig.alftools.armor_values.boots.defense();
-            default -> 0;
+    public static int getDefense(ArmorItem.Type type) {
+        return switch (type) {
+            case HELMET -> MythicConfig.alftools.armor_values.helmet.defense();
+            case CHESTPLATE -> MythicConfig.alftools.armor_values.chestplate.defense();
+            case LEGGINGS -> MythicConfig.alftools.armor_values.leggings.defense();
+            case BOOTS -> MythicConfig.alftools.armor_values.boots.defense();
         };
     }
     
-    public static float getToughness(EquipmentSlot slot) {
-        return switch (slot) {
-            case HEAD -> MythicConfig.alftools.armor_values.helmet.toughness();
-            case CHEST -> MythicConfig.alftools.armor_values.chestplate.toughness();
-            case LEGS -> MythicConfig.alftools.armor_values.leggings.toughness();
-            case FEET -> MythicConfig.alftools.armor_values.boots.toughness();
-            default -> 0;
+    public static float getToughness(ArmorItem.Type type) {
+        return switch (type) {
+            case HELMET -> MythicConfig.alftools.armor_values.helmet.toughness();
+            case CHESTPLATE -> MythicConfig.alftools.armor_values.chestplate.toughness();
+            case LEGGINGS -> MythicConfig.alftools.armor_values.leggings.toughness();
+            case BOOTS -> MythicConfig.alftools.armor_values.boots.toughness();
         };
     }
 }

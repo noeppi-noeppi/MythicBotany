@@ -42,7 +42,7 @@
       "mythicbotany:loose_dreamwood_trees"
     ]
   ],
-  "precipitation": "rain",
+  "has_precipitation": true,
   "spawn_costs": {},
   "spawners": {
     "ambient": [],

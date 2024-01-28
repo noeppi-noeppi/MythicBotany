@@ -171,6 +171,6 @@
     }
   ],
   "surface_rule": {
-    "type": "sandbox:empty"
+    "type": "libx:empty"
   }
 }

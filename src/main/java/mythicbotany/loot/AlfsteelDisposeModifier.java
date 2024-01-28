@@ -3,8 +3,8 @@ package mythicbotany.loot;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import mythicbotany.register.ModItems;
 import mythicbotany.alftools.AlfsteelPick;
+import mythicbotany.register.ModItems;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -17,7 +17,6 @@ import vazkii.botania.common.lib.BotaniaTags;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-// TODO 1.19.4 datagen
 public class AlfsteelDisposeModifier extends LootModifier {
     
     public static final Codec<AlfsteelDisposeModifier> CODEC = RecordCodecBuilder.create(instance -> instance.group(

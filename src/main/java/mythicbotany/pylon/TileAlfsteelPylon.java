@@ -1,22 +1,20 @@
 package mythicbotany.pylon;
 
-import mythicbotany.network.PylonMessage;
-import org.moddingx.libx.base.tile.TickingBlock;
 import mythicbotany.MythicBotany;
 import mythicbotany.advancement.ModCriteria;
 import mythicbotany.base.BlockEntityMana;
+import mythicbotany.network.PylonMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.PacketDistributor;
+import org.moddingx.libx.base.tile.TickingBlock;
 
 import java.util.List;
-import java.util.UUID;
 
 public class TileAlfsteelPylon extends BlockEntityMana implements TickingBlock {
 
@@ -43,10 +41,8 @@ public class TileAlfsteelPylon extends BlockEntityMana implements TickingBlock {
                 if (repairable != null && stack.getCount() == 1) {
                     int manaCost = repairable.getRepairManaPerTick(stack);
                     if (this.mana >= manaCost) {
-                        UUID throwerId = item.getThrower();
-                        Player thrower = throwerId == null ? null : this.level.getPlayerByUUID(throwerId);
-                        if (thrower instanceof ServerPlayer) {
-                            ModCriteria.ALF_REPAIR.trigger((ServerPlayer) thrower, stack);
+                        if (item.getOwner() instanceof ServerPlayer player) {
+                            ModCriteria.ALF_REPAIR.trigger(player, stack);
                         }
                         this.mana -= manaCost;
                         stack = repairable.repairOneTick(stack);

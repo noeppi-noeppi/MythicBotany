@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:smithing",
+  "type": "minecraft:smithing_transform",
   "addition": {
     "item": "mythicbotany:alfsteel_ingot"
   },
@@ -8,5 +8,8 @@
   },
   "result": {
     "item": "mythicbotany:alfsteel_pick"
+  },
+  "template": {
+    "item": "mythicbotany:alfsteel_template"
   }
 }

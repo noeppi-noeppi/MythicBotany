@@ -11,12 +11,12 @@ import vazkii.botania.common.item.equipment.bauble.BaubleItem;
 
 public class ItemIceRing extends BaubleItem {
 
-    public ItemIceRing(Properties props) {
-        super(props);
+    public ItemIceRing(Properties properties) {
+        super(properties);
     }
 
     public void onWornTick(ItemStack stack, LivingEntity player) {
-        if (player.level.isClientSide) {
+        if (player.level().isClientSide) {
             this.displayParticles(player);
         }
     }

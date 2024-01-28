@@ -1,24 +1,26 @@
 package mythicbotany.alfheim.datagen;
 
-import io.github.noeppi_noeppi.mods.sandbox.datagen.ext.DimensionData;
-import mythicbotany.alfheim.Alfheim;
+import mythicbotany.register.tags.ModWorldGenTags;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.dimension.LevelStem;
+import org.moddingx.libx.datagen.DatagenContext;
+import org.moddingx.libx.datagen.provider.Id;
+import org.moddingx.libx.datagen.provider.sandbox.DimensionProviderBase;
 
-public class AlfheimDimension extends DimensionData {
+public class AlfheimDimension extends DimensionProviderBase {
 
-    private final AlfheimNoise noise = this.resolve(AlfheimNoise.class);
-    private final AlfheimDimensionTypes dimensionTypes = this.resolve(AlfheimDimensionTypes.class);
-    private final AlfheimBiomeLayers layers = this.resolve(AlfheimBiomeLayers.class);
-    private final AlfheimSurface surface = this.resolve(AlfheimSurface.class);
+    private final AlfheimNoise noise = this.context.findRegistryProvider(AlfheimNoise.class);
+    private final AlfheimDimensionTypes dimensionTypes = this.context.findRegistryProvider(AlfheimDimensionTypes.class);
+    private final AlfheimSurface surface = this.context.findRegistryProvider(AlfheimSurface.class);
     
-    public final Holder<LevelStem> dimension = this.dimension(Alfheim.DIMENSION, this.dimensionTypes.alfheim)
-            .layeredBiome(48, 120, this.layers.alfheim)
+    @Id("alfheim")
+    public final Holder<LevelStem> dimension = this.dimension(this.dimensionTypes.alfheim)
+            .layeredBiome(ModWorldGenTags.ALFHEIM_LAYERS)
             .noiseGenerator(this.noise.alfheim)
             .surfaceOverride(this.surface.alfheimSurface)
             .build();
     
-    public AlfheimDimension(Properties properties) {
-        super(properties);
+    public AlfheimDimension(DatagenContext ctx) {
+        super(ctx);
     }
 }

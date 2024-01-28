@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "e": {
       "tag": "botania:elementium_ingots"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "mythicbotany:fire_ring"
-  }
+  },
+  "show_notification": true
 }

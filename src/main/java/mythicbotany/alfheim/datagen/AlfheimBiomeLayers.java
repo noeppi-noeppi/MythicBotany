@@ -1,14 +1,16 @@
 package mythicbotany.alfheim.datagen;
 
-import io.github.noeppi_noeppi.mods.sandbox.biome.BiomeLayer;
-import io.github.noeppi_noeppi.mods.sandbox.datagen.ext.BiomeLayerData;
 import net.minecraft.core.Holder;
+import org.moddingx.libx.datagen.DatagenContext;
+import org.moddingx.libx.datagen.provider.sandbox.BiomeLayerProviderBase;
+import org.moddingx.libx.sandbox.generator.BiomeLayer;
 
-public class AlfheimBiomeLayers extends BiomeLayerData {
+public class AlfheimBiomeLayers extends BiomeLayerProviderBase {
 
-    private final AlfheimBiomes biomes = this.resolve(AlfheimBiomes.class);
+    private final AlfheimBiomes biomes = this.context.findRegistryProvider(AlfheimBiomes.class);
 
     public final Holder<BiomeLayer> alfheim = this.layer()
+            .baseLayer()
             .fullRange()
             
             .biome(this.biomes.alfheimLakes)
@@ -75,8 +77,8 @@ public class AlfheimBiomeLayers extends BiomeLayerData {
             .add()
             
             .build();
-    
-    public AlfheimBiomeLayers(Properties properties) {
-        super(properties);
+
+    public AlfheimBiomeLayers(DatagenContext ctx) {
+        super(ctx);
     }
 }

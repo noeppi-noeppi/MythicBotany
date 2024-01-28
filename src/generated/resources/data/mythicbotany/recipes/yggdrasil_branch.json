@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "l": {
       "tag": "botania:livingwood_logs"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "mythicbotany:yggdrasil_branch"
-  }
+  },
+  "show_notification": true
 }

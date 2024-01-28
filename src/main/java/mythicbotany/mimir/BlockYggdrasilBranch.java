@@ -1,10 +1,5 @@
 package mythicbotany.mimir;
 
-import org.moddingx.libx.base.tile.BlockBE;
-import org.moddingx.libx.block.RotationShape;
-import org.moddingx.libx.mod.ModX;
-import org.moddingx.libx.registration.SetupContext;
-import org.moddingx.libx.render.ItemStackRenderer;
 import mythicbotany.register.ModItems;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
@@ -27,12 +22,16 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.moddingx.libx.base.tile.BlockBE;
+import org.moddingx.libx.block.RotationShape;
+import org.moddingx.libx.mod.ModX;
+import org.moddingx.libx.registration.SetupContext;
+import org.moddingx.libx.render.ItemStackRenderer;
+import vazkii.botania.common.item.WandOfTheForestItem;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
-
-import vazkii.botania.common.item.WandOfTheForestItem;
 
 public class BlockYggdrasilBranch extends BlockBE<TileYggdrasilBranch> {
 

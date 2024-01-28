@@ -9,10 +9,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,7 +35,7 @@ public class BlockFloatingFunctionalFlower<T extends FunctionalFlowerBase> exten
     private final BlockFunctionalFlower<T> nonFloatingBlock;
 
     public BlockFloatingFunctionalFlower(ModX mod, Class<T> beClass, BlockFunctionalFlower<T> nonFloatingBlock) {
-        super(mod, beClass, Properties.of(Material.PLANT).isRedstoneConductor((state, world, pos) -> false)
+        super(mod, beClass, Properties.copy(Blocks.RED_TULIP).isRedstoneConductor((state, world, pos) -> false)
                 .instabreak().sound(SoundType.GRASS));
         this.nonFloatingBlock = nonFloatingBlock;
     }

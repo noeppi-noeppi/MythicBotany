@@ -4,19 +4,19 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Vector3f;
-import mythicbotany.register.ModBlocks;
+import com.mojang.math.Axis;
 import mythicbotany.MythicBotany;
+import mythicbotany.register.ModBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import org.moddingx.libx.render.ClientTickHandler;
@@ -38,7 +38,7 @@ public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylo
     public static final RenderType DIRECT_TARGET = createRenderType(true);
     
     private final NaturaPylonModel model;
-    private ItemTransforms.TransformType forceTransform = ItemTransforms.TransformType.NONE;
+    private ItemDisplayContext forceTransform = ItemDisplayContext.NONE;
 
     public RenderAlfsteelPylon(BlockEntityRendererProvider.Context ctx) {
         this.model = new NaturaPylonModel(ctx.bakeLayer(BotaniaModelLayers.PYLON_NATURA));
@@ -49,18 +49,18 @@ public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylo
     }
 
     public void doRender(@Nullable TileAlfsteelPylon pylon, float pticks, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
-        boolean direct = pylon == null && (this.forceTransform == ItemTransforms.TransformType.GUI || this.forceTransform.firstPerson());
+        boolean direct = pylon == null && (this.forceTransform == ItemDisplayContext.GUI || this.forceTransform.firstPerson());
         RenderType glow = direct ? DIRECT_TARGET : TARGET;
 
         poseStack.pushPose();
-        float worldTime = (float) ClientTickHandler.ticksInGame + pticks;
+        float worldTime = (float) ClientTickHandler.ticksInGame() + pticks;
         worldTime += pylon == null ? 0.0F : (float) (new Random(pylon.getBlockPos().hashCode())).nextInt(360);
         poseStack.translate(0.0D, pylon == null ? 1.35D : 1.5D, 0.0D);
         poseStack.scale(1.0F, -1.0F, -1.0F);
         poseStack.pushPose();
         poseStack.translate(0.5D, 0.0D, -0.5D);
         if (pylon != null) {
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(worldTime * 1.5F));
+            poseStack.mulPose(Axis.YP.rotationDegrees(worldTime * 1.5F));
         }
 
         RenderType layer = RenderType.entityTranslucent(TEXTURE);
@@ -78,7 +78,7 @@ public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylo
 
         poseStack.translate(0.5D, 0.0D, -0.5D);
         if (pylon != null) {
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(-worldTime));
+            poseStack.mulPose(Axis.YP.rotationDegrees(-worldTime));
         }
 
         vertex = buffer.getBuffer(glow);
@@ -96,12 +96,12 @@ public class RenderAlfsteelPylon implements BlockEntityRenderer<TileAlfsteelPylo
         }
         
         @Override
-        public void renderByItem(ItemStack stack, @Nonnull ItemTransforms.TransformType type, @Nonnull PoseStack ms, @Nonnull MultiBufferSource buffer, int light, int overlay) {
+        public void renderByItem(ItemStack stack, @Nonnull ItemDisplayContext context, @Nonnull PoseStack poseStack, @Nonnull MultiBufferSource buffer, int light, int overlay) {
             if (Block.byItem(stack.getItem()) instanceof BlockAlfsteelPylon) {
                 BlockEntityRenderer<TileAlfsteelPylon> renderer = this.blockEntityRenderDispatcher.getRenderer(DUMMY.get());
                 //noinspection ConstantConditions
-                ((RenderAlfsteelPylon) renderer).forceTransform = type;
-                ((RenderAlfsteelPylon) renderer).doRender(null, 0f, ms, buffer, light, overlay);
+                ((RenderAlfsteelPylon) renderer).forceTransform = context;
+                ((RenderAlfsteelPylon) renderer).doRender(null, 0f, poseStack, buffer, light, overlay);
             }
         }
     }

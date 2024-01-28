@@ -4,7 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -59,7 +59,7 @@ public class BlockFunctionalFlower<T extends FunctionalFlowerBase> extends Block
     @Override
     public void registerAdditional(RegistrationContext ctx, EntryCollector builder) {
         super.registerAdditional(ctx, builder);
-        builder.registerNamed(Registry.BLOCK_REGISTRY, "floating", this.floatingBlock);
+        builder.registerNamed(Registries.BLOCK, "floating", this.floatingBlock);
     }
 
     @Override

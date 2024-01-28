@@ -5,6 +5,7 @@ import mythicbotany.infuser.InfuserRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.level.Level;
 import vazkii.botania.client.patchouli.processor.PetalApothecaryProcessor;
 import vazkii.patchouli.api.IVariable;
 import vazkii.patchouli.api.IVariableProvider;
@@ -31,14 +32,14 @@ public class InfusionProcessor extends PetalApothecaryProcessor {
     }
 
     @Override
-    public IVariable process(String key) {
+    public IVariable process(Level level, String key) {
         if (this.recipe == null) {
             return null;
         } else {
             return switch (key) {
-                case "output" -> IVariable.from(this.recipe.getResultItem());
+                case "output" -> IVariable.from(this.recipe.getResultItem(level.registryAccess()));
                 case "recipe" -> IVariable.wrap(this.recipe.getId().toString());
-                case "heading" -> IVariable.from(this.recipe.getResultItem().getHoverName());
+                case "heading" -> IVariable.from(this.recipe.getResultItem(level.registryAccess()).getHoverName());
                 case "mana" -> IVariable.wrap(((InfuserRecipe) this.recipe).getManaUsage());
                 default -> null;
             };

@@ -3,22 +3,21 @@ package mythicbotany.alfheim.content;
 import mythicbotany.register.tags.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import org.moddingx.libx.mod.ModX;
 import org.moddingx.libx.registration.Registerable;
 import org.moddingx.libx.registration.RegistrationContext;
-import org.moddingx.libx.util.data.TagAccess;
 
 import javax.annotation.Nonnull;
 
@@ -32,17 +31,14 @@ public class BlockAlfheimLeaves extends LeavesBlock implements Registerable {
     }
 
     public BlockAlfheimLeaves(ModX mod, net.minecraft.world.item.Item.Properties itemProperties) {
-        super(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn((a, b, c, d) -> false).isSuffocating((a, b, c) -> false).isViewBlocking((a, b, c) -> false));
+        super(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn((a, b, c, d) -> false).isSuffocating((a, b, c) -> false).isViewBlocking((a, b, c) -> false));
         this.mod = mod;
-        if (mod.tab != null) {
-            itemProperties.tab(mod.tab);
-        }
         this.item = new BlockItem(this, itemProperties);
     }
 
     @Override
     public void registerAdditional(RegistrationContext ctx, EntryCollector builder) {
-        builder.register(Registry.ITEM_REGISTRY, this.item);
+        builder.register(Registries.ITEM, this.item);
     }
 
     @Nonnull
@@ -66,7 +62,7 @@ public class BlockAlfheimLeaves extends LeavesBlock implements Registerable {
     }
 
     protected int getDistanceAt(BlockState neighbor) {
-        if (TagAccess.ROOT.has(ModBlockTags.ALFHEIM_LOGS, neighbor.getBlock())) {
+        if (neighbor.is(ModBlockTags.ALFHEIM_LOGS)) {
             return 0;
         } else {
             return neighbor.getBlock() instanceof LeavesBlock ? neighbor.getValue(DISTANCE) : 7;

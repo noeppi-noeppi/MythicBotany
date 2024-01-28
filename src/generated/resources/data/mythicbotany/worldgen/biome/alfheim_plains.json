@@ -42,7 +42,7 @@
       "mythicbotany:motif_flowers"
     ]
   ],
-  "precipitation": "rain",
+  "has_precipitation": true,
   "spawn_costs": {},
   "spawners": {
     "ambient": [],

@@ -1,13 +1,13 @@
 package mythicbotany.config;
 
+import mythicbotany.functionalflora.WitherAconite;
+import mythicbotany.mjoellnir.MjoellnirHoldRequirement;
 import org.moddingx.libx.annotation.config.RegisterConfig;
 import org.moddingx.libx.config.Config;
 import org.moddingx.libx.config.Group;
 import org.moddingx.libx.config.validate.DoubleRange;
 import org.moddingx.libx.config.validate.FloatRange;
 import org.moddingx.libx.config.validate.IntRange;
-import mythicbotany.functionalflora.WitherAconite;
-import mythicbotany.mjoellnir.MjoellnirHoldRequirement;
 
 @RegisterConfig
 public class MythicConfig {
@@ -26,6 +26,9 @@ public class MythicConfig {
     
     @Config("Whether to replace the recipe for the Gaia Pylon with a recipe that requires Alfsteel.")
     public static boolean replaceGaiaRecipe = true;
+    
+    @Config("Whether to add an extra ring slot to curios.")
+    public static boolean addExtraRingSlot = true;
     
     public static class flowers {
 

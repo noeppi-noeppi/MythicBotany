@@ -59,15 +59,15 @@ public class AlfPixie extends PathfinderMob {
 
     public void aiStep() {
         super.aiStep();
-        if (!this.level.isClientSide && this.isAlive()) {
+        if (!this.level().isClientSide && this.isAlive()) {
             if (this.tickCount % 10 == 0 && this.deathTime == 0) {
                 this.heal(1);
             }
         }
-        if (this.level.isClientSide) {
+        if (this.level().isClientSide) {
             for (int i = 0; i < 4; i++) {
                 SparkleParticleData data = SparkleParticleData.sparkle(0.1F + (float) Math.random() * 0.25f, 1, 0.25f, 0.9f, 12);
-                this.level.addParticle(data, this.getX() + (Math.random() - 0.5) * 0.25,
+                this.level().addParticle(data, this.getX() + (Math.random() - 0.5) * 0.25,
                         this.getY() + 0.5 + (Math.random() - 0.5) * 0.25,
                         this.getZ() + (Math.random() - 0.5) * 0.25,
                         0, 0, 0);
@@ -91,7 +91,7 @@ public class AlfPixie extends PathfinderMob {
             this.setDeltaMovement(this.getDeltaMovement().scale(0.5));
         } else {
             float groundModifier = (19 / 3f) / 0.753571f;
-            this.moveRelative(this.onGround ? 0.1F * groundModifier : 0.02f, travelVector);
+            this.moveRelative(this.onGround() ? 0.1F * groundModifier : 0.02f, travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.91f));
         }
@@ -174,7 +174,7 @@ public class AlfPixie extends PathfinderMob {
             AABB aabb = this.entity.getBoundingBox();
             for (int i = 1; i < p_220673_2_; ++i) {
                 aabb = aabb.move(p_220673_1_);
-                if (!this.entity.level.noCollision(this.entity, aabb)) {
+                if (!this.entity.level().noCollision(this.entity, aabb)) {
                     return false;
                 }
             }
@@ -211,7 +211,7 @@ public class AlfPixie extends PathfinderMob {
         public void start() {
             int aboveGround = 0;
             BlockPos.MutableBlockPos mpos = this.entity.blockPosition().below().mutable();
-            while (mpos.getY() > 0 && AlfheimWorldGen.passthrough(this.entity.level.getBlockState(mpos))) {
+            while (mpos.getY() > 0 && AlfheimWorldGen.passthrough(this.entity.level().getBlockState(mpos))) {
                 mpos.move(Direction.DOWN);
                 aboveGround += 1;
                 if (aboveGround >= 10) break;

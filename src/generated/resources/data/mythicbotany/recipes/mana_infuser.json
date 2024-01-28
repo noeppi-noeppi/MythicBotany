@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "a": {
       "item": "mythicbotany:asgard_rune"
@@ -30,5 +31,6 @@
   ],
   "result": {
     "item": "mythicbotany:mana_infuser"
-  }
+  },
+  "show_notification": true
 }

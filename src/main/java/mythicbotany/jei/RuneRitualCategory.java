@@ -1,6 +1,5 @@
 package mythicbotany.jei;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -13,6 +12,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mythicbotany.MythicBotany;
 import mythicbotany.register.ModItems;
 import mythicbotany.rune.RuneRitualRecipe;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -95,9 +95,9 @@ public class RuneRitualCategory implements IRecipeCategory<RuneRitualRecipe> {
     }
 
     @Override
-    public void draw(@Nonnull RuneRitualRecipe recipe, @Nonnull IRecipeSlotsView slots, @Nonnull PoseStack poseStack, double mouseX, double mouseY) {
+    public void draw(@Nonnull RuneRitualRecipe recipe, @Nonnull IRecipeSlotsView slots, @Nonnull GuiGraphics graphics, double mouseX, double mouseY) {
         if (recipe.getMana() > 0) {
-            HUDHandler.renderManaBar(poseStack, 17, 189, 0x0000FF, 0.75f, recipe.getMana(), 1000000);
+            HUDHandler.renderManaBar(graphics, 17, 189, 0x0000FF, 0.75f, recipe.getMana(), 1000000);
         }
     }
 }

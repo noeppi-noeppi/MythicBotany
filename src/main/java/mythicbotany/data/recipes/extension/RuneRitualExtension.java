@@ -3,8 +3,6 @@ package mythicbotany.data.recipes.extension;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.moddingx.libx.crafting.CraftingHelper2;
-import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
 import mythicbotany.rune.RuneRitualRecipe;
 import mythicbotany.rune.SpecialRuneInput;
 import mythicbotany.rune.SpecialRuneOutput;
@@ -16,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import org.moddingx.libx.crafting.RecipeHelper;
+import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -300,7 +300,7 @@ public interface RuneRitualExtension extends RecipeExtension {
                 json.add("inputs", inputsJson);
 
                 JsonArray outputsJson = new JsonArray();
-                this.outputs.stream().map(stack -> CraftingHelper2.serializeItemStack(stack, true)).forEach(outputsJson::add);
+                this.outputs.stream().map(stack -> RecipeHelper.serializeItemStack(stack, true)).forEach(outputsJson::add);
                 json.add("outputs", outputsJson);
 
                 if (this.specialInput != null) {

@@ -1,8 +1,8 @@
 package mythicbotany.patchouli;
 
 import com.google.gson.annotations.SerializedName;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -41,10 +41,10 @@ public class MultipleInputsComponent implements ICustomComponent {
         }
     }
 
-    public void render(@Nonnull PoseStack poseStack, @Nonnull IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
+    public void render(@Nonnull GuiGraphics graphics, @Nonnull IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
         int widthHalf = (20 * this.ingredients.size()) / 2;
         for (int i = 0; i < this.ingredients.size(); i++) {
-            context.renderIngredient(poseStack, this.x - widthHalf + 9 + (20 * i), this.y, mouseX, mouseY, this.ingredients.get(i));
+            context.renderIngredient(graphics, this.x - widthHalf + 9 + (20 * i), this.y, mouseX, mouseY, this.ingredients.get(i));
         }
     }
 

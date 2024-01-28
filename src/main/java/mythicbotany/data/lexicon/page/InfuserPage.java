@@ -13,7 +13,7 @@ public class InfuserPage extends RecipePage {
     }
     
     private InfuserPage(List<ResourceLocation> recipes, @Nullable String caption) {
-        super("mythicbotany:infuser", recipes, caption);
+        super("botania:mythicbotany_infuser", recipes, caption);
     }
 
     @Override

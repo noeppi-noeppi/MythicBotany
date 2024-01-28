@@ -1,9 +1,6 @@
 package mythicbotany.infuser;
 
 import mythicbotany.MythicBotany;
-import org.moddingx.libx.base.tile.BlockBE;
-import org.moddingx.libx.crafting.recipe.RecipeHelper;
-import org.moddingx.libx.mod.ModX;
 import mythicbotany.register.ModRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -18,12 +15,15 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.moddingx.libx.base.tile.BlockBE;
+import org.moddingx.libx.crafting.RecipeHelper;
+import org.moddingx.libx.mod.ModX;
 
 import javax.annotation.Nonnull;
 
 public class BlockManaInfuser extends BlockBE<TileManaInfuser> {
 
-    private static final VoxelShape SHAPE = box(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
+    private static final VoxelShape SHAPE = box(0, 0, 0, 16, 3, 16);
 
     public BlockManaInfuser(ModX mod, Class<TileManaInfuser> teClass, Properties properties) {
         super(mod, teClass, properties);

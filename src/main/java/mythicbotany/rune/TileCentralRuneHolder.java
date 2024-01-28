@@ -2,8 +2,6 @@ package mythicbotany.rune;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Either;
-import org.moddingx.libx.base.tile.TickingBlock;
-import org.moddingx.libx.util.data.NbtX;
 import mythicbotany.register.ModBlocks;
 import mythicbotany.register.ModItems;
 import mythicbotany.register.ModRecipes;
@@ -33,6 +31,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
+import org.moddingx.libx.base.tile.TickingBlock;
+import org.moddingx.libx.util.Misc;
+import org.moddingx.libx.util.data.NbtX;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.client.fx.SparkleParticleData;
 import vazkii.botania.client.fx.WispParticleData;
@@ -47,7 +48,6 @@ import java.util.stream.Stream;
 
 public class TileCentralRuneHolder extends TileRuneHolder implements TickingBlock {
 
-    private static final ResourceLocation MISSIGNO = new ResourceLocation("minecraft", "missingno");
     private static final Map<Item, Integer> RUNE_COLORS = ImmutableMap.<Item, Integer>builder()
             .put(BotaniaItems.runeAir, 0x68B0EA)
             .put(BotaniaItems.runeSpring, 0xFF919F)
@@ -373,8 +373,8 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickingBloc
     @Override
     public void load(@Nonnull CompoundTag nbt) {
         super.load(nbt);
-        ResourceLocation id = NbtX.getResource(nbt, "recipe", MISSIGNO);
-        this.recipeId = id == MISSIGNO ? null : id;
+        ResourceLocation id = NbtX.getResource(nbt, "recipe", Misc.MISSINGNO);
+        this.recipeId = id == Misc.MISSINGNO ? null : id;
         this.progress = nbt.getInt("progress");
         this.transformId = nbt.getInt("transform");
         if (nbt.contains("Consumed", Tag.TAG_LIST)) {
@@ -395,7 +395,7 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickingBloc
     @Override
     public void saveAdditional(@Nonnull CompoundTag nbt) {
         super.saveAdditional(nbt);
-        NbtX.putRL(nbt, "recipe", this.recipe == null ? MISSIGNO : this.recipe.getId());
+        NbtX.putResource(nbt, "recipe", this.recipe == null ? Misc.MISSINGNO : this.recipe.getId());
         nbt.putInt("progress", this.progress);
         nbt.putInt("transform", this.transformId);
         ListTag consumed = new ListTag();
@@ -412,7 +412,7 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickingBloc
         CompoundTag nbt = super.getUpdateTag();
         //noinspection ConstantConditions
         if (!this.level.isClientSide) {
-            NbtX.putRL(nbt, "recipe", this.recipe == null ? MISSIGNO : this.recipe.getId());
+            NbtX.putResource(nbt, "recipe", this.recipe == null ? Misc.MISSINGNO : this.recipe.getId());
             nbt.putInt("progress", this.progress);
             nbt.putInt("transform", this.transformId);
         }
@@ -424,8 +424,8 @@ public class TileCentralRuneHolder extends TileRuneHolder implements TickingBloc
         super.handleUpdateTag(nbt);
         //noinspection ConstantConditions
         if (this.level.isClientSide) {
-            ResourceLocation id = NbtX.getResource(nbt, "recipe", MISSIGNO);
-            this.recipeId = id == MISSIGNO ? null : id;
+            ResourceLocation id = NbtX.getResource(nbt, "recipe", Misc.MISSINGNO);
+            this.recipeId = id == Misc.MISSINGNO ? null : id;
             this.progress = nbt.getInt("progress");
             this.transformId = nbt.getInt("transform");
         }

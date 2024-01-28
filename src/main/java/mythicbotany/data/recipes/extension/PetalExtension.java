@@ -1,12 +1,12 @@
 package mythicbotany.data.recipes.extension;
 
-import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
 import vazkii.botania.common.lib.BotaniaTags;
 import vazkii.botania.data.recipes.PetalApothecaryProvider;
 
@@ -54,10 +54,10 @@ public interface PetalExtension extends RecipeExtension {
     
     class Wrapper extends PetalApothecaryProvider {
 
-        public Wrapper(DataGenerator gen) {
-            super(gen);
+        public Wrapper(PackOutput packOutput) {
+            super(packOutput);
         }
-        
+
         private static FinishedRecipe create(ResourceLocation id, ItemStack output, Ingredient... inputs) {
             try {
                 Constructor<FinishedRecipe> ctor = FinishedRecipe.class.getDeclaredConstructor(ResourceLocation.class, ItemStack.class, Ingredient.class, Ingredient[].class);

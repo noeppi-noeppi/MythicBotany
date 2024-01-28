@@ -23,8 +23,8 @@ public class MjoellnirTrigger extends SimpleCriterionTrigger<MjoellnirTrigger.In
 
     @Nonnull
     @Override
-    protected Instance createInstance(@Nonnull JsonObject json, @Nonnull EntityPredicate.Composite entityPredicate, @Nonnull DeserializationContext conditionsParser) {
-        return new Instance(entityPredicate, ItemPredicate.fromJson(json.get("item")), EntityPredicate.Composite.fromJson(json, "entity", conditionsParser));
+    protected Instance createInstance(@Nonnull JsonObject json, @Nonnull ContextAwarePredicate entityPredicate, @Nonnull DeserializationContext context) {
+        return new Instance(entityPredicate, ItemPredicate.fromJson(json.get("item")), EntityPredicate.fromJson(json, "entity", context));
     }
 
     public void trigger(ServerPlayer player, ItemStack item, Entity entity) {
@@ -35,13 +35,13 @@ public class MjoellnirTrigger extends SimpleCriterionTrigger<MjoellnirTrigger.In
     public static class Instance extends AbstractCriterionTriggerInstance {
 
         public final ItemPredicate item;
-        public final EntityPredicate.Composite entity;
+        public final ContextAwarePredicate entity;
 
-        public Instance(ItemPredicate item, EntityPredicate.Composite entity) {
-            this(EntityPredicate.Composite.ANY, item, entity);
+        public Instance(ItemPredicate item, ContextAwarePredicate entity) {
+            this(ContextAwarePredicate.ANY, item, entity);
         }
         
-        public Instance(EntityPredicate.Composite player, ItemPredicate item, EntityPredicate.Composite entity) {
+        public Instance(ContextAwarePredicate player, ItemPredicate item, ContextAwarePredicate entity) {
             super(MjoellnirTrigger.ID, player);
             this.item = item;
             this.entity = entity;
@@ -52,10 +52,10 @@ public class MjoellnirTrigger extends SimpleCriterionTrigger<MjoellnirTrigger.In
         }
 
         @Nonnull
-        public JsonObject serializeToJson(@Nonnull SerializationContext conditions) {
-            JsonObject json = super.serializeToJson(conditions);
+        public JsonObject serializeToJson(@Nonnull SerializationContext context) {
+            JsonObject json = super.serializeToJson(context);
             json.add("item", this.item.serializeToJson());
-            json.add("entity", this.entity.toJson(conditions));
+            json.add("entity", this.entity.toJson(context));
             return json;
         }
     }

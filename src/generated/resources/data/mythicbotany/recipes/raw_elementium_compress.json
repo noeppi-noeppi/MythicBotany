@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "a": {
       "item": "mythicbotany:raw_elementium"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "mythicbotany:raw_elementium_block"
-  }
+  },
+  "show_notification": true
 }

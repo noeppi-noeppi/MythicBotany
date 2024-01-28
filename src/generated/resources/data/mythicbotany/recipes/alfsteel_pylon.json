@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "g": {
       "item": "minecraft:ghast_tear"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "mythicbotany:alfsteel_pylon"
-  }
+  },
+  "show_notification": true
 }

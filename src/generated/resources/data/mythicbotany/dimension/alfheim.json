@@ -1,12 +1,10 @@
 {
   "type": "mythicbotany:alfheim",
   "generator": {
-    "type": "sandbox:noise",
+    "type": "libx:noise",
     "biome_source": {
-      "type": "sandbox:layered",
-      "horizontal_scale": 48.0,
-      "layers": "mythicbotany:alfheim",
-      "vertical_scale": 120.0
+      "type": "libx:layered",
+      "layers": "#mythicbotany:alfheim"
     },
     "settings": "mythicbotany:alfheim",
     "surface_override": "mythicbotany:alfheim_surface"

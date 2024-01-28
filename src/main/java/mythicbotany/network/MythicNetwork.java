@@ -1,16 +1,16 @@
 package mythicbotany.network;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.moddingx.libx.mod.ModX;
-import org.moddingx.libx.network.NetworkX;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.moddingx.libx.mod.ModX;
+import org.moddingx.libx.network.NetworkX;
 
 public class MythicNetwork extends NetworkX {
 
@@ -75,14 +75,14 @@ public class MythicNetwork extends NetworkX {
     }
     
     public void setItemMagnetImmune(ItemEntity ie) {
-        if (!ie.level.isClientSide && !ie.getPersistentData().getBoolean("PreventRemoteMovement")) {
+        if (!ie.level().isClientSide && !ie.getPersistentData().getBoolean("PreventRemoteMovement")) {
             ie.getPersistentData().putBoolean("PreventRemoteMovement", true);
             this.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ie), new MagnetImmunityMessage(ie.getId(), true, ie.getX(), ie.getY(), ie.getZ()));
         }
     }
     
     public void removeItemMagnetImmune(ItemEntity ie) {
-        if (!ie.level.isClientSide && ie.getPersistentData().getBoolean("PreventRemoteMovement")) {
+        if (!ie.level().isClientSide && ie.getPersistentData().getBoolean("PreventRemoteMovement")) {
             ie.getPersistentData().putBoolean("PreventRemoteMovement", false);
             this.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ie), new MagnetImmunityMessage(ie.getId(), false, ie.getX(), ie.getY(), ie.getZ()));
         }

@@ -1,13 +1,13 @@
 package mythicbotany.register;
 
 import mythicbotany.MythicBotany;
-import org.moddingx.libx.annotation.registration.Reg;
-import org.moddingx.libx.annotation.registration.RegisterClass;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import org.moddingx.libx.annotation.registration.Reg;
+import org.moddingx.libx.annotation.registration.RegisterClass;
 
-@RegisterClass(registry = "ENCHANTMENT_REGISTRY")
+@RegisterClass(registry = "ENCHANTMENT")
 public class ModEnchantments {
 
     @Reg.Exclude

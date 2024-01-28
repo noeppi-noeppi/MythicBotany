@@ -5,6 +5,7 @@ import mythicbotany.MythicBotany;
 import mythicbotany.register.tags.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Blocks;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
-import net.minecraft.world.level.material.Material;
 import org.moddingx.libx.annotation.api.Codecs;
 import org.moddingx.libx.annotation.codec.PrimaryConstructor;
 import org.moddingx.libx.annotation.registration.Reg;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-@RegisterClass(registry = "TRUNK_PLACER_TYPE_REGISTRY")
+@RegisterClass(registry = "TRUNK_PLACER_TYPE")
 public class ShatteredTrunkPlacer extends TrunkPlacer {
 
     @Reg.Exclude public static final Codec<ShatteredTrunkPlacer> CODEC = Codecs.get(MythicBotany.class, ShatteredTrunkPlacer.class);
@@ -94,7 +94,7 @@ public class ShatteredTrunkPlacer extends TrunkPlacer {
     }
 
     private boolean placeLog(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> blockSetter, BlockPos pos, RandomSource rand, TreeConfiguration config) {
-        if (level.isStateAtPosition(pos, state -> state.isAir() || state.is(ModBlockTags.ALFHEIM_LEAVES) || state.getMaterial() == Material.REPLACEABLE_PLANT || state.is(Blocks.WATER))) {
+        if (level.isStateAtPosition(pos, state -> state.isAir() || state.is(ModBlockTags.ALFHEIM_LEAVES) || state.is(BlockTags.REPLACEABLE_BY_TREES) || state.is(Blocks.WATER))) {
             blockSetter.accept(pos, config.trunkProvider.getState(rand, pos));
             return true;
         } else {

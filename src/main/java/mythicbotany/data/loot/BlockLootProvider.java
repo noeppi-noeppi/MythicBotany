@@ -1,20 +1,17 @@
 package mythicbotany.data.loot;
 
-import org.moddingx.libx.annotation.data.Datagen;
-import org.moddingx.libx.datagen.provider.loot.BlockLootProviderBase;
-import org.moddingx.libx.mod.ModX;
 import mythicbotany.register.ModBlocks;
 import mythicbotany.register.ModItems;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
+import org.moddingx.libx.datagen.DatagenContext;
+import org.moddingx.libx.datagen.provider.loot.BlockLootProviderBase;
 import vazkii.botania.common.item.BotaniaItems;
 
-@Datagen
 public class BlockLootProvider extends BlockLootProviderBase {
 
-    public BlockLootProvider(ModX mod, DataGenerator generator) {
-        super(mod, generator);
+    public BlockLootProvider(DatagenContext ctx) {
+        super(ctx);
     }
 
     @Override

@@ -1,5 +1,5 @@
 {
-  "type": "mythicbotany:clamp",
+  "type": "libx:clamp",
   "density": {
     "type": "minecraft:mul",
     "argument1": 2.0,

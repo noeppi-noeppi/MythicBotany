@@ -1,11 +1,10 @@
 package mythicbotany.alftools;
 
-import com.google.common.collect.ImmutableSet;
-import mythicbotany.register.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.MythicCap;
 import mythicbotany.config.MythicConfig;
 import mythicbotany.pylon.PylonRepairable;
+import mythicbotany.register.ModItems;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -35,11 +33,9 @@ import vazkii.botania.common.lib.ResourceLocationHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Set;
+import java.util.function.Predicate;
 
 public class AlfsteelPick extends TerraShattererItem implements PylonRepairable, Registerable {
-
-    private static final Set<Material> MATERIALS = ImmutableSet.of(Material.STONE, Material.METAL, Material.ICE, Material.GLASS, Material.PISTON, Material.HEAVY_METAL, Material.GRASS, Material.DIRT, Material.SAND, Material.TOP_SNOW, Material.SNOW, Material.CLAY);
     
     public AlfsteelPick(Properties props) {
         super(props.durability(MythicConfig.alftools.durability.pickaxe.max_durability()));
@@ -62,9 +58,16 @@ public class AlfsteelPick extends TerraShattererItem implements PylonRepairable,
     @Override
     public void breakOtherBlock(Player player, ItemStack stack, BlockPos pos, BlockPos originPos, Direction side) {
         if (isEnabled(stack)) {
-            Level level = player.level;
+            Level level = player.level();
             BlockState state = level.getBlockState(pos);
-            if (MATERIALS.contains(state.getMaterial()) || stack.getDestroySpeed(state) > 1) {
+
+            Predicate<BlockState> blockTest = (BlockState stateToMine) -> {
+                if (stateToMine.requiresCorrectToolForDrops() && !stack.isCorrectToolForDrops(stateToMine)) return false;
+                if (stack.getDestroySpeed(stateToMine) <= 0) return false;
+                return stack.getDestroySpeed(stateToMine) > 1 || stateToMine.is(BlockTags.MINEABLE_WITH_PICKAXE) || stateToMine.is(BlockTags.MINEABLE_WITH_SHOVEL) || stateToMine.is(BlockTags.MINEABLE_WITH_HOE);
+            };
+            
+            if (!level.isEmptyBlock(pos) && blockTest.test(state)) {
                 if (!level.isEmptyBlock(pos)) {
                     boolean thor = !RingOfThorItem.getThorRing(player).isEmpty();
                     boolean doX = thor || side.getStepX() == 0;
@@ -83,7 +86,7 @@ public class AlfsteelPick extends TerraShattererItem implements PylonRepairable,
                     if (range != 0 || miningLevel == 1) {
                         Vec3i beginDiff = new Vec3i(doX ? -range : 0, doY ? -1 : 0, doZ ? -range : 0);
                         Vec3i endDiff = new Vec3i(doX ? range : rangeDepth * -side.getStepX(), doY ? rangeY * 2 - 1 : 0, doZ ? range : rangeDepth * -side.getStepZ());
-                        ToolCommons.removeBlocksInIteration(player, stack, level, pos, beginDiff, endDiff, s -> (!state.requiresCorrectToolForDrops() || stack.isCorrectToolForDrops(state)) && stack.getDestroySpeed(state) > 1.0F || state.is(BlockTags.MINEABLE_WITH_SHOVEL));
+                        ToolCommons.removeBlocksInIteration(player, stack, level, pos, beginDiff, endDiff, blockTest);
                         if (origLevel == 5) {
                             PlayerHelper.grantCriterion((ServerPlayer)player, ResourceLocationHelper.prefix("challenge/rank_ss_pick"), "code_triggered");
                         }

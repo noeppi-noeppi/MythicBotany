@@ -1,6 +1,5 @@
 package mythicbotany.alfheim.datagen;
 
-import io.github.noeppi_noeppi.mods.sandbox.datagen.ext.FeatureData;
 import mythicbotany.alfheim.worldgen.placement.AlfheimGroundModifier;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Blocks;
@@ -8,10 +7,13 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import org.moddingx.libx.datagen.DatagenContext;
+import org.moddingx.libx.datagen.provider.sandbox.FeatureProviderBase;
+import org.moddingx.libx.sandbox.placement.HeightPlacementFilter;
 
-public class AlfheimPlacements extends FeatureData {
+public class AlfheimPlacements extends FeatureProviderBase {
     
-    private final AlfheimFeatures features = this.resolve(AlfheimFeatures.class);
+    private final AlfheimFeatures features = this.context.findRegistryProvider(AlfheimFeatures.class);
 
     private final PlacementModifiers trees = this.modifiers()
             .spread()
@@ -58,6 +60,7 @@ public class AlfheimPlacements extends FeatureData {
             .rarity(2)
             .spread()
             .add(AlfheimGroundModifier.INSTANCE)
+            .add(new HeightPlacementFilter(VerticalAnchor.BOTTOM, VerticalAnchor.absolute(84)))
             .biomeFilter()
             .build();
     
@@ -91,8 +94,8 @@ public class AlfheimPlacements extends FeatureData {
             .add(this.ore(5, VerticalAnchor.aboveBottom(16), VerticalAnchor.absolute(80)))
             .build();
     
-    public AlfheimPlacements(Properties properties) {
-        super(properties);
+    public AlfheimPlacements(DatagenContext ctx) {
+        super(ctx);
     }
     
     private Holder<PlacedFeature> metamorphicStone(Holder<ConfiguredFeature<?, ?>> feature) {

@@ -1,8 +1,8 @@
 {
   "pack": {
     "description": "MythicBotany Resources",
-    "pack_format": 10,
-    "forge:resource_pack_format": 9,
-    "forge:data_pack_format": 10
+    "pack_format": 15,
+    "forge:client_resources_pack_format": 15,
+    "forge:server_data_pack_format": 15
   }
 }

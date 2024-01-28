@@ -1,5 +1,5 @@
 {
-  "type": "mythicbotany:clamp",
+  "type": "libx:clamp",
   "density": 0.0,
   "max": 1.0,
   "min": -1.0

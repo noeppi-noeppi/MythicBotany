@@ -59,8 +59,7 @@ public class BlockRuneHolder<T extends TileRuneHolder> extends BlockBE<T> {
                 ItemStack stack = tile.getInventory().getStackInSlot(0);
                 if (held.isEmpty()) {
                     player.setItemInHand(hand, stack.copy());
-                } else if (ItemStack.isSame(held, stack) && ItemStack.tagMatches(held, stack)
-                        && held.getCount() + stack.getCount() <= held.getMaxStackSize()) {
+                } else if (ItemStack.isSameItemSameTags(held, stack) && held.getCount() + stack.getCount() <= held.getMaxStackSize()) {
                     held.grow(stack.getCount());
                     player.setItemInHand(hand, held);
                 } else {
@@ -104,7 +103,6 @@ public class BlockRuneHolder<T extends TileRuneHolder> extends BlockBE<T> {
     
     @Nonnull
     @Override
-    @SuppressWarnings("deprecation")
     public PushReaction getPistonPushReaction(@Nonnull BlockState state) {
         return PushReaction.DESTROY;
     }

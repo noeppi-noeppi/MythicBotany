@@ -1,13 +1,13 @@
 package mythicbotany.data.recipes.extension;
 
-import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
 import vazkii.botania.data.recipes.ManaInfusionProvider;
 
 public interface ManaInfusionExtension extends RecipeExtension {
@@ -85,11 +85,11 @@ public interface ManaInfusionExtension extends RecipeExtension {
     }
     
     class Wrapper extends ManaInfusionProvider {
-
-        public Wrapper(DataGenerator gen) {
-            super(gen);
-        }
         
+        public Wrapper(PackOutput packOutput) {
+            super(packOutput);
+        }
+
         private static FinishedRecipe create(ResourceLocation id, ItemStack output, Ingredient input, int mana) {
             return new FinishedRecipe(id, output, input, mana);
         }

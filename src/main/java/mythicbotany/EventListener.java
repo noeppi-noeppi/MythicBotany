@@ -14,7 +14,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -38,6 +39,8 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import vazkii.botania.api.item.AncientWillContainer;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.api.recipe.ElvenPortalUpdateEvent;
@@ -58,12 +61,13 @@ public class EventListener {
     @SubscribeEvent
     public void onDamage(LivingHurtEvent event) {
         if (event.getSource().getEntity() instanceof Player) {
-            if (CuriosApi.getCuriosHelper().findFirstCurio((LivingEntity) event.getSource().getEntity(), ModItems.fireRing).isPresent()) {
+            ICuriosItemHandler curios = CuriosApi.getCuriosInventory(event.getEntity()).resolve().orElse(null);
+            if (curios != null && curios.findFirstCurio(ModItems.fireRing).isPresent()) {
                 if (event.getEntity().getRemainingFireTicks() <= 1) {
                     event.getEntity().setSecondsOnFire(1);
                 }
             }
-            if (CuriosApi.getCuriosHelper().findFirstCurio((LivingEntity) event.getSource().getEntity(), ModItems.iceRing).isPresent()) {
+            if (curios != null && curios.findFirstCurio(ModItems.iceRing).isPresent()) {
                 if (!event.getEntity().hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
                     event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 99));
                 }
@@ -88,18 +92,20 @@ public class EventListener {
 
     @SubscribeEvent
     public void attackEntity(LivingAttackEvent event) {
-        if (event.getSource() == DamageSource.LIGHTNING_BOLT && event.getEntity() == lightningImmuneEntity) {
+        if (event.getSource().is(DamageTypeTags.IS_LIGHTNING) && event.getEntity() == lightningImmuneEntity) {
             event.setCanceled(true);
             return;
         }
-        if (event.getSource().isFire()) {
-            if (CuriosApi.getCuriosHelper().findFirstCurio(event.getEntity(), ModItems.fireRing).isPresent()) {
+        if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
+            ICuriosItemHandler curios = CuriosApi.getCuriosInventory(event.getEntity()).resolve().orElse(null);
+            if (curios != null && curios.findFirstCurio(ModItems.fireRing).isPresent()) {
                 event.setCanceled(true);
                 return;
             }
         }
-        if (event.getSource() == DamageSource.CRAMMING && event.getSource() == DamageSource.DRY_OUT && event.getSource() == DamageSource.IN_WALL) {
-            if (CuriosApi.getCuriosHelper().findFirstCurio(event.getEntity(), ModItems.iceRing).isPresent()) {
+        if (event.getSource().is(DamageTypes.CRAMMING) || event.getSource().is(DamageTypes.IN_WALL) || event.getSource().is(DamageTypes.DRY_OUT)) {
+            ICuriosItemHandler curios = CuriosApi.getCuriosInventory(event.getEntity()).resolve().orElse(null);
+            if (curios != null && curios.findFirstCurio(ModItems.iceRing).isPresent()) {
                 event.setCanceled(true);
                 return;
             }
@@ -123,8 +129,8 @@ public class EventListener {
 
     @SubscribeEvent
     public void placeBlock(BlockEvent.EntityPlaceEvent event) {
-        if (!event.getLevel().isClientSide() && event.getPlacedBlock().getBlock() == Blocks.GOLD_BLOCK && event.getEntity() instanceof LivingEntity) {
-            CuriosApi.getCuriosHelper().findFirstCurio((LivingEntity) event.getEntity(), ModItems.andwariRing).ifPresent(result -> {
+        if (!event.getLevel().isClientSide() && event.getPlacedBlock().getBlock() == Blocks.GOLD_BLOCK && event.getEntity() instanceof LivingEntity living) {
+            CuriosApi.getCuriosInventory(living).resolve().ifPresent(curios -> curios.findFirstCurio(ModItems.andwariRing).ifPresent(result -> {
                 boolean hasMana = true;
                 if (event.getEntity() instanceof Player) {
                     hasMana = ManaItemHandler.instance().requestManaExact(result.stack(), (Player) event.getEntity(), 2000, true);
@@ -134,12 +140,10 @@ public class EventListener {
                         String id = result.slotContext().identifier();
                         int slot = result.slotContext().index();
                         ItemStack stack = result.stack();
-                        //noinspection CodeBlock2Expr
                         stack.hurtAndBreak(1, (LivingEntity) event.getEntity(), e -> {
-                            //noinspection CodeBlock2Expr
-                            CuriosApi.getCuriosHelper().getCuriosHandler((LivingEntity) event.getEntity()).ifPresent(handler -> {
-                                handler.getCurios().get(id).getStacks().setStackInSlot(slot, new ItemStack(ModItems.cursedAndwariRing));
-                            });
+                            ICurioStacksHandler curio = curios.getCurios().get(id);
+                            if (curio != null)
+                                curio.getStacks().setStackInSlot(slot, new ItemStack(ModItems.cursedAndwariRing));
                         });
                     }
                     if (event.getEntity() != null) {
@@ -147,7 +151,7 @@ public class EventListener {
                         event.getEntity().spawnAtLocation(drop);
                     }
                 }
-            });
+            }));
         }
     }
     
@@ -194,11 +198,11 @@ public class EventListener {
     
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void itemDespawn(ItemExpireEvent event) {
-        if (!event.getEntity().level.isClientSide && Alfheim.DIMENSION.equals(event.getEntity().level.dimension())) {
+        if (!event.getEntity().level().isClientSide && Alfheim.DIMENSION.equals(event.getEntity().level().dimension())) {
             if (event.getEntity().getItem().getItem() == BotaniaItems.pixieDust) {
                 BlockPos pos = event.getEntity().blockPosition();
-                if (TileReturnPortal.validPortal(event.getEntity().level, pos)) {
-                    event.getEntity().level.setBlock(pos, ModBlocks.returnPortal.defaultBlockState(), 3);
+                if (TileReturnPortal.validPortal(event.getEntity().level(), pos)) {
+                    event.getEntity().level().setBlock(pos, ModBlocks.returnPortal.defaultBlockState(), 3);
                     event.getEntity().remove(Entity.RemovalReason.DISCARDED);
                 }
             }
@@ -207,7 +211,7 @@ public class EventListener {
     
     @SubscribeEvent
     public void playerTick(TickEvent.PlayerTickEvent event) {
-        if (event.player.tickCount % 4 == 1 && !event.player.level.isClientSide && Alfheim.DIMENSION.equals(event.player.level.dimension())) {
+        if (event.player.tickCount % 4 == 1 && !event.player.level().isClientSide && Alfheim.DIMENSION.equals(event.player.level().dimension())) {
             if (MythicConfig.lockAlfheim && !MythicPlayerData.getData(event.player).getBoolean("KvasirKnowledge")) {
                 // Player used another mod to get to alfheim
                 event.player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0, true, false, true));

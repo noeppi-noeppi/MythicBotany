@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mythicbotany.register.ModRecipes;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -92,23 +93,28 @@ public class RuneRitualRecipe implements Recipe<Container> {
     }
 
     @Nonnull
+    public ItemStack getResultItem() {
+        if (this.outputs.size() == 1) {
+            return this.outputs.get(0);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    @Nonnull
     @Override
-    public ItemStack assemble(@Nonnull Container inv) {
+    public ItemStack getResultItem(@Nonnull RegistryAccess registryAccess) {
+        return this.getResultItem();
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack assemble(@Nonnull Container container, @Nonnull RegistryAccess registryAccess) {
         return this.getResultItem();
     }
 
     @Override
     public boolean canCraftInDimensions(int width, int height) {
         return false;
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack getResultItem() {
-        if (this.outputs.size() == 1) {
-            return this.outputs.get(0);
-        }
-        return ItemStack.EMPTY;
     }
 
     public Ingredient getCenterRune() {

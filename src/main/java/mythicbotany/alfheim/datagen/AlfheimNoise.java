@@ -1,16 +1,17 @@
 package mythicbotany.alfheim.datagen;
 
-import io.github.noeppi_noeppi.mods.sandbox.datagen.ext.NoiseData;
-import mythicbotany.util.density.MoreDensityFunctions;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.CubicSpline;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import org.moddingx.libx.datagen.DatagenContext;
+import org.moddingx.libx.datagen.provider.sandbox.NoiseProviderBase;
+import org.moddingx.libx.sandbox.SandBox;
 import vazkii.botania.common.block.BotaniaBlocks;
 
-public class AlfheimNoise extends NoiseData {
+public class AlfheimNoise extends NoiseProviderBase {
 
     // Amount of blocks, the alfheim base height can influence the variation noise shift
     private static final double HEIGHT_FACTOR = 224;
@@ -61,8 +62,8 @@ public class AlfheimNoise extends NoiseData {
     ));
     
     // Base terrain height. Combines low and high shaper (slightly biased towards the low shaper)
-    public final Holder<DensityFunction> alfheimHeight = this.density(MoreDensityFunctions.smashY(
-            DensityFunctions.interpolated(MoreDensityFunctions.lerp(
+    public final Holder<DensityFunction> alfheimHeight = this.density(SandBox.Density.smashY(
+            DensityFunctions.interpolated(SandBox.Density.lerp(
                     new DensityFunctions.HolderHolder(alfheimLow),
                     new DensityFunctions.HolderHolder(alfheimHigh),
                     new DensityFunctions.HolderHolder(alfheimErosion),
@@ -118,8 +119,12 @@ public class AlfheimNoise extends NoiseData {
 
     // Caves. Values less than 0 will be empty blocks.
     public final Holder<DensityFunction> alfheimCaves = this.density(DensityFunctions.interpolated(NoiseRouterData.underground(
-            this.registries.registry(Registry.DENSITY_FUNCTION_REGISTRY),
-            NoiseRouterData.entrances(this.registries.registry(Registry.DENSITY_FUNCTION_REGISTRY))
+            this.registries.registry(Registries.DENSITY_FUNCTION).asLookup(),
+            this.registries.registry(Registries.NOISE).asLookup(),
+            NoiseRouterData.entrances(
+                    this.registries.registry(Registries.DENSITY_FUNCTION).asLookup(),
+                    this.registries.registry(Registries.NOISE).asLookup()
+            )
     )));
     
     public final Holder<DensityFunction> alfheimFinal = this.density(DensityFunctions.min(
@@ -140,8 +145,8 @@ public class AlfheimNoise extends NoiseData {
             .router().vegetation(this.alfheimHumidity)
             .build();
 
-    public AlfheimNoise(Properties properties) {
-        super(properties);
+    public AlfheimNoise(DatagenContext ctx) {
+        super(ctx);
     }
 
     private DensityFunction shifted(ResourceKey<NormalNoise.NoiseParameters> noise, double scale) {
@@ -157,6 +162,6 @@ public class AlfheimNoise extends NoiseData {
     }
 
     private DensityFunction clampNormal(DensityFunction density) {
-        return MoreDensityFunctions.clamp(density, -1, 1);
+        return SandBox.Density.clamp(density, -1, 1);
     }
 }

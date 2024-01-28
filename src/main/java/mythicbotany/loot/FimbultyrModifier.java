@@ -3,8 +3,8 @@ package mythicbotany.loot;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import mythicbotany.register.ModItems;
 import mythicbotany.MythicPlayerData;
+import mythicbotany.register.ModItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -20,7 +20,6 @@ import vazkii.botania.common.entity.GaiaGuardianEntity;
 
 import javax.annotation.Nonnull;
 
-// TODO 1.19.4 datagen
 public class FimbultyrModifier extends LootModifier {
     
     public static final Codec<FimbultyrModifier> CODEC = RecordCodecBuilder.create(instance -> instance.group(

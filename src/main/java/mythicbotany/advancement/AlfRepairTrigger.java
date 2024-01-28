@@ -21,7 +21,7 @@ public class AlfRepairTrigger extends SimpleCriterionTrigger<AlfRepairTrigger.In
 
     @Nonnull
     @Override
-    protected Instance createInstance(@Nonnull JsonObject json, @Nonnull EntityPredicate.Composite entityPredicate, @Nonnull DeserializationContext conditionsParser) {
+    protected Instance createInstance(@Nonnull JsonObject json, @Nonnull ContextAwarePredicate entityPredicate, @Nonnull DeserializationContext context) {
         return new Instance(entityPredicate, ItemPredicate.fromJson(json.get("item")));
     }
 
@@ -34,10 +34,10 @@ public class AlfRepairTrigger extends SimpleCriterionTrigger<AlfRepairTrigger.In
         public final ItemPredicate item;
 
         public Instance(ItemPredicate item) {
-            this(EntityPredicate.Composite.ANY, item);
+            this(ContextAwarePredicate.ANY, item);
         }
         
-        public Instance(EntityPredicate.Composite player, ItemPredicate item) {
+        public Instance(ContextAwarePredicate player, ItemPredicate item) {
             super(AlfRepairTrigger.ID, player);
             this.item = item;
         }

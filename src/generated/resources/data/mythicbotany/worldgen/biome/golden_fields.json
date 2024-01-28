@@ -41,7 +41,7 @@
       "mythicbotany:wheat_fields"
     ]
   ],
-  "precipitation": "rain",
+  "has_precipitation": true,
   "spawn_costs": {},
   "spawners": {
     "ambient": [],

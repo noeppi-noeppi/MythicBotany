@@ -2,11 +2,11 @@ package mythicbotany.alftools;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import mythicbotany.register.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.config.MythicConfig;
 import mythicbotany.network.AlfSwordLeftClickMessage;
 import mythicbotany.pylon.PylonRepairable;
+import mythicbotany.register.ModItems;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -96,9 +96,9 @@ public class AlfsteelSword extends TerraBladeItem implements PylonRepairable {
     public void trySpawnAlfBurst(Player player) {
         if ((player.getItemBySlot(EquipmentSlot.MAINHAND).getItem() == ModItems.alfsteelSword) && player.getAttackStrengthScale(0) == 1) {
             ManaBurstEntity burst = this.getAlfBurst(player, player.getMainHandItem());
-            player.level.addFreshEntity(burst);
+            player.level().addFreshEntity(burst);
             player.getMainHandItem().hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
-            player.level.playSound(null, player.getX(), player.getY(), player.getZ(), BotaniaSounds.terraBlade, SoundSource.PLAYERS, 1, 1);
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), BotaniaSounds.terraBlade, SoundSource.PLAYERS, 1, 1);
         }
     }
 
@@ -110,7 +110,7 @@ public class AlfsteelSword extends TerraBladeItem implements PylonRepairable {
                 entity.xOld, entity.yOld, entity.zOld
         ).inflate(1);
         Entity thrower = entity.getOwner();
-        List<LivingEntity> entities = entity.level.getEntitiesOfClass(LivingEntity.class, aabb);
+        List<LivingEntity> entities = entity.level().getEntitiesOfClass(LivingEntity.class, aabb);
 
         for (LivingEntity living : entities) {
             if (living == thrower || living instanceof Player livingPlayer && thrower instanceof Player throwingPlayer && !throwingPlayer.canHarmPlayer(livingPlayer)) {
@@ -122,12 +122,12 @@ public class AlfsteelSword extends TerraBladeItem implements PylonRepairable {
                 if (mana >= 33) {
                     burst.setMana(mana - 33);
                     float damage = 4 + this.getDamage();
-                    if (!burst.isFake() && !entity.level.isClientSide) {
-                        DamageSource source = DamageSource.MAGIC;
+                    if (!burst.isFake() && !entity.level().isClientSide) {
+                        DamageSource source = entity.level().damageSources().magic();
                         if (thrower instanceof Player player) {
-                            source = DamageSource.playerAttack(player);
+                            source = entity.level().damageSources().playerAttack(player);
                         } else if (thrower instanceof LivingEntity livingThrower) {
-                            source = DamageSource.mobAttack(livingThrower);
+                            source = entity.level().damageSources().mobAttack(livingThrower);
                         }
                         living.hurt(source, damage);
                         if (burst.getMana() <= 0) entity.discard();

@@ -2,13 +2,13 @@ package mythicbotany.patchouli;
 
 import com.google.gson.annotations.SerializedName;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mythicbotany.MythicBotany;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
 import vazkii.botania.client.patchouli.component.ManaComponent;
 import vazkii.patchouli.api.IVariable;
 import vazkii.patchouli.client.book.BookContentsBuilder;
@@ -30,8 +30,8 @@ public class PageRitualInfo extends PageRuneRitualBase {
     private transient BookTextRenderer desc;
 
     @Override
-    public void build(BookEntry entry, BookContentsBuilder builder, int pageNum) {
-        super.build(entry, builder, pageNum);
+    public void build(Level level, BookEntry entry, BookContentsBuilder builder, int pageNum) {
+        super.build(level, entry, builder, pageNum);
         this.manaComponent = new ManaComponent();
         this.manaComponent.build((GuiBook.PAGE_WIDTH / 2) - 51, 115, pageNum);
         if (this.recipe != null) {
@@ -57,20 +57,19 @@ public class PageRitualInfo extends PageRuneRitualBase {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(poseStack, mouseX, mouseY, partialTicks);
-        RenderSystem.setShaderTexture(0, OVERLAY_TEXTURE);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        super.render(graphics, mouseX, mouseY, partialTicks);
         RenderSystem.enableBlend();
-        GuiComponent.blit(poseStack, 0, 0, 0, 0, GuiBook.PAGE_WIDTH, GuiBook.PAGE_HEIGHT, 256, 256);
-        this.renderInputs(poseStack, mouseX, mouseY, partialTicks);
-        this.renderOutputs(poseStack, mouseX, mouseY, partialTicks);
-        this.renderManaBar(poseStack, mouseX, mouseY, partialTicks);
+        graphics.blit(OVERLAY_TEXTURE, 0, 0, 0, 0, GuiBook.PAGE_WIDTH, GuiBook.PAGE_HEIGHT, 256, 256);
+        this.renderInputs(graphics, mouseX, mouseY, partialTicks);
+        this.renderOutputs(graphics, mouseX, mouseY, partialTicks);
+        this.renderManaBar(graphics, mouseX, mouseY, partialTicks);
         if (this.desc != null) {
-            this.desc.render(poseStack, mouseX, mouseY);
+            this.desc.render(graphics, mouseX, mouseY);
         }
     }
 
-    private void renderInputs(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    private void renderInputs(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         if (this.recipe != null) {
             ArrayList<Ingredient> inputs = new ArrayList<>();
             //noinspection CollectionAddAllCanBeReplacedWithConstructor
@@ -80,12 +79,12 @@ public class PageRitualInfo extends PageRuneRitualBase {
             }
             int startX = (GuiBook.PAGE_WIDTH / 2) - (8 * inputs.size());
             for (int i = 0; i < inputs.size(); i++) {
-                this.parent.renderIngredient(poseStack, startX + (16 * i), 12, mouseX, mouseY, inputs.get(i));
+                this.parent.renderIngredient(graphics, startX + (16 * i), 12, mouseX, mouseY, inputs.get(i));
             }
         }
     }
 
-    private void renderOutputs(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    private void renderOutputs(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         if (this.recipe != null) {
             ArrayList<ItemStack> outputs = new ArrayList<>();
             //noinspection CollectionAddAllCanBeReplacedWithConstructor
@@ -95,16 +94,16 @@ public class PageRitualInfo extends PageRuneRitualBase {
             }
             int startX = (GuiBook.PAGE_WIDTH / 2) - (8 * outputs.size());
             for (int i = 0; i < outputs.size(); i++) {
-                this.parent.renderItemStack(poseStack, startX + (16 * i), 41, mouseX, mouseY, outputs.get(i));
+                this.parent.renderItemStack(graphics, startX + (16 * i), 41, mouseX, mouseY, outputs.get(i));
             }
         }
     }
 
-    private void renderManaBar(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    private void renderManaBar(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         if (this.recipe != null && this.recipe.getMana() > 0) {
             this.manaComponent.mana = IVariable.wrap(this.recipe.getMana());
             this.manaComponent.onVariablesAvailable(v -> v);
-            this.manaComponent.render(poseStack, this.parent, partialTicks, mouseX, mouseY);
+            this.manaComponent.render(graphics, this.parent, partialTicks, mouseX, mouseY);
         }
     }
 }

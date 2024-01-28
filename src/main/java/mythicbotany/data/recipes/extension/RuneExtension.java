@@ -1,16 +1,15 @@
 package mythicbotany.data.recipes.extension;
 
-import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
+import vazkii.botania.data.recipes.RunicAltarProvider;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
-
-import vazkii.botania.data.recipes.RunicAltarProvider;
 
 public interface RuneExtension extends RecipeExtension {
 
@@ -32,8 +31,8 @@ public interface RuneExtension extends RecipeExtension {
 
     class Wrapper extends RunicAltarProvider {
 
-        public Wrapper(DataGenerator gen) {
-            super(gen);
+        public Wrapper(PackOutput packOutput) {
+            super(packOutput);
         }
 
         private static FinishedRecipe create(ResourceLocation id, ItemStack output, int mana, Ingredient... inputs) {

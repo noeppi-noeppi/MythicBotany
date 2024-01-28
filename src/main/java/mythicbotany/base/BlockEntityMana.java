@@ -1,10 +1,8 @@
 package mythicbotany.base;
 
 import com.google.common.base.Predicates;
-import com.mojang.blaze3d.vertex.PoseStack;
-import org.moddingx.libx.LibX;
-import org.moddingx.libx.base.tile.BlockEntityBase;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +21,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
+import org.moddingx.libx.LibX;
+import org.moddingx.libx.base.tile.BlockEntityBase;
 import vazkii.botania.api.BotaniaAPIClient;
 import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.BotaniaForgeClientCapabilities;
@@ -153,7 +153,7 @@ public abstract class BlockEntityMana extends BlockEntityBase implements SparkAt
     }
 
     @Override
-    public void renderHUD(PoseStack poseStack, Minecraft minecraft) {
+    public void renderHUD(GuiGraphics graphics, Minecraft minecraft) {
         String name = I18n.get(this.blockState.getBlock().getDescriptionId());
 
         int centerX = minecraft.getWindow().getGuiScaledWidth() / 2;
@@ -161,8 +161,8 @@ public abstract class BlockEntityMana extends BlockEntityBase implements SparkAt
 
         int width = Math.max(102, minecraft.font.width(name)) + 4;
 
-        RenderHelper.renderHUDBox(poseStack, centerX - width / 2, centerY + 8, centerX + width / 2, centerY + 30);
-        BotaniaAPIClient.instance().drawSimpleManaHUD(poseStack, this.getManaColor(), this.getCurrentMana(), this.maxMana, name);
+        RenderHelper.renderHUDBox(graphics, centerX - width / 2, centerY + 8, centerX + width / 2, centerY + 30);
+        BotaniaAPIClient.instance().drawSimpleManaHUD(graphics, this.getManaColor(), this.getCurrentMana(), this.maxMana, name);
     }
 
     @Override

@@ -1,18 +1,20 @@
 package mythicbotany.alfheim.teleporter;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mythicbotany.MythicBotany;
 import mythicbotany.alfheim.Alfheim;
 import mythicbotany.config.MythicConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.PauseScreen;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -20,7 +22,6 @@ import net.minecraftforge.client.event.RenderGuiEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import org.moddingx.libx.render.RenderHelper;
-import vazkii.botania.client.core.handler.MiscellaneousModels;
 
 import java.util.*;
 
@@ -69,7 +70,7 @@ public class AlfheimPortalHandler {
         // Only remove portal blocked state when the chunk of the player is loaded
         // so the block entities can update the inPortal state through setInPortal
         BlockPos pos = player.blockPosition();
-        return player.level.isOutsideBuildHeight(pos) || player.level.isLoaded(pos);
+        return player.level().isOutsideBuildHeight(pos) || player.level().isLoaded(pos);
     }
     
     public static boolean setInPortal(Level level, Player playerEntity) {
@@ -107,22 +108,23 @@ public class AlfheimPortalHandler {
     @OnlyIn(Dist.CLIENT)
     public static void renderGameOverlay(RenderGuiEvent.Post event) {
         if (clientInPortalTime > 0 && !(Minecraft.getInstance().screen instanceof PauseScreen)) {
-            PoseStack poseStack = event.getPoseStack();
-            poseStack.pushPose();
+            GuiGraphics graphics = event.getGuiGraphics();
+            graphics.pose().pushPose();
             int w = Minecraft.getInstance().getWindow().getGuiScaledWidth();
             int h = Minecraft.getInstance().getWindow().getGuiScaledHeight();
             float scale = Math.max(w, h) / 48f;
             //noinspection IntegerDivisionInFloatingPointContext
-            poseStack.translate(w < h ? (h - w) / -2 : 0, w > h ? (w - h) / -2 : 0, 0);
-            poseStack.scale(scale, scale, scale);
+            graphics.pose().translate(w < h ? (h - w) / -2 : 0, w > h ? (w - h) / -2 : 0, 0);
+            graphics.pose().scale(scale, scale, scale);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShaderColor(1, 1, 1, Mth.clamp((clientInPortalTime + Minecraft.getInstance().getFrameTime()) / 120f, 0.05f, 0.8f));
-            RenderSystem.setShaderTexture(0, MiscellaneousModels.INSTANCE.alfPortalTex.atlasLocation());
-            GuiComponent.blit(poseStack, 0, 0, 0, 48, 48, MiscellaneousModels.INSTANCE.alfPortalTex.sprite());
+            TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation("botania", "block/alfheim_portal_swirl"));
+            RenderSystem.setShaderTexture(0, sprite.atlasLocation());
+            graphics.blit(0, 0, 0, 48, 48, sprite);
             RenderHelper.resetColor();
             RenderSystem.disableBlend();
-            poseStack.popPose();
+            graphics.pose().popPose();
         }
     }
 }

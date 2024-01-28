@@ -1,7 +1,5 @@
 package mythicbotany.alfheim.teleporter;
 
-import org.moddingx.libx.base.tile.BlockEntityBase;
-import org.moddingx.libx.base.tile.TickingBlock;
 import mythicbotany.alfheim.Alfheim;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,6 +10,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.moddingx.libx.base.tile.BlockEntityBase;
+import org.moddingx.libx.base.tile.TickingBlock;
 import vazkii.botania.common.block.BotaniaBlocks;
 
 import java.util.List;

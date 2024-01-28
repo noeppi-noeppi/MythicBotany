@@ -1,11 +1,11 @@
 package mythicbotany.data.recipes.extension;
 
-import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import org.moddingx.libx.datagen.provider.recipe.RecipeExtension;
 import vazkii.botania.data.recipes.ElvenTradeProvider;
 
 import java.util.Arrays;
@@ -29,13 +29,13 @@ public interface ElvenTradeExtension extends RecipeExtension {
     }
     
     class Wrapper extends ElvenTradeProvider {
-
-        public Wrapper(DataGenerator gen) {
-            super(gen);
-        }
         
-        private static FinishedRecipe create(ResourceLocation id, ItemStack output, Ingredient... inputs) {
-            return new FinishedRecipe(id, output, inputs);
+        public Wrapper(PackOutput packOutput) {
+            super(packOutput);
+        }
+
+        private static FinishedElvenRecipe create(ResourceLocation id, ItemStack output, Ingredient... inputs) {
+            return new FinishedElvenRecipe(id, output, inputs);
         }
     }
 }

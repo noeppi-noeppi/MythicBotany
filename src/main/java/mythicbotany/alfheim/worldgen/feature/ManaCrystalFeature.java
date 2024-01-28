@@ -21,8 +21,7 @@ public class ManaCrystalFeature extends Feature<NoneFeatureConfiguration> {
 
     @Override
     public boolean place(@Nonnull FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        // TODO 1.19.4 move to LibX height placement filter
-        if (context.origin().getY() >= 84 && context.level().getBlockState(context.origin().below()).canOcclude()
+        if (context.level().getBlockState(context.origin().below()).canOcclude()
                 && context.level().getBlockState(context.origin().below().north()).canOcclude()
                 && context.level().getBlockState(context.origin().below().south()).canOcclude()
                 && context.level().getBlockState(context.origin().below().east()).canOcclude()

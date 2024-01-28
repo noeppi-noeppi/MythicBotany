@@ -8,7 +8,7 @@ function initializeCoreMod() {
                 'type': 'METHOD',
                 'class': 'vazkii.botania.client.core.helper.RenderHelper',
                 'methodName': 'renderHUDBox',
-                'methodDesc': '(Lcom/mojang/blaze3d/vertex/PoseStack;IIII)V'
+                'methodDesc': '(Lnet/minecraft/client/gui/GuiGraphics;IIII)V'
             },
             'transformer': function (method) {
                 var label = new coremods_1.LabelNode();

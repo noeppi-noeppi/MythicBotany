@@ -1,12 +1,10 @@
 package mythicbotany.kvasir;
 
-import net.minecraft.network.chat.Component;
-import org.moddingx.libx.base.ItemBase;
-import org.moddingx.libx.mod.ModX;
 import mythicbotany.MythicPlayerData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import org.moddingx.libx.base.ItemBase;
+import org.moddingx.libx.mod.ModX;
 import vazkii.botania.common.item.BotaniaItems;
 
 import javax.annotation.Nonnull;

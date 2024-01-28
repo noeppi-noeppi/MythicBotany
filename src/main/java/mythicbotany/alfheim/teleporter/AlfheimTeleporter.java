@@ -1,8 +1,8 @@
 package mythicbotany.alfheim.teleporter;
 
+import mythicbotany.alfheim.Alfheim;
 import mythicbotany.alfheim.worldgen.AlfheimWorldGen;
 import mythicbotany.register.ModBlocks;
-import mythicbotany.alfheim.Alfheim;
 import mythicbotany.util.HorizontalPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 public class AlfheimTeleporter {
 
     public static boolean teleportToAlfheim(ServerPlayer player, BlockPos sourcePos) {
-        ServerLevel target = player.getLevel().getServer().getLevel(Alfheim.DIMENSION);
+        ServerLevel target = player.server.getLevel(Alfheim.DIMENSION);
         if (target != null) {
             BlockPos pos = findBlock(target, new HorizontalPos(sourcePos), ModBlocks.returnPortal);
             if (pos == null) {
@@ -41,7 +41,7 @@ public class AlfheimTeleporter {
     }
     
     public static void teleportToOverworld(ServerPlayer player, BlockPos sourcePos) {
-        ServerLevel target = player.getLevel().getServer().overworld();
+        ServerLevel target = player.server.overworld();
         BlockPos pos = findBlock(target, new HorizontalPos(sourcePos), BotaniaBlocks.alfPortal);
         if (pos != null) {
             pos = pos.above();

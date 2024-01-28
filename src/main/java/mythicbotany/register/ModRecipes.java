@@ -2,7 +2,7 @@ package mythicbotany.register;
 
 import mythicbotany.infuser.InfuserRecipe;
 import mythicbotany.rune.RuneRitualRecipe;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -11,7 +11,7 @@ import org.moddingx.libx.annotation.registration.RegisterClass;
 import org.moddingx.libx.registration.Registerable;
 import org.moddingx.libx.registration.RegistrationContext;
 
-@RegisterClass(registry = "RECIPE_TYPE_REGISTRY")
+@RegisterClass(registry = "RECIPE_TYPE")
 public class ModRecipes {
 
     public static final RecipeType<InfuserRecipe> infuser = new MythicRecipeType<>(InfuserRecipe.Serializer.INSTANCE);
@@ -30,7 +30,7 @@ public class ModRecipes {
         @Override
         public void registerAdditional(RegistrationContext ctx, EntryCollector builder) {
             this.id = ctx.id();
-            builder.register(Registry.RECIPE_SERIALIZER_REGISTRY, this.serializer);
+            builder.register(Registries.RECIPE_SERIALIZER, this.serializer);
         }
 
         @Override

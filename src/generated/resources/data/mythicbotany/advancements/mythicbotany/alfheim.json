@@ -27,5 +27,6 @@
     [
       "changed_dimension"
     ]
-  ]
+  ],
+  "sends_telemetry_event": false
 }

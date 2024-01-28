@@ -1,18 +1,19 @@
 package mythicbotany.alfheim.datagen;
 
-import io.github.noeppi_noeppi.mods.sandbox.datagen.ext.SurfaceData;
-import io.github.noeppi_noeppi.mods.sandbox.surface.SurfaceRuleSet;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
+import org.moddingx.libx.datagen.DatagenContext;
+import org.moddingx.libx.datagen.provider.sandbox.SurfaceProviderBase;
+import org.moddingx.libx.sandbox.surface.SurfaceRuleSet;
 import vazkii.botania.common.block.BotaniaBlocks;
 
-public class AlfheimSurface extends SurfaceData {
+public class AlfheimSurface extends SurfaceProviderBase {
 
     @SuppressWarnings("FieldCanBeLocal")
-    private final AlfheimBiomes biomes = this.resolve(AlfheimBiomes.class);
+    private final AlfheimBiomes biomes = this.context.findRegistryProvider(AlfheimBiomes.class);
     
     public final Holder<SurfaceRuleSet> alfheimSurface = this.ruleSet()
             .beforeBiomes(
@@ -26,8 +27,8 @@ public class AlfheimSurface extends SurfaceData {
             )
             .build();
     
-    public AlfheimSurface(Properties properties) {
-        super(properties);
+    public AlfheimSurface(DatagenContext ctx) {
+        super(ctx);
         this.biome(this.biomes.goldenFields, this.defaultAlfheimSurface(BotaniaBlocks.goldenGrass.defaultBlockState(), Blocks.DIRT.defaultBlockState()));
         this.biome(this.biomes.alfheimLakes, SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.yBlockCheck(VerticalAnchor.absolute(68), 0)), defaultAlfheimSurface(Blocks.SAND.defaultBlockState(), Blocks.GRAVEL.defaultBlockState())));
     }

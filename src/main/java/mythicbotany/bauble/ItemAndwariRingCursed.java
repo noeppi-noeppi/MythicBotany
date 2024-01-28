@@ -1,6 +1,5 @@
 package mythicbotany.bauble;
 
-import mythicbotany.MythicBotany;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,10 +9,9 @@ import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.equipment.bauble.BaubleItem;
 
 public class ItemAndwariRingCursed extends BaubleItem {
-
-    public ItemAndwariRingCursed(Properties props) {
-        //noinspection ConstantConditions
-        super(props.tab(MythicBotany.getInstance().tab));
+    
+    public ItemAndwariRingCursed(Properties properties) {
+        super(properties);
     }
 
     @Override

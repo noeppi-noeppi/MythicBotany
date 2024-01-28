@@ -1,13 +1,13 @@
 package mythicbotany.mjoellnir;
 
-import mythicbotany.register.ModBlocks;
 import mythicbotany.MythicBotany;
 import mythicbotany.config.MythicConfig;
+import mythicbotany.register.ModBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -64,8 +64,8 @@ public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerab
     @Override
     public void registerAdditional(RegistrationContext ctx, EntryCollector builder) {
         super.registerAdditional(ctx, builder);
-        builder.register(Registry.ITEM_REGISTRY, this.item);
-        builder.register(Registry.ENTITY_TYPE_REGISTRY, this.entityType);
+        builder.register(Registries.ITEM, this.item);
+        builder.register(Registries.ENTITY_TYPE, this.entityType);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class BlockMjoellnir extends BlockBE<TileMjoellnir> implements Registerab
     public static boolean placeInWorld(ItemStack stack, Level level, BlockPos pos, boolean dropOld) {
         BlockState state = level.getBlockState(pos);
         float hardness = state.getDestroySpeed(level, pos);
-        if (state.getBlock() != ModBlocks.mjoellnir && ((hardness >= 0 && hardness <= 60) || state.getMaterial().isReplaceable())) {
+        if (state.getBlock() != ModBlocks.mjoellnir && ((hardness >= 0 && hardness <= 60) || state.canBeReplaced())) {
             List<ItemStack> drops = null;
             if (dropOld && level instanceof ServerLevel) {
                 drops = Block.getDrops(state, (ServerLevel) level, pos, level.getBlockEntity(pos));

@@ -393,5 +393,6 @@
     [
       "inventory_changed25"
     ]
-  ]
+  ],
+  "sends_telemetry_event": false
 }

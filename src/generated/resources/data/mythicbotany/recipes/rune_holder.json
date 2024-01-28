@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "d": {
       "tag": "botania:mana_dusts"
@@ -14,5 +15,6 @@
   ],
   "result": {
     "item": "mythicbotany:rune_holder"
-  }
+  },
+  "show_notification": true
 }

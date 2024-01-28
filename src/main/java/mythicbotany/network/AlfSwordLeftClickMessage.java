@@ -1,7 +1,7 @@
 package mythicbotany.network;
 
-import mythicbotany.register.ModItems;
 import mythicbotany.alftools.AlfsteelSword;
+import mythicbotany.register.ModItems;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;

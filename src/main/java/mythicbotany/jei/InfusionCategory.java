@@ -1,7 +1,6 @@
 package mythicbotany.jei;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -16,6 +15,7 @@ import mythicbotany.infuser.InfuserRecipe;
 import mythicbotany.register.ModBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -88,15 +88,14 @@ public class InfusionCategory implements IRecipeCategory<InfuserRecipe> {
     }
 
     @Override
-    public void draw(@Nonnull InfuserRecipe recipe, @Nonnull IRecipeSlotsView slots, @Nonnull PoseStack poseStack, double mouseX, double mouseY) {
+    public void draw(@Nonnull InfuserRecipe recipe, @Nonnull IRecipeSlotsView slots, @Nonnull GuiGraphics graphics, double mouseX, double mouseY) {
         RenderSystem.enableBlend();
-        this.overlay.draw(poseStack, 25, 14);
-        HUDHandler.renderManaBar(poseStack, 6, 126, 0x0000FF, 0.75f, recipe.getManaUsage(), 4000000);
-        this.infuserPlate.draw(poseStack, 35, 92);
+        this.overlay.draw(graphics, 25, 14);
+        HUDHandler.renderManaBar(graphics, 6, 126, 0x0000FF, 0.75f, recipe.getManaUsage(), 4000000);
+        this.infuserPlate.draw(graphics, 35, 92);
         RenderSystem.disableBlend();
         MutableComponent manaAmount = Component.literal(BigDecimal.valueOf(recipe.getManaUsage() / 1000000d).setScale(2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()).withStyle(ChatFormatting.BLUE);
         MutableComponent tc = Component.translatable("tooltip.mythicbotany.cost_pools", manaAmount);
-        //noinspection IntegerDivisionInFloatingPointContext
-        Minecraft.getInstance().font.draw(poseStack, tc, 57 - (Minecraft.getInstance().font.width(tc) / 2), 133, 0x000000);
+        graphics.drawString(Minecraft.getInstance().font, tc, 57 - (Minecraft.getInstance().font.width(tc) / 2), 133, 0x000000, false);
     }
 }

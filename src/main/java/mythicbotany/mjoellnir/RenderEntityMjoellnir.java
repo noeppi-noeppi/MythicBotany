@@ -1,7 +1,7 @@
 package mythicbotany.mjoellnir;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -26,17 +26,17 @@ public class RenderEntityMjoellnir extends EntityRenderer<Mjoellnir> {
         if (motion.z != 0) {
             float r = (float) (Math.atan2(motion.x, motion.z) + (Math.PI / 2));
             if (!Float.isNaN(r)) {
-                matrixStack.mulPose(Vector3f.YP.rotation(r));
+                matrixStack.mulPose(Axis.YP.rotation(r));
             }
         }
         if (entity.isReturning()) {
             matrixStack.scale(0.7f, 0.7f, 0.7f);
         } else {
             double g = Math.sqrt((motion.x * motion.x) + (motion.z * motion.z));
-            matrixStack.mulPose(Vector3f.ZP.rotation((float) (Math.atan2(g, motion.y) + Math.PI)));
+            matrixStack.mulPose(Axis.ZP.rotation((float) (Math.atan2(g, motion.y) + Math.PI)));
         }
         matrixStack.translate(-0.5, -0.5, -0.5);
-        RenderMjoellnir.renderHammer(entity.getStack(), null, matrixStack, buffer, packedLight);
+        RenderMjoellnir.renderHammer(entity.level(), entity.getStack(), null, matrixStack, buffer, packedLight);
         matrixStack.popPose();
     }
 

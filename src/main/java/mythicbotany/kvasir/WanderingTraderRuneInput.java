@@ -2,8 +2,6 @@ package mythicbotany.kvasir;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Either;
-import net.minecraftforge.common.crafting.StrictNBTIngredient;
-import org.moddingx.libx.util.Misc;
 import mythicbotany.MythicBotany;
 import mythicbotany.rune.RuneRitualRecipe;
 import mythicbotany.rune.SpecialRuneInput;
@@ -23,6 +21,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.crafting.StrictNBTIngredient;
+import org.moddingx.libx.util.Misc;
 
 import java.util.List;
 import java.util.UUID;
@@ -73,7 +73,7 @@ public class WanderingTraderRuneInput extends SpecialRuneInput {
         }
         CompoundTag traderData = trader.saveWithoutId(new CompoundTag());
         // Don't drop anything on death
-        trader.lootTable = Misc.MISSIGNO;
+        trader.lootTable = Misc.MISSINGNO;
         trader.kill();
         return Either.right(traderData);
     }

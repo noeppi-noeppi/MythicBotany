@@ -22,7 +22,7 @@
               "to_y": 320
             },
             "argument2": {
-              "type": "mythicbotany:clamp",
+              "type": "libx:clamp",
               "density": {
                 "type": "minecraft:quarter_negative",
                 "argument": "mythicbotany:alfheim_height"
@@ -43,7 +43,7 @@
             "type": "minecraft:add",
             "argument1": -1.0,
             "argument2": {
-              "type": "mythicbotany:clamp",
+              "type": "libx:clamp",
               "density": "mythicbotany:alfheim_weirdness",
               "max": 1.0,
               "min": -1.0

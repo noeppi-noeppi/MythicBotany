@@ -1,9 +1,21 @@
 package mythicbotany;
 
 import mythicbotany.advancement.ModCriteria;
+import mythicbotany.alfheim.datagen.*;
 import mythicbotany.alfheim.teleporter.AlfheimPortalHandler;
 import mythicbotany.alfheim.worldgen.placement.AlfheimGroundModifier;
 import mythicbotany.config.ClientConfig;
+import mythicbotany.config.MythicConfig;
+import mythicbotany.data.AdvancementProvider;
+import mythicbotany.data.BlockStateProvider;
+import mythicbotany.data.CuriosSlotProvider;
+import mythicbotany.data.ItemModelProvider;
+import mythicbotany.data.lexicon.LexiconProvider;
+import mythicbotany.data.loot.*;
+import mythicbotany.data.recipes.RecipeProvider;
+import mythicbotany.data.tags.BiomeLayerTagsProvider;
+import mythicbotany.data.tags.BiomeTagsProvider;
+import mythicbotany.data.tags.CommonTagsProvider;
 import mythicbotany.kvasir.WanderingTraderRuneInput;
 import mythicbotany.loot.AlfsteelDisposeModifier;
 import mythicbotany.loot.FimbultyrModifier;
@@ -14,13 +26,10 @@ import mythicbotany.patchouli.PageRitualPattern;
 import mythicbotany.pylon.PylonRepairables;
 import mythicbotany.register.ModEnchantments;
 import mythicbotany.register.ModEntities;
-import mythicbotany.register.ModItems;
 import mythicbotany.rune.RuneRitualRecipe;
-import mythicbotany.util.density.*;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -38,17 +47,18 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
+import org.moddingx.libx.datagen.DatagenSystem;
+import org.moddingx.libx.datagen.PackTarget;
+import org.moddingx.libx.datapack.DynamicPacks;
 import org.moddingx.libx.mod.ModXRegistration;
 import org.moddingx.libx.registration.RegistrationBuilder;
 import org.moddingx.libx.util.ClassUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import top.theillusivec4.curios.api.SlotTypePreset;
 import vazkii.patchouli.client.book.ClientBookRegistry;
 
 import javax.annotation.Nonnull;
 
-// TODO textures
 @Mod("mythicbotany")
 public final class MythicBotany extends ModXRegistration {
 
@@ -56,18 +66,12 @@ public final class MythicBotany extends ModXRegistration {
     
     private static MythicBotany instance;
     private static MythicNetwork network;
+    private static MythicTab creativeTab;
 
     public MythicBotany() {
-        super(new CreativeModeTab("mythicbotany") {
-            @Nonnull
-            @Override
-            public ItemStack makeIcon() {
-                return new ItemStack(ModItems.alfsteelSword);
-            }
-        });
-
         instance = this;
         network = new MythicNetwork(this);
+        creativeTab = new MythicTab(this);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.CLIENT_CONFIG);
         
@@ -86,6 +90,10 @@ public final class MythicBotany extends ModXRegistration {
         });
         MinecraftForge.EVENT_BUS.addListener(AlfheimPortalHandler::serverStarted);
         MinecraftForge.EVENT_BUS.addListener(AlfheimPortalHandler::endTick);
+
+        if (MythicConfig.addExtraRingSlot) {
+            DynamicPacks.DATA_PACKS.enablePack(this.modid, "curios");
+        }
         
         Class<?> extra = ClassUtil.forName("mythicbotany.MythicBotanyExtra");
         if (extra != null) {
@@ -95,6 +103,36 @@ public final class MythicBotany extends ModXRegistration {
                 throw new RuntimeException(e);
             }
         }
+        
+        DatagenSystem.create(this, system -> {
+            system.addRegistryProvider(AlfheimFeatures::new);
+            system.addRegistryProvider(AlfheimPlacements::new);
+            system.addRegistryProvider(AlfheimTemplates::new);
+            system.addRegistryProvider(AlfheimStructures::new);
+            system.addRegistryProvider(AlfheimStructureSets::new);
+            system.addRegistryProvider(AlfheimBiomes::new);
+            system.addRegistryProvider(AlfheimNoise::new);
+            system.addRegistryProvider(AlfheimDimensionTypes::new);
+            system.addRegistryProvider(AlfheimBiomeLayers::new);
+            system.addExtensionProvider(AlfheimSurface::new);
+            system.addExtensionProvider(AlfheimDimension::new);
+            system.addDataProvider(LexiconProvider::new);
+            system.addDataProvider(AdvancementProvider::new);
+            system.addDataProvider(RecipeProvider::new);
+            system.addDataProvider(BlockLootProvider::new);
+            system.addDataProvider(EntityLootProvider::new);
+            system.addDataProvider(ChestLootProvider::new);
+            system.addDataProvider(EntityAdditionLootProvider::new);
+            system.addDataProvider(CommonTagsProvider::new);
+            system.addDataProvider(BiomeTagsProvider::new);
+            system.addDataProvider(BiomeLayerTagsProvider::new);
+            system.addDataProvider(BlockStateProvider::new);
+            system.addDataProvider(ItemModelProvider::new);
+            system.addDataProvider(GlobalLootProvider::new);
+
+            PackTarget curiosTarget = system.dynamic("curios", PackType.SERVER_DATA);
+            system.addDataProvider(curiosTarget, CuriosSlotProvider::new);
+        });
     }
 
     @Nonnull
@@ -107,17 +145,18 @@ public final class MythicBotany extends ModXRegistration {
         return network;
     }
 
+    @Nonnull
+    public static MythicTab getCreativeTab() {
+        return creativeTab;
+    }
+
     @Override
     protected void initRegistration(RegistrationBuilder builder) {
-        // TODO 1.19.4 proper registry tracking support
+        builder.disableRegistryTracking(); // Registry tracking seems to have no future anyway.
     }
     
     private void registerMisc(RegisterEvent event) {
-        event.register(Registry.DENSITY_FUNCTION_TYPE_REGISTRY, this.resource("smash"), DensitySmash.CODEC::codec);
-        event.register(Registry.DENSITY_FUNCTION_TYPE_REGISTRY, this.resource("debug"), DensityDebug.CODEC::codec);
-        event.register(Registry.DENSITY_FUNCTION_TYPE_REGISTRY, this.resource("lerp"), DensityLerp.CODEC::codec);
-        event.register(Registry.DENSITY_FUNCTION_TYPE_REGISTRY, this.resource("clamp"), DensityClamp.CODEC::codec);
-        event.register(Registry.PLACEMENT_MODIFIER_REGISTRY, this.resource("alfheim_ground"), () -> AlfheimGroundModifier.TYPE);
+        event.register(Registries.PLACEMENT_MODIFIER_TYPE, this.resource("alfheim_ground"), () -> AlfheimGroundModifier.TYPE);
         event.register(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, this.resource("dispose"), () -> AlfsteelDisposeModifier.CODEC);
         event.register(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, this.resource("fimbultyr"), () -> FimbultyrModifier.CODEC);
     }
@@ -147,7 +186,6 @@ public final class MythicBotany extends ModXRegistration {
     }
 
     private void sendIMC(final InterModEnqueueEvent event) {
-        InterModComms.sendTo("curios", "register_type", () -> SlotTypePreset.RING.getMessageBuilder().size(3).build());
         InterModComms.sendTo("apotheosis", "set_ench_hard_cap", () -> new EnchantmentInstance(ModEnchantments.hammerMobility, 5));
     }
 

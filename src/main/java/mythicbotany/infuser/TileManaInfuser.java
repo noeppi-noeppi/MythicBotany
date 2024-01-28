@@ -1,9 +1,6 @@
 package mythicbotany.infuser;
 
 import com.google.common.base.Predicates;
-import org.apache.commons.lang3.tuple.Pair;
-import org.moddingx.libx.base.tile.BlockEntityBase;
-import org.moddingx.libx.base.tile.TickingBlock;
 import mythicbotany.MythicBotany;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -16,6 +13,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.apache.commons.lang3.tuple.Pair;
+import org.moddingx.libx.base.tile.BlockEntityBase;
+import org.moddingx.libx.base.tile.TickingBlock;
 import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.mana.ManaReceiver;
 import vazkii.botania.api.mana.spark.ManaSpark;

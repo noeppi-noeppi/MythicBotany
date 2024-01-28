@@ -7,17 +7,14 @@ import mythicbotany.register.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -64,7 +61,7 @@ public class Mjoellnir extends Projectile {
 
     @Nonnull
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -88,7 +85,7 @@ public class Mjoellnir extends Projectile {
 
         if (!this.returning) {
             this.checkForCollision();
-        } else if (!this.level.isClientSide) {
+        } else if (!this.level().isClientSide) {
             Vec3 returnPoint = this.getReturnPoint();
             if (returnPoint != null) {
                 this.applyReturnMotion(returnPoint);
@@ -126,15 +123,15 @@ public class Mjoellnir extends Projectile {
         Vec3 rayCast = position.add(motion);
 
         if (this.isAlive() && !this.entityData.get(RETURNING)) {
-            HitResult result = ProjectileUtil.getEntityHitResult(this.level, this, position, rayCast, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1),
+            HitResult result = ProjectileUtil.getEntityHitResult(this.level(), this, position, rayCast, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1),
                     entity -> entity != this && !entity.isSpectator() && entity.isAlive() && entity.isPickable() && entity != this.getThrower());
 
             if (result == null || result.getType() == HitResult.Type.MISS) {
-                result = this.level.clip(new ClipContext(position, rayCast, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+                result = this.level().clip(new ClipContext(position, rayCast, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
             }
             //noinspection ConstantConditions
             if (result != null && result.getType() != HitResult.Type.MISS) {
-                if (!this.level.isClientSide) {
+                if (!this.level().isClientSide) {
                     this.onHit(result);
                 } else {
                     Vec3 returnPoint = this.getReturnPoint();
@@ -164,9 +161,9 @@ public class Mjoellnir extends Projectile {
     @Override
     protected void onHitBlock(@Nonnull BlockHitResult hit) {
         AABB aabb = new AABB(hit.getLocation(), hit.getLocation()).inflate(2);
-        List<LivingEntity> living = this.level.getEntitiesOfClass(LivingEntity.class, aabb, entity -> !entity.isSpectator() && entity.isAlive() && entity != this.getThrower());
+        List<LivingEntity> living = this.level().getEntitiesOfClass(LivingEntity.class, aabb, entity -> !entity.isSpectator() && entity.isAlive() && entity != this.getThrower());
         if (!living.isEmpty()) {
-            this.attackEntities(living.get(this.level.random.nextInt(living.size())));
+            this.attackEntities(living.get(this.level().random.nextInt(living.size())));
         }
     }
 
@@ -189,7 +186,7 @@ public class Mjoellnir extends Projectile {
     }
 
     private void applyReturnMotion(@Nonnull Vec3 returnPoint) {
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             Vec3 motion = this.getDeltaMovement();
             Vec3 position = this.position();
             Vec3 returnVec = new Vec3(returnPoint.x - position.x, returnPoint.y - position.y, returnPoint.z - position.z).normalize().multiply(0.6, 0.6, 0.6);
@@ -201,7 +198,7 @@ public class Mjoellnir extends Projectile {
     }
 
     private void applyReturnMotionClient(@Nonnull Vec3 returnPoint) {
-        if (this.level.isClientSide) {
+        if (this.level().isClientSide) {
             Vec3 motion = this.getDeltaMovement();
             Vec3 position = this.position();
             Vec3 returnVec = new Vec3(returnPoint.x - position.x, returnPoint.y - position.y, returnPoint.z - position.z).normalize().multiply(0.6, 0.6, 0.6);
@@ -213,16 +210,16 @@ public class Mjoellnir extends Projectile {
     private void tryReturn(@Nullable Vec3 returnPoint) {
         if (returnPoint == null) {
             // We don't know where we should fly. Just place it where we are.
-            BlockMjoellnir.putInWorld(this.stack, this.level, this.blockPosition());
+            BlockMjoellnir.putInWorld(this.stack, this.level(), this.blockPosition());
             this.remove(RemovalReason.DISCARDED);
         } else if (returnPoint.distanceToSqr(this.position()) < 2) {
             Player throwerEntity = this.getThrower();
             if (throwerEntity != null) {
                 if (!BlockMjoellnir.putInInventory(throwerEntity, this.stack, this.hotbarSlot)) {
-                    BlockMjoellnir.putInWorld(this.stack, this.level, new BlockPos(returnPoint));
+                    BlockMjoellnir.putInWorld(this.stack, this.level(), BlockPos.containing(returnPoint));
                 }
             } else {
-                BlockMjoellnir.putInWorld(this.stack, this.level, new BlockPos(returnPoint));
+                BlockMjoellnir.putInWorld(this.stack, this.level(), BlockPos.containing(returnPoint));
             }
             this.remove(RemovalReason.DISCARDED);
         }
@@ -237,7 +234,7 @@ public class Mjoellnir extends Projectile {
 
     private void attackEntities(LivingEntity target) {
         AABB aabb = new AABB(target.position(), target.position()).inflate(4);
-        List<LivingEntity> found = this.level.getEntitiesOfClass(LivingEntity.class, aabb, entity -> !entity.isSpectator() && entity.isAlive() && entity != this.getThrower());
+        List<LivingEntity> found = this.level().getEntitiesOfClass(LivingEntity.class, aabb, entity -> !entity.isSpectator() && entity.isAlive() && entity != this.getThrower());
         LightningBolt lightning = this.attackEntity(target);
         for (LivingEntity entity : found) {
             if (entity != target) {
@@ -248,7 +245,7 @@ public class Mjoellnir extends Projectile {
 
     @Nullable
     private LightningBolt attackEntity(LivingEntity target) {
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.stack.getEnchantmentLevel(Enchantments.FLAMING_ARROWS) >= 1) {
                 target.setSecondsOnFire(5);
             }
@@ -268,20 +265,20 @@ public class Mjoellnir extends Projectile {
             if (thrower instanceof ServerPlayer) {
                 ModCriteria.MJOELLNIR.trigger((ServerPlayer) thrower, this.getStack(), target);
             }
-            target.hurt(thrower == null ? DamageSource.GENERIC : DamageSource.indirectMobAttack(this, thrower), dmg);
-            LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, this.level);
+            target.hurt(thrower == null ? this.level().damageSources().generic() : this.level().damageSources().mobProjectile(this, thrower), dmg);
+            LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, this.level());
             lightning.setPos(target.getX(), target.getY(), target.getZ());
             lightning.setVisualOnly(true);
             lightning.setCause(thrower instanceof ServerPlayer ? (ServerPlayer) thrower : null);
-            this.level.addFreshEntity(lightning);
+            this.level().addFreshEntity(lightning);
             // When the entity is struck by lightning it'll take lightning damage and be set
             // on fire. We don't want that, so we disable the lightning damage for that time
             // and reset the fire to the old state afterwards
-            if (this.level instanceof ServerLevel && !ForgeEventFactory.onEntityStruckByLightning(target, lightning)) {
+            if (this.level() instanceof ServerLevel && !ForgeEventFactory.onEntityStruckByLightning(target, lightning)) {
                 int fireTicks = target.getRemainingFireTicks();
                 LivingEntity oldImmune = EventListener.lightningImmuneEntity;
                 EventListener.lightningImmuneEntity = target;
-                target.thunderHit((ServerLevel) this.level, lightning);
+                target.thunderHit((ServerLevel) this.level(), lightning);
                 EventListener.lightningImmuneEntity = oldImmune;
                 target.setRemainingFireTicks(fireTicks);
             }
@@ -302,12 +299,12 @@ public class Mjoellnir extends Projectile {
         }
         dmg *= MythicConfig.mjoellnir.secondary_target_multiplier;
         Player thrower = this.getThrower();
-        target.hurt(thrower == null ? DamageSource.GENERIC : DamageSource.indirectMobAttack(this, thrower), dmg);
-        if (lightning != null && this.level.random.nextFloat() < MythicConfig.mjoellnir.secondary_lightning_chance) {
+        target.hurt(thrower == null ? this.level().damageSources().generic() : this.level().damageSources().mobProjectile(this, thrower), dmg);
+        if (lightning != null && this.level().random.nextFloat() < MythicConfig.mjoellnir.secondary_lightning_chance) {
             int fireTicks = target.getRemainingFireTicks();
             LivingEntity oldImmune = EventListener.lightningImmuneEntity;
             EventListener.lightningImmuneEntity = target;
-            target.thunderHit((ServerLevel) this.level, lightning);
+            target.thunderHit((ServerLevel) this.level(), lightning);
             EventListener.lightningImmuneEntity = oldImmune;
             target.setRemainingFireTicks(fireTicks);
         }
@@ -336,7 +333,7 @@ public class Mjoellnir extends Projectile {
         if (this.thrower == null) {
             return null;
         } else {
-            return this.level.getPlayerByUUID(this.thrower);
+            return this.level().getPlayerByUUID(this.thrower);
         }
     }
 
@@ -351,6 +348,12 @@ public class Mjoellnir extends Projectile {
 
     public void setThrowerId(@Nullable UUID thrower) {
         this.thrower = thrower;
+    }
+
+    @Nullable
+    @Override
+    public Entity getOwner() {
+        return this.getThrower();
     }
 
     @Nullable

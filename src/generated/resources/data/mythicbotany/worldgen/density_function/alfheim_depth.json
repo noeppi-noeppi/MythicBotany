@@ -8,7 +8,7 @@
     "to_y": 320
   },
   "argument2": {
-    "type": "mythicbotany:clamp",
+    "type": "libx:clamp",
     "density": "mythicbotany:alfheim_height",
     "max": 1.0,
     "min": -1.0

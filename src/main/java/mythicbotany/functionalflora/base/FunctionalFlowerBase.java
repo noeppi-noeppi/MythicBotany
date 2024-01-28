@@ -1,10 +1,7 @@
 package mythicbotany.functionalflora.base;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import org.moddingx.libx.LibX;
-import org.moddingx.libx.base.tile.BlockEntityBase;
-import org.moddingx.libx.base.tile.TickingBlock;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,6 +21,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.moddingx.libx.LibX;
+import org.moddingx.libx.base.tile.BlockEntityBase;
+import org.moddingx.libx.base.tile.TickingBlock;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.BotaniaAPIClient;
 import vazkii.botania.api.BotaniaForgeCapabilities;
@@ -39,6 +39,7 @@ import vazkii.botania.client.core.helper.RenderHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 @OnlyIn(value = Dist.CLIENT, _interface = WandHUD.class)
 public abstract class FunctionalFlowerBase extends BlockEntityBase implements TickingBlock, WandBindable, Wandable, WandHUD {
@@ -166,7 +167,7 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
         range = range * range;
         double dist = pos.distSqr(this.getBlockPos());
         if ((double) range >= dist) {
-            BlockEntity tile = player.level.getBlockEntity(pos);
+            BlockEntity tile = player.level().getBlockEntity(pos);
             if (this.isGenerating && tile instanceof ManaCollector) {
                 this.pool = tile.getBlockPos();
                 this.spreaderTile = (ManaCollector) tile;
@@ -362,9 +363,9 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
         }
         return true;
     }
-
+    
     @Override
-    public void renderHUD(PoseStack poseStack, Minecraft minecraft) {
+    public void renderHUD(GuiGraphics graphics, Minecraft minecraft) {
         if (this.level == null) return;
         String name = I18n.get(this.blockState.getBlock().getDescriptionId());
 
@@ -373,8 +374,8 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
         int left = (Math.max(102, minecraft.font.width(name)) + 4) / 2;
         int right = left + 20;
 
-        RenderHelper.renderHUDBox(poseStack, centerX - left, centerY + 8, centerX + right, centerY + 30);
-        BotaniaAPIClient.instance().drawComplexManaHUD(poseStack, this.color, this.getCurrentMana(), this.maxMana, name, new ItemStack(ForgeRegistries.ITEMS.getValue(this.isGenerating ? SPREADER_ID : POOL_ID)), this.isValidBinding());
+        RenderHelper.renderHUDBox(graphics, centerX - left, centerY + 8, centerX + right, centerY + 30);
+        BotaniaAPIClient.instance().drawComplexManaHUD(graphics, this.color, this.getCurrentMana(), this.maxMana, name, new ItemStack(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(this.isGenerating ? SPREADER_ID : POOL_ID))), this.isValidBinding());
     }
     
     private void setPoolChanged() {

@@ -35,5 +35,6 @@
     [
       "mjoellnir"
     ]
-  ]
+  ],
+  "sends_telemetry_event": false
 }

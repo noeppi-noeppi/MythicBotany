@@ -5,7 +5,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import org.moddingx.libx.annotation.registration.RegisterClass;
 
-@RegisterClass(registry = "FEATURE_REGISTRY")
+@RegisterClass(registry = "FEATURE")
 public class ModFeatures {
     
     public static final Feature<AbandonedApothecaryConfiguration> abandonedApothecaries = new AbandonedApothecaryFeature();

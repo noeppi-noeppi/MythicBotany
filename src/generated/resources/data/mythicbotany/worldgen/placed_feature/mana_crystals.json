@@ -22,6 +22,15 @@
       "type": "mythicbotany:alfheim_ground"
     },
     {
+      "type": "libx:height_filter",
+      "max_inclusive": {
+        "absolute": 84
+      },
+      "min_inclusive": {
+        "above_bottom": 0
+      }
+    },
+    {
       "type": "minecraft:biome"
     }
   ]

@@ -1,21 +1,12 @@
 package mythicbotany.data.recipes;
 
-import org.moddingx.libx.annotation.data.Datagen;
-import org.moddingx.libx.datagen.provider.recipe.RecipeProviderBase;
-import org.moddingx.libx.datagen.provider.recipe.SmeltingExtension;
-import org.moddingx.libx.datagen.provider.recipe.SmithingExtension;
-import org.moddingx.libx.datagen.provider.recipe.crafting.CompressionExtension;
-import org.moddingx.libx.datagen.provider.recipe.crafting.CraftingExtension;
-import org.moddingx.libx.mod.ModX;
-import mythicbotany.register.ModBlocks;
-import mythicbotany.register.ModItems;
 import mythicbotany.MythicBotany;
 import mythicbotany.data.recipes.extension.*;
 import mythicbotany.functionalflora.base.BlockFloatingFunctionalFlower;
 import mythicbotany.kvasir.WanderingTraderRuneInput;
 import mythicbotany.mjoellnir.MjoellnirRuneOutput;
-import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
+import mythicbotany.register.ModBlocks;
+import mythicbotany.register.ModItems;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -25,15 +16,22 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.moddingx.libx.datagen.DatagenContext;
+import org.moddingx.libx.datagen.provider.recipe.RecipeProviderBase;
+import org.moddingx.libx.datagen.provider.recipe.SmeltingExtension;
+import org.moddingx.libx.datagen.provider.recipe.SmithingExtension;
+import org.moddingx.libx.datagen.provider.recipe.crafting.CompressionExtension;
+import org.moddingx.libx.datagen.provider.recipe.crafting.CraftingExtension;
 import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.common.lib.BotaniaTags;
 
-@Datagen
+import java.util.Objects;
+
 public class RecipeProvider extends RecipeProviderBase implements CraftingExtension, CompressionExtension, SmeltingExtension, SmithingExtension, PetalExtension, ManaInfusionExtension, RuneExtension, ElvenTradeExtension, InfuserExtension, RuneRitualExtension {
 
-    public RecipeProvider(ModX mod, DataGenerator generator) {
-        super(mod, generator);
+    public RecipeProvider(DatagenContext ctx) {
+        super(ctx);
     }
 
     @Override
@@ -67,15 +65,16 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
         this.blasting(ModBlocks.dragonstoneOre, BotaniaItems.dragonstone, 0.7f, 200);
         this.blasting(this.loc(BotaniaItems.elementium, "from_raw_ore"), ModItems.rawElementium, BotaniaItems.elementium, 0.7f, 200);
 
-        this.smithing(BotaniaItems.terraSword, ModItems.alfsteelIngot, ModItems.alfsteelSword);
-        this.smithing(BotaniaItems.terraPick, ModItems.alfsteelIngot, ModItems.alfsteelPick);
-        this.smithing(BotaniaItems.terraAxe, ModItems.alfsteelIngot, ModItems.alfsteelAxe);
-        this.smithing(BotaniaItems.terrasteelHelm, ModItems.alfsteelIngot, ModItems.alfsteelHelmet);
-        this.smithing(BotaniaItems.terrasteelChest, ModItems.alfsteelIngot, ModItems.alfsteelChestplate);
-        this.smithing(BotaniaItems.terrasteelLegs, ModItems.alfsteelIngot, ModItems.alfsteelLeggings);
-        this.smithing(BotaniaItems.terrasteelBoots, ModItems.alfsteelIngot, ModItems.alfsteelBoots);
-        this.smithing(BotaniaItems.manaRingGreater, ModItems.alfsteelIngot, ModItems.manaRingGreatest);
-        this.smithing(BotaniaItems.auraRingGreater, ModItems.alfsteelIngot, ModItems.auraRingGreatest);
+        this.shaped(ModItems.alfsteelTemplate, 3, "gtg", "ele", "geg", 'g', Tags.Items.INGOTS_GOLD, 'e', BotaniaTags.Items.INGOTS_ELEMENTIUM, 'l', BotaniaItems.lensExplosive, 't', ModItems.alfsteelTemplate);
+        this.smithing(ModItems.alfsteelTemplate, BotaniaItems.terraSword, ModItems.alfsteelIngot, ModItems.alfsteelSword);
+        this.smithing(ModItems.alfsteelTemplate, BotaniaItems.terraPick, ModItems.alfsteelIngot, ModItems.alfsteelPick);
+        this.smithing(ModItems.alfsteelTemplate, BotaniaItems.terraAxe, ModItems.alfsteelIngot, ModItems.alfsteelAxe);
+        this.smithing(ModItems.alfsteelTemplate, BotaniaItems.terrasteelHelm, ModItems.alfsteelIngot, ModItems.alfsteelHelmet);
+        this.smithing(ModItems.alfsteelTemplate, BotaniaItems.terrasteelChest, ModItems.alfsteelIngot, ModItems.alfsteelChestplate);
+        this.smithing(ModItems.alfsteelTemplate, BotaniaItems.terrasteelLegs, ModItems.alfsteelIngot, ModItems.alfsteelLeggings);
+        this.smithing(ModItems.alfsteelTemplate, BotaniaItems.terrasteelBoots, ModItems.alfsteelIngot, ModItems.alfsteelBoots);
+        this.smithing(ModItems.alfsteelTemplate, BotaniaItems.manaRingGreater, ModItems.alfsteelIngot, ModItems.manaRingGreatest);
+        this.smithing(ModItems.alfsteelTemplate, BotaniaItems.auraRingGreater, ModItems.alfsteelIngot, ModItems.auraRingGreatest);
 
         this.petalApothecary(ModBlocks.exoblaze, this.petal(DyeColor.YELLOW), this.petal(DyeColor.YELLOW), this.petal(DyeColor.GRAY), this.petal(DyeColor.LIGHT_GRAY), Ingredient.of(BotaniaItems.runeFire), Ingredient.of(Items.BLAZE_POWDER));
         this.petalApothecary(ModBlocks.witherAconite, this.petal(DyeColor.BLACK), this.petal(DyeColor.BLACK), Ingredient.of(BotaniaItems.runePride), Ingredient.of(Blocks.WITHER_ROSE));
@@ -163,9 +162,8 @@ public class RecipeProvider extends RecipeProviderBase implements CraftingExtens
     }
 
     private void makeFloatingFlowerRecipes() {
-        //noinspection deprecation
         ForgeRegistries.ITEMS.getValues().stream()
-                .filter(item -> MythicBotany.getInstance().modid.equals(Registry.ITEM.getKey(item).getNamespace()))
+                .filter(item -> MythicBotany.getInstance().modid.equals(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).getNamespace()))
                 .filter(item -> item instanceof BlockItem)
                 .filter(item -> ((BlockItem) item).getBlock() instanceof BlockFloatingFunctionalFlower<?>)
                 .forEach(item -> this.shapeless(item, BotaniaTags.Items.FLOATING_FLOWERS, ((BlockFloatingFunctionalFlower<?>) ((BlockItem) item).getBlock()).getNonFloatingBlock()));

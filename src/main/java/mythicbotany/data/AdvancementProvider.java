@@ -1,26 +1,23 @@
 package mythicbotany.data;
 
-import org.moddingx.libx.annotation.data.Datagen;
-import org.moddingx.libx.datagen.provider.AdvancementProviderBase;
-import org.moddingx.libx.mod.ModX;
-import mythicbotany.register.ModBlocks;
-import mythicbotany.register.ModEntities;
-import mythicbotany.register.ModItems;
 import mythicbotany.advancement.AlfRepairTrigger;
 import mythicbotany.advancement.MjoellnirTrigger;
 import mythicbotany.alfheim.Alfheim;
+import mythicbotany.register.ModBlocks;
+import mythicbotany.register.ModEntities;
+import mythicbotany.register.ModItems;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
+import org.moddingx.libx.datagen.DatagenContext;
+import org.moddingx.libx.datagen.provider.AdvancementProviderBase;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.common.lib.BotaniaTags;
 
-@Datagen
 public class AdvancementProvider extends AdvancementProviderBase {
 
-    public AdvancementProvider(ModX mod, DataGenerator generator) {
-        super(mod, generator);
+    public AdvancementProvider(DatagenContext ctx) {
+        super(ctx);
     }
 
     @Override

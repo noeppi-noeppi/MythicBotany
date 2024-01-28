@@ -36,5 +36,6 @@
     [
       "alf_repair"
     ]
-  ]
+  ],
+  "sends_telemetry_event": false
 }
