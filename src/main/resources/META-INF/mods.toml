@@ -25,7 +25,7 @@ Dive deeper into the world of botania.
 [[dependencies.mythicbotany]]
     modId="forge"
     mandatory=true
-    versionRange="[47.2.0,)"
+    versionRange="[47.1.3,)"
     ordering="NONE"
     side="BOTH"
 

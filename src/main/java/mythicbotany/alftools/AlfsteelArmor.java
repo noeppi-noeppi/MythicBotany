@@ -63,8 +63,8 @@ public class AlfsteelArmor extends TerrasteelArmorItem implements PylonRepairabl
     }
 
     @Override
-    public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
-        if (slotIndex >= 40 && !level.isClientSide && stack.getDamageValue() > 0 && ManaItemHandler.instance().requestManaExact(stack, player, this.getManaPerDamage() * 2, true)) {
+    public void onArmorTick(ItemStack stack, Level level, Player player) {
+        if (!level.isClientSide && stack.getDamageValue() > 0 && ManaItemHandler.instance().requestManaExact(stack, player, this.getManaPerDamage() * 2, true)) {
             stack.setDamageValue(Math.max(0, stack.getDamageValue() - 2));
         }
     }
