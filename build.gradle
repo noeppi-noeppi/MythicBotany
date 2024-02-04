@@ -42,9 +42,9 @@ dependencies {
     implementation fg.deobf('vazkii.patchouli:Patchouli:1.20.1-84-FORGE')
     implementation fg.deobf('top.theillusivec4.curios:curios-forge:5.5.0+1.20.1')
     
-    implementation fg.deobf("mezz.jei:jei-1.20.1-common-api:15.2.0.27")
-    implementation fg.deobf("mezz.jei:jei-1.20.1-forge-api:15.2.0.27")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.20.1-forge:15.2.0.27")
+    implementation fg.deobf('mezz.jei:jei-1.20.1-common-api:15.2.0.27')
+    implementation fg.deobf('mezz.jei:jei-1.20.1-forge-api:15.2.0.27')
+    runtimeOnly fg.deobf('mezz.jei:jei-1.20.1-forge:15.2.0.27')
 
 //    extra fg.deobf("curse.maven:botanic-additions-310637:4508380") // BotanicAdditions-1.19.2-19.3.3.jar
 //    extra fg.deobf("curse.maven:hammer-lib-247401:4365804") // HammerLib-1.19.2-19.3.56.jar

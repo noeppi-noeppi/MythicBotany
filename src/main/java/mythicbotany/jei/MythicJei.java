@@ -7,7 +7,6 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
-import mythicbotany.MythicBotany;
 import mythicbotany.register.ModBlocks;
 import mythicbotany.register.ModRecipes;
 import net.minecraft.client.Minecraft;
@@ -25,7 +24,7 @@ public class MythicJei implements IModPlugin {
     @Nonnull
     @Override
     public ResourceLocation getPluginUid() {
-        return MythicBotany.getInstance().resource("jeiplugin");
+        return new ResourceLocation("mythicbotany", "jeiplugin");
     }
 
     @Override

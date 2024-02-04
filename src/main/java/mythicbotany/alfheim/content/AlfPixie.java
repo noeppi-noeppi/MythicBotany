@@ -161,6 +161,7 @@ public class AlfPixie extends PathfinderMob {
                     Vec3 motion = new Vec3(this.wantedX - this.entity.getX(), this.wantedY - this.entity.getY(), this.wantedZ - this.entity.getZ());
                     double d0 = motion.length();
                     motion = motion.normalize();
+                    if (this.entity.isInWater()) motion = motion.add(0, 0.3, 0);
                     if (this.checkNoCollision(motion, Mth.ceil(d0))) {
                         this.entity.setDeltaMovement(this.entity.getDeltaMovement().add(motion.scale(0.1)));
                     } else {
