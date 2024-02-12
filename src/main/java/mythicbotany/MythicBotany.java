@@ -24,6 +24,7 @@ import mythicbotany.network.MythicNetwork;
 import mythicbotany.patchouli.PageRitualInfo;
 import mythicbotany.patchouli.PageRitualPattern;
 import mythicbotany.pylon.PylonRepairables;
+import mythicbotany.register.ModBlocks;
 import mythicbotany.register.ModEnchantments;
 import mythicbotany.register.ModEntities;
 import mythicbotany.rune.RuneRitualRecipe;
@@ -58,6 +59,7 @@ import org.slf4j.LoggerFactory;
 import vazkii.patchouli.client.book.ClientBookRegistry;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 
 @Mod("mythicbotany")
 public final class MythicBotany extends ModXRegistration {
@@ -187,6 +189,7 @@ public final class MythicBotany extends ModXRegistration {
 
     private void sendIMC(final InterModEnqueueEvent event) {
         InterModComms.sendTo("apotheosis", "set_ench_hard_cap", () -> new EnchantmentInstance(ModEnchantments.hammerMobility, 5));
+        InterModComms.sendTo("apotheosis", "loot_category_override", () -> Map.entry(ModBlocks.mjoellnir.asItem(), "sword"));
     }
 
     public void serverStart(ServerStartingEvent event) {
