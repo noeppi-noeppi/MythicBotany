@@ -78,12 +78,42 @@ public class CommonTagsProvider extends CommonTagsProviderBase {
         this.tool(ModBlocks.rawElementiumBlock, BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_IRON_TOOL);
         this.tool(ModBlocks.runeHolder, BlockTags.MINEABLE_WITH_PICKAXE, null);
         this.tool(ModBlocks.centralRuneHolder, BlockTags.MINEABLE_WITH_PICKAXE, null);
+
+        this.item(BotaniaTags.Items.MANA_USING_ITEMS).add(
+                ModItems.alfsteelSword,
+                ModItems.alfsteelAxe,
+                ModItems.alfsteelPick,
+                ModItems.alfsteelHelmet,
+                ModItems.alfsteelChestplate,
+                ModItems.alfsteelLeggings,
+                ModItems.alfsteelBoots,
+                ModBlocks.mjoellnir.asItem());
+        
+        this.item(Tags.Items.ARMORS_BOOTS).add(ModItems.alfsteelBoots);
+        this.item(Tags.Items.ARMORS_LEGGINGS).add(ModItems.alfsteelLeggings);
+        this.item(Tags.Items.ARMORS_CHESTPLATES).add(ModItems.alfsteelChestplate);
+        this.item(Tags.Items.ARMORS_HELMETS).add(ModItems.alfsteelHelmet);
+        
+        this.item(ItemTags.SWORDS).add(ModItems.alfsteelSword);
+        this.item(ItemTags.AXES).add(ModItems.alfsteelAxe);
+        this.item(ItemTags.PICKAXES).add(ModItems.alfsteelPick);
+        this.item(Tags.Items.TOOLS).add(ModBlocks.mjoellnir.asItem());
+        
+        this.item(Tags.Items.INGOTS).add(ModItems.alfsteelIngot);
+        this.item(Tags.Items.NUGGETS).add(ModItems.alfsteelNugget);
+        
+        this.item(Tags.Items.STORAGE_BLOCKS).add(
+                ModBlocks.alfsteelBlock.asItem(),
+                ModBlocks.rawElementiumBlock.asItem());
     }
 
     @Override
     public void defaultItemTags(Item item) {
         if (item instanceof RuneItem) {
             this.item(BotaniaTags.Items.RUNES).add(item);
+        }
+        if (item instanceof ArmorItem) {
+            this.item(BotaniaTags.Items.MANA_USING_ITEMS).add(item);
         }
     }
 
