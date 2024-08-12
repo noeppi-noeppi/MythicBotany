@@ -85,6 +85,9 @@ public class CommonTagsProvider extends CommonTagsProviderBase {
         if (item instanceof RuneItem) {
             this.item(BotaniaTags.Items.RUNES).add(item);
         }
+        if (item instanceof ArmorItem) {
+            this.item(BotaniaTags.Items.MANA_USING_ITEMS).add(item);
+        }
     }
 
     @Override
