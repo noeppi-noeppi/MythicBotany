@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import org.moddingx.libx.creativetab.CreativeTabItemProvider;
 import org.moddingx.libx.registration.Registerable;
 import org.moddingx.libx.registration.SetupContext;
 import vazkii.botania.api.BotaniaForgeCapabilities;
@@ -33,9 +34,12 @@ import vazkii.botania.common.lib.ResourceLocationHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
-public class AlfsteelPick extends TerraShattererItem implements PylonRepairable, Registerable {
+public class AlfsteelPick extends TerraShattererItem implements PylonRepairable, Registerable, CreativeTabItemProvider {
     
     public AlfsteelPick(Properties props) {
         super(props.durability(MythicConfig.alftools.durability.pickaxe.max_durability()));
@@ -121,5 +125,23 @@ public class AlfsteelPick extends TerraShattererItem implements PylonRepairable,
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new MythicCap<>(super.initCapabilities(stack, nbt), BotaniaForgeCapabilities.MANA_ITEM, () -> new ManaItemImpl(stack));
+    }
+
+    @Override
+    public Stream<ItemStack> makeCreativeTabStacks() {
+        List<ItemStack> stacks = new ArrayList<>(8);
+        stacks.add(new ItemStack(this));
+        for (int mana : new int[] { 1000000 - 1, 10000000 - 1, 100000000 - 1, 1000000000 - 1, Integer.MAX_VALUE - 1 }) {
+            ItemStack stack = new ItemStack(this);
+            setMana(stack, mana);
+            stacks.add(stack);
+        }
+        {
+            ItemStack stack = new ItemStack(this);
+            setMana(stack, 1000000 - 1);
+            setTipped(stack);
+            stacks.add(stack);
+        }
+        return stacks.stream();
     }
 }
