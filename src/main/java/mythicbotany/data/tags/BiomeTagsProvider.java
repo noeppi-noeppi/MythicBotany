@@ -26,5 +26,6 @@ public class BiomeTagsProvider extends TagProviderBase<Biome> {
                 this.biomes.alfheimLakes.value()
         );
         this.tag(ModWorldGenTags.ANDWARI_CAVE).add(this.biomes.goldenFields.value());
+        this.tag(ModWorldGenTags.ELVEN_HOUSES).add(this.biomes.alfheimPlains.value(), this.biomes.dreamwoodForest.value());
     }
 }

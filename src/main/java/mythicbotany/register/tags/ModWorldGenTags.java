@@ -14,4 +14,5 @@ public class ModWorldGenTags {
     
     public static final TagKey<Biome> ALFHEIM = TagKey.create(Registries.BIOME, MythicBotany.getInstance().resource("alfheim"));
     public static final TagKey<Biome> ANDWARI_CAVE = BiomeTags.create(MythicBotany.getInstance().resource("andwari_cave").toString());
+    public static final TagKey<Biome> ELVEN_HOUSES = BiomeTags.create(MythicBotany.getInstance().resource("elven_houses").toString());
 }

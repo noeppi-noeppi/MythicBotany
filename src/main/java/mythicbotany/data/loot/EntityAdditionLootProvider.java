@@ -32,7 +32,7 @@ public class EntityAdditionLootProvider extends LootProviderBase<String> {
                                 ).build()
                         )
                 ))
-                .with(this.random(0.1f))
+                .with(this.random(0.15f))
         );
     }
 

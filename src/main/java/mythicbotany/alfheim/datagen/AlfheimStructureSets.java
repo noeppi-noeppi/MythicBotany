@@ -15,6 +15,12 @@ public class AlfheimStructureSets extends StructureSetProviderBase {
             .frequency(1)
             .build();
     
+    public final Holder<StructureSet> elvenHouse = this.structureSet()
+            .entry(this.structures.elvenHouse)
+            .placeRandom(24, 6)
+            .frequency(1)
+            .build();
+    
     public AlfheimStructureSets(DatagenContext ctx) {
         super(ctx);
     }
