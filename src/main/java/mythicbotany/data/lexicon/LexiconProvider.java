@@ -45,7 +45,6 @@ public class LexiconProvider extends PatchouliProviderBase {
                 .icon(ModItems.alfsteelIngot)
                 .text("The mana infuser is an upgraded version of the Terrestrial Agglomeration Plate that is also capable of creating other mana-alloys.")
                 .text("Like the terrestrial agglomeration plate, this requires a platform below.")
-                .text("$(thing)However, this requires a dominant spark augment to pull mana from sparks.$()")
                 .crafting("mana_infuser")
                 .caption("Upgrading the terrestrial agglomeration plate to a mana infuser.")
                 .multiblock("Mana Infuser", """

@@ -105,8 +105,7 @@ public class InfuserRecipe implements Recipe<Container> {
     }
 
     public ItemStack result(List<ItemStack> inputs) {
-        if (inputs.size() != this.inputs.size())
-            return ItemStack.EMPTY;
+        if (inputs.size() != this.inputs.size()) return ItemStack.EMPTY;
         outer: for (Ingredient item : this.inputs) {
             for (ItemStack stack : inputs) {
                 if (item.test(stack))
