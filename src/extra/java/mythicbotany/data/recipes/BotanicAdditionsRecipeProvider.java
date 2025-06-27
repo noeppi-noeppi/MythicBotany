@@ -1,13 +1,11 @@
 package mythicbotany.data.recipes;
 
 import mythicbotany.data.recipes.extension.InfuserExtension;
-import mythicbotany.register.ModItems;
-import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
+import org.moddingx.libx.datagen.DatagenContext;
 import org.moddingx.libx.datagen.provider.recipe.RecipeProviderBase;
 import org.moddingx.libx.datagen.provider.recipe.SmithingExtension;
-import org.moddingx.libx.mod.ModX;
 import org.zeith.botanicadds.init.ItemsBA;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.common.lib.BotaniaTags;
@@ -16,8 +14,8 @@ import java.util.List;
 
 public class BotanicAdditionsRecipeProvider extends RecipeProviderBase implements SmithingExtension, InfuserExtension {
 
-    public BotanicAdditionsRecipeProvider(ModX mod, DataGenerator generator) {
-        super(mod, generator);
+    public BotanicAdditionsRecipeProvider(DatagenContext ctx) {
+        super(ctx);
     }
 
     @Override
@@ -37,8 +35,6 @@ public class BotanicAdditionsRecipeProvider extends RecipeProviderBase implement
                 .setManaCost(250000)
                 .setColors(0x33DD00, 0x00FF00)
                 .build();
-        
-        this.smithing(ModItems.manaRingGreatest, ItemsBA.GAIASTEEL_INGOT, ItemsBA.MANA_RING_GAIA);
     }
 
     @Override

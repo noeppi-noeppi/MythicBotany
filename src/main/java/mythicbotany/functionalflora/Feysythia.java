@@ -1,28 +1,28 @@
 package mythicbotany.functionalflora;
 
-import com.google.common.collect.ImmutableList;
 import mythicbotany.functionalflora.base.FunctionalFlowerBase;
+import mythicbotany.register.tags.ModItemTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
 public class Feysythia extends FunctionalFlowerBase {
 
-    public static final ResourceLocation FEY_DUST_ITEM = new ResourceLocation("feywild", "fey_dust");
-    public static final List<ResourceLocation> FEY_GEM_ITEMS = ImmutableList.of(
-            new ResourceLocation("feywild", "lesser_fey_gem"),
-            new ResourceLocation("feywild", "greater_fey_gem"),
-            new ResourceLocation("feywild", "shiny_fey_gem"),
-            new ResourceLocation("feywild", "brilliant_fey_gem")
+    public static final List<TagKey<Item>> FEYSYTHIA_LEVELS = List.of(
+            ModItemTags.FEYSYTHIA_LEVEL_1,
+            ModItemTags.FEYSYTHIA_LEVEL_2,
+            ModItemTags.FEYSYTHIA_LEVEL_3,
+            ModItemTags.FEYSYTHIA_LEVEL_4,
+            ModItemTags.FEYSYTHIA_LEVEL_5
     );
     
     public Feysythia(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -38,11 +38,10 @@ public class Feysythia extends FunctionalFlowerBase {
                 ItemStack stack = ie.getItem();
                 if (!stack.isEmpty()) {
                     int level = 0;
-                    ResourceLocation id = ForgeRegistries.ITEMS.getKey(stack.getItem());
-                    if (FEY_DUST_ITEM.equals(id)) {
-                        level = 1;
-                    } else if (FEY_GEM_ITEMS.contains(id)) {
-                        level = 1 + FEY_GEM_ITEMS.indexOf(id);
+                    for (int i = 0; i < FEYSYTHIA_LEVELS.size(); i++) {
+                        if (stack.is(FEYSYTHIA_LEVELS.get(i))) {
+                            level = i + 1;
+                        }
                     }
                     if (level > 0) {
                         stack.shrink(1);

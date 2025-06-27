@@ -67,6 +67,13 @@ Dive deeper into the world of botania.
 [[dependencies.mythicbotany]]
     modId="apotheosis"
     mandatory=false
-    versionRange="[7.3.0,)"
+    versionRange="[7.4.8,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.mythicbotany]]
+    modId="botanicadds"
+    mandatory=false
+    versionRange="[20.1.3,)"
     ordering="NONE"
     side="BOTH"

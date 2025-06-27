@@ -143,8 +143,7 @@ public abstract class FunctionalFlowerBase extends BlockEntityBase implements Ti
         this.tickFlower();
 
         if (this.level.isClientSide) {
-            if (this.didWork)
-                particleChance = 3 * particleChance;
+            if (this.didWork) particleChance = 3 * particleChance;
             float red = (float) (this.color >> 16 & 0xFF) / 255.0f;
             float green = (float) (this.color >> 8 & 0xFF) / 255.0f;
             float blue = (float) (this.color & 255) / 255.0f;
